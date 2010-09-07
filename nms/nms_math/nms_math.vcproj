@@ -186,10 +186,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\nms_math.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\Stdafx.cpp"
 				>
 				<FileConfiguration
@@ -216,7 +212,7 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\nms_math.h"
+				RelativePath=".\Point.h"
 				>
 			</File>
 			<File
@@ -225,6 +221,10 @@
 			</File>
 			<File
 				RelativePath=".\Stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Vector.h"
 				>
 			</File>
 		</Filter>
