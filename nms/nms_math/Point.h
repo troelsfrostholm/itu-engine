@@ -1,7 +1,11 @@
-
-public class Point
+class Point
 {
   friend class Vector;
+  private:
+	float x;
+	float y;
+	float z;
+
   public:
 
 	  //CONSTRUCTOR
@@ -16,6 +20,6 @@ public class Point
 	  Point  Point::operator-(Vector &v);
 	  Vector Point::operator-(Point &p);
 	    // Comparison
-	  int operator==( Point);
-	  int operator!=( Point);
-}
+	  int   Point::operator==(Point &p);
+	  int   Point::operator!=(Point &p);
+};
