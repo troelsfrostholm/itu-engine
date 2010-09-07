@@ -7,7 +7,6 @@ class Vector : public Point
 
 
 	  //OPERATORS
-	  float   Vector::operator[](int pos);
 	  Vector  Vector::operator+(Vector const &v);
 	  Vector  Vector::operator-(Vector const &v);
 	  //Dot Product

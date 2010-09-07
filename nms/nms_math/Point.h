@@ -1,3 +1,7 @@
+#define X 0
+#define Y 1
+#define Z 2
+
 class Point
 {
   friend class Vector;
@@ -16,6 +20,7 @@ class Point
 	  ~Point(){};
 
 	  //OPERATORS
+	  float  Point::operator[](int pos);
 	  Point  Point::operator+(Vector &v);
 	  Point  Point::operator-(Vector &v);
 	  Vector Point::operator-(Point &p);
