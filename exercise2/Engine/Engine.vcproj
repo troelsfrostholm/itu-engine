@@ -185,6 +185,10 @@
 				RelativePath=".\Engine.h"
 				>
 			</File>
+			<File
+				RelativePath=".\Scene.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"

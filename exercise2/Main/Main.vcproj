@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;C:\Users\frwi\Documents\Visual Studio 2008\Projects\Nms\Engine&quot;"
+				AdditionalIncludeDirectories="&quot;C:\git\itu-engine\exercise2\Engine&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
