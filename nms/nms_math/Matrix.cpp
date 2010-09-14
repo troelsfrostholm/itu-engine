@@ -22,6 +22,7 @@ Matrix::Matrix(unsigned rows,unsigned cols,float* toBeCopied)
 
 Matrix::~Matrix()
  {
+   ++structPointer->refCounter;
    if (--structPointer->refCounter == 0)
    {
 	   delete structPointer;
@@ -418,4 +419,9 @@ void Matrix::shear(const float& n,const unsigned& i,const unsigned& j)
     }
 	(*this)=Matrix();
 	(*this)(i,j)=n;
+}
+
+float* Matrix::returnPointer()
+{
+	return (*this).structPointer->elements;
 }

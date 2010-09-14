@@ -35,6 +35,7 @@ class Matrix{
 		~mat_struct ()
 		{
 			delete [] elements;
+			elements = NULL;
 		}
 	 };
 
@@ -53,6 +54,8 @@ class Matrix{
 	  //copy constructor
 	    __declspec(dllexport) Matrix::Matrix(const Matrix& m);
 	    __declspec(dllexport) Matrix::~Matrix();
+
+		__declspec(dllexport) float* Matrix::returnPointer();
 
 	  //Access to the matrix values, starting from 1 NOT 0
 	    __declspec(dllexport) float& Matrix::operator()(unsigned row,unsigned col);		//Subscript access to the matrix, non const
