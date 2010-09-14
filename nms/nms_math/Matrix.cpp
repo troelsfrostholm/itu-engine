@@ -14,6 +14,11 @@ Matrix::Matrix()
 	}
 }
 
+Matrix::Matrix(unsigned rows,unsigned cols,float* toBeCopied)
+{
+	structPointer = new mat_struct(rows,cols,toBeCopied);
+}
+
 
 Matrix::~Matrix()
  {
@@ -260,6 +265,20 @@ void Matrix::setCol(unsigned i,const Vector& v)
 	 (*this)=rot;
  }
 
+ void Matrix::rotV(const double& a,const Vector& v)
+ {
+	 Matrix rot=Matrix();
+	 rot(1,1)=v[X]*v[X]+(1-(v[X]*v[X]))*nmsTrig::cos(a);
+	 rot(2,1)=v[X]*v[Y]*(1-nmsTrig::cos(a))+v[Z]*nmsTrig::sin(a);
+	 rot(3,1)=v[X]*v[Z]*(1-nmsTrig::cos(a))-v[Y]*nmsTrig::sin(a);
+	 rot(1,2)=v[X]*v[Y]*(1-nmsTrig::cos(a))-v[Z]*nmsTrig::sin(a);
+	 rot(2,2)=v[Y]*v[Y]+(1-v[Y]*v[Y])*nmsTrig::cos(a);
+	 rot(3,2)=v[Y]*v[Z]*(1-nmsTrig::cos(a))+v[X]*nmsTrig::sin(a);
+	 rot(1,3)=v[X]*v[Z]*(1-nmsTrig::cos(a))+v[Y]*nmsTrig::sin(a);
+	 rot(2,3)=v[Y]*v[Z]*(1-nmsTrig::cos(a))-v[X]*nmsTrig::sin(a);
+	 rot(3,3)=v[Z]*v[Z]+(1-v[Z]*v[Z])*nmsTrig::cos(a);
+	 (*this)=rot;
+ }
 
 //IMPORTANT! TRY TO USE MEMCPY FOR FASTER IMPLEMENTATION!
 //Reallocation of memory for matrix: it takes the number of rows and columns for the final matrix
@@ -384,9 +403,9 @@ void Matrix::uScale(const float& f)
 void Matrix::translate(const Vector &v)
 {
 	(*this)=Matrix();
-	(*this)(4,1)=v[1];
-	(*this)(4,2)=v[2];
-	(*this)(4,3)=v[3];
+	(*this)(1,4)=v[1];
+	(*this)(2,4)=v[2];
+	(*this)(3,4)=v[3];
 }
 
 void Matrix::shear(const float& n,const unsigned& i,const unsigned& j)
