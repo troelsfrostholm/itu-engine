@@ -14,7 +14,10 @@ bool NMSFramework::NMSInit(int width,int height,int bpp,char* windowTitle,bool f
 		SDL_ShowCursor(SDL_DISABLE);
 	}
 	else
+	{
 		flags = SDL_OPENGL;
+		SDL_ShowCursor(SDL_DISABLE);
+	}
 	SDL_WM_SetCaption(windowTitle,NULL);  //Set the name of the window
 	SDL_SetVideoMode(width, height, bpp, flags); //Set the window mode
 	glEnable(GL_TEXTURE_2D); //Initialize OpenGl and texture mapping
@@ -101,7 +104,7 @@ void NMSFramework::CalculateFrameRate()
 
 //CAMERA FUNCTION DEFINITIONS
 void NMSCamera::Position(float positionX,float positionY,float positionZ,
-						 double upAngle,double viewAngle)
+						 double pitchAngle,double yawAngle)
 		{
 
 			//TRANSPOSITION FROM THE POSITION
@@ -110,11 +113,11 @@ void NMSCamera::Position(float positionX,float positionY,float positionZ,
 			mPosition.translate(Vector(positionX,positionY,positionZ));
 			rightVelocity=0;
 			upVelocity=0;
-			rotRight=0;
-			rotUp=0;
+			camPitch=0;
+			camYaw=0;
 			directionVelocity=0;
-			mView.rotY(viewAngle);
-			mUp.rotX(upAngle);
+			mView.rotY(yawAngle);
+			mUp.rotX(pitchAngle);
 		}
 
 void NMSCamera::Move(float directionVelocity,float rightVelocity,float upVelocity)
@@ -124,22 +127,14 @@ void NMSCamera::Move(float directionVelocity,float rightVelocity,float upVelocit
 	mPosition(3,4)=mPosition(3,4)+directionVelocity;
 }
 
-void NMSCamera::Rotate(float rx,float ry)
+void NMSCamera::Rotate()
 {
-	if(rx) 
-	{
-		rotRight+=rx;
-		mUp.rotX(rotRight);
-	}
-	if(ry) 
-	{
-		rotUp+=ry;
-		mView.rotY(rotUp);
-	}
+		mUp.rotX(camPitch);
+		mView.rotY(camYaw);
 }
 
 void NMSCamera::updatePositions()
 {
 	Move(directionVelocity,rightVelocity,upVelocity);
-	//Rotate(upVelocity,rightVelocity);
+	Rotate();
 }

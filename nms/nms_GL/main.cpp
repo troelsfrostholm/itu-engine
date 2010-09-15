@@ -58,9 +58,9 @@ void ProcessEvents()
 				   break; 
 		      case SDLK_PAGEDOWN:z+=0.2f; 
 				   break; 
-			  case SDLK_a:engine.camera.rightVelocity=-0.01f;
+			  case SDLK_a:engine.camera.rightVelocity=+0.01f;
 				   break;
-			  case SDLK_d:engine.camera.rightVelocity=+0.01f;
+			  case SDLK_d:engine.camera.rightVelocity=-0.01f;
 				   break;
 			  case SDLK_w:engine.camera.directionVelocity=0.01f;
 				   break;
@@ -88,10 +88,10 @@ void ProcessEvents()
 				   break; 
 		      case SDLK_PAGEDOWN:z+=0.2f; 
 				   break; 
-			  case SDLK_a:if(engine.camera.rightVelocity<0)
+			  case SDLK_a:if(engine.camera.rightVelocity>0)
 							 engine.camera.rightVelocity=0;
 				   break;
-			  case SDLK_d:if(engine.camera.rightVelocity>0)
+			  case SDLK_d:if(engine.camera.rightVelocity<0)
 							 engine.camera.rightVelocity=0;
 				   break;
 			  case SDLK_w:if(engine.camera.directionVelocity>0)
@@ -108,6 +108,19 @@ void ProcessEvents()
 			} 
 			break;
 		// The window has been closed
+		case SDL_MOUSEMOTION:
+			{
+				int MouseX,MouseY;
+				SDL_GetMouseState(&MouseX,&MouseY);
+				MouseY=MouseY-240;
+				MouseX=MouseX-320;
+				//The Y axis is inverted on the mouse!
+				engine.camera.camPitch+=MouseY*0.01f;
+				engine.camera.camYaw+=MouseX*0.01f;
+				//engine.camera.clampCamera();
+				SDL_WarpMouse(320,240);
+			}
+			break;
 		case SDL_QUIT:
 			engine.NMSQuit();
 			break;
@@ -163,6 +176,26 @@ void DrawScene()
 		glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f,  1.0f,  1.0f);	// Point 3 (Left)
 		glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);	// Point 4 (Left)
 	glEnd();
+
+	glColor3f(.3,.3,.3);
+	glBegin(GL_QUADS);
+	glVertex3f( 0,-0.001, 0);
+	glVertex3f( 0,-0.001,10);
+	glVertex3f(10,-0.001,10);
+	glVertex3f(10,-0.001, 0);
+	glEnd();
+
+	glBegin(GL_LINES);
+	for(int i=0;i<=10;i++) {
+		if (i==0) { glColor3f(.6,.3,.3); } else { glColor3f(.25,.25,.25); };
+		glVertex3f(i,0,0);
+		glVertex3f(i,0,10);
+		if (i==0) { glColor3f(.3,.3,.6); } else { glColor3f(.25,.25,.25); };
+		glVertex3f(0,0,i);
+		glVertex3f(10,0,i);
+	};
+	glEnd();
+
 	xrot+=xspeed;								// Add xspeed To xrot
 	yrot+=yspeed;								// Add yspeed To yrot
 	glPopMatrix();

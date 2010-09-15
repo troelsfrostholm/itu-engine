@@ -19,8 +19,8 @@ class NMSCamera
 	Matrix mView;
 	Matrix mUp;
 	
-	float rotRight;
-	float rotUp;
+	float camYaw;
+	float camPitch;
 
 	float rightVelocity;
 	float upVelocity;
@@ -29,9 +29,9 @@ class NMSCamera
 
 	NMSCamera(){};
 	void Position(float positionX,float positionY,float positionZ,
-				  double upAngle,double viewAngle);
+				  double pitchAngle,double yawAngle);
 	void Move(float directionVelocity,float rightVelocity,float upVelocity);
-	void Rotate(float rotX,float rotY);
+	void Rotate();
 	void updatePositions();
 };
 
