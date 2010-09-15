@@ -8,6 +8,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nms_GL", "nms_GL\nms_GL.vcp
 		{7039BE8A-1325-46E1-A8AE-0519442B43ED} = {7039BE8A-1325-46E1-A8AE-0519442B43ED}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nms_test", "nms_test\nms_test.vcproj", "{F9E4849C-5CC5-4195-B482-15B46E6DD4C9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -22,6 +24,10 @@ Global
 		{3EC8E3BA-BB90-4580-A5D5-61349C5E36A8}.Debug|Win32.Build.0 = Debug|Win32
 		{3EC8E3BA-BB90-4580-A5D5-61349C5E36A8}.Release|Win32.ActiveCfg = Release|Win32
 		{3EC8E3BA-BB90-4580-A5D5-61349C5E36A8}.Release|Win32.Build.0 = Release|Win32
+		{F9E4849C-5CC5-4195-B482-15B46E6DD4C9}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F9E4849C-5CC5-4195-B482-15B46E6DD4C9}.Debug|Win32.Build.0 = Debug|Win32
+		{F9E4849C-5CC5-4195-B482-15B46E6DD4C9}.Release|Win32.ActiveCfg = Release|Win32
+		{F9E4849C-5CC5-4195-B482-15B46E6DD4C9}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
