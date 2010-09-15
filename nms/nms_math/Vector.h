@@ -8,6 +8,7 @@
 
 using namespace std;
 
+//Three space vector class
 class Vector : public Point{
   
   public:
