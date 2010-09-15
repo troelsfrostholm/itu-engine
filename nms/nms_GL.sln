@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nms_math", "nms_math\nms_math.vcproj", "{7039BE8A-1325-46E1-A8AE-0519442B43ED}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nms_GL", "nms_GL\nms_GL.vcproj", "{3EC8E3BA-BB90-4580-A5D5-61349C5E36A8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7039BE8A-1325-46E1-A8AE-0519442B43ED}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7039BE8A-1325-46E1-A8AE-0519442B43ED}.Debug|Win32.Build.0 = Debug|Win32
+		{7039BE8A-1325-46E1-A8AE-0519442B43ED}.Release|Win32.ActiveCfg = Release|Win32
+		{7039BE8A-1325-46E1-A8AE-0519442B43ED}.Release|Win32.Build.0 = Release|Win32
+		{3EC8E3BA-BB90-4580-A5D5-61349C5E36A8}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3EC8E3BA-BB90-4580-A5D5-61349C5E36A8}.Debug|Win32.Build.0 = Debug|Win32
+		{3EC8E3BA-BB90-4580-A5D5-61349C5E36A8}.Release|Win32.ActiveCfg = Release|Win32
+		{3EC8E3BA-BB90-4580-A5D5-61349C5E36A8}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

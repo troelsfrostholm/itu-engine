@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="nms_math"
-	ProjectGUID="{7039BE8A-1325-46E1-A8AE-0519442B43ED}"
-	RootNamespace="nms_math"
+	Name="nms_GL"
+	ProjectGUID="{3EC8E3BA-BB90-4580-A5D5-61349C5E36A8}"
+	RootNamespace="nms_GL"
 	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
@@ -19,8 +19,8 @@
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="2"
-			CharacterSet="2"
+			ConfigurationType="1"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -40,12 +40,12 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				InlineFunctionExpansion="0"
+				AdditionalIncludeDirectories="&quot;C:\Users\Leyart\Documents\ITU\Game Engines\itu-engine\nms\nms_math&quot;;&quot;C:\Users\Leyart\Documents\ITU\Game Engines\itu-engine\nms\Release&quot;"
 				MinimalRebuild="true"
-				BasicRuntimeChecks="0"
+				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				WarningLevel="3"
-				DebugInformationFormat="3"
+				DebugInformationFormat="4"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -58,7 +58,12 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="sdl.lib sdlmain.lib opengl32.lib glu32.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib advapi32.lib nms_math.lib"
+				AdditionalLibraryDirectories="&quot;C:\Users\Leyart\Documents\ITU\Game Engines\itu-engine\nms\Release&quot;;&quot;C:\Users\Leyart\Documents\ITU\Game Engines\itu-engine\nms\nms_math&quot;"
 				GenerateDebugInformation="true"
+				SubSystem="2"
+				EntryPointSymbol=""
+				ResourceOnlyDLL="false"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -87,7 +92,7 @@
 			Name="Release|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="2"
+			ConfigurationType="1"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -110,6 +115,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
+				AdditionalIncludeDirectories="&quot;C:\Users\Leyart\Documents\ITU\Game Engines\itu-engine\nms\nms_math&quot;;&quot;C:\Users\Leyart\Documents\ITU\Game Engines\itu-engine\nms\Release&quot;"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				WarningLevel="3"
@@ -129,6 +135,7 @@
 				GenerateDebugInformation="true"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
+				EntryPointSymbol=""
 				TargetMachine="1"
 			/>
 			<Tool
@@ -163,19 +170,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\Matrix.cpp"
+				RelativePath=".\main.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Point.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Trig.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Vector.cpp"
+				RelativePath=".\NMSFramework.cpp"
 				>
 			</File>
 		</Filter>
@@ -185,19 +184,7 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\Matrix.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Point.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Trig.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Vector.h"
+				RelativePath=".\NMSFramework.h"
 				>
 			</File>
 		</Filter>

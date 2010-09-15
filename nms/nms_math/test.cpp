@@ -30,8 +30,9 @@ int main()
 	test(4,2)=3;
 	test(4,3)=8; 
 	test(4,4)=7;
+	
 
-	cout<<test<<'\n';
+	//cout<<test<<'\n';
 
 	//Memory Management test
 	//test=prova(test);
@@ -55,6 +56,10 @@ int main()
 	test.uScale(5.0f);
 
 	cout<<test<<'\n';
+
+	Matrix mPosition=Matrix();
+	mPosition.translate(Vector(0,0,-5.0));
+	cout<<mPosition<<'\n';
 	system("pause");
 	return 0;
 }

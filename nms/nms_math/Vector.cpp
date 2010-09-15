@@ -12,7 +12,9 @@ Vector::Vector()
 
 Vector::Vector(float x,float y,float z)
 {
-	Point(x,y,z);
+	this->x=x;
+	this->y=y;
+	this->z=z;
 	w=0;
 }
 

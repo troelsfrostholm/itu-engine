@@ -21,24 +21,24 @@ class Point
   public:
 
 	  //CONSTRUCTOR
-	  Point();
-	  Point(float x, float y, float z);
+	   __declspec(dllexport) Point();
+	   __declspec(dllexport) Point(float x, float y, float z);
 
 	  //DECONSTRUCTOR
-	  ~Point(){};
+	   __declspec(dllexport) ~Point(){};
 
 	  //OPERATORS
-	  float&  Point::operator[](int pos);
-	  float const&  Point::operator[](int pos) const;
-	  Point  Point::operator+(Vector &v);
-	  Point  Point::operator-(Vector &v);
-	  Vector Point::operator-(Point &p);
+	   __declspec(dllexport) float&  Point::operator[](int pos);
+	   __declspec(dllexport) float const&  Point::operator[](int pos) const;
+	   __declspec(dllexport) Point  Point::operator+(Vector &v);
+	   __declspec(dllexport) Point  Point::operator-(Vector &v);
+	   __declspec(dllexport) Vector Point::operator-(Point &p);
 	    // Comparison
-	  int   Point::operator==(Point &p);
-	  int   Point::operator!=(Point &p);
+	   __declspec(dllexport) int   Point::operator==(Point &p);
+	   __declspec(dllexport) int   Point::operator!=(Point &p);
 
 	  //Matrix multiplication
-	  friend   Point operator *(Point& v,const Matrix &m);
-	  Point&   operator *= (const Matrix &m);
+	   __declspec(dllexport) friend   Point operator *(Point& v,const Matrix &m);
+	   __declspec(dllexport) Point&   operator *= (const Matrix &m);
 };
 #endif

@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="nms_math"
-	ProjectGUID="{7039BE8A-1325-46E1-A8AE-0519442B43ED}"
-	RootNamespace="nms_math"
+	Name="Main"
+	ProjectGUID="{17FB49AC-6939-48E5-B8A0-A4BA8BF774E9}"
+	RootNamespace="Main"
 	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
@@ -19,7 +19,7 @@
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="2"
+			ConfigurationType="1"
 			CharacterSet="2"
 			>
 			<Tool
@@ -40,12 +40,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				InlineFunctionExpansion="0"
 				MinimalRebuild="true"
-				BasicRuntimeChecks="0"
+				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				WarningLevel="3"
-				DebugInformationFormat="3"
+				DebugInformationFormat="4"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -59,6 +58,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				GenerateDebugInformation="true"
+				SubSystem="2"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -87,7 +87,7 @@
 			Name="Release|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="2"
+			ConfigurationType="1"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -162,44 +162,12 @@
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
-			<File
-				RelativePath=".\Matrix.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Point.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Trig.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Vector.cpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
-			<File
-				RelativePath=".\Matrix.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Point.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Trig.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Vector.h"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
