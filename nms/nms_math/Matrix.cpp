@@ -269,15 +269,15 @@ void Matrix::setCol(unsigned i,const Vector& v)
  void Matrix::rotV(const double& a,const Vector& v)
  {
 	 Matrix rot=Matrix();
-	 rot(1,1)=v[X]*v[X]+(1-(v[X]*v[X]))*nmsTrig::cos(a);
-	 rot(2,1)=v[X]*v[Y]*(1-nmsTrig::cos(a))+v[Z]*nmsTrig::sin(a);
-	 rot(3,1)=v[X]*v[Z]*(1-nmsTrig::cos(a))-v[Y]*nmsTrig::sin(a);
-	 rot(1,2)=v[X]*v[Y]*(1-nmsTrig::cos(a))-v[Z]*nmsTrig::sin(a);
-	 rot(2,2)=v[Y]*v[Y]+(1-v[Y]*v[Y])*nmsTrig::cos(a);
-	 rot(3,2)=v[Y]*v[Z]*(1-nmsTrig::cos(a))+v[X]*nmsTrig::sin(a);
-	 rot(1,3)=v[X]*v[Z]*(1-nmsTrig::cos(a))+v[Y]*nmsTrig::sin(a);
-	 rot(2,3)=v[Y]*v[Z]*(1-nmsTrig::cos(a))-v[X]*nmsTrig::sin(a);
-	 rot(3,3)=v[Z]*v[Z]+(1-v[Z]*v[Z])*nmsTrig::cos(a);
+	 rot(1,1)=v[NMS_X]*v[NMS_X]+(1-(v[NMS_X]*v[NMS_X]))*nmsTrig::cos(a);
+	 rot(2,1)=v[NMS_X]*v[NMS_Y]*(1-nmsTrig::cos(a))+v[NMS_Z]*nmsTrig::sin(a);
+	 rot(3,1)=v[NMS_X]*v[NMS_Z]*(1-nmsTrig::cos(a))-v[NMS_Y]*nmsTrig::sin(a);
+	 rot(1,2)=v[NMS_X]*v[NMS_Y]*(1-nmsTrig::cos(a))-v[NMS_Z]*nmsTrig::sin(a);
+	 rot(2,2)=v[NMS_Y]*v[NMS_Y]+(1-v[NMS_Y]*v[NMS_Y])*nmsTrig::cos(a);
+	 rot(3,2)=v[NMS_Y]*v[NMS_Z]*(1-nmsTrig::cos(a))+v[NMS_X]*nmsTrig::sin(a);
+	 rot(1,3)=v[NMS_X]*v[NMS_Z]*(1-nmsTrig::cos(a))+v[NMS_Y]*nmsTrig::sin(a);
+	 rot(2,3)=v[NMS_Y]*v[NMS_Z]*(1-nmsTrig::cos(a))-v[NMS_X]*nmsTrig::sin(a);
+	 rot(3,3)=v[NMS_Z]*v[NMS_Z]+(1-v[NMS_Z]*v[NMS_Z])*nmsTrig::cos(a);
 	 (*this)=rot;
  }
 

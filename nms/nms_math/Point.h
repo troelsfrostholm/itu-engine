@@ -3,9 +3,9 @@
 
 
 
-#define X 1
-#define Y 2
-#define Z 3
+#define NMS_X 1
+#define NMS_Y 2
+#define NMS_Z 3
 #define W 4
 
 class Point

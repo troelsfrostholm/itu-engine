@@ -29,13 +29,13 @@ Vector::Vector(float x,float y,float z,float w)
 
 Vector& Vector::operator+=(Vector const &v)
 {
-	x+=v[X]; y+=v[Y]; z+=v[Z];
+	x+=v[NMS_X]; y+=v[NMS_Y]; z+=v[NMS_Z];
 	return (*this);
 }
 
 Vector& Vector::operator-=(Vector const &v)
 {
-	x-=v[X]; y-=v[Y]; z-=v[Z];
+	x-=v[NMS_X]; y-=v[NMS_Y]; z-=v[NMS_Z];
 	return (*this);
 }
 
@@ -88,26 +88,26 @@ Vector operator * (Vector& v,const Matrix &m)
 
 Vector  Vector::operator+(Vector const &v)
 {
-	return Vector(x+v[X],y+v[Y],z+v[Z]);
+	return Vector(x+v[NMS_X],y+v[NMS_Y],z+v[NMS_Z]);
 }
 
 Vector  Vector::operator-(Vector const &v)
 {
-	return Vector(x-v[X],y-v[Y],z-v[Z]);
+	return Vector(x-v[NMS_X],y-v[NMS_Y],z-v[NMS_Z]);
 }
 
 //Cross Product
 Vector  Vector::operator%(Vector const &v)
 {
-	return Vector(y*v[Z]-z*v[Y],z*v[X]-x*v[Z],x*v[Y]-y*v[X]);
+	return Vector(y*v[NMS_Z]-z*v[NMS_Y],z*v[NMS_X]-x*v[NMS_Z],x*v[NMS_Y]-y*v[NMS_X]);
 }
 	  
 
 float Vector::operator*(Vector const &v)
 {
-	return this->x * v[X] +
-		   this->y * v[Y] +
-		   this->z * v[Z];
+	return this->x * v[NMS_X] +
+		   this->y * v[NMS_Y] +
+		   this->z * v[NMS_Z];
 }
 
 float   Vector::sqmagnitude()
@@ -134,5 +134,5 @@ Vector  Vector::normal()
 }
 
 ostream& operator<<(ostream& output,Vector& v) {
-		return output<<v[X]<<' '<<v[Y]<<' '<<v[Z]<<' '<<v[W]<<' '<<'\n';
+		return output<<v[NMS_X]<<' '<<v[NMS_Y]<<' '<<v[NMS_Z]<<' '<<v[W]<<' '<<'\n';
 }

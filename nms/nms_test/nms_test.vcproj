@@ -59,7 +59,8 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="&quot;C:\Program Files (x86)\boost\boost_1_44\lib\libboost_unit_test_framework-vc90-mt-gd-1_44.lib&quot; nms_math.lib"
-				AdditionalLibraryDirectories="&quot;$(SolutionDir)\Debug&quot;"
+				ShowProgress="1"
+				AdditionalLibraryDirectories="&quot;C:\Users\Maja\Kode\itu-engine\nms\Debug&quot;"
 				GenerateDebugInformation="true"
 				TargetMachine="1"
 			/>

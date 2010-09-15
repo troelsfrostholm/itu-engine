@@ -1,4 +1,4 @@
-#include "Trig.h"
+#include "Point.h"
 #define BOOST_TEST_MODULE TrigTest
 
 #include <boost/test/unit_test.hpp>
@@ -8,5 +8,5 @@
 
 int main()
 {
-   //Matrix m = Matrix();
+	//double r = nmsTrig::radians(180);
 }
