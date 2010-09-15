@@ -8,7 +8,6 @@
 #include "Vector.h"
 #include "Matrix.h"
 
-
 #define view 3
 #define up 2
 
