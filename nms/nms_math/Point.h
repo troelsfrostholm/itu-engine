@@ -34,8 +34,8 @@ class Point
 	   __declspec(dllexport) Point  Point::operator-(const Vector &v);
 	   __declspec(dllexport) Vector Point::operator-(const Point &p);
 	    // Comparison
-	   __declspec(dllexport) bool   Point::operator==(const Point &p);
-	   __declspec(dllexport) bool   Point::operator!=(const Point &p);
+	   __declspec(dllexport) friend bool   Point::operator==(const Point &p1, const Point &p2);
+	   __declspec(dllexport) friend bool   Point::operator!=(const Point &p1, const Point &p2);
 
 	  //Matrix multiplication
 	   __declspec(dllexport) friend   Point operator *(Point& v,const Matrix &m);
