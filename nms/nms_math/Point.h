@@ -30,12 +30,12 @@ class Point
 	  //OPERATORS
 	   __declspec(dllexport) float&  Point::operator[](int pos);
 	   __declspec(dllexport) float const&  Point::operator[](int pos) const;
-	   __declspec(dllexport) Point  Point::operator+(Vector &v);
-	   __declspec(dllexport) Point  Point::operator-(Vector &v);
-	   __declspec(dllexport) Vector Point::operator-(Point &p);
+	   __declspec(dllexport) Point  Point::operator+(const Vector &v);
+	   __declspec(dllexport) Point  Point::operator-(const Vector &v);
+	   __declspec(dllexport) Vector Point::operator-(const Point &p);
 	    // Comparison
-	   __declspec(dllexport) int   Point::operator==(Point &p);
-	   __declspec(dllexport) int   Point::operator!=(Point &p);
+	   __declspec(dllexport) bool   Point::operator==(const Point &p);
+	   __declspec(dllexport) bool   Point::operator!=(const Point &p);
 
 	  //Matrix multiplication
 	   __declspec(dllexport) friend   Point operator *(Point& v,const Matrix &m);

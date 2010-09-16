@@ -48,31 +48,31 @@ Point::Point(float x, float y, float z)
 	this->w=1;
 }
 
-int Point::operator!=(Point &p)
+bool Point::operator!=(const Point &p)
 {
    return this->x != p[NMS_X] &&
 	      this->y != p[NMS_Y] &&
 	      this->z != p[NMS_Z];
 }
 
-int Point::operator==(Point &p)
+bool Point::operator==(const Point &p)
 {
    return this->x == p[NMS_X] &&
 	      this->y == p[NMS_Y] &&
 	      this->z == p[NMS_Z];
 }
 
-Point Point::operator +(Vector &v)
+Point Point::operator +(const Vector &v)
 {
 	return Point(this->x+v[NMS_X],this->y+v[NMS_Y],this->z+v[NMS_Z]);
 }
 
-Vector Point::operator -(Point &p)
+Vector Point::operator -(const Point &p)
 {
 	return Vector(this->x-p[NMS_X],this->y-p[NMS_Y],this->z-p[NMS_Z]);
 }
 
-Point Point::operator -(Vector &v)
+Point Point::operator -(const Vector &v)
 {
 	return Point(this->x-v[NMS_X],this->y-v[NMS_Y],this->z-v[NMS_Z]);
 }

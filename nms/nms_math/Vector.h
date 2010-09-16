@@ -42,6 +42,6 @@ class Vector : public Point{
 	   __declspec(dllexport) float   Vector::magnitude();
 	   __declspec(dllexport) float   Vector::sqmagnitude();
 
-	   __declspec(dllexport) friend ostream& operator<<(ostream& output,Vector& v);
+	   __declspec(dllexport) friend ostream& operator<<(ostream& output, const Vector& v);
 };
 #endif
