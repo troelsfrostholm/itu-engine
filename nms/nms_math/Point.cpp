@@ -104,3 +104,7 @@ Point operator * (Point& p,const Matrix &m)
     temp *= m;
     return temp;
 }
+
+ostream& operator<<(ostream& output, const Point& p) {
+		return output<<p[NMS_X]<<' '<<p[NMS_Y]<<' '<<p[NMS_Z]<<' '<<p[W]<<' '<<'\n';
+}

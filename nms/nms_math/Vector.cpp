@@ -132,7 +132,3 @@ Vector  Vector::normal()
 			// 1/|v|*v
 			return (*this)*(1/m);
 }
-
-ostream& operator<<(ostream& output, const Vector& v) {
-		return output<<v[NMS_X]<<' '<<v[NMS_Y]<<' '<<v[NMS_Z]<<' '<<v[W]<<' '<<'\n';
-}
