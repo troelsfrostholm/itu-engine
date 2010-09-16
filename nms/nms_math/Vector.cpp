@@ -51,9 +51,14 @@ Vector&  Vector::operator/=(float f)
 	return (*this);
 }
 
-Vector Vector::operator*(float f)
+Vector operator*(Vector const &v, float f)
 {
-	return Vector(x*f,y*f,z*f);
+	return Vector(v.x*f,v.y*f,v.z*f);
+}
+
+Vector operator*(float f, Vector const &v)
+{
+	return v*f;
 }
 
 Vector& Vector::operator *= (const Matrix &m)
@@ -85,15 +90,18 @@ Vector operator * (Vector& v,const Matrix &m)
     return temp;
 }
 
-
-Vector  Vector::operator+(Vector const &v)
+Vector operator+(Vector const &a, Vector const &b)
 {
-	return Vector(x+v[NMS_X],y+v[NMS_Y],z+v[NMS_Z]);
+	return Vector( a[NMS_X] + b[NMS_X],
+		           a[NMS_Y] + b[NMS_Y],
+				   a[NMS_Z] + b[NMS_Z] );
 }
 
-Vector  Vector::operator-(Vector const &v)
+Vector operator-(Vector const &a, Vector const &b)
 {
-	return Vector(x-v[NMS_X],y-v[NMS_Y],z-v[NMS_Z]);
+	return Vector( a[NMS_X] - b[NMS_X],
+		           a[NMS_Y] - b[NMS_Y],
+				   a[NMS_Z] - b[NMS_Z] );
 }
 
 //Cross Product
