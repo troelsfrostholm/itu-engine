@@ -121,4 +121,27 @@ BOOST_AUTO_TEST_CASE( vector_arithmetics )
 	BOOST_CHECK_EQUAL( a%b, Vector(-1, 2, -1));
 }
 
+BOOST_AUTO_TEST_CASE( vector_arithmetics_assignment )
+{
+	Vector c;
+	
+	//Scalar product and division
+	c = Vector(-1, 2, 3);
+	c *= 3;
+	BOOST_CHECK_EQUAL( c, Vector(-3, 6, 9) );
+	c /= 3;
+	BOOST_CHECK_EQUAL( c, Vector(-1, 2, 3) );
+
+	//addition
+	c = Vector(1, 2, 3);
+	c += Vector(2, 3, 4);
+	BOOST_CHECK_EQUAL( c, Vector(3, 5, 7) );
+
+	//subtraction
+	c = Vector(1, 2, 3);
+	c -= Vector(2, 3, 4);
+	BOOST_CHECK_EQUAL( c, Vector(-1, -1, -1) );
+}
+
+
 BOOST_AUTO_TEST_SUITE_END();
