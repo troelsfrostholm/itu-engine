@@ -5,8 +5,9 @@
 
 #include <boost/test/unit_test.hpp>
 #include <iostream>
-#include <iterator>
-#include <algorithm>
+/*#include <iterator>
+#include <algorithm>*/
+//#include <cmath>
 
 using namespace std;
 
@@ -143,5 +144,35 @@ BOOST_AUTO_TEST_CASE( vector_arithmetics_assignment )
 	BOOST_CHECK_EQUAL( c, Vector(-1, -1, -1) );
 }
 
+BOOST_AUTO_TEST_CASE( vector_properties )
+{
+	Vector v = Vector(1, 2, 3);
+
+	//squared magnitude
+	float smgt = v.sqmagnitude();
+	BOOST_CHECK_EQUAL(smgt, 14);
+	BOOST_CHECK_EQUAL(smgt, v*v);
+
+	//magnitude
+	BOOST_CHECK_EQUAL(v.magnitude(), sqrt(14.0f));
+
+	//normalized
+	float e = 0.000001f; //max allowed error;
+	Vector normal = v.normal();
+	Vector expected = Vector( 0.267261f,  
+		                      0.534522f,  
+							  0.801784f ); //expected vector calculated with python's numpy and truncated to 6th decimal. 
+	
+	for(int i=1; i<4; i++) {
+		BOOST_CHECK( normal[i] < expected[i] + e &&
+			         normal[i] > expected[i] - e );
+	}
+
+	//normalized vector is parallel with original vector
+	BOOST_CHECK_EQUAL( (v%normal), Vector(0.0f, 0.0f, 0.0f) );
+
+	//normalized vector has magnitude of exactly 1
+	BOOST_CHECK_EQUAL( normal.magnitude(), 1.0f );
+}
 
 BOOST_AUTO_TEST_SUITE_END();
