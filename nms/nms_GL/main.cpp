@@ -10,6 +10,23 @@ GLfloat xspeed;									// X Rotation Speed
 GLfloat yspeed;									// Y Rotation Speed
 GLfloat	z=-10.0f;								// Depth Into The Screen
 
+BOOL	light;									// Lighting ON / OFF
+BOOL	lp;									    // L Pressed?
+BOOL	fp;									    // F Pressed?
+
+
+GLfloat LightAmbient[]= { 0.5f, 0.5f, 0.5f, 1.0f }; // Ambient Light Values
+
+GLfloat LightDiffuse[]= { 1.0f, 1.0f, 1.0f, 1.0f };	// Diffuse Light Values
+
+GLfloat LightPosition[]= { 0.0f, 0.0f, 2.0f, 1.0f }; // Light Position
+
+GLuint	filter;									// Which Filter To Use
+GLuint	texture[3];								// Storage for 3 textures
+
+
+
+
 
 
 void ProcessEvents();
@@ -135,10 +152,13 @@ void DrawScene()
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity( );
 	engine.camera.updatePositions();
-	glMultMatrixf((~(engine.camera.mPosition)).returnPointer());
-	glMultMatrixf((~(engine.camera.mView)).returnPointer());
-	glMultMatrixf((~(engine.camera.mUp)).returnPointer());
 
+	//glMultMatrixf((~(engine.camera.mPosition)).returnPointer());
+	//glMultMatrixf((~(engine.camera.mUp)).returnPointer());//Pitch
+	glMultMatrixf((~(engine.camera.cameraView)).returnPointer());
+	
+	
+	
 	glPushMatrix();
 	glTranslatef(0.0f,0.0f,z);						    // Translate Into/Out Of The Screen By z
 	glRotatef(xrot,1.0f,0.0f,0.0f);						// Rotate On The X Axis By xrot

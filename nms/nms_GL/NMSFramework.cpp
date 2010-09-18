@@ -32,6 +32,7 @@ bool NMSFramework::NMSInit(int width,int height,int bpp,char* windowTitle,bool f
 	glLoadIdentity();
 	gluPerspective(60.0, (float)width/(float)height, 1.0, 1024.0);
 	running=true;
+	camera.cameraView=Matrix();
 	camera.Position(0.0,0.0,-5.0,0.0,0.0);
 	return true;
 }
@@ -110,31 +111,71 @@ void NMSCamera::Position(float positionX,float positionY,float positionZ,
 			//TRANSPOSITION FROM THE POSITION
 			//ROTATION AMONG X for the up vecctor
 			//ROTATION AMONG Y for the view vector
-			mPosition.translate(Vector(positionX,positionY,positionZ));
+			position=Vector(positionX,positionY,positionZ);
 			rightVelocity=0;
 			upVelocity=0;
 			camPitch=0;
 			camYaw=0;
+			camRoll=0;
 			directionVelocity=0;
-			mView.rotY(yawAngle);
-			mUp.rotX(pitchAngle);
 		}
 
 void NMSCamera::Move(float directionVelocity,float rightVelocity,float upVelocity)
 {
-	mPosition(1,4)=mPosition(1,4)+rightVelocity;
-	mPosition(2,4)=mPosition(2,4)+upVelocity;
-	mPosition(3,4)=mPosition(3,4)+directionVelocity;
+	float temp1,temp2;
+	temp1=camYaw;
+	temp2=camPitch;
+	camYaw = (camYaw/180*NUM_PI+NUM_PI/2); 
+	camPitch = (camPitch/180*NUM_PI+NUM_PI/2);
+	/*
+	mPosition(1,4)+=float(sin(camYaw))*rightVelocity;//float(sin(camPitch))*directionVelocity ;
+	mPosition(2,4)-=float(cos(camYaw))*directionVelocity;
+	mPosition(3,4)+=float(sin(camPitch))*directionVelocity +float(cos(camYaw))*rightVelocity;
+	*/
+	camYaw=temp1;
+	camPitch=temp2;
 }
 
 void NMSCamera::Rotate()
 {
-		mUp.rotX(camPitch);
-		mView.rotY(camYaw);
+		//mUp.rotX(camPitch);
+		//mView.rotY(camYaw);
 }
 
 void NMSCamera::updatePositions()
 {
-	Move(directionVelocity,rightVelocity,upVelocity);
-	Rotate();
+	up=Vector(0.0f,1.0f,0.0f);
+	look=Vector(0.0f,0.0f,1.0f);
+	right=Vector(1.0f,0.0f,0.0f);
+	
+	//Rotate around the Y axis
+	Matrix rotation=Matrix();
+	rotation.rotV(camYaw,up);
+
+	look=look*rotation;
+	right=right*rotation;
+	
+	//Rotate around the X axis
+	rotation.rotV(camPitch,right);
+
+	look=look*rotation;
+	up=up*rotation;
+
+	//Rotate around the Z axis NOT USED FOR THE FPSes
+	rotation.rotV(camRoll,look);
+
+	right=right*rotation;
+	up=up*rotation;
+
+
+	//Update the position
+	position+=look*directionVelocity;    // Move in the look direction
+	position+=right*rightVelocity;   // Move right (strafe)
+	position+=up*upVelocity;      // Move up
+
+	cameraView.setRow(1,right);
+	cameraView.setRow(2,up);
+	cameraView.setRow(3,look);
+	cameraView.setCol(4,position*-1);
+	cameraView(4,4)=1;
 }

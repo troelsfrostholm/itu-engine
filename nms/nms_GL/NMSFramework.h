@@ -9,22 +9,26 @@
 #include "Matrix.h"
 
 
-#define view 3
-#define up 2
+
+#define NUM_PI 3.141592654f
+
 
 class NMSCamera
 {
 	public:
-	Matrix mPosition; // posizione della camera
-	Matrix mView;
-	Matrix mUp;
+	Vector position; //It stores the coordinates of the position of the camera
 	
 	float camYaw;
 	float camPitch;
+	float camRoll;
+
+	Vector up,look,right;
 
 	float rightVelocity;
 	float upVelocity;
 	float directionVelocity;
+
+	Matrix cameraView;
 
 
 	NMSCamera(){};
