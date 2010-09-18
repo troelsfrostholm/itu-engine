@@ -1,11 +1,13 @@
 #ifndef POINT_H__
 #define POINT_H__
 
+#include <fstream>
 
+using namespace std;
 
-#define X 1
-#define Y 2
-#define Z 3
+#define NMS_X 1
+#define NMS_Y 2
+#define NMS_Z 3
 #define W 4
 
 class Point
@@ -30,15 +32,17 @@ class Point
 	  //OPERATORS
 	   __declspec(dllexport) float&  Point::operator[](int pos);
 	   __declspec(dllexport) float const&  Point::operator[](int pos) const;
-	   __declspec(dllexport) Point  Point::operator+(Vector &v);
-	   __declspec(dllexport) Point  Point::operator-(Vector &v);
-	   __declspec(dllexport) Vector Point::operator-(Point &p);
+	   __declspec(dllexport) Point  Point::operator+(const Vector &v);
+	   __declspec(dllexport) Point  Point::operator-(const Vector &v);
+	   __declspec(dllexport) Vector Point::operator-(const Point &p);
 	    // Comparison
-	   __declspec(dllexport) int   Point::operator==(Point &p);
-	   __declspec(dllexport) int   Point::operator!=(Point &p);
+	   __declspec(dllexport) friend bool   Point::operator==(const Point &p1, const Point &p2);
+	   __declspec(dllexport) friend bool   Point::operator!=(const Point &p1, const Point &p2);
 
 	  //Matrix multiplication
 	   __declspec(dllexport) friend   Point operator *(Point& v,const Matrix &m);
 	   __declspec(dllexport) Point&   operator *= (const Matrix &m);
+
+	   __declspec(dllexport) friend ostream& operator<<(ostream& output, const Point& p);
 };
 #endif

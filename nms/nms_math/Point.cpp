@@ -7,11 +7,11 @@
 float& Point::operator[](int pos)
 {
 	switch (pos){
-		case X:return this->x;
+		case NMS_X:return this->x;
 			   break;
-	    case Y:return this->y;
+	    case NMS_Y:return this->y;
 			   break;
-		case Z:return this->z;
+		case NMS_Z:return this->z;
 			   break;
 	    case W:return this->w;
 			   break;
@@ -24,11 +24,11 @@ float& Point::operator[](int pos)
 float const&  Point::operator[](int pos) const
 {
 	switch (pos){
-		case X:return this->x;
+		case NMS_X:return this->x;
 			   break;
-	    case Y:return this->y;
+	    case NMS_Y:return this->y;
 			   break;
-		case Z:return this->z;
+		case NMS_Z:return this->z;
 			   break;
 	    case W:return this->w;
 			   break;
@@ -48,33 +48,33 @@ Point::Point(float x, float y, float z)
 	this->w=1;
 }
 
-int Point::operator!=(Point &p)
+bool operator!=(const Point &p1, const Point &p2)
 {
-   return this->x != p[X] &&
-	      this->y != p[Y] &&
-	      this->z != p[Z];
+   return p1[NMS_X] != p2[NMS_X] &&
+	      p1[NMS_Y] != p2[NMS_Y] &&
+	      p1[NMS_Z] != p2[NMS_Z];
 }
 
-int Point::operator==(Point &p)
+bool operator==(const Point &p1, const Point &p2)
 {
-   return this->x == p[X] &&
-	      this->y == p[Y] &&
-	      this->z == p[Z];
+   return p1[NMS_X] == p2[NMS_X] &&
+	      p1[NMS_Y] == p2[NMS_Y] &&
+	      p1[NMS_Z] == p2[NMS_Z];
 }
 
-Point Point::operator +(Vector &v)
+Point Point::operator +(const Vector &v)
 {
-	return Point(this->x+v[X],this->y+v[Y],this->z+v[Z]);
+	return Point(this->x+v[NMS_X],this->y+v[NMS_Y],this->z+v[NMS_Z]);
 }
 
-Vector Point::operator -(Point &p)
+Vector Point::operator -(const Point &p)
 {
-	return Vector(this->x-p[X],this->y-p[Y],this->z-p[Z]);
+	return Vector(this->x-p[NMS_X],this->y-p[NMS_Y],this->z-p[NMS_Z]);
 }
 
-Point Point::operator -(Vector &v)
+Point Point::operator -(const Vector &v)
 {
-	return Point(this->x-v[X],this->y-v[Y],this->z-v[Z]);
+	return Point(this->x-v[NMS_X],this->y-v[NMS_Y],this->z-v[NMS_Z]);
 }
 
 Point& Point::operator *= (const Matrix &m)
@@ -103,4 +103,8 @@ Point operator * (Point& p,const Matrix &m)
 	Point temp = p;
     temp *= m;
     return temp;
+}
+
+ostream& operator<<(ostream& output, const Point& p) {
+		return output<<p[NMS_X]<<' '<<p[NMS_Y]<<' '<<p[NMS_Z]<<' '<<p[W]<<' '<<'\n';
 }

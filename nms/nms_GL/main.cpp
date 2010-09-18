@@ -4,10 +4,10 @@ NMSFramework engine = NMSFramework();
 bool keys[256];
 
 
-GLfloat	xrot;									// X Rotation
-GLfloat	yrot;									// Y Rotation
-GLfloat xspeed;									// X Rotation Speed
-GLfloat yspeed;									// Y Rotation Speed
+GLfloat	xrot;									// NMS_X Rotation
+GLfloat	yrot;									// NMS_Y Rotation
+GLfloat xspeed;									// NMS_X Rotation Speed
+GLfloat yspeed;									// NMS_Y Rotation Speed
 GLfloat	z=-10.0f;								// Depth Into The Screen
 
 BOOL	light;									// Lighting ON / OFF
@@ -161,8 +161,8 @@ void DrawScene()
 	
 	glPushMatrix();
 	glTranslatef(0.0f,0.0f,z);						    // Translate Into/Out Of The Screen By z
-	glRotatef(xrot,1.0f,0.0f,0.0f);						// Rotate On The X Axis By xrot
-	glRotatef(yrot,0.0f,1.0f,0.0f);						// Rotate On The Y Axis By yrot
+	glRotatef(xrot,1.0f,0.0f,0.0f);						// Rotate On The NMS_X Axis By xrot
+	glRotatef(yrot,0.0f,1.0f,0.0f);						// Rotate On The NMS_Y Axis By yrot
 	
 	glBegin(GL_QUADS);
 		// Front Face

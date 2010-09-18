@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="nms_GL"
-	ProjectGUID="{3EC8E3BA-BB90-4580-A5D5-61349C5E36A8}"
-	RootNamespace="nms_GL"
+	Name="nms_test"
+	ProjectGUID="{F9E4849C-5CC5-4195-B482-15B46E6DD4C9}"
+	RootNamespace="nms_test"
 	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
@@ -20,7 +20,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
-			CharacterSet="0"
+			CharacterSet="2"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;C:\Program Files\SDL-1.2.14\include&quot;;&quot;C:\Users\Maja\Kode\itu-engine\nms\nms_math&quot;"
+				AdditionalIncludeDirectories="&quot;C:\Program Files (x86)\boost\boost_1_44\&quot;;&quot;$(SolutionDir)\nms_math&quot;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -58,12 +58,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="sdl.lib sdlmain.lib opengl32.lib glu32.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib advapi32.lib nms_math.lib"
-				AdditionalLibraryDirectories="&quot;C:\Program Files\SDL-1.2.14\lib&quot;;&quot;C:\Users\Maja\Kode\itu-engine\nms\Debug&quot;"
+				AdditionalDependencies="&quot;C:\Program Files (x86)\boost\boost_1_44\lib\libboost_unit_test_framework-vc90-mt-gd-1_44.lib&quot; nms_math.lib"
+				ShowProgress="1"
+				AdditionalLibraryDirectories="&quot;C:\Users\Maja\Kode\itu-engine\nms\Debug&quot;"
 				GenerateDebugInformation="true"
-				SubSystem="2"
-				EntryPointSymbol=""
-				ResourceOnlyDLL="false"
+				SubSystem="1"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -115,7 +114,6 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="&quot;C:\Users\Leyart\Documents\ITU\Game Engines\itu-engine\nms\nms_math&quot;;&quot;C:\Users\Leyart\Documents\ITU\Game Engines\itu-engine\nms\Release&quot;"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				WarningLevel="3"
@@ -135,7 +133,6 @@
 				GenerateDebugInformation="true"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				EntryPointSymbol=""
 				TargetMachine="1"
 			/>
 			<Tool
@@ -173,20 +170,12 @@
 				RelativePath=".\main.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\NMSFramework.cpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
-			<File
-				RelativePath=".\NMSFramework.h"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"

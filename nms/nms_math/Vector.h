@@ -8,6 +8,7 @@
 
 using namespace std;
 
+//Three space vector class
 class Vector : public Point{
   
   public:
@@ -40,7 +41,5 @@ class Vector : public Point{
 	   __declspec(dllexport) Vector  Vector::normal();
 	   __declspec(dllexport) float   Vector::magnitude();
 	   __declspec(dllexport) float   Vector::sqmagnitude();
-
-	   __declspec(dllexport) friend ostream& operator<<(ostream& output,Vector& v);
 };
 #endif

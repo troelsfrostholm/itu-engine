@@ -109,9 +109,15 @@ void NMSCamera::Position(float positionX,float positionY,float positionZ,
 		{
 
 			//TRANSPOSITION FROM THE POSITION
+<<<<<<< HEAD
+			//ROTATION AMONG X for the up vecctor
+			//ROTATION AMONG Y for the view vector
+			position=Vector(positionX,positionY,positionZ);
+=======
 			//ROTATION AMONG NMS_X for the up vecctor
 			//ROTATION AMONG NMS_Y for the view vector
-			position=Vector(positionX,positionY,positionZ);
+			mPosition.translate(Vector(positionX,positionY,positionZ));
+>>>>>>> 3b7d11906fefff211da8e60ea4c311849c4fed51
 			rightVelocity=0;
 			upVelocity=0;
 			camPitch=0;
