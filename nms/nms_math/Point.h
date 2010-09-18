@@ -10,7 +10,7 @@ using namespace std;
 #define NMS_Z 3
 #define W 4
 
-class Point
+class  __declspec(dllexport) Point
 {
   friend class Vector;
   friend class Matrix;
@@ -23,26 +23,26 @@ class Point
   public:
 
 	  //CONSTRUCTOR
-	   __declspec(dllexport) Point();
-	   __declspec(dllexport) Point(float x, float y, float z);
+	    Point();
+	    Point(float x, float y, float z);
 
 	  //DECONSTRUCTOR
-	   __declspec(dllexport) ~Point(){};
+	    ~Point(){};
 
 	  //OPERATORS
-	   __declspec(dllexport) float&  Point::operator[](int pos);
-	   __declspec(dllexport) float const&  Point::operator[](int pos) const;
-	   __declspec(dllexport) Point  Point::operator+(const Vector &v);
-	   __declspec(dllexport) Point  Point::operator-(const Vector &v);
-	   __declspec(dllexport) Vector Point::operator-(const Point &p);
+	    float&  Point::operator[](int pos);
+	    float const&  Point::operator[](int pos) const;
+	    Point  Point::operator+(const Vector &v);
+	    Point  Point::operator-(const Vector &v);
+	    Vector Point::operator-(const Point &p);
 	    // Comparison
-	   __declspec(dllexport) friend bool   Point::operator==(const Point &p1, const Point &p2);
-	   __declspec(dllexport) friend bool   Point::operator!=(const Point &p1, const Point &p2);
+	    friend bool   Point::operator==(const Point &p1, const Point &p2);
+	    friend bool   Point::operator!=(const Point &p1, const Point &p2);
 
 	  //Matrix multiplication
-	   __declspec(dllexport) friend   Point operator *(Point& v,const Matrix &m);
-	   __declspec(dllexport) Point&   operator *= (const Matrix &m);
+	    friend   Point operator *(Point& v,const Matrix &m);
+	    Point&   operator *= (const Matrix &m);
 
-	   __declspec(dllexport) friend ostream& operator<<(ostream& output, const Point& p);
+	    friend ostream& operator<<(ostream& output, const Point& p);
 };
 #endif

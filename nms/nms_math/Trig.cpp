@@ -3,18 +3,17 @@
 #include "Trig.h"
 
 
-namespace nmsTrig
-{
 
-double degToRad (double d) {
+
+double nmsTrig::degToRad (double d) {
 return d * M_PI / 180;
 }
 
-double radToDeg (double r) {
+double nmsTrig::radToDeg (double r) {
 return r * 180/ M_PI;
 }
 
-float sin (double x )
+float nmsTrig::sin (double x )
 {
 	int toBeRemoved=(int)x/360;
 	x=x-toBeRemoved*360;
@@ -25,7 +24,7 @@ float sin (double x )
 }
 
 
-float cos (double x )
+float nmsTrig::cos (double x )
 {
 	int toBeRemoved=(int)x/360;
 	x=x-toBeRemoved*360;
@@ -34,5 +33,3 @@ float cos (double x )
 	else
 		return (float)std::cos(degToRad(x));
 }
-
-};

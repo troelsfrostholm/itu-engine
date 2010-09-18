@@ -30,10 +30,18 @@ bool NMSFramework::NMSInit(int width,int height,int bpp,char* windowTitle,bool f
 	glDepthFunc(GL_LEQUAL);								// The Type Of Depth Testing To Do
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
 	glLoadIdentity();
-	gluPerspective(60.0, (float)width/(float)height, 1.0, 1024.0);
+	glFrustum(    -0.5f,
+                0.5f,
+                -0.5f*(float)(height/width),
+                0.5f*(float)(height/width),
+                1.0f,
+                500.0f);
+	gluPerspective(60.0, (float)width/(float)height, 1.0, 1024);
+	camera=NMSCameraFPS::NMSCameraFPS();
+	camera.setPos(Vector(0,0,-5.0f));
+	camera.setSpeed(0);
+	camera.setSlideSpeed(0);
 	running=true;
-	camera.cameraView=Matrix();
-	camera.Position(0.0,0.0,-5.0,0.0,0.0);
 	return true;
 }
 
@@ -103,79 +111,165 @@ void NMSFramework::CalculateFrameRate()
 
 
 
-//CAMERA FUNCTION DEFINITIONS
-void NMSCamera::Position(float positionX,float positionY,float positionZ,
-						 double pitchAngle,double yawAngle)
-		{
 
-			//TRANSPOSITION FROM THE POSITION
-			//ROTATION AMONG NMS_X for the up vecctor
-			//ROTATION AMONG NMS_Y for the view vector
-			position=Vector(positionX,positionY,positionZ);
-			rightVelocity=0;
-			upVelocity=0;
-			camPitch=0;
-			camYaw=0;
-			camRoll=0;
-			directionVelocity=0;
-		}
 
-void NMSCamera::Move(float directionVelocity,float rightVelocity,float upVelocity)
+
+//CAMERA CONTROLELR FUNCTION DEFINITIONS
+NMSCameraController::NMSCameraController()
 {
-	float temp1,temp2;
-	temp1=camYaw;
-	temp2=camPitch;
-	camYaw = (camYaw/180*NUM_PI+NUM_PI/2); 
-	camPitch = (camPitch/180*NUM_PI+NUM_PI/2);
-	/*
-	mPosition(1,4)+=float(sin(camYaw))*rightVelocity;//float(sin(camPitch))*directionVelocity ;
-	mPosition(2,4)-=float(cos(camYaw))*directionVelocity;
-	mPosition(3,4)+=float(sin(camPitch))*directionVelocity +float(cos(camYaw))*rightVelocity;
-	*/
-	camYaw=temp1;
-	camPitch=temp2;
+	init();
 }
 
-void NMSCamera::Rotate()
+NMSCameraController::~NMSCameraController()
 {
-		//mUp.rotX(camPitch);
-		//mView.rotY(camYaw);
 }
 
-void NMSCamera::updatePositions()
+void NMSCameraController::init()
 {
-	up=Vector(0.0f,1.0f,0.0f);
-	look=Vector(0.0f,0.0f,1.0f);
-	right=Vector(1.0f,0.0f,0.0f);
-	
-	//Rotate around the Y axis
-	Matrix rotation=Matrix();
-	rotation.rotV(camYaw,up);
+	vPosition=Vector(0,0,0);
+	vRight=Vector(1,0,0);
+	vUp=Vector(0,1,0);
+	vDir=Vector(0,0,1);
+	vVel=Vector(0,0,0);
 
-	look=look*rotation;
-	right=right*rotation;
-	
-	//Rotate around the X axis
-	rotation.rotV(camPitch,right);
+	fRotX=0;
+	fRotY=0;
+	fRotZ=0;
 
-	look=look*rotation;
-	up=up*rotation;
+	fPitchSpd=0;
+	fYawSpd=0;
+	fRollSpd=0;
 
-	//Rotate around the Z axis NOT USED FOR THE FPSes
-	rotation.rotV(camRoll,look);
+	qRot=Quaternion(0,0,0,1);
+}
 
-	right=right*rotation;
-	up=up*rotation;
+void NMSCameraController::recalcAxes()
+{
+	Quaternion qFrame; //Quaternion calculated on this frame
+	Matrix m;
+
+	static float f2PI = 2*PI;
+
+	//Keep into the range of 360 degrees to avoid overflow
+	//Check on X
+	if(fRotX>360.0f)
+		fRotX-=360.0f;
+	else
+	  if(fRotX<-360.0f)
+	    fRotX+=360.0f;
+
+	//Check on Y
+	if(fRotY>360.0f)
+		fRotY-=360.0f;
+	else
+	  if(fRotY<-360.0f)
+	    fRotY+=360.0f;
+
+	//Check on Z
+	if(fRotZ>360.0f)
+		fRotZ-=360.0f;
+	else
+	  if(fRotZ<-360.0f)
+	    fRotZ+=360.0f;
+
+	qFrame.createFromAngles(fRotX,fRotY,fRotZ);
+
+	qRot *= qFrame;
+
+	m=qRot.getMatrix();
+
+	vRight=m.getCol(1);
+	vUp=m.getCol(2);
+	vDir=m.getCol(3);
+}
+
+Matrix NMSCameraController::returnViewMatrix()
+{
+	Matrix toBeReturned=Matrix();
+	toBeReturned.setRow(1,vRight);
+	toBeReturned.setRow(2,vUp);
+	toBeReturned.setRow(3,vDir);
+	toBeReturned.setCol(4,vPosition);
+	toBeReturned(4,4)=1.0f;
+	return toBeReturned;
+}
 
 
-	//Update the position
-	position+=look*directionVelocity;    // Move in the look direction
-	position+=right*rightVelocity;   // Move right (strafe)
-	position+=up*upVelocity;      // Move up
 
-	cameraView.setRow(1,right);
-	cameraView.setRow(2,up);
-	cameraView.setRow(3,look);
-	cameraView.setCol(4,position*-1);
-	cameraView(4,4)=1;
+//CAMERA FPS FUNCTION DEFINITIONS
+NMSCameraFPS::NMSCameraFPS()
+{
+	init();
+}
+
+NMSCameraFPS::~NMSCameraFPS()
+{
+}
+
+void NMSCameraFPS::setRotation(float rx, float ry, float rz)
+{
+	fRotX=rx;
+	fRotY=ry;
+	fRotZ=rz;
+	recalcAxes();
+}
+
+Vector NMSCameraFPS::getRotation()
+{
+	return Vector(fRotX,fRotY,fRotZ);
+}
+
+void NMSCameraFPS::recalcAxes()
+{
+	Matrix m;
+
+	//Keep into the range of 360 degrees to avoid overflow
+	//Check on Y
+	if(fRotY>360.0f)
+		fRotY-=360.0f;
+	else
+	  if(fRotY<-360.0f)
+	    fRotY+=360.0f;
+
+	//Check on X, keep on 80 degrees to avoid gimbal lock without using quaternions
+	if(fRotX>80.0f)
+		fRotX-=80.0f;
+	else
+	  if(fRotX<-80.0f)
+	    fRotX+=80.0f;
+
+	vRight=Vector(1.0f,0.0f,0.0f);
+	vUp=Vector(0.0f,1.0f,0.0f);
+	vDir=Vector(0.0f,0.0f,1.0f);
+
+	//rotate around Y
+	m.rotV(fRotY,vUp);
+	vRight*=m;
+	vDir*=m;
+
+	//rotate around X 
+	m.rotV(fRotX,vRight);
+	vUp*=m;
+	vDir*=m;
+
+	//Correct rounding errors
+	vDir=vDir.normal();
+	vRight=vUp%vDir;
+	vRight=vRight.normal();
+	vUp=vDir%vRight;
+	vUp=vUp.normal();
+}
+
+void NMSCameraFPS::UpdateCamera(float fET)
+{
+	Vector vTemp;
+	fRotX+=fPitchSpd*fET;
+	fRotY+=fYawSpd*fET;
+	fRotZ+=fRollSpd*fET;
+
+	recalcAxes();
+
+	vVel=vDir*fSpeed*fET;
+	vTemp=vRight*fSlide*fET;
+	vPosition+=vVel+vTemp;
 }

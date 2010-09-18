@@ -4,13 +4,14 @@
 #include <cmath>
 #define _USE_MATH_DEFINES
 
-namespace nmsTrig
+#define PI 3.14159265f;
+
+class __declspec(dllexport) nmsTrig
 {
-
-double radians (double d);
-double degrees (double r);
-float cos (double x );
-float sin (double x );
-
+public:
+	static double degToRad (double d);
+	static double radToDeg (double r);
+	static float cos (double x );
+	static float sin (double x );
 };
 #endif

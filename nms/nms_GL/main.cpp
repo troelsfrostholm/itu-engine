@@ -75,13 +75,13 @@ void ProcessEvents()
 				   break; 
 		      case SDLK_PAGEDOWN:z+=0.2f; 
 				   break; 
-			  case SDLK_a:engine.camera.rightVelocity=+0.01f;
+			  case SDLK_a:engine.camera.setSlideSpeed(+0.01f);
 				   break;
-			  case SDLK_d:engine.camera.rightVelocity=-0.01f;
+			  case SDLK_d:engine.camera.setSlideSpeed(-0.01f);
 				   break;
-			  case SDLK_w:engine.camera.directionVelocity=0.01f;
+			  case SDLK_w:engine.camera.setSpeed(+0.1f);
 				   break;
-			  case SDLK_s:engine.camera.directionVelocity=-0.01f;
+			  case SDLK_s:engine.camera.setSpeed(-0.1f);
 				   break;
 			  case SDLK_q:xspeed=0.0;
 						  yspeed=0.0;
@@ -105,17 +105,13 @@ void ProcessEvents()
 				   break; 
 		      case SDLK_PAGEDOWN:z+=0.2f; 
 				   break; 
-			  case SDLK_a:if(engine.camera.rightVelocity>0)
-							 engine.camera.rightVelocity=0;
+			  case SDLK_a:engine.camera.setSlideSpeed(0);
 				   break;
-			  case SDLK_d:if(engine.camera.rightVelocity<0)
-							 engine.camera.rightVelocity=0;
+			  case SDLK_d:engine.camera.setSlideSpeed(0);
 				   break;
-			  case SDLK_w:if(engine.camera.directionVelocity>0)
-							 engine.camera.directionVelocity=0;
+			  case SDLK_w:engine.camera.setSpeed(0);
 				   break;
-			  case SDLK_s:if(engine.camera.directionVelocity<0)
-							 engine.camera.directionVelocity=0;
+			  case SDLK_s:engine.camera.setSpeed(0);
 				   break;
 			  case SDLK_q:xspeed=0.0;
 						  yspeed=0.0;
@@ -127,15 +123,16 @@ void ProcessEvents()
 		// The window has been closed
 		case SDL_MOUSEMOTION:
 			{
-				int MouseX,MouseY;
-				SDL_GetMouseState(&MouseX,&MouseY);
-				MouseY=MouseY-240;
-				MouseX=MouseX-320;
-				//The Y axis is inverted on the mouse!
-				engine.camera.camPitch+=MouseY*0.01f;
-				engine.camera.camYaw+=MouseX*0.01f;
-				//engine.camera.clampCamera();
-				SDL_WarpMouse(320,240);
+				//int MouseX,MouseY;
+				//SDL_GetRelativeMouseState(&MouseX,&MouseY);
+				////MouseY=MouseY-240;
+				////MouseX=MouseX-320;
+
+				//engine.camera.setRSpeedX(MouseX*0.001f);
+				//engine.camera.setRSpeedY(MouseY*0.001f);
+				////The Y axis is inverted on the mouse!
+				////engine.camera.clampCamera();
+				//SDL_WarpMouse(320,240);
 			}
 			break;
 		case SDL_QUIT:
@@ -151,11 +148,12 @@ void DrawScene()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity( );
-	engine.camera.updatePositions();
+	engine.camera.UpdateCamera(1);
+	Matrix view=engine.camera.returnViewMatrix();
+	glMultMatrixf((~(view)).returnPointer());
 
 	//glMultMatrixf((~(engine.camera.mPosition)).returnPointer());
-	//glMultMatrixf((~(engine.camera.mUp)).returnPointer());//Pitch
-	glMultMatrixf((~(engine.camera.cameraView)).returnPointer());
+	//glMultMatrixf((~(engine.camera.mUp)).returnPointer());//Pitch;
 	
 	
 	
@@ -206,7 +204,7 @@ void DrawScene()
 	glEnd();
 
 	glBegin(GL_LINES);
-	for(int i=0;i<=10;i++) {
+	for(GLfloat i=0;i<=10;i++) {
 		if (i==0) { glColor3f(.6,.3,.3); } else { glColor3f(.25,.25,.25); };
 		glVertex3f(i,0,0);
 		glVertex3f(i,0,10);
