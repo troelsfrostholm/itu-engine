@@ -6,12 +6,12 @@
 namespace nmsTrig
 {
 
-double degToRad (double d) {
-return d * M_PI / 180;
+double degrees (double d) {
+	return d * M_PI / 180;
 }
 
-double radToDeg (double r) {
-return r * 180/ M_PI;
+double radians (double r) {
+	return r * 180/ M_PI;
 }
 
 float sin (double x )
@@ -21,9 +21,8 @@ float sin (double x )
 	if((0==x)||(180==x))
 		return 0;
 	else
-	    return (float)std::sin(degToRad(x));
+	    return (float)std::sin(degrees(x));
 }
-
 
 float cos (double x )
 {
@@ -32,7 +31,7 @@ float cos (double x )
 	if((90==x)||(270==x))
 		return 0;
 	else
-		return (float)std::cos(degToRad(x));
+		return (float)std::cos(radians(x));
 }
 
 };

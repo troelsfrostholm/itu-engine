@@ -99,8 +99,6 @@ class Matrix{
         __declspec(dllexport) friend Matrix  operator * (const Matrix &m,const float& f);	
 	    __declspec(dllexport) friend Matrix  operator * (const float& f,const Matrix &m);
 	    __declspec(dllexport) friend Matrix  operator * (const Matrix &m1,const Matrix &m2);
-	  
-	  
 	
 	    __declspec(dllexport) void Matrix::resize (unsigned row, unsigned col,unsigned startRow,unsigned startCol);
 	  

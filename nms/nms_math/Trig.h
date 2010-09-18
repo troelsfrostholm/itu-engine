@@ -7,10 +7,10 @@
 namespace nmsTrig
 {
 
-double radians (double d);
-double degrees (double r);
-float cos (double x );
-float sin (double x );
+__declspec(dllexport) double radians (double d);
+__declspec(dllexport) double degrees (double r);
+__declspec(dllexport) float cos (double x );
+__declspec(dllexport) float sin (double x );
 
 };
 #endif

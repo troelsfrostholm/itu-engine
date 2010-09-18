@@ -1,7 +1,5 @@
 #include "Matrix.h"
 
-
-
 Matrix::Matrix()
 {
 	structPointer = new mat_struct(4,4,0);

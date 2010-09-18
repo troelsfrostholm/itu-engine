@@ -1,6 +1,7 @@
 #include "Point.h"
 #include "Vector.h"
 #include "Matrix.h"
+#include "approx.h"
 #define BOOST_TEST_MODULE MathTest
 
 #include <boost/test/unit_test.hpp>
@@ -10,6 +11,23 @@
 //#include <cmath>
 
 using namespace std;
+using namespace nms::math;
+
+BOOST_AUTO_TEST_SUITE( approx );
+
+BOOST_AUTO_TEST_CASE( approx_approximates )
+{
+	BOOST_CHECK( approximates(1.01f, 1.00f, 0.02f) );
+	BOOST_CHECK( !approximates(1.01f, 1.00f, 0.005f) );
+	BOOST_CHECK( approximates( Vector(1.0f, 1.0f, 1.0f), 
+		                       Vector(1.01f, 1.01f, 1.0f), 
+							   0.02f ) );
+	BOOST_CHECK( !approximates( Vector(1.0f, 1.0f, 1.0f), 
+		                        Vector(1.01f, 1.01f, 1.0f), 
+								0.005f ) );
+	//ToDo: Check approximation for matrices too..
+}
+BOOST_AUTO_TEST_SUITE_END();
 
 BOOST_AUTO_TEST_SUITE( point );
 
@@ -163,16 +181,14 @@ BOOST_AUTO_TEST_CASE( vector_properties )
 		                      0.534522f,  
 							  0.801784f ); //expected vector calculated with python's numpy and truncated to 6th decimal. 
 	
-	for(int i=1; i<4; i++) {
-		BOOST_CHECK( normal[i] < expected[i] + e &&
-			         normal[i] > expected[i] - e );
-	}
+	BOOST_CHECK( approximates(normal, expected, e) );
 
 	//normalized vector is parallel with original vector
-	BOOST_CHECK_EQUAL( (v%normal), Vector(0.0f, 0.0f, 0.0f) );
+	BOOST_CHECK( approximates( (v%normal), Vector(0.0f, 0.0f, 0.0f), e ) );
 
-	//normalized vector has magnitude of exactly 1
-	BOOST_CHECK_EQUAL( normal.magnitude(), 1.0f );
+	//normalized vector has magnitude of 1
+	BOOST_CHECK( approximates(normal.magnitude(), 1.0f, e) );
+
 }
 
 BOOST_AUTO_TEST_SUITE_END();
