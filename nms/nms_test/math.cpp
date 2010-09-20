@@ -1,15 +1,11 @@
-/*#include "Point.h"
+#include "Point.h"
 #include "Vector.h"
 #include "Matrix.h"
-#include "approx.h"*/
-#define BOOST_TEST_MODULE MathTest
+#include "approx.h"
 
 #include <boost/test/unit_test.hpp>
-//#include <iostream>
-/*#include <iterator>
-#include <algorithm>*/
-//#include <cmath>
-/*
+#include <iostream>
+
 using namespace std;
 using namespace nms::math;
 
@@ -192,4 +188,3 @@ BOOST_AUTO_TEST_CASE( vector_properties )
 }
 
 BOOST_AUTO_TEST_SUITE_END();
-*/

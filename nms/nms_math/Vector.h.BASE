@@ -30,10 +30,9 @@ class Vector : public Point{
 
 
 	   __declspec(dllexport) Vector& Vector::operator/=(float f);
-	   __declspec(dllexport) friend Vector operator*(Vector const &v, float f);
-	   __declspec(dllexport) friend Vector operator*(float f, Vector const &v);
-	   __declspec(dllexport) friend Vector operator+(Vector const &a, Vector const &b);
-	   __declspec(dllexport) friend Vector operator-(Vector const &a, Vector const &b);
+	   __declspec(dllexport) Vector  Vector::operator*(float f);
+	   __declspec(dllexport) Vector  Vector::operator+(Vector const &v);
+	   __declspec(dllexport) Vector  Vector::operator-(Vector const &v);
 	  //Dot Product
 	   __declspec(dllexport) float   Vector::operator*(Vector const &v);
 	  //Cross Product
