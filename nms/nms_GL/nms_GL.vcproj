@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;C:\Program Files\SDL-1.2.14\include&quot;;&quot;C:\Users\Maja\Kode\itu-engine\nms\nms_math&quot;"
+				AdditionalIncludeDirectories="&quot;C:\Programmazione\Devil 1.7.8\include&quot;;&quot;C:\Program Files\SDL-1.2.14\include&quot;;&quot;C:\Users\Leyart\Documents\ITU\Game Engines\itu-engine\nms\nms_math&quot;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -58,8 +58,8 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="sdl.lib sdlmain.lib opengl32.lib glu32.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib advapi32.lib nms_math.lib"
-				AdditionalLibraryDirectories="&quot;C:\Program Files\SDL-1.2.14\lib&quot;;&quot;C:\Users\Maja\Kode\itu-engine\nms\Debug&quot;"
+				AdditionalDependencies="sdl.lib sdlmain.lib opengl32.lib glu32.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib advapi32.lib nms_math.lib Devil.lib"
+				AdditionalLibraryDirectories="&quot;C:\Programmazione\Devil 1.7.8\lib&quot;;&quot;C:\Program Files\SDL-1.2.14\lib&quot;;&quot;C:\Users\Leyart\Documents\ITU\Game Engines\itu-engine\nms\nms_math\Debug&quot;"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				EntryPointSymbol=""
@@ -174,7 +174,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MD2Loader.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NMS_SceneGraph.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\NMSFramework.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TextureManager.cpp"
 				>
 			</File>
 		</Filter>
@@ -184,7 +196,19 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\MD2Loader.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NMS_SceneGraph.h"
+				>
+			</File>
+			<File
 				RelativePath=".\NMSFramework.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TextureManager.h"
 				>
 			</File>
 		</Filter>

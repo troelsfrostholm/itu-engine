@@ -29,3 +29,6 @@ obj/
 [Rr]elease*/
 _ReSharper*/
 [Tt]est[Rr]esult*
+nms/nms_GL/nms_GL.vcproj
+nms/nms_GL/nms_GL.vcproj
+nms/nms_test/nms_test.vcproj

@@ -171,6 +171,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Quaternion.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Trig.cpp"
 				>
 			</File>
@@ -190,6 +194,10 @@
 			</File>
 			<File
 				RelativePath=".\Point.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Quaternion.h"
 				>
 			</File>
 			<File
