@@ -5,19 +5,11 @@
 #define WIDTH  640
 #define HEIGHT  480
 NMSFramework engine = NMSFramework();
-bool keys[256];
 
-bool debugP=false;
+MD2Loader obj;
 
-GLfloat	xrot;									// NMS_X Rotation
-GLfloat	yrot;									// NMS_Y Rotation
-GLfloat xspeed;									// NMS_X Rotation Speed
-GLfloat yspeed;									// NMS_Y Rotation Speed
+
 GLfloat	z=-10.0f;								// Depth Into The Screen
-
-
-GLuint	filter;									// Which Filter To Use
-GLuint	texture[3];								// Storage for 3 textures
 
 
 
@@ -31,16 +23,16 @@ void DrawScene();
 
 int main(int argc, char* argv[])
 { //Start SDL 
-	engine.NMSInit(WIDTH,HEIGHT,16,"Nemesis Engine",true);
+	obj.LoadModel("tris.md2");
+	engine.NMSInit(WIDTH,HEIGHT,16,"Nemesis Engine",false);
 	engine.NMSLoadTexture("Texture.tga",5666);
 	while(true)
 	{
 		ProcessEvents(); // elabora gli eventi
 		if(engine.running)
 		{
-			//ReadKeyboard(); // legge la tastiera
-			DrawScene(); // disegna la scena
-			engine.CalculateFrameRate(); // calcola il frame rate
+			DrawScene(); // Draw the scene
+			engine.CalculateFrameRate(); // Calculate the framerate
 		}
 		else
 			break;
@@ -114,7 +106,7 @@ void ProcessEvents()
 				   break;
 			  case SDLK_s:engine.camera.setSpeed(0);
 				   break;
-			  case SDLK_q:debugP=true;
+			  case SDLK_q:;
 				  //xspeed=0.0;
 				  //yspeed=0.0;
 				   break;
@@ -149,9 +141,6 @@ void ProcessEvents()
 void DrawMD2Model()
 {
 	gluLookAt(-87.0, 45.5, 0, 0, 2, 0, 0.0, 1.0, 0.0);
-	MD2Loader obj;
-
-	obj.LoadModel("Ogros.md2");
 	obj.DrawModel();
 	
 }
@@ -182,24 +171,10 @@ void DrawNet(GLfloat size, GLint LinesX, GLint LinesZ)
 
 void DrawSampleScene()
 {
-	engine.camera.UpdateCamera(1);
-	Matrix view=engine.camera.returnViewMatrix();
-	if(debugP)
-	{
-		debugP=false;
-		view.debugPrint();
-	}
-	view=(~view);
-	glMultMatrixf(view.returnPointer());
-	//glMultMatrixf((~(engine.camera.mPosition)).returnPointer());
-	//glMultMatrixf((~(engine.camera.mUp)).returnPointer());//Pitch;
-	
-	
-	
 	glPushMatrix();
 	glTranslatef(0.0f,0.0f,z);						    // Translate Into/Out Of The Screen By z
-	glRotatef(xrot,1.0f,0.0f,0.0f);						// Rotate On The NMS_X Axis By xrot
-	glRotatef(yrot,0.0f,1.0f,0.0f);						// Rotate On The NMS_Y Axis By yrot
+	glRotatef(0,1.0f,0.0f,0.0f);						// Rotate On The NMS_X Axis By xrot
+	glRotatef(0,0.0f,1.0f,0.0f);						// Rotate On The NMS_Y Axis By yrot
 	
 	glBegin(GL_QUADS);
 		// Front Face
@@ -242,16 +217,6 @@ void DrawSampleScene()
 	glVertex3f(10,-1.0, 0);
 	glEnd();
 
-	/*glBegin(GL_LINES);
-	for(GLfloat i=0;i<=10;i++) {
-		if (i==0) { glColor3f(.6,.3,.3); } else { glColor3f(.25,.25,.25); };
-		glVertex3f(i,0,0);
-		glVertex3f(i,0,10);
-		if (i==0) { glColor3f(.3,.3,.6); } else { glColor3f(.25,.25,.25); };
-		glVertex3f(0,0,i);
-		glVertex3f(10,0,i);
-	};
-	glEnd();*/
 	glTranslatef(0.0,0.8,0.0);
 
 	glScalef(30.0,30.0,30.0);
@@ -286,9 +251,6 @@ void DrawSampleScene()
 		
 	glFlush();
 
-	xrot+=xspeed;								// Add xspeed To xrot
-	yrot+=yspeed;								// Add yspeed To yrot
-
 	glPopMatrix();
 	
 }
@@ -298,6 +260,10 @@ void DrawScene()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity( );
+	engine.camera.UpdateCamera(1);
+	Matrix view=engine.camera.returnViewMatrix();
+	view=(~view);
+	glMultMatrixf(view.returnPointer());
 	//DrawMD2Model();
 	DrawSampleScene();
 	SDL_GL_SwapBuffers();

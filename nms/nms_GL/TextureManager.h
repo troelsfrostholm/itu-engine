@@ -1,4 +1,7 @@
 #pragma once
+
+#include <IL/il.h>
+
 /***
 	CTextureManager v1.00 [5/22/01]
 		To get the initial bout of confusion out of the way

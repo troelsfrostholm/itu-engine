@@ -72,6 +72,8 @@ class NMSCameraFPS : public NMSCameraController
 		
 		void setSpeed(float f){fSpeed=f;}
 		void setSlideSpeed(float f){fSlide=f;}
+		float getSpeed(){return fSpeed;}
+		float getSlideSpeed(){return fSlide;}
 
 		void setRotation(float rx, float ry, float rz);
 		void setPos(Vector &v){vPosition=v;}
@@ -97,7 +99,7 @@ public:
 	NMSFramework();
 	bool NMSInit(int width,int height,int bpp,char* windowTitle,bool fullscreen);
 	void NMSQuit();
-	void NMSLoadTexture(char* fileName,int id);
+	static void NMSLoadTexture(char* fileName,int id);
 	void CalculateFrameRate();
 };
 #endif;

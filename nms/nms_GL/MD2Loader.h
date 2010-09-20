@@ -39,7 +39,7 @@ typedef struct
 	int		numGlCommands;  //Number of openGL commands, an array of integer that allow us to render with just using triangles fans and strips
 	int		numFrames;	   //Number of keyframes for animations, the other frames will be calculated with interpolation
 
-	int		offsetSkins;
+	int		offsetSkins;	//Offset of the skins data in the header
 	int		offsetTexCoord;
 	int		offsetTriangles;
 	int		offsetFrames;

@@ -74,107 +74,78 @@ void CTextureManager::Destroy (void) {
 int CTextureManager::LoadTexture (const char *szFilename, int nTextureID) {
 	sprintf (m_Singleton->szErrorMessage, "Beginning to Loading [%s]", szFilename);
 
-	int nWidth = 0, nHeight = 0, nBPP = 0;
-	UBYTE *pData = 0;
-	
-	// Determine the type and actually load the file
-	// ===========================================================================================
-	char szCapFilename [80];
-	int nLen = strlen (szFilename);
-	for (int c = 0; c <= nLen; c++)	// <= to include the NULL as well
-		szCapFilename [c] = toupper (szFilename [c]);
-	
-	if (strcmp (szCapFilename + (nLen - 3), "BMP") == 0 ||
-		strcmp (szCapFilename + (nLen - 3), "TGA") == 0) {
-		// Actually load them
-		if (strcmp (szCapFilename + (nLen - 3), "BMP") == 0) {
-			pData = LoadBitmapFile (szFilename, nWidth, nHeight, nBPP);
-			if (pData == 0)
-				return -1;
-		}
-		if (strcmp (szCapFilename + (nLen - 3), "TGA") == 0) {
-			pData = LoadTargaFile (szFilename, nWidth, nHeight, nBPP);
-			if (pData == 0)
-				return -1;
-		}
-	}
-	else {
-		sprintf (m_Singleton->szErrorMessage, "ERROR : Unable to load extension [%s]", szCapFilename + (nLen - 3));
-		return -1;
-	}
+	 if (ilGetInteger(IL_VERSION_NUM) < IL_VERSION)
+  {
+    /* wrong DevIL version */
+    return -1;
+  }
+  ILuint texid=5333;
+  GLuint image;
+  ILboolean success;
+  ilInit(); /* Initialization of DevIL */
+  ilGenImages(1, &texid); /* Generation of one image name */
+  ilBindImage(texid); /* Binding of image name */
+  success = ilLoadImage(szFilename); /* Loading of image "image.jpg" */
+  if (success) /* If no error occured: */
+  {
+    success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE); /* Convert every colour component into
+      unsigned byte. If your image contains alpha channel you can replace IL_RGB with IL_RGBA */
+    if (!success)
+    {
+      /* Error occured */
+      return -1;
+    }
+    glGenTextures(1, &image); /* Texture name generation */
+    glBindTexture(GL_TEXTURE_2D, image); /* Binding of texture name */
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); /* We will use linear
+      interpolation for magnification filter */
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); /* We will use linear
+      interpolation for minifying filter */
+    glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_BPP), ilGetInteger(IL_IMAGE_WIDTH),
+      ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE,
+      ilGetData()); /* Texture specification */
+  }
+  else
+  {
+    /* Error occured */
+    return -1;
+  }
+  ilDeleteImages(1, &texid); /* Because we have already copied image data into texture data
+    we can release memory used by image. */
 
 	// Assign a valid Texture ID (if one wasn't specified)
-	// ===========================================================================================
-	int nNewTextureID = GetNewTextureID (nTextureID);	// Also increases nNumTextures!
+	//// ===========================================================================================
+	//int nNewTextureID = GetNewTextureID (nTextureID);	// Also increases nNumTextures!
 
-	// ===========================================================================================
+	//// ===========================================================================================
 
-	// Register and upload the texture in OpenGL
-	glBindTexture (GL_TEXTURE_2D, nNewTextureID);
+	//// Register and upload the texture in OpenGL
+	//glBindTexture (GL_TEXTURE_2D, nNewTextureID);
 
-	// NOTE : Making some assumptions about texture parameters
-	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	//// NOTE : Making some assumptions about texture parameters
+	//glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	//glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	//glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	//glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 
-	/*	You can use this one if you don't want to eat memory and Mip-mapped textures
-	glTexImage2D (GL_TEXTURE_2D,  0, nGLFormat,
-		  		 nWidth, nHeight, 0, nGLFormat,
-				 GL_UNSIGNED_BYTE, pData);
-	*/
+	///*	You can use this one if you don't want to eat memory and Mip-mapped textures
+	//glTexImage2D (GL_TEXTURE_2D,  0, nGLFormat,
+	//	  		 nWidth, nHeight, 0, nGLFormat,
+	//			 GL_UNSIGNED_BYTE, pData);
+	//*/
 
-	gluBuild2DMipmaps (GL_TEXTURE_2D,
-					   nBPP, nWidth, nHeight,
-					   (nBPP == 3 ? GL_RGB : GL_RGBA),
-					   GL_UNSIGNED_BYTE,
-					   pData);
+	///*gluBuild2DMipmaps (GL_TEXTURE_2D,
+	//				   nBPP, nWidth, nHeight,
+	//				   (nBPP == 3 ? GL_RGB : GL_RGBA),
+	//				   GL_UNSIGNED_BYTE,
+	//				   pData);
 
-	delete [] pData;
+	//delete [] pData;*/
 
 	sprintf (m_Singleton->szErrorMessage, "Loaded [%s] W/O a hitch!", szFilename);
-	return nNewTextureID;
-}
-
-int CTextureManager::LoadTextureFromMemory (UBYTE *pData, int nWidth, int nHeight, int nBPP, int nTextureID) {
-
-	// First we do ALOT of error checking on the data...
-	if (!CheckSize (nWidth) || !CheckSize (nHeight)) {
-		sprintf (m_Singleton->szErrorMessage, "ERROR : Improper Dimension");
-		return -1;
-	}
-	if (nBPP != 3 && nBPP != 4) {
-		sprintf (m_Singleton->szErrorMessage, "ERROR : Unsuported Color Depth");
-		return -1;
-	}
-
-	// I guess were good to go...
-	// ---------------------------------------------------------------------
-	int nNewTextureID = GetNewTextureID (nTextureID);	// Also increases nNumTextures!
-
-	// Register and upload the texture in OpenGL
-	glBindTexture (GL_TEXTURE_2D, nNewTextureID);
-
-	// NOTE : Making some assumptions about texture parameters
-	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	gluBuild2DMipmaps (GL_TEXTURE_2D,
-					   nBPP, nWidth, nHeight,
-					   (nBPP == 3 ? GL_RGB : GL_RGBA),
-					   GL_UNSIGNED_BYTE,
-					   pData);
-	// ---------------------------------------------------------------------
-
-	 // delete [] pData;	// Leave memory clearing upto the caller...
-
-	sprintf (m_Singleton->szErrorMessage, "Loaded Some Memory Perfectly!");
-	return nNewTextureID;
+	return image;;
 }
 
 void CTextureManager::FreeTexture (int nID) {
@@ -322,7 +293,7 @@ UBYTE *CTextureManager::LoadTargaFile (const char *filename, int &nWidth, int &n
 	fread(&TgaHeader.imageTypeCode, sizeof (unsigned char), 1, pFile);
 
 	// Only loading RGB and RGBA types
-	if ((TgaHeader.imageTypeCode != 2) && (TgaHeader.imageTypeCode != 3)) {
+	if ((TgaHeader.imageTypeCode != 2) && (TgaHeader.imageTypeCode != 3)&& (TgaHeader.imageTypeCode != 9)) {
 
 		sprintf (m_Singleton->szErrorMessage, "ERROR : Unsuported Image Type (Color Depth or Compression)");
 		fclose (pFile);

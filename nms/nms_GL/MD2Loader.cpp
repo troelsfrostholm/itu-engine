@@ -1,4 +1,5 @@
 #include "MD2Loader.h"
+#include "NMSFramework.h" 
 
 MD2Loader::MD2Loader()
 {
@@ -18,6 +19,8 @@ MD2Loader::~MD2Loader()
 	for (int index=0;index<m_header.numFrames;index++)
 		md2Free((void**)&m_frameData[index].pvertices);
 	md2Free((void**)&m_frameData);
+	md2Free((void**)&m_lightnormals);
+	md2Free((void**)&m_glcmds);
 }
 
 //Load the model file
@@ -160,7 +163,7 @@ void MD2Loader::md2InitData()
 */
 void MD2Loader::md2LoadData()
 {
-	LoadSkin("prova.tga");
+	LoadSkin("hobgoblin.tga");
 	md2LoadFrames();
 	md2LoadGLCommands();
 }
@@ -265,12 +268,12 @@ int	MD2Loader::GetNumFrames()
 */
 void MD2Loader::DrawModel()
 {
-	glPushMatrix();
+	//glPushMatrix();
         // rotate the model
         glRotatef( -90.0, 1.0, 0.0, 0.0 );
         glRotatef( 180.0f, 0.0, 0.0, 1.0 );
 		RenderFrame();
-	glPopMatrix();
+	//glPopMatrix();
 }
 
 
@@ -345,8 +348,7 @@ void MD2Loader::Interpolate( vec3_t *vertlist )
 
 int MD2Loader::LoadSkin( const char *filename )
 {
-    m_texid = TEXMANAGER.LoadTexture (filename);;
-
-    return (m_texid != TEXMANAGER.LoadTexture( "Texture.tga" ));
-	return 0;
+	return m_texid=TEXMANAGER.LoadTexture("hobgoblin.tga",5333);
+   /* return (m_texid != TEXMANAGER.LoadTexture( "Texture.tga" ));
+	return 0;*/
 }
