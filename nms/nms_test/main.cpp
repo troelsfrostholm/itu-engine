@@ -7,6 +7,7 @@
 #include <iostream>
 #include <iterator>
 #include <algorithm>
+#include <cmath>
 
 using namespace std;
 
@@ -59,10 +60,12 @@ BOOST_AUTO_TEST_CASE( point_arithmetics )
 	Point p = Point(1, 2, 3);
 	Point q = Point(2, 3, 4);
 	Vector v = Vector(2, 3, 4);
+	Vector vm = Vector(2,2,2);
 
 	BOOST_CHECK_EQUAL(q - p, Vector(1, 1, 1));
 	BOOST_CHECK_EQUAL(p + v, Point(3, 5, 7));
 	BOOST_CHECK_EQUAL(p - v, Point(-1, -1, -1));
+	//BOOST_CHECK_EQUAL(vm.magnitude(),sqrt(12));
 }
 
 

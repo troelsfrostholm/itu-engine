@@ -12,11 +12,13 @@ bool NMSFramework::NMSInit(int width,int height,int bpp,char* windowTitle,bool f
 	if (fullscreen) {
 		flags = SDL_OPENGL | SDL_FULLSCREEN;
 		SDL_ShowCursor(SDL_DISABLE);
+		SDL_WM_GrabInput(SDL_GRAB_ON);
 	}
 	else
 	{
 		flags = SDL_OPENGL;
 		SDL_ShowCursor(SDL_DISABLE);
+		SDL_WM_GrabInput(SDL_GRAB_ON);
 	}
 	SDL_WM_SetCaption(windowTitle,NULL);  //Set the name of the window
 	SDL_SetVideoMode(width, height, bpp, flags); //Set the window mode
@@ -30,13 +32,13 @@ bool NMSFramework::NMSInit(int width,int height,int bpp,char* windowTitle,bool f
 	glDepthFunc(GL_LEQUAL);								// The Type Of Depth Testing To Do
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
 	glLoadIdentity();
-	glFrustum(    -0.5f,
+	/*glFrustum(    -0.5f,
                 0.5f,
                 -0.5f*(float)(height/width),
                 0.5f*(float)(height/width),
                 1.0f,
-                500.0f);
-	gluPerspective(60.0, (float)width/(float)height, 1.0, 1024);
+                500.0f);*/
+	gluPerspective(60.0, (float)width/(float)height, 1.0, width);
 	camera=NMSCameraFPS::NMSCameraFPS();
 	camera.setPos(Vector(0,0,-5.0f));
 	camera.setSpeed(0);
@@ -223,6 +225,10 @@ void NMSCameraFPS::recalcAxes()
 {
 	Matrix m;
 
+	vRight=Vector(1.0f,0.0f,0.0f);
+	vUp=Vector(0.0f,1.0f,0.0f);
+	vDir=Vector(0.0f,0.0f,1.0f);
+
 	//Keep into the range of 360 degrees to avoid overflow
 	//Check on Y
 	if(fRotY>360.0f)
@@ -231,16 +237,10 @@ void NMSCameraFPS::recalcAxes()
 	  if(fRotY<-360.0f)
 	    fRotY+=360.0f;
 
-	//Check on X, keep on 80 degrees to avoid gimbal lock without using quaternions
-	if(fRotX>80.0f)
-		fRotX-=80.0f;
-	else
-	  if(fRotX<-80.0f)
-	    fRotX+=80.0f;
-
-	vRight=Vector(1.0f,0.0f,0.0f);
-	vUp=Vector(0.0f,1.0f,0.0f);
-	vDir=Vector(0.0f,0.0f,1.0f);
+	if (fRotX>90.0f)
+        fRotX = 90.0f;
+    else if (fRotX<-90.0f)
+        fRotX = -90.0f;
 
 	//rotate around Y
 	m.rotV(fRotY,vUp);
@@ -252,12 +252,14 @@ void NMSCameraFPS::recalcAxes()
 	vUp*=m;
 	vDir*=m;
 
+
 	//Correct rounding errors
 	vDir=vDir.normal();
 	vRight=vUp%vDir;
 	vRight=vRight.normal();
 	vUp=vDir%vRight;
 	vUp=vUp.normal();
+	
 }
 
 void NMSCameraFPS::UpdateCamera(float fET)
@@ -267,9 +269,11 @@ void NMSCameraFPS::UpdateCamera(float fET)
 	fRotY+=fYawSpd*fET;
 	fRotZ+=fRollSpd*fET;
 
-	recalcAxes();
-
 	vVel=vDir*fSpeed*fET;
 	vTemp=vRight*fSlide*fET;
 	vPosition+=vVel+vTemp;
+
+	
+
+	recalcAxes();
 }

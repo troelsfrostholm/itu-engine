@@ -25,7 +25,7 @@ class  __declspec(dllexport) Vector : public Point{
 
 
 	    Vector&  Vector::operator*=(float f);
-	    friend   Vector operator *(Vector& v,const Matrix &m);
+	    friend   __declspec(dllexport) Vector operator *(Vector& v,const Matrix &m);
 	    Vector&  operator *= (const Matrix &m);
 
 

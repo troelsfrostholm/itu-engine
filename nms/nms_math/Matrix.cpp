@@ -118,7 +118,7 @@ void Matrix::setRow(unsigned i,const Vector& v)
 	}
 	else
 	{
-		for(unsigned j=1;i<=4;i++)
+		for(unsigned j=1;j<=4;j++)
 		{
 			(*this)(i,j)=v[j];
 		}
@@ -133,7 +133,7 @@ void Matrix::setCol(unsigned i,const Vector& v)
 	}
 	else
 	{
-		for(unsigned j=1;i<=4;i++)
+		for(unsigned j=1;j<=4;j++)
 		{
 			(*this)(j,i)=v[j];
 		}
@@ -425,3 +425,23 @@ float* Matrix::returnPointer()
 {
 	return (*this).structPointer->elements;
 }
+
+//void Matrix::debugPrint()
+//{
+//	 char buffer [50];
+//	 FILE	*fp;
+//	 fp=fopen("MatrixDebug.txt","a");
+//	 if (!fp)
+//		return;
+//	 for(unsigned i=1;i<=(*this).getRowL();i++)
+//	 {
+//		for(unsigned j=1;j<=(*this).getColL();j++)
+//		{
+//			sprintf(buffer,"%f ", (*this)(i,j));fwrite(buffer,strlen(buffer),1,fp);
+//		}
+//		sprintf(buffer,"\n");fwrite(buffer,strlen(buffer),1,fp);
+//	 }
+//	 sprintf(buffer,"\n");fwrite(buffer,strlen(buffer),1,fp);
+//	 fclose(fp);
+//
+//}
