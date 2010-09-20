@@ -64,7 +64,7 @@ class  __declspec(dllexport) Matrix{
 	  //Print overloading
 	     friend __declspec(dllexport) ostream&  operator<<(ostream& output,Matrix& m);
 	  //Print the matrix to a text file for easy debug
-		 //void debugPrint();
+		 void debugPrint();
 
 
 	  //Access to rows and columns

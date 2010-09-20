@@ -191,7 +191,9 @@ Matrix NMSCameraController::returnViewMatrix()
 	toBeReturned.setRow(1,vRight);
 	toBeReturned.setRow(2,vUp);
 	toBeReturned.setRow(3,vDir);
-	toBeReturned.setCol(4,vPosition);
+	Matrix trans=Matrix();
+	trans.translate(vPosition);
+	toBeReturned*=trans;
 	toBeReturned(4,4)=1.0f;
 	return toBeReturned;
 }
@@ -259,7 +261,6 @@ void NMSCameraFPS::recalcAxes()
 	vRight=vRight.normal();
 	vUp=vDir%vRight;
 	vUp=vUp.normal();
-	
 }
 
 void NMSCameraFPS::UpdateCamera(float fET)

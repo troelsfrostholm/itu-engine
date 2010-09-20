@@ -426,22 +426,22 @@ float* Matrix::returnPointer()
 	return (*this).structPointer->elements;
 }
 
-//void Matrix::debugPrint()
-//{
-//	 char buffer [50];
-//	 FILE	*fp;
-//	 fp=fopen("MatrixDebug.txt","a");
-//	 if (!fp)
-//		return;
-//	 for(unsigned i=1;i<=(*this).getRowL();i++)
-//	 {
-//		for(unsigned j=1;j<=(*this).getColL();j++)
-//		{
-//			sprintf(buffer,"%f ", (*this)(i,j));fwrite(buffer,strlen(buffer),1,fp);
-//		}
-//		sprintf(buffer,"\n");fwrite(buffer,strlen(buffer),1,fp);
-//	 }
-//	 sprintf(buffer,"\n");fwrite(buffer,strlen(buffer),1,fp);
-//	 fclose(fp);
-//
-//}
+void Matrix::debugPrint()
+{
+	 char buffer [50];
+	 FILE	*fp;
+	 fp=fopen("MatrixDebug.txt","a");
+	 if (!fp)
+		return;
+	 for(unsigned i=1;i<=(*this).getRowL();i++)
+	 {
+		for(unsigned j=1;j<=(*this).getColL();j++)
+		{
+			sprintf(buffer,"%f ", (*this)(i,j));fwrite(buffer,strlen(buffer),1,fp);
+		}
+		sprintf(buffer,"\n");fwrite(buffer,strlen(buffer),1,fp);
+	 }
+	 sprintf(buffer,"\n");fwrite(buffer,strlen(buffer),1,fp);
+	 fclose(fp);
+
+}

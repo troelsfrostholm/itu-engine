@@ -7,6 +7,7 @@
 NMSFramework engine = NMSFramework();
 bool keys[256];
 
+bool debugP=false;
 
 GLfloat	xrot;									// NMS_X Rotation
 GLfloat	yrot;									// NMS_Y Rotation
@@ -113,7 +114,7 @@ void ProcessEvents()
 				   break;
 			  case SDLK_s:engine.camera.setSpeed(0);
 				   break;
-			  case SDLK_q:
+			  case SDLK_q:debugP=true;
 				  //xspeed=0.0;
 				  //yspeed=0.0;
 				   break;
@@ -183,6 +184,11 @@ void DrawSampleScene()
 {
 	engine.camera.UpdateCamera(1);
 	Matrix view=engine.camera.returnViewMatrix();
+	if(debugP)
+	{
+		debugP=false;
+		view.debugPrint();
+	}
 	view=(~view);
 	glMultMatrixf(view.returnPointer());
 	//glMultMatrixf((~(engine.camera.mPosition)).returnPointer());
