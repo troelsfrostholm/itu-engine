@@ -62,7 +62,6 @@ public :
 
 public :	// Usage / Implumentation
 	int LoadTexture (const char *szFilename, int nTextureID = -1);
-	int LoadTextureFromMemory (UBYTE *pData, int nWidth, int nHeight, int nBPP, int nTextureID = -1);
 
 	void FreeTexture (int nID);
 	void FreeAll (void);
@@ -76,9 +75,6 @@ public :	// Debug / Utilitarian
 
 private :
 	static CTextureManager *m_Singleton;
-
-	UBYTE *LoadBitmapFile (const char *filename, int &nWidth, int &nHeight, int &nBPP);
-	UBYTE *LoadTargaFile (const char *filename, int &nWidth, int &nHeight, int &nBPP);
 
 	int GetNewTextureID (int nPossibleTextureID);	// get a new one if one isn't provided
 	bool CheckSize (int nDimension);

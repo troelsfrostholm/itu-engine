@@ -75,74 +75,42 @@ int CTextureManager::LoadTexture (const char *szFilename, int nTextureID) {
 	sprintf (m_Singleton->szErrorMessage, "Beginning to Loading [%s]", szFilename);
 
 	 if (ilGetInteger(IL_VERSION_NUM) < IL_VERSION)
-  {
-    /* wrong DevIL version */
-    return -1;
-  }
-  ILuint texid=5333;
-  GLuint image;
-  ILboolean success;
-  ilInit(); /* Initialization of DevIL */
-  ilGenImages(1, &texid); /* Generation of one image name */
-  ilBindImage(texid); /* Binding of image name */
-  success = ilLoadImage(szFilename); /* Loading of image "image.jpg" */
-  if (success) /* If no error occured: */
-  {
-    success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE); /* Convert every colour component into
-      unsigned byte. If your image contains alpha channel you can replace IL_RGB with IL_RGBA */
-    if (!success)
-    {
-      /* Error occured */
-      return -1;
-    }
-    glGenTextures(1, &image); /* Texture name generation */
-    glBindTexture(GL_TEXTURE_2D, image); /* Binding of texture name */
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); /* We will use linear
-      interpolation for magnification filter */
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); /* We will use linear
-      interpolation for minifying filter */
-    glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_BPP), ilGetInteger(IL_IMAGE_WIDTH),
-      ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE,
-      ilGetData()); /* Texture specification */
-  }
-  else
-  {
-    /* Error occured */
-    return -1;
-  }
-  ilDeleteImages(1, &texid); /* Because we have already copied image data into texture data
-    we can release memory used by image. */
-
-	// Assign a valid Texture ID (if one wasn't specified)
-	//// ===========================================================================================
-	//int nNewTextureID = GetNewTextureID (nTextureID);	// Also increases nNumTextures!
-
-	//// ===========================================================================================
-
-	//// Register and upload the texture in OpenGL
-	//glBindTexture (GL_TEXTURE_2D, nNewTextureID);
-
-	//// NOTE : Making some assumptions about texture parameters
-	//glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	//glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-	//glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	//glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-
-	///*	You can use this one if you don't want to eat memory and Mip-mapped textures
-	//glTexImage2D (GL_TEXTURE_2D,  0, nGLFormat,
-	//	  		 nWidth, nHeight, 0, nGLFormat,
-	//			 GL_UNSIGNED_BYTE, pData);
-	//*/
-
-	///*gluBuild2DMipmaps (GL_TEXTURE_2D,
-	//				   nBPP, nWidth, nHeight,
-	//				   (nBPP == 3 ? GL_RGB : GL_RGBA),
-	//				   GL_UNSIGNED_BYTE,
-	//				   pData);
-
-	//delete [] pData;*/
+	  {
+		/* wrong DevIL version */
+		return -1;
+	  }
+	  ILuint texid=5333;
+	  GLuint image;
+	  ILboolean success;
+	  ilInit(); /* Initialization of DevIL */
+	  ilGenImages(1, &texid); /* Generation of one image name */
+	  ilBindImage(texid); /* Binding of image name */
+	  success = ilLoadImage(szFilename); /* Loading of image "image.jpg" */
+	  if (success) /* If no error occured: */
+	  {
+		success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE); /* Convert every colour component into
+		  unsigned byte. If your image contains alpha channel you can replace IL_RGB with IL_RGBA */
+		if (!success)
+		{
+		  /* Error occured */
+		  return -1;
+		}
+		glGenTextures(1, &image); /* Texture name generation */
+		glBindTexture(GL_TEXTURE_2D, image); /* Binding of texture name */
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); /* We will use linear
+		  interpolation for magnification filter */
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); /* We will use linear
+		  interpolation for minifying filter */
+		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_BPP), ilGetInteger(IL_IMAGE_WIDTH),
+		  ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE,
+		  ilGetData()); /* Texture specification */
+	  }
+	  else
+	  {
+		/* Error occured */
+		return -1;
+	  }
+	  ilDeleteImages(1, &texid); 
 
 	sprintf (m_Singleton->szErrorMessage, "Loaded [%s] W/O a hitch!", szFilename);
 	return image;;
@@ -189,167 +157,6 @@ void CTextureManager::FreeAll (void) {
 }
 
 // ===================================================================
-
-UBYTE *CTextureManager::LoadBitmapFile (const char *filename, int &nWidth, int &nHeight, int &nBPP) {
-	
-
-	// These are both defined in Windows.h
-	BITMAPFILEHEADER	BitmapFileHeader;
-	BITMAPINFOHEADER	BitmapInfoHeader;
-	
-	// Old Skool C-style code	
-	FILE	*pFile;
-	UBYTE	*pImage;			// bitmap image data
-	UBYTE	tempRGB;				// swap variable
-
-	// open filename in "read binary" mode
-	pFile = fopen(filename, "rb");
-	if (pFile == 0) {
-		
-		sprintf (m_Singleton->szErrorMessage, "ERROR : [%s] File Not Found!", filename);	
-		return 0;
-	}
-
-	// Header
-	fread (&BitmapFileHeader, sizeof (BITMAPFILEHEADER), 1, pFile);
-	if (BitmapFileHeader.bfType != 'MB') {
-		
-		sprintf (m_Singleton->szErrorMessage, "ERROR : [%s] Is not a valid Bitmap!", filename);
-		fclose (pFile);
-		return 0;
-	}
-
-	// Information
-	fread (&BitmapInfoHeader, sizeof (BITMAPINFOHEADER), 1, pFile);
-
-	if (!CheckSize (BitmapInfoHeader.biWidth) || !CheckSize (BitmapInfoHeader.biHeight)) {
-
-		sprintf (m_Singleton->szErrorMessage, "ERROR : Improper Dimension");
-		fclose (pFile);
-		return 0;
-	}
-
-	
-	fseek (pFile, BitmapFileHeader.bfOffBits, SEEK_SET);
-	pImage = new UBYTE [BitmapInfoHeader.biSizeImage];
-	if (!pImage) {
-		delete [] pImage;
-		
-		sprintf (m_Singleton->szErrorMessage, "ERROR : Out Of Memory!");
-
-		fclose (pFile);
-		return 0;
-	}
-	fread (pImage, 1, BitmapInfoHeader.biSizeImage, pFile);
-
-	// Turn BGR to RBG
-	for (int i = 0; i < (int) BitmapInfoHeader.biSizeImage; i += 3) {
-		tempRGB = pImage [i];
-		pImage [i + 0] = pImage [i + 2];
-		pImage [i + 2] = tempRGB;
-	}
-
-	fclose(pFile);
-
-	// THIS IS CRUCIAL!  The only way to relate the size information to the
-	// OpenGL functions back in ::LoadTexture ()
-	nWidth  = BitmapInfoHeader.biWidth;
-	nHeight = BitmapInfoHeader.biHeight;
-	nBPP    = 3;	// Only load 24-bit Bitmaps
-
-	return pImage;
-}
-
-UBYTE *CTextureManager::LoadTargaFile (const char *filename, int &nWidth, int &nHeight, int &nBPP) {
-
-	// Get those annoying data structures out of the way...
-	struct {
-		unsigned char imageTypeCode;
-		short int imageWidth;
-		short int imageHeight;
-		unsigned char bitCount;
-	} TgaHeader;
-
-	// Let 'er rip!
-	FILE	*pFile;
-	UBYTE	uCharDummy;
-	short	sIntDummy;
-	UBYTE	colorSwap;	// swap variable
-	UBYTE	*pImage;	// the TGA data
-
-	// open the TGA file
-	pFile = fopen (filename, "rb");
-	if (!pFile) {
-	
-		sprintf (m_Singleton->szErrorMessage, "ERROR : [%s] File Not Found!", filename);
-		return 0;
-	}
-
-	// Ignore the first two bytes
-	fread (&uCharDummy, sizeof (UBYTE), 1, pFile);
-	fread (&uCharDummy, sizeof (UBYTE), 1, pFile);
-
-	// Pop in the header
-	fread(&TgaHeader.imageTypeCode, sizeof (unsigned char), 1, pFile);
-
-	// Only loading RGB and RGBA types
-	if ((TgaHeader.imageTypeCode != 2) && (TgaHeader.imageTypeCode != 3)&& (TgaHeader.imageTypeCode != 9)) {
-
-		sprintf (m_Singleton->szErrorMessage, "ERROR : Unsuported Image Type (Color Depth or Compression)");
-		fclose (pFile);
-		return 0;
-	}
-
-	// More data which isn't important for now
-	fread (&uCharDummy, sizeof (unsigned char), 1, pFile);
-	fread (&sIntDummy,  sizeof (short), 1, pFile);
-	fread (&sIntDummy,  sizeof (short), 1, pFile);
-	fread (&sIntDummy,  sizeof (short), 1, pFile);
-	fread (&sIntDummy,  sizeof (short), 1, pFile);
-
-	// Get some rather important data
-	fread (&TgaHeader.imageWidth,  sizeof (short int), 1, pFile);
-	fread (&TgaHeader.imageHeight, sizeof (short int), 1, pFile);
-	fread (&TgaHeader.bitCount, sizeof (unsigned char), 1, pFile);
-
-	// Skip past some more
-	fread (&uCharDummy, sizeof (unsigned char), 1, pFile);
-
-	// THIS IS CRUCIAL
-	nBPP    = TgaHeader.bitCount / 8;
-	nWidth  = TgaHeader.imageWidth;
-	nHeight = TgaHeader.imageHeight;
-	
-
-	if (!CheckSize (nWidth) || !CheckSize (nHeight)) {
-
-		sprintf (m_Singleton->szErrorMessage, "ERROR : Improper Dimension");
-		fclose (pFile);
-		return 0;
-	}
-
-
-	int nImageSize = nWidth * nHeight * nBPP;
-	pImage = new UBYTE [nImageSize];
-	if (pImage == 0) {
-		
-		sprintf (m_Singleton->szErrorMessage, "ERROR : Out Of Memory");
-		return 0;
-	}
-
-	// actually read it (finally!)
-	fread (pImage, sizeof (UBYTE), nImageSize, pFile);
-
-	// BGR to RGB
-	for (int i = 0; i < nImageSize; i += nBPP) {
-		colorSwap = pImage [i + 0];
-		pImage [i + 0] = pImage [i + 2];
-		pImage [i + 2] = colorSwap;
-	}
-	fclose (pFile);
-
-	return pImage;
-}
 
 int CTextureManager::GetNewTextureID (int nPossibleTextureID) {
 

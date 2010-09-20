@@ -36,13 +36,13 @@ class  __declspec(dllexport) Point
 	    Point  Point::operator-(const Vector &v);
 	    Vector Point::operator-(const Point &p);
 	    // Comparison
-	    friend bool   Point::operator==(const Point &p1, const Point &p2);
-	    friend bool   Point::operator!=(const Point &p1, const Point &p2);
+	    friend __declspec(dllexport) bool  Point::operator==(const Point &p1, const Point &p2);
+	    friend __declspec(dllexport) bool  Point::operator!=(const Point &p1, const Point &p2);
 
 	  //Matrix multiplication
 	    friend   Point operator *(Point& v,const Matrix &m);
 	    Point&   operator *= (const Matrix &m);
 
-	    friend ostream& operator<<(ostream& output, const Point& p);
+	    friend __declspec(dllexport) ostream& operator<<(ostream& output, const Point& p);
 };
 #endif
