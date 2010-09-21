@@ -9,6 +9,7 @@
 #include "Matrix.h"
 #include "Quaternion.h"
 #include "Trig.h"
+#include "TextureManager.h"
 
 
 class NMSCameraController

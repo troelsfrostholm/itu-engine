@@ -50,49 +50,9 @@ bool NMSFramework::NMSInit(int width,int height,int bpp,char* windowTitle,bool f
 void NMSFramework::NMSQuit()
 {
 	running=false;
+	//Be sure to remove all the textures we have loaded from the memory!
+	TEXMANAGER.FreeAll();
 	SDL_Quit();
-}
-	
-void NMSFramework::NMSLoadTexture(char* fileName,int id)
-{
-	GLubyte TGAheader[12]={0,0,2,0,0,0,0,0,0,0,0,0};
-	GLubyte TGAcompare[12];
-	GLubyte header[6];
-	FILE* file = fopen(fileName,"rb");
-	fread(TGAcompare,1,sizeof(TGAcompare),file);
-	if (memcmp(TGAheader,TGAcompare,sizeof(TGAheader)) != 0 )
-	{
-		fclose(file);
-		printf("The file %s is not in a valid .TGA format\n",fileName);
-		exit(-1);
-	}
-	fread(header,1,sizeof(header),file);
-	int width = header[1]*256 + header[0];
-	int height = header[3]*256 + header[2];
-	if (width <=0 || height <=0 || header[4]!=24 ) {
-		fclose(file);
-		printf("The file %s is not in a valid .TGA format\n",fileName);
-		exit(-1);
-	}
-
-	int bytesPerPixel = header[4]/8;
-	int imageSize = width * height * bytesPerPixel;
-	GLubyte* imageData = new GLubyte[imageSize];
-	fread(imageData,1,imageSize,file);
-	fclose(file);
-
-	for(int i=0; i<(int)imageSize; i+=bytesPerPixel) {
-		GLubyte temp = imageData[i];
-		imageData[i] = imageData[i+2];
-		imageData[i+2] = temp;
-	}
-
-	glBindTexture(GL_TEXTURE_2D,id);
-	gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB, width, height, GL_RGB, GL_UNSIGNED_BYTE, imageData);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
 }
 
 void NMSFramework::CalculateFrameRate()
@@ -273,8 +233,5 @@ void NMSCameraFPS::UpdateCamera(float fET)
 	vVel=vDir*fSpeed*fET;
 	vTemp=vRight*fSlide*fET;
 	vPosition+=vVel+vTemp;
-
-	
-
 	recalcAxes();
 }

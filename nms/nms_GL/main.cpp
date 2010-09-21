@@ -12,7 +12,7 @@ MD2Loader obj;
 GLfloat	z=-10.0f;								// Depth Into The Screen
 
 
-
+float animSpeed=1;
 
 
 
@@ -23,9 +23,10 @@ void DrawScene();
 
 int main(int argc, char* argv[])
 { //Start SDL 
-	obj.LoadModel("tris.md2");
 	engine.NMSInit(WIDTH,HEIGHT,16,"Nemesis Engine",false);
-	engine.NMSLoadTexture("Texture.tga",5666);
+	obj.LoadModel("models/drfreak.md2","models/drfreak.tga");
+	obj.SetAnim(BOOM);
+	//TEXMANAGER.LoadTexture("Texture.tga",5666); //Load the crate model
 	while(true)
 	{
 		ProcessEvents(); // elabora gli eventi
@@ -127,7 +128,6 @@ void ProcessEvents()
 				rot[NMS_Y]+=(MouseX)*0.01f;
 				
 				engine.camera.setRotation(rot[NMS_X],rot[NMS_Y],rot[NMS_Z]);
-				////engine.camera.clampCamera();
 			}
 			break;
 		case SDL_QUIT:
@@ -141,8 +141,8 @@ void ProcessEvents()
 void DrawMD2Model()
 {
 	gluLookAt(-87.0, 45.5, 0, 0, 2, 0, 0.0, 1.0, 0.0);
-	obj.DrawModel();
-	
+	animSpeed+=0.0005;
+	obj.DrawModel(animSpeed);
 }
 
 void DrawNet(GLfloat size, GLint LinesX, GLint LinesZ)
@@ -264,8 +264,8 @@ void DrawScene()
 	Matrix view=engine.camera.returnViewMatrix();
 	view=(~view);
 	glMultMatrixf(view.returnPointer());
-	//DrawMD2Model();
-	DrawSampleScene();
+	DrawMD2Model();
+	//DrawSampleScene();
 	SDL_GL_SwapBuffers();
 }
 

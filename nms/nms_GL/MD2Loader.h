@@ -14,13 +14,38 @@
 
 #define IDENT 8
 
-#define MAX_NO_SKIN		5
-#define MAX_SKIN_NAME	64
-
 #define FRAME_HEADER_SIZE	(sizeof(float)*6+16)
 
-typedef unsigned char	byte;
-typedef short*	pshort;
+typedef float vec3_t[3];
+
+
+
+typedef enum {
+    STAND,
+    RUN,
+    ATTACK,
+    PAIN_A,
+    PAIN_B,
+    PAIN_C,
+    JUMP,
+    FLIP,
+    SALUTE,
+    FALLBACK,
+    WAVE,
+    POINTAT,
+    CROUCH_STAND,
+    CROUCH_WALK,
+    CROUCH_ATTACK,
+    CROUCH_PAIN,
+    CROUCH_DEATH, 
+    DEATH_FALLBACK,
+    DEATH_FALLFORWARD,
+    DEATH_FALLBACKSLOW,
+    BOOM,
+
+    MAX_ANIMATIONS
+
+} animType_t;
 
 
 //HEADER STRUCTURE
@@ -45,17 +70,16 @@ typedef struct
 	int		offsetFrames;
 	int		offsetGlCommands;
 	int		offsetEnd;
-}md2Header,*pmd2Header;
+}Header,*pHeader;
 
 
-typedef float vec3_t[3];
 
 //STRUCTURE OF A SINGLE VERTEX  vertex_t in the guide
 typedef struct
 {
 	byte	vertex[3];
 	byte	lightNormalIndex;
-}md2TriangleVertex,*pmd2TriangleVertex;
+}TriangleVertex,*pTriangleVertex;
 
 //FRAME DEFINITION  frame_t in the guide
 typedef struct
@@ -63,21 +87,21 @@ typedef struct
 	float				scale[3];       //Scale factor to uncompress vertexes
 	float				translate[3];   //Translation factor to uncompress vertexes
 	char				name[16];       //Name of the frame
-	pmd2TriangleVertex	pvertices;      //Pointer to the list of vertexes
-}md2Frame,*pmd2Frame;  
+	pTriangleVertex	pvertices;      //Pointer to the list of vertexes
+}Frame,*pFrame;  
 
 //TEXTURE COORDINATES FOR THE VERTEX   texcoord_t in the guide
 typedef struct
 {
 	short	s,t;
-}md2TextureCoord,*pmd2TextureCoord;
+}TextureCoord,*pTextureCoord;
 
 
 typedef struct
 {
 	float	s,t;
 	int		vertexIndex;
-}md2GLCommand,*pmd2GLCommand;
+}GLCommand,*pGLCommand;
 
 // animation
 typedef struct
@@ -109,64 +133,56 @@ typedef struct
 class MD2Loader
 {
 	public:
+		static anim_t   animlist[21];       // animation list
 		MD2Loader();
 		~MD2Loader();
 
-		int		LoadModel(const char* fileName);
+		int		LoadModel(const char* fileName,const char* textureName);
 		int     LoadSkin(const char* fileName);
-		int		GetNumFrames();
+		void    SetAnim( int type );
+		void	DrawModel(float time);
+		void	DrawFrame(int frame,int nFrame); // base zero
 
-		void	DrawModel();
-		void	DrawFrame(int frame); // base zero
+		
 		
 
 	private:
-		void*	md2Malloc(size_t size);                                    //Allocate the memory space with regard to the type to be used. Return a pointer to the memory allocation
-		void	md2Free(void** p);                                         //Free the memory space pointed by the given pointer
-		int		md2ReadFile(const char* fileName);						   //Read the model file
-		int		md2ReadHeader(byte *buffer,pmd2Header phead);			   //Load the header of the model as stored into the buffer
-		long	md2FileSize(FILE *fp);									   //Return the size of the file to read the entire file and put it into the buffer
-		void	md2DumpHeader(const pmd2Header phead);
+		//Initialize the variables
+		void	InitData();
+		void	LoadData(const char* textureName);
+		void	LoadFrames();
+		void	LoadGLCommands();
 
-		void	md2InitData();
-		void	md2LoadData();
-		void	md2LoadFrames();
-		void	md2LoadGLCommands();
-		void	md2LoadTextures(const char* md2FileName);
-		void	md2ProcessData();
 
 		void    Animate( float time );
 		void    Interpolate( vec3_t* vertlist );
-		void    RenderFrame( void );
+		void    RenderFrame();
 
+		//MISC MEMORY AND FILE ROUTINES
+		void*	Malloc(size_t size);                                    //Allocate the memory space with regard to the type to be used. Return a pointer to the memory allocation
+		void	Free(void** p);                                         //Free the memory space pointed by the given pointer
+		int		ReadFile(const char* fileName);						   //Read the model file
+		int		ReadHeader(byte *buffer,pHeader phead);			   //Load the header of the model as stored into the buffer
+		long	FileSize(FILE *fp);									   //Return the size of the file to read the entire file and put it into the buffer
 		
 	private:
-		byte*				m_buffer;	 //The buffer containing the whole file that has been read
-		md2Header			m_header;	 //Our MD2 header, useful to get the offset of the components
-		
+		byte*				fileBuffer;	 //The buffer containing the whole file that has been read
+		Header				md2Header;	 //Our MD2 header, useful to get the offset of the components
+
+
 		int					numFrames;
 		int					numVertices;
 		int					numGlCommands;
 
-		vec3_t*     		m_vertices;
-		int*                m_lightnormals;    // normal index array
-		int*				m_glcmds;
+		vec3_t*     		p_modelVertices;
+		vec3_t*     		p_nextFrameVertices;
+		int*                p_lightnormals;    // normal index array
+		int*				p_openGlCommands;
 
-		unsigned int        m_texid;            // texture id
-		animState_t         m_anim;             // animation
-		float               m_scale;            // scale value
-
-
-
-
-		//pmd2TextureCoord	m_texData;	 //Pointer to the textures coordinate array
-		pmd2TriangleVertex	m_vertData;  //Vertex array
-		pmd2Frame			m_frameData; //Pointer to the frames array
-
-		
-		pshort				m_glIndicesData;
-
-		
+		unsigned int        textureID;            // TextureID for the model
+		animState_t         m_anim;             // Animation state
+		float               scaleFactor;            // Scale value for the model
+		pFrame				p_frameData;		//Pointer to the frames array
 };
 
 #endif 
