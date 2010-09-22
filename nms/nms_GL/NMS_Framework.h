@@ -11,7 +11,6 @@
 #include "Trig.h"
 #include "NMS_AssetManager.h"
 
-
 class NMSCameraController
 {
 	public:

@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="nms_test"
-	ProjectGUID="{F9E4849C-5CC5-4195-B482-15B46E6DD4C9}"
-	RootNamespace="nms_test"
+	Name="nms_GL"
+	ProjectGUID="{3EC8E3BA-BB90-4580-A5D5-61349C5E36A8}"
+	RootNamespace="nms_GL"
 	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
@@ -20,7 +20,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
-			CharacterSet="2"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -40,7 +40,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\include\Boost 1.4.4&quot;;&quot;$(SolutionDir)\nms_math&quot;"
+<<<<<<< HEAD
+				AdditionalIncludeDirectories="&quot;C:\Program Files (x86)\DevIL-SDK-x86-1.7.8\include&quot;;&quot;C:\Program Files\SDL-1.2.14\include&quot;;&quot;$(SolutionDir)\nms_math&quot;"
+=======
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\nms_math&quot;;&quot;$(SolutionDir)\include&quot;"
+>>>>>>> 9f21cdaddf35edabdba04fa066aecddade21e3b7
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -58,11 +62,16 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="nms_math.lib"
-				ShowProgress="1"
-				AdditionalLibraryDirectories="&quot;$(SolutionDir)\debug&quot;;&quot;$(SolutionDir)\lib\Boost 1.4.4&quot;;&quot;$(SolutionDir)\lib&quot;;&quot;$(SolutionDir)\release&quot;"
+				AdditionalDependencies="sdl.lib sdlmain.lib opengl32.lib glu32.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib advapi32.lib nms_math.lib Devil.lib"
+<<<<<<< HEAD
+				AdditionalLibraryDirectories="&quot;C:\Program Files (x86)\DevIL-SDK-x86-1.7.8\lib&quot;;&quot;C:\Program Files\SDL-1.2.14\lib&quot;;&quot;$(SolutionDir)\Debug&quot;"
+=======
+				AdditionalLibraryDirectories="&quot;$(SolutionDir)\Debug&quot;;&quot;$(SolutionDir)\lib&quot;;&quot;$(SolutionDir)\release&quot;"
+>>>>>>> 9f21cdaddf35edabdba04fa066aecddade21e3b7
 				GenerateDebugInformation="true"
-				SubSystem="1"
+				SubSystem="2"
+				EntryPointSymbol=""
+				ResourceOnlyDLL="false"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -114,6 +123,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
+				AdditionalIncludeDirectories="&quot;C:\Users\Leyart\Documents\ITU\Game Engines\itu-engine\nms\nms_math&quot;;&quot;C:\Users\Leyart\Documents\ITU\Game Engines\itu-engine\nms\Release&quot;"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				WarningLevel="3"
@@ -133,6 +143,7 @@
 				GenerateDebugInformation="true"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
+				EntryPointSymbol=""
 				TargetMachine="1"
 			/>
 			<Tool
@@ -171,11 +182,23 @@
 				>
 			</File>
 			<File
-				RelativePath=".\math.cpp"
+				RelativePath=".\MD2Model.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\scenegraph.cpp"
+				RelativePath=".\NMS_AssetManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NMS_Framework.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NMS_SceneGraph.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NMS_TextureManager.cpp"
 				>
 			</File>
 		</Filter>
@@ -184,6 +207,30 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\MD2Model.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NMS_AssetManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NMS_Framework.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NMS_SceneGraph.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NMS_SceneGraph.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NMS_TextureManager.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"

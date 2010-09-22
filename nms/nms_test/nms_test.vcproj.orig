@@ -40,7 +40,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+<<<<<<< HEAD
+				AdditionalIncludeDirectories="&quot;C:\Program Files (x86)\boost\boost_1_44&quot;;&quot;$(SolutionDir)\nms_GL&quot;;&quot;$(SolutionDir)\nms_math&quot;"
+=======
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)\include\Boost 1.4.4&quot;;&quot;$(SolutionDir)\nms_math&quot;"
+>>>>>>> 9f21cdaddf35edabdba04fa066aecddade21e3b7
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
