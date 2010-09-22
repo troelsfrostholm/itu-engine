@@ -2,9 +2,8 @@
 
 using namespace std;
 
-namespace nms
-{
-	class SceneGraphNode
+
+	class __declspec(dllexport) SceneGraphNode
 	{
 	private:
 		vector<SceneGraphNode> children;
@@ -23,4 +22,3 @@ namespace nms
 	{
 
 	};
-};

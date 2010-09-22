@@ -19,7 +19,7 @@
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="1"
+			ConfigurationType="2"
 			CharacterSet="0"
 			>
 			<Tool
@@ -209,10 +209,6 @@
 			</File>
 			<File
 				RelativePath=".\NMS_Framework.h"
-				>
-			</File>
-			<File
-				RelativePath=".\NMS_SceneGraph.h"
 				>
 			</File>
 			<File
