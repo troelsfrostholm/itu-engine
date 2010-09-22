@@ -14,6 +14,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nms_test", "nms_test\nms_te
 		{3EC8E3BA-BB90-4580-A5D5-61349C5E36A8} = {3EC8E3BA-BB90-4580-A5D5-61349C5E36A8}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo", "demo\demo.vcproj", "{F40F725E-7DCC-4FD0-BD9D-254D2715AC64}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -32,6 +34,10 @@ Global
 		{F9E4849C-5CC5-4195-B482-15B46E6DD4C9}.Debug|Win32.Build.0 = Debug|Win32
 		{F9E4849C-5CC5-4195-B482-15B46E6DD4C9}.Release|Win32.ActiveCfg = Release|Win32
 		{F9E4849C-5CC5-4195-B482-15B46E6DD4C9}.Release|Win32.Build.0 = Release|Win32
+		{F40F725E-7DCC-4FD0-BD9D-254D2715AC64}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F40F725E-7DCC-4FD0-BD9D-254D2715AC64}.Debug|Win32.Build.0 = Debug|Win32
+		{F40F725E-7DCC-4FD0-BD9D-254D2715AC64}.Release|Win32.ActiveCfg = Release|Win32
+		{F40F725E-7DCC-4FD0-BD9D-254D2715AC64}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

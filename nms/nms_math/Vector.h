@@ -9,38 +9,38 @@
 using namespace std;
 
 //Three space vector class
-class Vector : public Point{
-  
+class __declspec(dllexport) Vector : public Point{
+  friend class Quaternion;
   public:
 	  //CONSTRUCTORS
-	   __declspec(dllexport) Vector();
-	   __declspec(dllexport) Vector(float x,float y,float z);
-	   __declspec(dllexport) Vector(float x,float y,float z,float w);
+	    Vector();
+	    Vector(float x,float y,float z);
+	    Vector(float x,float y,float z,float w);
 
 
 
 	  //OPERATORS
-	   __declspec(dllexport) Vector&  Vector::operator+=(Vector const &v);
-	   __declspec(dllexport) Vector&  Vector::operator-=(Vector const &v);
+	    Vector&  Vector::operator+=(Vector const &v);
+	    Vector&  Vector::operator-=(Vector const &v);
 
 
-	   __declspec(dllexport) Vector&  Vector::operator*=(float f);
-	   __declspec(dllexport) friend   Vector operator *(Vector& v,const Matrix &m);
-	   __declspec(dllexport) Vector&  operator *= (const Matrix &m);
+	    Vector&  Vector::operator*=(float f);
+	    friend   __declspec(dllexport) Vector operator *(Vector& v,const Matrix &m);
+	    Vector&  operator *= (const Matrix &m);
 
 
-	   __declspec(dllexport) Vector& Vector::operator/=(float f);
-	   __declspec(dllexport) friend Vector operator*(Vector const &v, float f);
-	   __declspec(dllexport) friend Vector operator*(float f, Vector const &v);
-	   __declspec(dllexport) friend Vector operator+(Vector const &a, Vector const &b);
-	   __declspec(dllexport) friend Vector operator-(Vector const &a, Vector const &b);
+	    Vector& Vector::operator/=(float f);
+	    friend __declspec(dllexport) Vector operator*(Vector const &v, float f);
+	    friend __declspec(dllexport) Vector operator*(float f, Vector const &v);
+	    friend __declspec(dllexport) Vector operator+(Vector const &a, Vector const &b);
+	    friend __declspec(dllexport) Vector operator-(Vector const &a, Vector const &b);
 	  //Dot Product
-	   __declspec(dllexport) float   Vector::operator*(Vector const &v);
+	    float   Vector::operator*(Vector const &v);
 	  //Cross Product
-	   __declspec(dllexport) Vector  Vector::operator%(Vector const &v);
+	    Vector  Vector::operator%(Vector const &v);
 
-	   __declspec(dllexport) Vector  Vector::normal();
-	   __declspec(dllexport) float   Vector::magnitude();
-	   __declspec(dllexport) float   Vector::sqmagnitude();
+	    Vector  Vector::normal();
+	    float   Vector::magnitude();
+	    float   Vector::sqmagnitude();
 };
 #endif

@@ -11,9 +11,8 @@ using namespace std;
 //Three space vector class
 class __declspec(dllexport) Quaternion : public Vector{
 public:
-	Quaternion(void) {x=0.0f, y=0.0f, z=0.0f, w=1.0f;}
-	Quaternion(float x,float y,float z,float w)
-	{this->x=x; this->y=y; this->z=z; this->w=w;}
+	Quaternion(void);
+	Quaternion(float x,float y,float z,float w);
 
 	Matrix getMatrix();
 

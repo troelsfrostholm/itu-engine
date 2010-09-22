@@ -269,6 +269,3 @@ void DrawScene()
 	//DrawSampleScene();
 	SDL_GL_SwapBuffers();
 }
-
-
-
