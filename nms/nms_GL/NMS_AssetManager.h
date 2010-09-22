@@ -1,6 +1,12 @@
-#include "NMS_AssetManager.h"
+#include <string.h>
+#include <stdio.h>
 
-#define ASSETMANAGER	NMS_AssetManager::GetSingleton();
+#include <iostream>	// DEBUG ONLY
+
+#include "NMS_TextureManager.h"
+
+
+#define NMS_ASSETMANAGER	NMS_AssetManager::GetSingleton();
 #define DESTROY_ASSETMANAGER	NMS_AssetManager::Destroy();
 
 
@@ -15,28 +21,21 @@ private :	// This is called automaticaly! Don't do it yourself!
 public :
 	static void Destroy (void);
 
-public :	// Usage / Implumentation
-	int LoadTexture (const char *szFilename, int nTextureID = -1);
-
-	void FreeTexture (int nID);
-	void FreeAll (void);
+public :	// Usage / Implementation
+	int  NMS_AssetManager::LoadTexture   (const char *p_Filename, int iTextureID = -1);
+	int  LoadSound     (const char* p_fileName,int iSoundID=-1);
+	int  LoadMD2Model  (const char* p_fileName,int iModelID=-1);
+	void FreeTexture   (int nID);
+	void FreeSound     (int nID);
+	void FreeMD2Model  (int nID);
+	void FreeAll       (void);
 
 public :	// Debug / Utilitarian
 	char *GetErrorMessage (void);
 	
-	int	GetNumTextures (void);
-	int GetAvailableSpace (void);
-	int GetTexID (int nIndex);
-
 private :
-	static NMS_TextureManager *m_Singleton;
-
-	int GetNewTextureID (int nPossibleTextureID);	// get a new one if one isn't provided
-	bool CheckSize (int nDimension);
+	static NMS_AssetManager *m_Singleton;
 
 private :
 	char szErrorMessage [80];
-	int nNumTextures;
-	int nAvailable;				// available space in the nTexID array
-	int *nTexIDs;
 };

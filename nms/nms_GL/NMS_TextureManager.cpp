@@ -1,12 +1,5 @@
 #include "NMS_TextureManager.h"
-#include <string.h>
-#include <stdio.h>
 
-#include <iostream>	// DEBUG ONLY
-
-#include <Windows.h>
-#include <gl/gl.h>
-#include <gl/glu.h>
 
 /**
 	Note : Being a singleton all the data we 'want' is located
@@ -72,20 +65,19 @@ void NMS_TextureManager::Destroy (void) {
 // ===================================================================
 
 int NMS_TextureManager::LoadTexture (const char *szFilename, int nTextureID) {
-	sprintf (m_Singleton->szErrorMessage, "Beginning to Loading [%s]", szFilename);
-
+	 sprintf (m_Singleton->szErrorMessage, "Beginning to Loading [%s]", szFilename);
 	 if (ilGetInteger(IL_VERSION_NUM) < IL_VERSION)
 	  {
 		/* wrong DevIL version */
 		return -1;
 	  }
-	  ILuint texid=5333;
+	  ILuint texid=nTextureID;
 	  GLuint image;
 	  ILboolean success;
 	  ilInit(); /* Initialization of DevIL */
 	  ilGenImages(1, &texid); /* Generation of one image name */
 	  ilBindImage(texid); /* Binding of image name */
-	  success = ilLoadImage(szFilename); /* Loading of image "image.jpg" */
+	  success = ilLoadImage(szFilename); /* Loading of image "image.jpg" */  //USA iLoadImageF
 	  if (success) /* If no error occured: */
 	  {
 		success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE); /* Convert every colour component into

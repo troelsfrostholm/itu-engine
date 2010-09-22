@@ -51,7 +51,7 @@ void NMS_Framework::NMSQuit()
 {
 	running=false;
 	//Be sure to remove all the textures we have loaded from the memory!
-	TEXMANAGER.FreeAll();
+	NMS_ASSETMANAGER.FreeAll();
 	SDL_Quit();
 }
 
