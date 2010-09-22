@@ -1,4 +1,4 @@
-#include "TextureManager.h"
+#include "NMS_TextureManager.h"
 #include <string.h>
 #include <stdio.h>
 
@@ -10,12 +10,12 @@
 
 /**
 	Note : Being a singleton all the data we 'want' is located
-	in CTextureManager::m_Singleton, so although it looks really
+	in NMS_TextureManager::m_Singleton, so although it looks really
 	ugly to have so many 'm_Singleton->'s this is so the code will
 	actually work as designed ;)
 **/
 
-CTextureManager *CTextureManager::m_Singleton = 0;
+NMS_TextureManager *NMS_TextureManager::m_Singleton = 0;
 // ===================================================================
 /**
 No use for a constructor because this singlton is never created,
@@ -24,7 +24,7 @@ command the constructor is called, however because of the memory
 isn't valid until AFTER the constructor it just is a bad idea...
 Use Initialize and Destroy for your dirty work
 **/
-CTextureManager::CTextureManager (void) {
+NMS_TextureManager::NMS_TextureManager (void) {
 	// This is just to be clean, but all 'real' data
 	// is in m_Singleton
 	
@@ -34,20 +34,20 @@ CTextureManager::CTextureManager (void) {
 	nTexIDs            = 0;
 }
 
-CTextureManager::~CTextureManager (void) {
+NMS_TextureManager::~NMS_TextureManager (void) {
 
 }
 
-CTextureManager &CTextureManager::GetSingleton (void) {
+NMS_TextureManager &NMS_TextureManager::GetSingleton (void) {
 	if (!m_Singleton) {
-		m_Singleton = new CTextureManager;
+		m_Singleton = new NMS_TextureManager;
 		Initialize ();
 	}
 
 	return *m_Singleton;
 }
 
-void CTextureManager::Initialize (void) {
+void NMS_TextureManager::Initialize (void) {
 	sprintf (m_Singleton->szErrorMessage, "Texture Manager Initialized!");
 
 	m_Singleton->nNumTextures = 0;
@@ -59,7 +59,7 @@ void CTextureManager::Initialize (void) {
 	}
 }
 
-void CTextureManager::Destroy (void) {
+void NMS_TextureManager::Destroy (void) {
 	if (m_Singleton) {
 		delete [] m_Singleton->nTexIDs;
 		m_Singleton->nTexIDs = 0;
@@ -71,7 +71,7 @@ void CTextureManager::Destroy (void) {
 
 // ===================================================================
 
-int CTextureManager::LoadTexture (const char *szFilename, int nTextureID) {
+int NMS_TextureManager::LoadTexture (const char *szFilename, int nTextureID) {
 	sprintf (m_Singleton->szErrorMessage, "Beginning to Loading [%s]", szFilename);
 
 	 if (ilGetInteger(IL_VERSION_NUM) < IL_VERSION)
@@ -116,7 +116,7 @@ int CTextureManager::LoadTexture (const char *szFilename, int nTextureID) {
 	return image;;
 }
 
-void CTextureManager::FreeTexture (int nID) {
+void NMS_TextureManager::FreeTexture (int nID) {
 	int nIndex = -1;
 	for (int i = 0; i < m_Singleton->nAvailable; i++) {
 		if (m_Singleton->nTexIDs [i] == nID) {
@@ -132,7 +132,7 @@ void CTextureManager::FreeTexture (int nID) {
 	}
 }
 
-void CTextureManager::FreeAll (void) {
+void NMS_TextureManager::FreeAll (void) {
 	
 	// copy the ids to an unsigned integer array, so GL will like it ;)
 	unsigned int *pUIIDs = new unsigned int [m_Singleton->nNumTextures];
@@ -158,7 +158,7 @@ void CTextureManager::FreeAll (void) {
 
 // ===================================================================
 
-int CTextureManager::GetNewTextureID (int nPossibleTextureID) {
+int NMS_TextureManager::GetNewTextureID (int nPossibleTextureID) {
 
 	// First check if the possible textureID has already been
 	// used, however the default value is -1, err that is what
@@ -216,11 +216,11 @@ int CTextureManager::GetNewTextureID (int nPossibleTextureID) {
 
 // ===================================================================
 
-char *CTextureManager::GetErrorMessage (void) {
+char *NMS_TextureManager::GetErrorMessage (void) {
 	return m_Singleton->szErrorMessage;
 }
 
-bool CTextureManager::CheckSize (int nDimension) {
+bool NMS_TextureManager::CheckSize (int nDimension) {
 	// Portability issue, check your endian...
 
 	int i = 1;
@@ -233,15 +233,15 @@ bool CTextureManager::CheckSize (int nDimension) {
 	return false;
 }
 
-int	CTextureManager::GetNumTextures (void) {
+int	NMS_TextureManager::GetNumTextures (void) {
 	return m_Singleton->nNumTextures;
 }
 
-int CTextureManager::GetAvailableSpace (void) {
+int NMS_TextureManager::GetAvailableSpace (void) {
 	return m_Singleton->nAvailable;
 }
 
-int CTextureManager::GetTexID (int nIndex) {
+int NMS_TextureManager::GetTexID (int nIndex) {
 	if (nIndex >= 0 && nIndex < m_Singleton->nAvailable)
 		return m_Singleton->nTexIDs [nIndex];
 

@@ -2,8 +2,9 @@
 
 #include <IL/il.h>
 
+
 /***
-	CTextureManager v1.00 [5/22/01]
+	NMS_TextureManager v1.00 [5/22/01]
 		To get the initial bout of confusion out of the way
 		this class is a singleton, IE their is only one
 		instance in memory at any time; so you don't have
@@ -42,18 +43,18 @@
 			www.cs.trinity.edu/~csmith8
 ***/
 		
-#define TEXMANAGER	CTextureManager::GetSingleton()
-#define DESTROY_TEXMANAGER	CTextureManager::Destroy();
+#define TEXMANAGER	NMS_TextureManager::GetSingleton()
+#define DESTROY_TEXMANAGER	NMS_TextureManager::Destroy();
 
 #define UBYTE unsigned char
 #define INITIAL_SIZE	32	// initial size of the TexID array
 #define TEXTURE_STEP	8	// how much the array grows by each time
 
-class CTextureManager {
+class NMS_TextureManager {
 public :
-	CTextureManager (void);
-	~CTextureManager (void);
-	static CTextureManager &GetSingleton (void);
+	NMS_TextureManager (void);
+	~NMS_TextureManager (void);
+	static NMS_TextureManager &GetSingleton (void);
 
 private :	// This is called automaticaly! Don't do it yourself!
 	static void Initialize (void);
@@ -74,7 +75,7 @@ public :	// Debug / Utilitarian
 	int GetTexID (int nIndex);
 
 private :
-	static CTextureManager *m_Singleton;
+	static NMS_TextureManager *m_Singleton;
 
 	int GetNewTextureID (int nPossibleTextureID);	// get a new one if one isn't provided
 	bool CheckSize (int nDimension);

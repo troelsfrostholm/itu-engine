@@ -1,9 +1,9 @@
-#include "NMSFramework.h"
+#include "NMS_Framework.h"
 
 
-NMSFramework::NMSFramework(){};
+NMS_Framework::NMS_Framework(){};
 
-bool NMSFramework::NMSInit(int width,int height,int bpp,char* windowTitle,bool fullscreen)
+bool NMS_Framework::NMSInit(int width,int height,int bpp,char* windowTitle,bool fullscreen)
 {
 	//try to initialize SDL
 	if( SDL_Init( SDL_INIT_EVERYTHING ) < 0 ) 
@@ -47,7 +47,7 @@ bool NMSFramework::NMSInit(int width,int height,int bpp,char* windowTitle,bool f
 	return true;
 }
 
-void NMSFramework::NMSQuit()
+void NMS_Framework::NMSQuit()
 {
 	running=false;
 	//Be sure to remove all the textures we have loaded from the memory!
@@ -55,7 +55,7 @@ void NMSFramework::NMSQuit()
 	SDL_Quit();
 }
 
-void NMSFramework::CalculateFrameRate()
+void NMS_Framework::CalculateFrameRate()
 {
 	static float framesPerSecond = 0.0f;
 	static float lastTime = 0.0f;

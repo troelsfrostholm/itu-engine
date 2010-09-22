@@ -1,10 +1,10 @@
-#include "NMSFramework.h"
+#include "NMS_Framework.h"
 #include "MD2Model.h"
 #include <cmath>
 
 #define WIDTH  640
 #define HEIGHT  480
-NMSFramework engine = NMSFramework();
+NMS_Framework engine = NMS_Framework();
 
 MD2Model obj;
 MD2Model obj2;

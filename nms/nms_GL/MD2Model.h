@@ -6,7 +6,7 @@
 #include <gl\gl.h>			// Header File For The OpenGL32 Library
 #include <gl\glu.h>			// Header File For The GLu32 Library 
 #include <stdio.h>
-#include "TextureManager.h"
+#include "NMS_TextureManager.h"
 
 #define MAGIC_NO	844121161  //It means IDP2
 

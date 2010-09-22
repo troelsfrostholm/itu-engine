@@ -1,5 +1,5 @@
-#ifndef NMSFramework_H__
-#define NMSFramework_H__
+#ifndef NMS_Framework_H__
+#define NMS_Framework_H__
 
 #include "SDL.h" 
 #include <windows.h>		// Header File For Windows
@@ -9,7 +9,7 @@
 #include "Matrix.h"
 #include "Quaternion.h"
 #include "Trig.h"
-#include "TextureManager.h"
+#include "NMS_TextureManager.h"
 
 
 class NMSCameraController
@@ -89,7 +89,7 @@ private:
 };
 
 
-class NMSFramework
+class NMS_Framework
 {
 protected:
 	int flags;
@@ -97,7 +97,7 @@ protected:
 public:
 	bool running;
 	NMSCameraFPS camera;
-	NMSFramework();
+	NMS_Framework();
 	bool NMSInit(int width,int height,int bpp,char* windowTitle,bool fullscreen);
 	void NMSQuit();
 	static void NMSLoadTexture(char* fileName,int id);

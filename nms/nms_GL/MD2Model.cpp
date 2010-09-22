@@ -1,5 +1,5 @@
 #include "MD2Model.h"
-#include "NMSFramework.h" 
+#include "NMS_Framework.h" 
 
 
 // ----------------------------------------------

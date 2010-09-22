@@ -174,7 +174,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\MD2Loader.cpp"
+				RelativePath=".\MD2Model.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NMS_Framework.cpp"
 				>
 			</File>
 			<File
@@ -182,11 +186,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\NMSFramework.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\TextureManager.cpp"
+				RelativePath=".\NMS_TextureManager.cpp"
 				>
 			</File>
 		</Filter>
@@ -196,7 +196,11 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\MD2Loader.h"
+				RelativePath=".\MD2Model.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NMS_Framework.h"
 				>
 			</File>
 			<File
@@ -204,11 +208,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\NMSFramework.h"
-				>
-			</File>
-			<File
-				RelativePath=".\TextureManager.h"
+				RelativePath=".\NMS_TextureManager.h"
 				>
 			</File>
 		</Filter>
