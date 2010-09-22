@@ -10,7 +10,6 @@
 #include "Quaternion.h"
 #include "Trig.h"
 
-
 class NMSCameraController
 {
 	public:
