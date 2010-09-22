@@ -56,10 +56,10 @@ char *NMS_AssetManager::GetErrorMessage (void) {
 	return m_Singleton->szErrorMessage;
 }
 
-int  NMS_AssetManager::LoadTexture(const char *p_Filename, int iTextureID = -1)
-{
-	return NMS_TEXTUREMANAGER.LoadTexture(p_Filename,iTextureID);
-}
+//int  NMS_AssetManager::LoadTexture(const char *p_Filename, int iTextureID = -1)
+//{
+//	return NMS_TEXTUREMANAGER.LoadTexture(p_Filename,iTextureID);
+//}
 
 void NMS_AssetManager::FreeTexture   (int nID)
 {

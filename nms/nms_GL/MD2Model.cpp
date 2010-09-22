@@ -389,7 +389,7 @@ void MD2Model::Interpolate( vec3_t *vertlist )
 
 int MD2Model::LoadSkin( const char *filename )
 {
-	textureID=NMS_ASSETMANAGER.LoadTexture(filename);
+	textureID=NMS_TEXTUREMANAGER.LoadTexture(filename);
 	return textureID;
    /* return (textureID != TEXMANAGER.LoadTexture( "Texture.tga" ));
 	return 0;*/
