@@ -11,21 +11,21 @@
 #include "Trig.h"
 #include "NMS_AssetManager.h"
 
-class NMSCameraController
+class  __declspec(dllexport) NMSCameraController
 {
 	public:
-		NMSCameraController();
-		~NMSCameraController();
+		 NMSCameraController();
+		 ~NMSCameraController();
 
-		void UpdateCamera(float fElapsedTime);
+		 void UpdateCamera(float fElapsedTime);
 
 		//Access methods
-		Vector getPos() {return vPosition;}
-		Vector getRight() {return vRight;}
-		Vector getUp() {return vUp;}
-		Vector getDir() {return vDir;}
-		Vector getVelocity() {return vVel;}
-		Matrix returnViewMatrix();
+		 Vector getPos() {return vPosition;}
+		 Vector getRight() {return vRight;}
+		 Vector getUp() {return vUp;}
+		 Vector getDir() {return vDir;}
+		 Vector getVelocity() {return vVel;}
+		 Matrix returnViewMatrix();
 
 	protected:
 
@@ -47,8 +47,8 @@ class NMSCameraController
 		float fRotZ;
 
 		//Protected methods
-		virtual void recalcAxes();
-		virtual void init();
+		//virtual void recalcAxes()=0;
+		//virtual void init()=0;
 };
 
 
@@ -56,7 +56,7 @@ class NMSCameraController
 
 
 
-class NMSCameraFPS : public NMSCameraController
+class __declspec(dllexport) NMSCameraFPS : public NMSCameraController
 {
 	public:
 		NMSCameraFPS();
@@ -81,14 +81,17 @@ class NMSCameraFPS : public NMSCameraController
 		void setUp(Vector &v){vUp=v;}
 		void setDir(Vector &v){vDir=v;}
 
+protected:
+	void recalcAxes();
+	void init();
+
 private:
 	float fSpeed;
 	float fSlide;
-	void recalcAxes();
 };
 
 
-class NMS_Framework
+class __declspec(dllexport) NMS_Framework
 {
 protected:
 	int flags;

@@ -86,7 +86,7 @@ NMSCameraController::~NMSCameraController()
 {
 }
 
-void NMSCameraController::init()
+void NMSCameraFPS::init()
 {
 	vPosition=Vector(0,0,0);
 	vRight=Vector(1,0,0);
@@ -103,46 +103,6 @@ void NMSCameraController::init()
 	fRollSpd=0;
 
 	qRot=Quaternion(0,0,0,1);
-}
-
-void NMSCameraController::recalcAxes()
-{
-	Quaternion qFrame; //Quaternion calculated on this frame
-	Matrix m;
-
-	static float f2PI = 2*PI;
-
-	//Keep into the range of 360 degrees to avoid overflow
-	//Check on X
-	if(fRotX>360.0f)
-		fRotX-=360.0f;
-	else
-	  if(fRotX<-360.0f)
-	    fRotX+=360.0f;
-
-	//Check on Y
-	if(fRotY>360.0f)
-		fRotY-=360.0f;
-	else
-	  if(fRotY<-360.0f)
-	    fRotY+=360.0f;
-
-	//Check on Z
-	if(fRotZ>360.0f)
-		fRotZ-=360.0f;
-	else
-	  if(fRotZ<-360.0f)
-	    fRotZ+=360.0f;
-
-	qFrame.createFromAngles(fRotX,fRotY,fRotZ);
-
-	qRot *= qFrame;
-
-	m=qRot.getMatrix();
-
-	vRight=m.getCol(1);
-	vUp=m.getCol(2);
-	vDir=m.getCol(3);
 }
 
 Matrix NMSCameraController::returnViewMatrix()
