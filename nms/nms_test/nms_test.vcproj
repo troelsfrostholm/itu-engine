@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;C:\Program Files\boost\boost_1_44&quot;;&quot;$(SolutionDir)\nms_math&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\include\Boost 1.4.4&quot;;&quot;$(SolutionDir)\nms_math&quot;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -58,9 +58,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="&quot;C:\Program Files (x86)\boost\boost_1_44\lib\libboost_unit_test_framework-vc90-mt-gd-1_44.lib&quot; nms_math.lib"
+				AdditionalDependencies="nms_math.lib"
 				ShowProgress="1"
-				AdditionalLibraryDirectories="&quot;C:\Users\Maja\Kode\itu-engine\nms\Debug&quot;"
+				AdditionalLibraryDirectories="&quot;$(SolutionDir)\debug&quot;;&quot;$(SolutionDir)\lib\Boost 1.4.4&quot;;&quot;$(SolutionDir)\lib&quot;;&quot;$(SolutionDir)\release&quot;"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"

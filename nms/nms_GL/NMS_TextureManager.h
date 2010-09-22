@@ -81,7 +81,7 @@ private :
 	bool CheckSize (int nDimension);
 
 private :
-	char szErrorMessage [80];	// they arn't bugs, their features!
+	char szErrorMessage [80];
 	int nNumTextures;
 	int nAvailable;				// available space in the nTexID array
 	int *nTexIDs;
