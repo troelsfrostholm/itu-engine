@@ -18,7 +18,7 @@
 #define INITIAL_SIZE	32	// initial size of the TexID array
 #define TEXTURE_STEP	8	// how much the array grows by each time
 
-class NMS_TextureManager {
+class __declspec(dllexport) NMS_TextureManager {
 public :
 	NMS_TextureManager (void);
 	~NMS_TextureManager (void);

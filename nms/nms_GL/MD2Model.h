@@ -130,7 +130,7 @@ typedef struct
 
 } animState_t;
 
-class MD2Model
+class __declspec(dllexport) MD2Model
 {
 	public:
 		static anim_t   animlist[21];       // animation list

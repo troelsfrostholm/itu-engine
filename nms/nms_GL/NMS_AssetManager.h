@@ -10,7 +10,7 @@
 #define DESTROY_ASSETMANAGER	NMS_AssetManager::Destroy();
 
 
-class NMS_AssetManager {
+class __declspec(dllexport) NMS_AssetManager {
 public :
 	NMS_AssetManager (void);
 	~NMS_AssetManager (void);

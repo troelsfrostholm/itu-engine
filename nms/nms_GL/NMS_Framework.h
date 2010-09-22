@@ -47,8 +47,8 @@ class  __declspec(dllexport) NMSCameraController
 		float fRotZ;
 
 		//Protected methods
-		//virtual void recalcAxes()=0;
-		//virtual void init()=0;
+		virtual void recalcAxes()=0;
+		virtual void init()=0;
 };
 
 

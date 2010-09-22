@@ -77,14 +77,6 @@ void NMS_Framework::CalculateFrameRate()
 
 
 //CAMERA CONTROLELR FUNCTION DEFINITIONS
-NMSCameraController::NMSCameraController()
-{
-	init();
-}
-
-NMSCameraController::~NMSCameraController()
-{
-}
 
 void NMSCameraFPS::init()
 {
@@ -104,6 +96,17 @@ void NMSCameraFPS::init()
 
 	qRot=Quaternion(0,0,0,1);
 }
+
+
+NMSCameraController::NMSCameraController()
+{
+}
+
+NMSCameraController::~NMSCameraController()
+{
+}
+
+
 
 Matrix NMSCameraController::returnViewMatrix()
 {
