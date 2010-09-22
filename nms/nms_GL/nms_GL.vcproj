@@ -208,6 +208,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\NMS_SceneGraph.h"
+				>
+			</File>
+			<File
 				RelativePath=".\NMS_TextureManager.h"
 				>
 			</File>
