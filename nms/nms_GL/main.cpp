@@ -1,12 +1,13 @@
 #include "NMSFramework.h"
-#include "MD2Loader.h"
+#include "MD2Model.h"
 #include <cmath>
 
 #define WIDTH  640
 #define HEIGHT  480
 NMSFramework engine = NMSFramework();
 
-MD2Loader obj;
+MD2Model obj;
+MD2Model obj2;
 
 
 GLfloat	z=-10.0f;								// Depth Into The Screen
@@ -24,7 +25,7 @@ void DrawScene();
 int main(int argc, char* argv[])
 { //Start SDL 
 	engine.NMSInit(WIDTH,HEIGHT,16,"Nemesis Engine",false);
-	obj.LoadModel("models/drfreak.md2","models/drfreak.tga");
+	obj.LoadModel("models/drfreak/drfreak.md2","models/drfreak/drfreak.tga");
 	obj.SetAnim(BOOM);
 	//TEXMANAGER.LoadTexture("Texture.tga",5666); //Load the crate model
 	while(true)
