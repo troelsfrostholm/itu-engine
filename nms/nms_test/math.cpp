@@ -194,7 +194,25 @@ BOOST_AUTO_TEST_SUITE( matrix );
 BOOST_AUTO_TEST_CASE( matrix_construction_and_lookup )
 {
 	Matrix m = Matrix();
-	cout << m;
+	for(int i=1; i<=4; i++) {
+		for(int j=1; j<=4; j++) {
+			if(i==j)
+				BOOST_CHECK_EQUAL(m(i, j), 1);
+			else
+				BOOST_CHECK_EQUAL(m(i, j), 0);
+		}
+	}
+
+	//Should test other constructors too
+}
+
+BOOST_AUTO_TEST_CASE( matrix_invertion )
+{
+	Matrix m = Matrix();
+	cout << m << endl;
+	Matrix inverse = !m;
+	cout << inverse << endl;
+
 }
 
 BOOST_AUTO_TEST_SUITE_END();
