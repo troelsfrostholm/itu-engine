@@ -2,15 +2,20 @@
 #include <cmath>
 #include "Trig.h"
 
-
-
-
 double nmsTrig::degToRad (double d) {
 return d * M_PI / 180;
 }
 
 double nmsTrig::radToDeg (double r) {
 return r * 180/ M_PI;
+}
+
+float nmsTrig::degToRad (float d) {
+	return (float) degToRad((double) d);
+}
+
+float nmsTrig::radToDeg (float r) {
+	return (float) radToDeg((double) r);
 }
 
 float nmsTrig::sin (double x )

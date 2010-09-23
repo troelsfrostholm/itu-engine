@@ -42,7 +42,7 @@ void Quaternion::createFromAngles(float fPitch, float fYaw, float fRoll)
 {
 	float cX,cY,cZ,sX,sY,sZ,cYcZ,sYsZ,cYsZ,sYcZ;
 	//Conversion from degree to radians
-	fPitch=nmsTrig::degToRad(fPitch);
+	fPitch= nmsTrig::degToRad(fPitch);
 	fYaw=nmsTrig::degToRad(fYaw);
 	fRoll=nmsTrig::degToRad(fRoll);
 

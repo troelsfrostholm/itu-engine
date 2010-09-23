@@ -11,6 +11,8 @@ class nmsTrig
 public:
 	static double degToRad (double d);
 	static double radToDeg (double r);
+	static float degToRad (float d);
+	static float radToDeg (float r);
 	static float cos (double x );
 	static float sin (double x );
 };
