@@ -27,7 +27,7 @@ class __declspec(dllexport) Matrix{
 		{
 			o_rows=row;
 			o_cols=col;
-			refCounter = 1;
+			refCounter = 0;
 
 			elements = new float [o_rows*o_cols];
 		}

@@ -188,3 +188,13 @@ BOOST_AUTO_TEST_CASE( vector_properties )
 }
 
 BOOST_AUTO_TEST_SUITE_END();
+
+BOOST_AUTO_TEST_SUITE( matrix );
+
+BOOST_AUTO_TEST_CASE( matrix_construction_and_lookup )
+{
+	Matrix m = Matrix();
+	cout << m;
+}
+
+BOOST_AUTO_TEST_SUITE_END();

@@ -11,7 +11,7 @@ BOOST_AUTO_TEST_SUITE( scenegraph );
 BOOST_AUTO_TEST_CASE( scenegraph_node )
 {
 	//BOOST_CHECK( approximates(1.01f, 1.00f, 0.02f) );
-	Matrix t = Matrix();
+	/*Matrix t = Matrix();
 	t.uScale(2.0f);
 	cout << t << endl;
 	cout << !t << endl;
@@ -28,7 +28,7 @@ BOOST_AUTO_TEST_CASE( scenegraph_node )
 
 	Visitor v = Visitor();
 	Matrix m = Matrix();
-	s.traverse_df(v, &m);
+	s.traverse_df(v, &m);*/
 
 }
 
