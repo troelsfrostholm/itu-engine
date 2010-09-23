@@ -115,7 +115,7 @@ int MD2Model::ReadFile(const char* fileName)
 	FILE	*fp;
 
 	//Open the model file
-	fp=fopen(fileName,"rb");
+	fopen_s(&fp, fileName,"rb");
 	if (!fp)
 		return 1;
 

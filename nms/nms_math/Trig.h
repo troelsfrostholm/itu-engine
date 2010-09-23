@@ -6,7 +6,7 @@
 
 #define PI 3.14159265f;
 
-class nmsTrig
+class __declspec(dllexport) nmsTrig
 {
 public:
 	static double degToRad (double d);

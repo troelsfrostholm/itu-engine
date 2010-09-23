@@ -31,8 +31,8 @@ void TransformationNode::before(Visitor v, Matrix *m)
 
 void TransformationNode::after(Visitor v, Matrix *m)
 {
-	*m *= (!transform);
 	v.callback(*m);
+	*m *= (!transform);
 }
 
 void Visitor::callback(Matrix arg)

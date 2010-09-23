@@ -37,7 +37,7 @@ NMS_AssetManager &NMS_AssetManager::GetSingleton (void) {
 }
 
 void NMS_AssetManager::Initialize (void) {
-	sprintf (m_Singleton->szErrorMessage, "Asset Manager Initialized!");
+	sprintf_s (m_Singleton->szErrorMessage, NMS_AssetManager::szErrorMessageSize, "Asset Manager Initialized!");
 }
 
 void NMS_AssetManager::Destroy (void) {

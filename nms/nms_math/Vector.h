@@ -9,7 +9,7 @@
 using namespace std;
 
 //Three space vector class
-class  Vector : public Point{
+class  __declspec(dllexport) Vector : public Point{
   friend class Quaternion;
   public:
 	  //CONSTRUCTORS

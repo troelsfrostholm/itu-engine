@@ -427,19 +427,20 @@ float* Matrix::returnPointer()
 void Matrix::debugPrint()
 {
 	 char buffer [50];
+	 size_t buffer_size = 50*sizeof(char);
 	 FILE	*fp;
-	 fp=fopen("MatrixDebug.txt","a");
+	 fopen_s(&fp, "MatrixDebug.txt","a");
 	 if (!fp)
 		return;
 	 for(unsigned i=1;i<=(*this).getRowL();i++)
 	 {
 		for(unsigned j=1;j<=(*this).getColL();j++)
 		{
-			sprintf(buffer,"%f ", (*this)(i,j));fwrite(buffer,strlen(buffer),1,fp);
+			sprintf_s(buffer, buffer_size, "%f ", (*this)(i,j));fwrite(buffer,strlen(buffer),1,fp);
 		}
-		sprintf(buffer,"\n");fwrite(buffer,strlen(buffer),1,fp);
+		sprintf_s(buffer, buffer_size, "\n");fwrite(buffer,strlen(buffer),1,fp);
 	 }
-	 sprintf(buffer,"\n");fwrite(buffer,strlen(buffer),1,fp);
+	 sprintf_s(buffer, buffer_size, "\n");fwrite(buffer,strlen(buffer),1,fp);
 	 fclose(fp);
 
 }

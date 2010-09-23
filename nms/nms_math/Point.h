@@ -10,7 +10,7 @@ using namespace std;
 #define NMS_Z 3
 #define W 4
 
-class Point
+class __declspec(dllexport) Point
 {
   friend class Vector;
   friend class Matrix;

@@ -41,7 +41,7 @@ NMS_TextureManager &NMS_TextureManager::GetSingleton (void) {
 }
 
 void NMS_TextureManager::Initialize (void) {
-	sprintf (m_Singleton->szErrorMessage, "Texture Manager Initialized!");
+	sprintf_s (m_Singleton->szErrorMessage, NMS_TextureManager::szErrorMessageSize, "Texture Manager Initialized!");
 
 	m_Singleton->nNumTextures = 0;
 	m_Singleton->nAvailable   = INITIAL_SIZE;
@@ -65,7 +65,7 @@ void NMS_TextureManager::Destroy (void) {
 // ===================================================================
 
 int NMS_TextureManager::LoadTexture (const char *szFilename, int nTextureID) {
-	 sprintf (m_Singleton->szErrorMessage, "Beginning to Loading [%s]", szFilename);
+	 sprintf_s (m_Singleton->szErrorMessage, NMS_TextureManager::szErrorMessageSize, "Beginning to Loading [%s]", szFilename);
 	 if (ilGetInteger(IL_VERSION_NUM) < IL_VERSION)
 	  {
 		/* wrong DevIL version */
@@ -104,7 +104,7 @@ int NMS_TextureManager::LoadTexture (const char *szFilename, int nTextureID) {
 	  }
 	  ilDeleteImages(1, &texid); 
 
-	sprintf (m_Singleton->szErrorMessage, "Loaded [%s] W/O a hitch!", szFilename);
+	  sprintf_s (m_Singleton->szErrorMessage, NMS_TextureManager::szErrorMessageSize, "Loaded [%s] W/O a hitch!", szFilename);
 	return image;;
 }
 

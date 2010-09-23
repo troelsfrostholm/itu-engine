@@ -38,4 +38,5 @@ private :
 
 private :
 	char szErrorMessage [80];
+	static const size_t szErrorMessageSize = 80*sizeof(char);
 };

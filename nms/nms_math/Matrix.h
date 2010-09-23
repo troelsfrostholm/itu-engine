@@ -13,7 +13,7 @@
 
 using namespace std;
 
-class Matrix{
+class __declspec(dllexport) Matrix{
   
    private:
 
