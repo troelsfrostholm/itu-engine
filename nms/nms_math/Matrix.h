@@ -1,7 +1,6 @@
 #ifndef MATRIX_H__
 #define MATRIX_H__
 
-
 #include <fstream>
 #include "Vector.h"
 #include "Trig.h"
@@ -14,7 +13,7 @@
 
 using namespace std;
 
-class  __declspec(dllexport) Matrix{
+class Matrix{
   
    private:
 
@@ -62,7 +61,7 @@ class  __declspec(dllexport) Matrix{
 	     float const Matrix::operator()(unsigned row,unsigned col) const;	//Subscript access to the matrix, const
 
 	  //Print overloading
-	     friend __declspec(dllexport) ostream&  operator<<(ostream& output,Matrix& m);
+	     friend  ostream&  operator<<(ostream& output,Matrix& m);
 	  //Print the matrix to a text file for easy debug
 		 void debugPrint();
 
@@ -78,10 +77,10 @@ class  __declspec(dllexport) Matrix{
 
 
 	  //Transposition
-	     friend Matrix __declspec(dllexport) operator~(const Matrix &m);
+	     friend Matrix  operator~(const Matrix &m);
 
 	  //Inverse matrix
-	     friend Matrix __declspec(dllexport) operator!(const Matrix &m);
+	     friend Matrix  operator!(const Matrix &m);
 	  
 	  //BEWARE! THIS METHODS COMMUTE THE CURRENT MATRIX IN THE SPECIFIED ONE!
 	  //THE PREVIOUS MATRIX WILL BE LOST!

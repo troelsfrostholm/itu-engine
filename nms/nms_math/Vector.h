@@ -9,7 +9,7 @@
 using namespace std;
 
 //Three space vector class
-class __declspec(dllexport) Vector : public Point{
+class  Vector : public Point{
   friend class Quaternion;
   public:
 	  //CONSTRUCTORS
@@ -25,15 +25,15 @@ class __declspec(dllexport) Vector : public Point{
 
 
 	    Vector&  Vector::operator*=(float f);
-	    friend   __declspec(dllexport) Vector operator *(Vector& v,const Matrix &m);
+	    friend    Vector operator *(Vector& v,const Matrix &m);
 	    Vector&  operator *= (const Matrix &m);
 
 
 	    Vector& Vector::operator/=(float f);
-	    friend __declspec(dllexport) Vector operator*(Vector const &v, float f);
-	    friend __declspec(dllexport) Vector operator*(float f, Vector const &v);
-	    friend __declspec(dllexport) Vector operator+(Vector const &a, Vector const &b);
-	    friend __declspec(dllexport) Vector operator-(Vector const &a, Vector const &b);
+	    friend  Vector operator*(Vector const &v, float f);
+	    friend  Vector operator*(float f, Vector const &v);
+	    friend  Vector operator+(Vector const &a, Vector const &b);
+	    friend  Vector operator-(Vector const &a, Vector const &b);
 	  //Dot Product
 	    float   Vector::operator*(Vector const &v);
 	  //Cross Product

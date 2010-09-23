@@ -9,7 +9,7 @@
 using namespace std;
 
 //Three space vector class
-class __declspec(dllexport) Quaternion : public Vector{
+class Quaternion : public Vector{
 public:
 	Quaternion(void);
 	Quaternion(float x,float y,float z,float w);
