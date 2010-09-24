@@ -4,10 +4,11 @@
 
 using namespace std;
 
-class  __declspec(dllexport) Visitor
+class  __declspec(dllexport) SceneGraphVisitor
 {
 public:
-	void callback(Matrix arg);
+	void sg_before(Matrix arg);
+	void sg_after(Matrix arg);
 };
 
 class __declspec(dllexport) SceneGraphNode
@@ -17,10 +18,10 @@ protected:
 
 public:
 	SceneGraphNode::SceneGraphNode();
-	void traverse_df(Visitor v, Matrix *m); //depth first traversal
+	void traverse_df(SceneGraphVisitor v, Matrix *m); //depth first traversal
 	void addChild(SceneGraphNode &child);
-	virtual void SceneGraphNode::before(Visitor v, Matrix *m) = 0;
-	virtual void SceneGraphNode::after(Visitor v, Matrix *m) = 0;
+	virtual void SceneGraphNode::before(SceneGraphVisitor v, Matrix *m) = 0;
+	virtual void SceneGraphNode::after(SceneGraphVisitor v, Matrix *m) = 0;
 };
 
 class __declspec(dllexport) TransformationNode : public SceneGraphNode
@@ -30,11 +31,14 @@ protected:
 
 public:
 	TransformationNode::TransformationNode(Matrix t);
-	void TransformationNode::before(Visitor v, Matrix *m);
-	void TransformationNode::after(Visitor v, Matrix *m);
+	void TransformationNode::before(SceneGraphVisitor v, Matrix *m);
+	void TransformationNode::after(SceneGraphVisitor v, Matrix *m);
 };
 
 class __declspec(dllexport) GeometryNode : public SceneGraphNode
 {
 
+public:
+	void GeometryNode::before(SceneGraphVisitor v, Matrix *m);
+	void GeometryNode::after(SceneGraphVisitor v, Matrix *m);
 };

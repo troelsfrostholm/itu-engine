@@ -10,7 +10,7 @@ void SceneGraphNode::addChild(SceneGraphNode &child)
 	children.push_back(&child);
 }
 
-void SceneGraphNode::traverse_df(Visitor v, Matrix *m)
+void SceneGraphNode::traverse_df(SceneGraphVisitor v, Matrix *m)
 {
 	before(v, m);
 	for(unsigned int i = 0; i < children.size(); i++) {
@@ -24,18 +24,32 @@ TransformationNode::TransformationNode(Matrix t)
 	transform = t;
 }
 
-void TransformationNode::before(Visitor v, Matrix *m)
+void TransformationNode::before(SceneGraphVisitor v, Matrix *m)
 {
 	*m *= transform;
 }
 
-void TransformationNode::after(Visitor v, Matrix *m)
+void TransformationNode::after(SceneGraphVisitor v, Matrix *m)
 {
-	v.callback(*m);
 	*m *= (!transform);
 }
 
-void Visitor::callback(Matrix arg)
+void GeometryNode::before(SceneGraphVisitor v, Matrix *m)
 {
-	cout << "callback invoked with arg " << arg;
+	v.sg_after(*m);
+}
+
+void GeometryNode::after(SceneGraphVisitor v, Matrix *m) 
+{
+	v.sg_after(*m);
+}
+
+void SceneGraphVisitor::sg_before(Matrix arg)
+{
+	cout << "callback before invoked with arg " << arg;
+}
+
+void SceneGraphVisitor::sg_after(Matrix arg)
+{
+	cout << "callback after invoked with arg " << arg;
 }

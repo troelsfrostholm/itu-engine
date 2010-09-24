@@ -208,11 +208,11 @@ BOOST_AUTO_TEST_CASE( matrix_construction_and_lookup )
 
 BOOST_AUTO_TEST_CASE( matrix_invertion )
 {
-	Matrix m = Matrix();
-	cout << m << endl;
-	Matrix inverse = !m;
-	cout << inverse << endl;
-
+	Matrix identity = Matrix();
+	cout << identity << endl;
+	Matrix identity_inverse = !identity;
+	cout << identity_inverse << endl;
+	BOOST_CHECK_EQUAL(identity, identity_inverse);
 }
 
 BOOST_AUTO_TEST_SUITE_END();

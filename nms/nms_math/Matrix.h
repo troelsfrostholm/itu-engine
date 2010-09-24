@@ -61,7 +61,7 @@ class __declspec(dllexport) Matrix{
 	     float const Matrix::operator()(unsigned row,unsigned col) const;	//Subscript access to the matrix, const
 
 	  //Print overloading
-	     friend  ostream&  operator<<(ostream& output,Matrix& m);
+	     friend  ostream&  operator<<(ostream& output, const Matrix& m);
 	  //Print the matrix to a text file for easy debug
 		 void debugPrint();
 
@@ -102,6 +102,9 @@ class __declspec(dllexport) Matrix{
 	     friend Matrix  operator * (const Matrix &m1,const Matrix &m2);
 	
 	     void Matrix::resize (unsigned row, unsigned col,unsigned startRow,unsigned startCol);
+
+	 //Equality tests
+		 friend bool operator == (const Matrix &a, const Matrix &b);
 	  
 
 	  //Copy operator

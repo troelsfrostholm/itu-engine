@@ -67,7 +67,7 @@ float& Matrix::operator() (unsigned row, unsigned col)
 	return this->structPointer->o_cols;
  }
  
-ostream& operator<<(ostream& output,Matrix& m) {
+ostream& operator<<(ostream& output, const Matrix& m) {
 	unsigned i;
 	unsigned j;
 	for(i=1;i<=m.getRowL();i++)
@@ -205,7 +205,7 @@ void Matrix::setCol(unsigned i,const Vector& v)
 		 //Now apply gauss elimination
 		 for(unsigned i=1;i<=U.getRowL();i++)
 		 {
-			 //Do not swap rows if it is the last row!
+			 //Do not swap rows if it is the last row!		 
 			 if(i!=U.getRowL())
 				U=U.pivot(i);
 			 float divisor=U(i,i);
@@ -226,6 +226,7 @@ void Matrix::setCol(unsigned i,const Vector& v)
 					 }
 				 }
 			 }
+			 U.debugPrint();
 		 }
 		 //Resize to get only the right part of the matrix, the inverse
 		 U.resize(m.getRowL(),m.getColL(),1,m.getColL()+1);
@@ -338,6 +339,20 @@ void Matrix::resize (unsigned row, unsigned col,unsigned startRow,unsigned start
 	  }
    }
    return;
+}
+
+bool operator == (const Matrix &a, const Matrix &b)
+{
+	if( a.getColL() != b.getColL() || 
+		a.getRowL() != b.getRowL() )
+		return false;
+
+	for(unsigned i=1; i<=a.getRowL(); i++) {
+		for(unsigned j=1; j<=a.getColL(); j++) {
+			if( a(i, j)!=b(i, j) ) return false;
+		}
+	}
+	return true;
 }
 
 Matrix& Matrix::operator *= (const Matrix& m)
