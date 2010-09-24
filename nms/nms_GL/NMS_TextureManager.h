@@ -1,12 +1,16 @@
 #pragma once
+
+#include "NMS_sha1.h"
+#include "NMS_FileManagement.h"
+
+
 #include <string.h>
 #include <stdio.h>
-
-#include <iostream>	// DEBUG ONLY
 
 #include <Windows.h>
 #include <gl/gl.h>
 #include <gl/glu.h>
+
 
 //Include Devil Libraries
 #include <IL/il.h>
@@ -24,7 +28,7 @@ public :
 	~NMS_TextureManager (void);
 	static NMS_TextureManager &GetSingleton (void);
 
-private :	// This is called automaticaly! Don't do it yourself!
+private :
 	static void Initialize (void);
 public :
 	static void Destroy (void);

@@ -7,6 +7,7 @@
 #include <gl\glu.h>			// Header File For The GLu32 Library 
 #include <stdio.h>
 #include "NMS_TextureManager.h"
+#include "NMS_FileManagement.h"
 
 #define MAGIC_NO	844121161  //It means IDP2
 
@@ -161,9 +162,8 @@ class __declspec(dllexport) MD2Model
 		//MISC MEMORY AND FILE ROUTINES
 		void*	Malloc(size_t size);                                    //Allocate the memory space with regard to the type to be used. Return a pointer to the memory allocation
 		void	Free(void** p);                                         //Free the memory space pointed by the given pointer
-		int		ReadFile(const char* fileName);						   //Read the model file
-		int		ReadHeader(byte *buffer,pHeader phead);			   //Load the header of the model as stored into the buffer
-		long	FileSize(FILE *fp);									   //Return the size of the file to read the entire file and put it into the buffer
+		int		ReadFile(const char* fileName);						    //Read the model file
+		int		ReadHeader(byte *buffer,pHeader phead);			        //Load the header of the model as stored into the buffer
 		
 	private:
 		byte*				fileBuffer;	 //The buffer containing the whole file that has been read

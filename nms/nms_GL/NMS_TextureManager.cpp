@@ -71,13 +71,44 @@ int NMS_TextureManager::LoadTexture (const char *szFilename, int nTextureID) {
 		/* wrong DevIL version */
 		return -1;
 	  }
+	 
+	 shaMap hash;
+
+	  //Open the file provided and check for the SHA1 hash to see if we have already another texture like this
+	  FILE	*fp=NULL;
+	  ILubyte *Lump;
+
+	  //Open the model file
+	  fopen_s(&fp,szFilename,"rb");
+	  if (!fp)
+		return 1;
+
+	  //Calculate the size of the file
+	  long fileSize= nmsFileManagement::FileSize(fp);
+	  if (fileSize<=0)
+		  return 1;
+
+	 
+
+	  //Convert the file read to a Lump file to be used by DevIL
+	  Lump = (ILubyte*)malloc(fileSize);
+	  fseek(fp, 0, SEEK_SET);
+	  fread(Lump, 1, fileSize, fp);
+	  fclose(fp);
+
+	  //Create a check
+	  hash=nmsSha1::returnSha1(Lump,fileSize);
+
+	
 	  ILuint texid=nTextureID;
 	  GLuint image;
 	  ILboolean success;
 	  ilInit(); /* Initialization of DevIL */
 	  ilGenImages(1, &texid); /* Generation of one image name */
 	  ilBindImage(texid); /* Binding of image name */
-	  success = ilLoadImage(szFilename); /* Loading of image "image.jpg" */  //USA iLoadImageF
+	  success = ilLoadL(IL_TYPE_UNKNOWN,Lump,fileSize); /* Loading of image "image.jpg" */  //USA iLoadImageF
+	  free(Lump);
+
 	  if (success) /* If no error occured: */
 	  {
 		success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE); /* Convert every colour component into
@@ -103,43 +134,50 @@ int NMS_TextureManager::LoadTexture (const char *szFilename, int nTextureID) {
 		return -1;
 	  }
 	  ilDeleteImages(1, &texid); 
-
+	  //Close the file we are done with it
+	  fclose(fp);
 	  sprintf_s (m_Singleton->szErrorMessage, NMS_TextureManager::szErrorMessageSize, "Loaded [%s] W/O a hitch!", szFilename);
 	return image;;
 }
 
 void NMS_TextureManager::FreeTexture (int nID) {
 	int nIndex = -1;
+	//Search in all the texture ID array to find the requested ID
 	for (int i = 0; i < m_Singleton->nAvailable; i++) {
 		if (m_Singleton->nTexIDs [i] == nID) {
 			m_Singleton->nTexIDs [i] = -1;
-			nIndex = i;	// to indicate a match was found
-			break;		// their _should_ only be one instance of nID (if any)
+			nIndex = i;	 //A match has been found, delete it using glDeleteTextures
+			break;		//We can safely stop here, there should be just only one ID
 		}
 	}
 
 	if (nIndex != -1) {
 		unsigned int uiGLID = (unsigned int) nID;
-		glDeleteTextures (1, &uiGLID);
+		glDeleteTextures (1, &uiGLID);  //Delete the requested texture
 	}
 }
 
 void NMS_TextureManager::FreeAll (void) {
 	
-	// copy the ids to an unsigned integer array, so GL will like it ;)
-	unsigned int *pUIIDs = new unsigned int [m_Singleton->nNumTextures];
-	int i, j;
-	for (i = 0, j = 0; i < m_Singleton->nNumTextures; i++) {
+	//This is done just to avoid glWarnings...
+	unsigned int *p_UnsignedIDS = new unsigned int [m_Singleton->nNumTextures];
+	//Just copy over the textures that are not been deleted already...
+	int i,j;
+	for (i = 0, j= 0; i < m_Singleton->nNumTextures; i++) {
 		if (m_Singleton->nTexIDs [i] != -1) {
-			pUIIDs [j] = m_Singleton->nTexIDs [i];
+			p_UnsignedIDS [j] = m_Singleton->nTexIDs [i];
 			j++;
 		}
 	}
+	
+	//Delete the found ones
+	glDeleteTextures (m_Singleton->nNumTextures, p_UnsignedIDS);
 
-	glDeleteTextures (m_Singleton->nNumTextures, pUIIDs);
-
-	delete [] pUIIDs;
+	//Free the memory
+	delete [] p_UnsignedIDS;
 	delete [] m_Singleton->nTexIDs;
+
+	//And create a fresh array to store textures
 	m_Singleton->nTexIDs = new int [INITIAL_SIZE];
 	m_Singleton->nAvailable = INITIAL_SIZE;
 	for (i = 0; i < INITIAL_SIZE; i++)
@@ -148,13 +186,10 @@ void NMS_TextureManager::FreeAll (void) {
 	m_Singleton->nNumTextures = 0;
 }
 
-// ===================================================================
-
 int NMS_TextureManager::GetNewTextureID (int nPossibleTextureID) {
 
-	// First check if the possible textureID has already been
-	// used, however the default value is -1, err that is what
-	// this method is passed from LoadTexture ()
+	//Check if the passed texture is used, if it is just create a new one, otherwise
+	//use the one provided
 	if (nPossibleTextureID != -1) {
 		for (int i = 0; i < m_Singleton->nAvailable; i++) {
 			if (m_Singleton->nTexIDs [i] == nPossibleTextureID) {
@@ -165,32 +200,32 @@ int NMS_TextureManager::GetNewTextureID (int nPossibleTextureID) {
 		}
 	}
 
-	// Actually look for a new one
+	//Get a new texture ID
 	int nNewTextureID;
 	if (nPossibleTextureID == -1) {
 		unsigned int nGLID;	
 		glGenTextures (1, &nGLID);
 		nNewTextureID = (int) nGLID;
 	}
-	else	// If the user is handle the textureIDs
+	else	// Use the one provided
 		nNewTextureID = nPossibleTextureID;
 	
-	// find an empty slot in the TexID array
+	// Find and empty spot in the texture array
 	int nIndex = 0;
 	while (m_Singleton->nTexIDs [nIndex] != -1 && nIndex < m_Singleton->nAvailable)
 		nIndex++;
 
-	// all space exaused, make MORE!
+	// We have filled everything, increase the array space
 	if (nIndex >= m_Singleton->nAvailable) {
 		int *pNewIDs = new int [m_Singleton->nAvailable + TEXTURE_STEP];
 		int i;
 		
-		// copy the old
+		// Copy the old array
 		for (i = 0; i < m_Singleton->nAvailable; i++)
 			pNewIDs [i] = m_Singleton->nTexIDs [i];
-		// set the last increment to the newest ID
+		// Set the last increment to contain the new ID
 		pNewIDs [m_Singleton->nAvailable] = nNewTextureID;
-		// set the new to '-1'
+		// Make sure that the other cells are not usable
 		for (i = 1; i < TEXTURE_STEP; i++)
 			pNewIDs [i + m_Singleton->nAvailable] = -1;
 
@@ -201,20 +236,16 @@ int NMS_TextureManager::GetNewTextureID (int nPossibleTextureID) {
 	else
 		m_Singleton->nTexIDs [nIndex] = nNewTextureID;
 
-	// Welcome to our Texture Array!
+	//Return the texture array created
 	m_Singleton->nNumTextures++;
 	return nNewTextureID;
 }
-
-// ===================================================================
 
 char *NMS_TextureManager::GetErrorMessage (void) {
 	return m_Singleton->szErrorMessage;
 }
 
 bool NMS_TextureManager::CheckSize (int nDimension) {
-	// Portability issue, check your endian...
-
 	int i = 1;
 	while (i < nDimension) {
 		i <<= 1;
@@ -236,7 +267,5 @@ int NMS_TextureManager::GetAvailableSpace (void) {
 int NMS_TextureManager::GetTexID (int nIndex) {
 	if (nIndex >= 0 && nIndex < m_Singleton->nAvailable)
 		return m_Singleton->nTexIDs [nIndex];
-
-	// else
 	return 0;
 }

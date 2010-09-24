@@ -1,21 +1,10 @@
 #include "NMS_AssetManager.h"
 
-/**
-	Note : Being a singleton all the data we 'want' is located
-	in NMS_AssetManager::m_Singleton, so although it looks really
-	ugly to have so many 'm_Singleton->'s this is so the code will
-	actually work as designed ;)
-**/
-
 NMS_AssetManager *NMS_AssetManager::m_Singleton = 0;
-// ===================================================================
-/**
-No use for a constructor because this singlton is never created,
-when GetSingleton is called for the first time and issued a 'new'
-command the constructor is called, however because of the memory
-isn't valid until AFTER the constructor it just is a bad idea...
-Use Initialize and Destroy for your dirty work
-**/
+
+
+//NOTE: The constructor is NEVER called directly because this is a singletone class.
+//When the GetSingletone command is issue the constructor will be called, to initialize data just use Initialize
 NMS_AssetManager::NMS_AssetManager (void) {
 	// This is just to be clean, but all 'real' data
 	// is in m_Singleton
@@ -32,7 +21,6 @@ NMS_AssetManager &NMS_AssetManager::GetSingleton (void) {
 		m_Singleton = new NMS_AssetManager;
 		Initialize ();
 	}
-
 	return *m_Singleton;
 }
 
@@ -47,19 +35,15 @@ void NMS_AssetManager::Destroy (void) {
 	}
 }
 
-// ===================================================================
-
-
-// ===================================================================
 
 char *NMS_AssetManager::GetErrorMessage (void) {
 	return m_Singleton->szErrorMessage;
 }
 
-//int  NMS_AssetManager::LoadTexture(const char *p_Filename, int iTextureID = -1)
-//{
-//	return NMS_TEXTUREMANAGER.LoadTexture(p_Filename,iTextureID);
-//}
+int  NMS_AssetManager::LoadTexture(const char *p_Filename, int iTextureID)
+{
+	return NMS_TEXTUREMANAGER.LoadTexture(p_Filename,iTextureID);
+}
 
 void NMS_AssetManager::FreeTexture   (int nID)
 {
@@ -69,4 +53,5 @@ void NMS_AssetManager::FreeTexture   (int nID)
 void NMS_AssetManager::FreeAll()
 {
 	NMS_TEXTUREMANAGER.FreeAll();
+	//Remember to release also the other assets!
 }

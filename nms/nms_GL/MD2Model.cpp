@@ -123,7 +123,7 @@ int MD2Model::ReadFile(const char* fileName)
 	Free((void**)&fileBuffer);
 
 	//Calculate the size of the file
-	long fileSize= FileSize(fp);
+	long fileSize= nmsFileManagement::FileSize(fp);
 	if (fileSize<=0)
 		return 1;
 
@@ -140,17 +140,6 @@ int MD2Model::ReadFile(const char* fileName)
 	fclose(fp);
 	return 0;
 }
-
-long MD2Model::FileSize(FILE *fp)
-{
-	//Return the filesize of the file by seeking to the end of the file
-	long oldpos=ftell(fp);
-	fseek(fp,0,SEEK_END);
-	long curpos=ftell(fp);
-	fseek(fp,oldpos,SEEK_SET);
-	return curpos;
-}
-
 
 
 //Load the header of the model as stored into the buffer
