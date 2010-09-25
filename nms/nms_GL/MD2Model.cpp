@@ -59,7 +59,7 @@ MD2Model::~MD2Model()
 
 
 //Load the model file
-int MD2Model::LoadModel(const char* modelName,const char* textureName)
+int MD2Model::LoadModel(const char* modelName,char* textureName)
 {
 	int result=0;
 
@@ -197,7 +197,7 @@ void MD2Model::InitData()
 /*
 	Name : LoadData
 */
-void MD2Model::LoadData(const char* textureName)
+void MD2Model::LoadData(char* textureName)
 {
 	LoadSkin(textureName);
 	LoadFrames();
@@ -376,9 +376,9 @@ void MD2Model::Interpolate( vec3_t *vertlist )
     }
 }
 
-int MD2Model::LoadSkin( const char *filename )
+int MD2Model::LoadSkin(char *filename )
 {
-	textureID=NMS_TEXTUREMANAGER.LoadTexture(filename);
+	textureID=NMS_TEXTUREMANAGER.LoadTexture(filename,filename);
 	return textureID;
    /* return (textureID != TEXMANAGER.LoadTexture( "Texture.tga" ));
 	return 0;*/

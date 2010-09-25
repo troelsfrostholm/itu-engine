@@ -138,8 +138,8 @@ class __declspec(dllexport) MD2Model
 		MD2Model();
 		~MD2Model();
 
-		int		LoadModel(const char* fileName,const char* textureName);
-		int     LoadSkin(const char* fileName);
+		int		LoadModel(const char* fileName,char* textureName);
+		int     LoadSkin(char* fileName);
 		void    SetAnim( int type );
 		void	DrawModel(float time);
 		void	DrawFrame(int frame,int nFrame); // base zero
@@ -150,7 +150,7 @@ class __declspec(dllexport) MD2Model
 	private:
 		//Initialize the variables
 		void	InitData();
-		void	LoadData(const char* textureName);
+		void	LoadData(char* textureName);
 		void	LoadFrames();
 		void	LoadGLCommands();
 

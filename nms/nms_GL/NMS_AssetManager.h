@@ -21,10 +21,10 @@ public :
 	static void Destroy (void);
 
 public :	
-	int  NMS_AssetManager::LoadTexture   (const char *p_Filename, int iTextureID = -1);
+	int  NMS_AssetManager::LoadTexture   (const char *p_Filename,  char* textureName);
 	int  NMS_AssetManager::LoadSound     (const char* p_fileName,int iSoundID=-1);
 	int  NMS_AssetManager::LoadMD2Model  (const char* p_fileName,int iModelID=-1);
-	void NMS_AssetManager::FreeTexture   (int nID);
+	void NMS_AssetManager::FreeTexture   (char* textureName);
 	void NMS_AssetManager::FreeSound     (int nID);
 	void NMS_AssetManager::FreeMD2Model  (int nID);
 	void NMS_AssetManager::FreeAll       (void);
