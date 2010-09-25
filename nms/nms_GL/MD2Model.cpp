@@ -1,5 +1,5 @@
 #include "MD2Model.h"
-#include "NMS_Framework.h" 
+//#include "NMS_Framework.h" 
 
 
 // ----------------------------------------------
@@ -59,7 +59,7 @@ MD2Model::~MD2Model()
 
 
 //Load the model file
-int MD2Model::LoadModel(const char* modelName,char* textureName)
+int MD2Model::LoadModel(const char* modelName)
 {
 	int result=0;
 
@@ -75,7 +75,7 @@ int MD2Model::LoadModel(const char* modelName,char* textureName)
 	
 
 	InitData();
-	LoadData(textureName);
+	LoadData();
 
 	m_anim.startframe   = 0;
     m_anim.endframe     = 0;
@@ -197,9 +197,8 @@ void MD2Model::InitData()
 /*
 	Name : LoadData
 */
-void MD2Model::LoadData(char* textureName)
+void MD2Model::LoadData()
 {
-	LoadSkin(textureName);
 	LoadFrames();
 	LoadGLCommands();
 }
@@ -376,12 +375,10 @@ void MD2Model::Interpolate( vec3_t *vertlist )
     }
 }
 
-int MD2Model::LoadSkin(char *filename )
+int MD2Model::LoadSkin(char *filename)
 {
-	textureID=NMS_TEXTUREMANAGER.LoadTexture(filename,filename);
+	textureID=NMS_ASSETMANAGER.LoadTexture(filename,filename);
 	return textureID;
-   /* return (textureID != TEXMANAGER.LoadTexture( "Texture.tga" ));
-	return 0;*/
 }
 
 

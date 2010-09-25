@@ -16,7 +16,7 @@ NMS_AssetManager::~NMS_AssetManager (void) {
 
 }
 
-NMS_AssetManager &NMS_AssetManager::GetSingleton (void) {
+NMS_AssetManager& NMS_AssetManager::GetSingleton (void) {
 	if (!m_Singleton) {
 		m_Singleton = new NMS_AssetManager;
 		Initialize ();

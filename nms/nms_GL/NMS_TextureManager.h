@@ -1,5 +1,5 @@
-#ifndef NMS_TEXTUREMANAGER
-#define NMS_TEXTUREMANAGER
+#ifndef __NMS_TEXTUREMANAGER
+#define __NMS_TEXTUREMANAGER
 
 #include "NMS_sha1.h"
 #include "NMS_FileManagement.h"
@@ -19,7 +19,7 @@
 #include <IL/il.h>
 		
 #define NMS_TEXTUREMANAGER	NMS_TextureManager::GetSingleton()
-#define DESTROY_NMS_TEXTUREMANAGER	NMS_TextureManager::Destroy();
+#define DESTROY_NMS_TEXTUREMANAGER	NMS_TextureManager::Destroy()
 
 
 //This structure contains the ID of the texture together with the hash of the corresponding texture
@@ -43,7 +43,7 @@ public :
 
 public :
 	//Load a texture. We are using devil so we can load any file format that Devil is able to load as a texture
-	int LoadTexture (const char *szFilename, char* textureName);
+	int LoadTexture (const char *szFilename,char* textureName);
 	//Release the memory space occupied by a specific texture
 	void FreeTexture (char* textureName);
 	//Release the memory occupied by all the textures

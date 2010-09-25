@@ -28,7 +28,7 @@ void NMS_TextureManager::Destroy (void) {
 	}
 }
 
-int NMS_TextureManager::LoadTexture (const char* sFilename, char* textureName) {
+int NMS_TextureManager::LoadTexture (const char* sFilename,char* textureName) {
 	if(_DEBUG)
 	{
 		sprintf_s (m_Singleton->m_sMessage, m_Singleton->m_iMessageSize, "NMS_TextureManager::Trying to load [%s]\n", sFilename);
@@ -78,23 +78,29 @@ int NMS_TextureManager::LoadTexture (const char* sFilename, char* textureName) {
 	  //Create the sha1
 	  hash=nmsSha1::returnSha1(Lump,fileSize);
 	  textStruct imageToBeAdded=checkForHash(hash,textureName);
+
+	  GLuint image=NULL;
+	  ILuint texid=NULL;
 	  //Just a basic check. If both the textID AND the hash are different from NULL that means that 
 	  //we have already the texture and we just want to change the name into the map
 	  if(imageToBeAdded.textID!=NULL && imageToBeAdded.hash!=NULL)
+	  {
 		  textureMap[textureName]=imageToBeAdded;
+		  image=textureMap[textureName].textID;
+	  }
 	  else
 	  {
 		  //It's the same texture with the same name, do nothing!
 		  if(imageToBeAdded.textID==NULL && imageToBeAdded.hash!=NULL)
-		  {}
+		  {
+			  image=textureMap[textureName].textID;
+		  }
 		  //It's a different texture with the same name, warn the user and exit
 		  else if(imageToBeAdded.textID==-1)
 			    {throw 0;}
 		  else
 			  {
 				  //It's a new image, load it
-				  ILuint texid;
-				  GLuint image;
 				  ILboolean success;
 				  ilInit(); /* Initialization of DevIL */
 				  ilGenImages(1, &texid); /* Generation of one image name */
@@ -110,35 +116,42 @@ int NMS_TextureManager::LoadTexture (const char* sFilename, char* textureName) {
 					if (!success)
 					{
 						LOG.write("NMS_TextureManager::Error in converting the texture in the proper format!\n",LOG_ERROR);
-					  /* Error occured */
-					  return -1;
+						ilDeleteImages(1, &texid);					 
+						/* Error occured */
+						return -1;
 					}
+
+
+					//Create the new image
+					glGenTextures(1, &image); /* Texture name generation */
+					glBindTexture(GL_TEXTURE_2D, image);
+					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
+					  /* We will use linear interpolation for magnification filter */
+					  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
+					  /* We will use linear interpolation for minifying filter */
+					  glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_BPP), ilGetInteger(IL_IMAGE_WIDTH),
+							 ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE,
+							 ilGetData()); /* Texture specification */
+
+
+
 					if(_DEBUG)
 						LOG.write("NMS_TextureManager::Texture loaded from Lump!\n",LOG_DEBUG);
-					glGenTextures(1, &image); /* Texture name generation */
-					glBindTexture(GL_TEXTURE_2D, image); /* Binding of texture name */
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); /* We will use linear
-					  interpolation for magnification filter */
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); /* We will use linear
-					  interpolation for minifying filter */
-					glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_BPP), ilGetInteger(IL_IMAGE_WIDTH),
-					  ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE,
-					  ilGetData()); /* Texture specification */
 				  }
 				  else
 				  {
 					/* Error occured */
 					LOG.write("NMS_TextureManager::Error in loading the texture from the Lump!\n",LOG_ERROR);
+					ilDeleteImages(1, &texid);
 					return -1;
 				  }
-				  ilDeleteImages(1, &texid); 
-				  textStruct temp;
-				  temp.textID=image;
-				  temp.hash=hash;
-				  textureMap[textureName]=temp;
-				  
 			  }
 	  }
+	  //Pick the image that has been created to be used in our context
+	  glBindTexture(GL_TEXTURE_2D, image); /* Binding of texture name */
+	  textureMap[textureName].textID=image;
+	  textureMap[textureName].hash=hash;
+	  ilDeleteImages(1, &texid);
 	  //Close the file we are done with it
 	  fclose(fp);
 	  if(_DEBUG)
