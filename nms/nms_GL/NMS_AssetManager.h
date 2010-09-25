@@ -14,7 +14,8 @@ class __declspec(dllexport) NMS_AssetManager {
 public :
 	NMS_AssetManager (void);
 	~NMS_AssetManager (void);
-	static NMS_AssetManager &GetSingleton (void);
+	static NMS_AssetManager& GetSingleton (void);
+
 
 private :	// This is called automaticaly! Don't do it yourself!
 	static void Initialize (void);

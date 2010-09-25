@@ -10,6 +10,7 @@
 #include "Quaternion.h"
 #include "Trig.h"
 #include "NMS_AssetManager.h"
+#include "NMS_Event.h"
 
 class  __declspec(dllexport) NMSCameraController
 {
@@ -50,11 +51,6 @@ class  __declspec(dllexport) NMSCameraController
 		virtual void recalcAxes()=0;
 		virtual void init()=0;
 };
-
-
-
-
-
 
 class __declspec(dllexport) NMSCameraFPS : public NMSCameraController
 {
@@ -101,7 +97,9 @@ public:
 	NMSCameraFPS camera;
 	NMS_Framework();
 	bool NMSInit(int width,int height,int bpp,char* windowTitle,bool fullscreen);
-	void NMSQuit();
+	void NMSQuit(int i);
+	void run();
+	void processEvents();
 	static void NMSLoadTexture(char* fileName,int id);
 	void CalculateFrameRate();
 };

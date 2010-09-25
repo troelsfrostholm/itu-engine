@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
 		else
 			break;
 	}
-	engine.NMSQuit();
+	engine.NMSQuit(0);
 	return 0; 
 };
 
@@ -80,7 +80,7 @@ void ProcessEvents()
 				  //xspeed=0.0;
 				  //yspeed=0.0;
 				   break;
-			  case SDLK_ESCAPE:engine.NMSQuit();
+			  case SDLK_ESCAPE:engine.NMSQuit(0);
 				   break;
 			} 
 			break;
@@ -112,7 +112,7 @@ void ProcessEvents()
 				  //xspeed=0.0;
 				  //yspeed=0.0;
 				   break;
-			  case SDLK_ESCAPE:engine.NMSQuit();
+			  case SDLK_ESCAPE:engine.NMSQuit(0);
 				   break;
 			} 
 			break;
@@ -132,7 +132,7 @@ void ProcessEvents()
 			}
 			break;
 		case SDL_QUIT:
-			engine.NMSQuit();
+			engine.NMSQuit(0);
 			break;
 		}
 	}
@@ -265,6 +265,7 @@ void DrawScene()
 	Matrix view=engine.camera.returnViewMatrix();
 	view=(~view);
 	glMultMatrixf(view.returnPointer());
+	
 	DrawMD2Model();
 	//DrawSampleScene();
 	SDL_GL_SwapBuffers();
