@@ -74,11 +74,15 @@ void NMS_Framework::CalculateFrameRate()
 
 void NMS_Framework::run()
 {
+	rendering=true;
+	SDL_Thread *renderThread = SDL_CreateMemberThread(this, &NMS_Framework::renderingLoop);
 	while(running)
 	{
 		NMS_EVENT.processEvents();
-		render();
+		//render();
 	}
+	rendering=false;
+	SDL_WaitThread(renderThread, NULL);
 	NMS_Framework::cleanup();
 }
 
@@ -87,6 +91,15 @@ void NMS_Framework::cleanup()
 	//Be sure to remove all the textures we have loaded from the memory!
 	NMS_TEXTUREMANAGER.FreeAll();
 	SDL_Quit();
+}
+
+int NMS_Framework::renderingLoop()
+{
+	while(rendering) {
+		render();
+	}
+
+	return 0;
 }
 
 void NMS_Framework::render()

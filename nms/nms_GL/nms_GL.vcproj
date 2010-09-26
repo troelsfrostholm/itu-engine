@@ -231,6 +231,10 @@
 				RelativePath=".\NMS_TextureManager.h"
 				>
 			</File>
+			<File
+				RelativePath=".\SDL_MemberThread.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"

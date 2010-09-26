@@ -12,9 +12,7 @@
 #include "NMS_AssetManager.h"
 #include "NMS_Event.h"
 #include "NMS_Camera.h"
-
-
-
+#include "SDL_MemberThread.h"
 
 class __declspec(dllexport) NMS_Framework
 {
@@ -23,12 +21,14 @@ protected:
 	
 public:
 	bool running;
+	bool rendering;
 	NMSCameraFPS camera;
 	NMS_Framework();
 	bool NMSInit(int width,int height,int bpp,char* windowTitle,bool fullscreen);
 	void NMSQuit(int i);
 	void run();
 	void render();
+	int renderingLoop();
 	void processEvents();
 	static void NMSLoadTexture(char* fileName,int id);
 	void CalculateFrameRate();
