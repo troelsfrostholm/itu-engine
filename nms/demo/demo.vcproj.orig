@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="nms_GL"
-	ProjectGUID="{3EC8E3BA-BB90-4580-A5D5-61349C5E36A8}"
-	RootNamespace="nms_GL"
+	Name="demo"
+	ProjectGUID="{F40F725E-7DCC-4FD0-BD9D-254D2715AC64}"
+	RootNamespace="demo"
 	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
@@ -19,8 +19,8 @@
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="2"
-			CharacterSet="0"
+			ConfigurationType="1"
+			CharacterSet="2"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -41,9 +41,9 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 <<<<<<< HEAD
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\nms_math&quot;;&quot;$(SolutionDir)\include\Boost 1.4.4&quot;;&quot;$(SolutionDir)\include&quot;;&quot;$(SolutionDir)\include\Devil 1.7.8&quot;;&quot;$(SolutionDir)\include\SDL 1.2.14&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\include\Devil 1.7.8&quot;;&quot;$(SolutionDir)\include\Boost 1.4.4&quot;;&quot;$(SolutionDir)\nms_GL&quot;;&quot;$(SolutionDir)\include\SDL 1.2.14&quot;;&quot;$(SolutionDir)\nms_math&quot;"
 =======
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\nms_math&quot;;&quot;$(SolutionDir)\nms_utilities&quot;;&quot;$(SolutionDir)\include&quot;;&quot;$(SolutionDir)\include\Devil 1.7.8&quot;;&quot;$(SolutionDir)\include\SDL 1.2.14&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\include\Devil 1.7.8&quot;;&quot;$(SolutionDir)\nms_utilities&quot;;&quot;$(SolutionDir)\nms_GL&quot;;&quot;$(SolutionDir)\include\SDL 1.2.14&quot;;&quot;$(SolutionDir)\nms_math&quot;"
 >>>>>>> 5154c9f164b0afc4b08eddfe2d3903844d9df17a
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -62,12 +62,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="sdl.lib sdlmain.lib opengl32.lib glu32.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib advapi32.lib Devil.lib nms_math.lib nms_utilities.lib"
-				AdditionalLibraryDirectories="&quot;$(SolutionDir)\Debug&quot;;&quot;$(SolutionDir)\lib&quot;;&quot;$(SolutionDir)\lib\SDL 1.2.14&quot;;&quot;$(SolutionDir)\lib\Devil 1.7.8&quot;;&quot;$(SolutionDir)\release&quot;"
+				AdditionalDependencies="sdl.lib sdlmain.lib opengl32.lib glu32.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib advapi32.lib nms_math.lib Devil.lib nms_GL.lib"
+				AdditionalLibraryDirectories="&quot;$(SolutionDir)\Debug&quot;;&quot;$(SolutionDir)\lib&quot;;&quot;C:\Users\Maja\Kode\itu-engine\nms\lib\SDL 1.2.14&quot;;&quot;$(SolutionDir)\lib\Devil 1.7.8&quot;;&quot;$(SolutionDir)\release&quot;"
 				GenerateDebugInformation="true"
 				SubSystem="2"
-				EntryPointSymbol=""
-				ResourceOnlyDLL="false"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -119,7 +117,6 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="&quot;C:\Users\Leyart\Documents\ITU\Game Engines\itu-engine\nms\nms_math&quot;;&quot;C:\Users\Leyart\Documents\ITU\Game Engines\itu-engine\nms\Release&quot;"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				WarningLevel="3"
@@ -139,7 +136,6 @@
 				GenerateDebugInformation="true"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				EntryPointSymbol=""
 				TargetMachine="1"
 			/>
 			<Tool
@@ -174,27 +170,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\MD2Model.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\NMS_AssetManager.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\NMS_Event.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\NMS_Framework.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\NMS_SceneGraph.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\NMS_TextureManager.cpp"
+				RelativePath=".\main.cpp"
 				>
 			</File>
 		</Filter>
@@ -203,30 +179,6 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
-			<File
-				RelativePath=".\MD2Model.h"
-				>
-			</File>
-			<File
-				RelativePath=".\NMS_AssetManager.h"
-				>
-			</File>
-			<File
-				RelativePath=".\NMS_Event.h"
-				>
-			</File>
-			<File
-				RelativePath=".\NMS_Framework.h"
-				>
-			</File>
-			<File
-				RelativePath=".\NMS_SceneGraph.h"
-				>
-			</File>
-			<File
-				RelativePath=".\NMS_TextureManager.h"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"

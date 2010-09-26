@@ -178,6 +178,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\NMS_Camera.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\NMS_Event.cpp"
 				>
 			</File>
@@ -205,6 +209,10 @@
 			</File>
 			<File
 				RelativePath=".\NMS_AssetManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NMS_Camera.h"
 				>
 			</File>
 			<File
