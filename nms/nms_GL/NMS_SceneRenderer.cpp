@@ -12,6 +12,8 @@ void NMS_SceneRenderer::down()
 {
 	rendering=false;
 	SDL_WaitThread(renderThread, NULL);
+	sceneGraphRoot = NULL;
+	sceneGraphGuard = NULL;
 }
 
 int NMS_SceneRenderer::renderingLoop()
@@ -26,5 +28,14 @@ int NMS_SceneRenderer::renderingLoop()
 void NMS_SceneRenderer::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	SDL_LockMutex(sceneGraphGuard);
+	sceneGraphRoot->traverse_df(*this);
+	SDL_UnlockMutex(sceneGraphGuard);
 	SDL_GL_SwapBuffers();
+}
+
+void NMS_SceneRenderer::setScene(SceneGraphNode* scene, SDL_mutex* sceneGuard)
+{
+	sceneGraphRoot = scene;
+	sceneGraphGuard = sceneGuard;
 }

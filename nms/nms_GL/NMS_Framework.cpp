@@ -5,7 +5,13 @@ NMS_Framework::NMS_Framework(){};
 
 bool NMS_Framework::NMSInit(int width,int height,int bpp,char* windowTitle,bool fullscreen)
 {
+	//Instantiate sub-systems
 	sceneRenderer = NMS_SceneRenderer();
+	
+	//Create scene-graph
+	sceneGraphRoot = new TransformationNode(Matrix());
+	sceneGraphGuard = SDL_CreateMutex();
+	sceneRenderer.setScene(sceneGraphRoot, sceneGraphGuard);
 
 	//set callback for quitting
 	NMS_EVENT.onQuit(this, &NMS_Framework::NMSQuit);
@@ -89,5 +95,8 @@ void NMS_Framework::cleanup()
 {
 	//Be sure to remove all the textures we have loaded from the memory!
 	NMS_TEXTUREMANAGER.FreeAll();
+	delete(sceneGraphRoot);
+	SDL_DestroyMutex(sceneGraphGuard);
+	sceneGraphRoot = NULL;
 	SDL_Quit();
 }

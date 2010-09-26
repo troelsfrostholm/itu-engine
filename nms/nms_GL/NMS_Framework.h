@@ -20,6 +20,8 @@ class __declspec(dllexport) NMS_Framework
 protected:
 	int flags;
 	NMS_SceneRenderer sceneRenderer;
+	SceneGraphNode* sceneGraphRoot;
+	SDL_mutex* sceneGraphGuard;
 	
 public:
 	bool running;

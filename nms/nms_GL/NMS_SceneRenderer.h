@@ -8,8 +8,10 @@
 class NMS_SceneRenderer : public SceneGraphVisitor
 {
 protected:
-	bool rendering;
+	SceneGraphNode* sceneGraphRoot;
+	SDL_mutex* sceneGraphGuard;
 	SDL_Thread *renderThread;
+	bool rendering;
 
 public:
 	NMS_SceneRenderer();
@@ -17,6 +19,7 @@ public:
 	void down();
 	int renderingLoop();
 	void render();
+	void setScene(SceneGraphNode* scene, SDL_mutex* sceneGuard);
 };
 
 #endif
