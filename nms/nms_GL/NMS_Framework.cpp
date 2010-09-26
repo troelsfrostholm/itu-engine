@@ -5,6 +5,9 @@ NMS_Framework::NMS_Framework(){};
 
 bool NMS_Framework::NMSInit(int width,int height,int bpp,char* windowTitle,bool fullscreen)
 {
+	//set callback for quitting
+	NMS_EVENT.onQuit(this, &NMS_Framework::NMSQuit);
+
 	//try to initialize SDL
 	if( SDL_Init( SDL_INIT_EVERYTHING ) < 0 ) 
 		{ return false; } 
@@ -47,7 +50,7 @@ bool NMS_Framework::NMSInit(int width,int height,int bpp,char* windowTitle,bool 
 	return true;
 }
 
-void NMS_Framework::NMSQuit()
+void NMS_Framework::NMSQuit(int i)
 {
 	running=false;
 	//Be sure to remove all the textures we have loaded from the memory!
@@ -72,10 +75,14 @@ void NMS_Framework::CalculateFrameRate()
 	}
 }
 
-
-
-
-
+void NMS_Framework::run()
+{
+	while(running)
+	{
+		NMS_EVENT.processEvents();
+		//render();
+	}
+}
 
 //CAMERA CONTROLELR FUNCTION DEFINITIONS
 

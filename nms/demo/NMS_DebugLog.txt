@@ -1,0 +1,10 @@
+NMS_TextureManager::Texture Manager Initialized!
+NMS_TextureManager::Trying to load [models/Baron/baron.jpg]
+NMS_TextureManager::Lump created correctly!
+NMS_TextureManager::Texture loaded from Lump!
+NMS_TextureManager::Loaded [models/Baron/baron.jpg] without issues!
+NMS_TextureManager::Trying to load [models/Baron/baron.jpg]
+NMS_TextureManager::Lump created correctly!
+NMS_TextureManager::Loaded [models/Baron/baron.jpg] without issues!
+NMS_TextureManager::Freed the whole memory!
+NMS_TextureManager::Freed the whole memory!

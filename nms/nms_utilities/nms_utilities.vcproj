@@ -158,6 +158,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\NMS_LogFunctions.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\NMS_sha1.cpp"
 				>
 			</File>
@@ -168,7 +172,15 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\NMS_CustomTypes.h"
+				>
+			</File>
+			<File
 				RelativePath=".\NMS_FileManagement.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NMS_LogFunctions.h"
 				>
 			</File>
 			<File

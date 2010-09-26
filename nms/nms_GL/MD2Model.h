@@ -6,7 +6,7 @@
 #include <gl\gl.h>			// Header File For The OpenGL32 Library
 #include <gl\glu.h>			// Header File For The GLu32 Library 
 #include <stdio.h>
-#include "NMS_TextureManager.h"
+#include "NMS_AssetManager.h"
 #include "NMS_FileManagement.h"
 
 #define MAGIC_NO	844121161  //It means IDP2
@@ -138,8 +138,8 @@ class __declspec(dllexport) MD2Model
 		MD2Model();
 		~MD2Model();
 
-		int		LoadModel(const char* fileName,const char* textureName);
-		int     LoadSkin(const char* fileName);
+		int		LoadModel(const char* fileName);
+		int     LoadSkin(char* fileName);
 		void    SetAnim( int type );
 		void	DrawModel(float time);
 		void	DrawFrame(int frame,int nFrame); // base zero
@@ -150,7 +150,7 @@ class __declspec(dllexport) MD2Model
 	private:
 		//Initialize the variables
 		void	InitData();
-		void	LoadData(const char* textureName);
+		void	LoadData();
 		void	LoadFrames();
 		void	LoadGLCommands();
 
@@ -179,7 +179,7 @@ class __declspec(dllexport) MD2Model
 		int*                p_lightnormals;    // normal index array
 		int*				p_openGlCommands;
 
-		unsigned int        textureID;            // TextureID for the model
+		int        textureID;            // TextureID for the model
 		animState_t         m_anim;             // Animation state
 		float               scaleFactor;            // Scale value for the model
 		pFrame				p_frameData;		//Pointer to the frames array

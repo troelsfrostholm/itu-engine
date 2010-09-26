@@ -16,7 +16,7 @@ NMS_AssetManager::~NMS_AssetManager (void) {
 
 }
 
-NMS_AssetManager &NMS_AssetManager::GetSingleton (void) {
+NMS_AssetManager& NMS_AssetManager::GetSingleton (void) {
 	if (!m_Singleton) {
 		m_Singleton = new NMS_AssetManager;
 		Initialize ();
@@ -40,14 +40,14 @@ char *NMS_AssetManager::GetErrorMessage (void) {
 	return m_Singleton->szErrorMessage;
 }
 
-int  NMS_AssetManager::LoadTexture(const char *p_Filename, int iTextureID)
+int  NMS_AssetManager::LoadTexture(const char *p_Filename, char* textureName)
 {
-	return NMS_TEXTUREMANAGER.LoadTexture(p_Filename,iTextureID);
+	return NMS_TEXTUREMANAGER.LoadTexture(p_Filename,textureName);
 }
 
-void NMS_AssetManager::FreeTexture   (int nID)
+void NMS_AssetManager::FreeTexture   (char* textureName)
 {
-	NMS_TEXTUREMANAGER.FreeTexture(nID);
+	NMS_TEXTUREMANAGER.FreeTexture(textureName);
 }
 
 void NMS_AssetManager::FreeAll()
