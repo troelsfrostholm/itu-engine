@@ -12,12 +12,14 @@
 #include "NMS_AssetManager.h"
 #include "NMS_Event.h"
 #include "NMS_Camera.h"
+#include "NMS_SceneRenderer.h"
 #include "SDL_MemberThread.h"
 
 class __declspec(dllexport) NMS_Framework
 {
 protected:
 	int flags;
+	NMS_SceneRenderer sceneRenderer;
 	
 public:
 	bool running;

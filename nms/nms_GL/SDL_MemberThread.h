@@ -1,3 +1,6 @@
+#ifndef SDL_MEMBER_THREAD
+#define SDL_MEMBER_THREAD
+
 #include "SDL.h"
 
 template <typename T>
@@ -25,3 +28,5 @@ SDL_Thread * SDL_CreateMemberThread(T * instance, int (T::*function)())
     typedef int (*SDL_ThreadFunction)(void *);
     return SDL_CreateThread(reinterpret_cast<SDL_ThreadFunction>(SDL_ThreadProxy<T>::run), &proxy); 
 }
+
+#endif

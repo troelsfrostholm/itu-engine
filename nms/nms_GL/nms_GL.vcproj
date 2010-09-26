@@ -194,6 +194,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\NMS_SceneRenderer.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\NMS_TextureManager.cpp"
 				>
 			</File>
@@ -225,6 +229,10 @@
 			</File>
 			<File
 				RelativePath=".\NMS_SceneGraph.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NMS_SceneRenderer.h"
 				>
 			</File>
 			<File

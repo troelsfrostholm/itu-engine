@@ -42,7 +42,7 @@ int main(int argc, char* argv[])
 		else
 			break;
 	}
-	engine.NMSQuit(0);
+	engine.cleanup();
 	return 0; 
 };
 

@@ -5,6 +5,8 @@ NMS_Framework::NMS_Framework(){};
 
 bool NMS_Framework::NMSInit(int width,int height,int bpp,char* windowTitle,bool fullscreen)
 {
+	sceneRenderer = NMS_SceneRenderer();
+
 	//set callback for quitting
 	NMS_EVENT.onQuit(this, &NMS_Framework::NMSQuit);
 
@@ -74,15 +76,12 @@ void NMS_Framework::CalculateFrameRate()
 
 void NMS_Framework::run()
 {
-	rendering=true;
-	SDL_Thread *renderThread = SDL_CreateMemberThread(this, &NMS_Framework::renderingLoop);
+	sceneRenderer.up();
 	while(running)
 	{
 		NMS_EVENT.processEvents();
-		//render();
 	}
-	rendering=false;
-	SDL_WaitThread(renderThread, NULL);
+	sceneRenderer.down();
 	NMS_Framework::cleanup();
 }
 
@@ -91,19 +90,4 @@ void NMS_Framework::cleanup()
 	//Be sure to remove all the textures we have loaded from the memory!
 	NMS_TEXTUREMANAGER.FreeAll();
 	SDL_Quit();
-}
-
-int NMS_Framework::renderingLoop()
-{
-	while(rendering) {
-		render();
-	}
-
-	return 0;
-}
-
-void NMS_Framework::render()
-{
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	SDL_GL_SwapBuffers();
 }
