@@ -1,242 +1,229 @@
 #include "NMS_TextureManager.h"
 
-
-/**
-	Note : Being a singleton all the data we 'want' is located
-	in NMS_TextureManager::m_Singleton, so although it looks really
-	ugly to have so many 'm_Singleton->'s this is so the code will
-	actually work as designed ;)
-**/
-
 NMS_TextureManager *NMS_TextureManager::m_Singleton = 0;
-// ===================================================================
-/**
-No use for a constructor because this singlton is never created,
-when GetSingleton is called for the first time and issued a 'new'
-command the constructor is called, however because of the memory
-isn't valid until AFTER the constructor it just is a bad idea...
-Use Initialize and Destroy for your dirty work
-**/
-NMS_TextureManager::NMS_TextureManager (void) {
-	// This is just to be clean, but all 'real' data
-	// is in m_Singleton
-	
-	szErrorMessage [0] = '\0';
-	nNumTextures	   = 0;
-	nAvailable     	   = 0;
-	nTexIDs            = 0;
-}
 
-NMS_TextureManager::~NMS_TextureManager (void) {
+NMS_TextureManager::NMS_TextureManager (void) {}
 
-}
+NMS_TextureManager::~NMS_TextureManager (void) {}
 
-NMS_TextureManager &NMS_TextureManager::GetSingleton (void) {
+NMS_TextureManager& NMS_TextureManager::GetSingleton (void) {
 	if (!m_Singleton) {
 		m_Singleton = new NMS_TextureManager;
 		Initialize ();
 	}
-
 	return *m_Singleton;
 }
 
 void NMS_TextureManager::Initialize (void) {
-	sprintf_s (m_Singleton->szErrorMessage, NMS_TextureManager::szErrorMessageSize, "Texture Manager Initialized!");
-
-	m_Singleton->nNumTextures = 0;
-	m_Singleton->nAvailable   = INITIAL_SIZE;
-	m_Singleton->nTexIDs      = new int [INITIAL_SIZE];
-	
-	for (int i = 0; i < m_Singleton->nAvailable; i++) {
-		m_Singleton->nTexIDs [i] = -1;
-	}
+	m_Singleton->m_sMessage[0]='\0';
+	LOG.write("NMS_TextureManager::Texture Manager Initialized!\n",LOG_DEBUG);
 }
 
 void NMS_TextureManager::Destroy (void) {
 	if (m_Singleton) {
-		delete [] m_Singleton->nTexIDs;
-		m_Singleton->nTexIDs = 0;
-	
+		m_Singleton->FreeAll();
 		delete m_Singleton;
 		m_Singleton = 0;
+		LOG.write("NMS_TextureManager::Texture Manager Destroyed!\n",LOG_DEBUG);
 	}
 }
 
-// ===================================================================
-
-int NMS_TextureManager::LoadTexture (const char *szFilename, int nTextureID) {
-	 sprintf_s (m_Singleton->szErrorMessage, NMS_TextureManager::szErrorMessageSize, "Beginning to Loading [%s]", szFilename);
-	 if (ilGetInteger(IL_VERSION_NUM) < IL_VERSION)
+int NMS_TextureManager::LoadTexture (const char* sFilename,char* textureName) {
+	if(_DEBUG)
+	{
+		sprintf_s (m_Singleton->m_sMessage, m_Singleton->m_iMessageSize, "NMS_TextureManager::Trying to load [%s]\n", sFilename);
+		LOG.write(m_sMessage,LOG_DEBUG);
+	}
+	if (ilGetInteger(IL_VERSION_NUM) < IL_VERSION)
 	  {
-		/* wrong DevIL version */
+		  LOG.write("NMS_TextureManager::Wrong DevIL version!\n",LOG_ERROR);
+		  return -1;
+	  }
+	 
+	  //Create the hash on which to compare to see if we have loaded the same two file twice
+	  shaMap hash;
+
+	  //Open the file provided and check for the SHA1 hash to see if we have already another texture like this
+	  FILE	*fp=NULL;
+	  ILubyte *Lump;
+
+	  //Open the texture file
+	  fopen_s(&fp,sFilename,"rb");
+	  if (!fp)
+	  {
+		LOG.write("NMS_TextureManager::Cannot open the texture file!\n",LOG_ERROR);
 		return -1;
 	  }
-	  ILuint texid=nTextureID;
-	  GLuint image;
-	  ILboolean success;
-	  ilInit(); /* Initialization of DevIL */
-	  ilGenImages(1, &texid); /* Generation of one image name */
-	  ilBindImage(texid); /* Binding of image name */
-	  success = ilLoadImage(szFilename); /* Loading of image "image.jpg" */  //USA iLoadImageF
-	  if (success) /* If no error occured: */
+
+	  //Calculate the size of the file
+	  long fileSize= nmsFileManagement::FileSize(fp);
+	  if (fileSize<=0)
 	  {
-		success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE); /* Convert every colour component into
-		  unsigned byte. If your image contains alpha channel you can replace IL_RGB with IL_RGBA */
-		if (!success)
-		{
-		  /* Error occured */
+		  LOG.write("NMS_TextureManager::Negative file size for the texture!\n",LOG_ERROR);
 		  return -1;
-		}
-		glGenTextures(1, &image); /* Texture name generation */
-		glBindTexture(GL_TEXTURE_2D, image); /* Binding of texture name */
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); /* We will use linear
-		  interpolation for magnification filter */
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); /* We will use linear
-		  interpolation for minifying filter */
-		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_BPP), ilGetInteger(IL_IMAGE_WIDTH),
-		  ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE,
-		  ilGetData()); /* Texture specification */
+	  }
+
+	 
+
+	  //Convert the file read to a Lump file to be used by DevIL
+	  Lump = (ILubyte*)malloc(fileSize);
+	  fseek(fp, 0, SEEK_SET);
+	  fread(Lump, 1, fileSize, fp);
+	  fclose(fp);
+	  if(_DEBUG)
+			LOG.write("NMS_TextureManager::Lump created correctly!\n",LOG_DEBUG);
+
+
+
+	  //Create the sha1
+	  hash=nmsSha1::returnSha1(Lump,fileSize);
+	  textStruct imageToBeAdded=checkForHash(hash,textureName);
+
+	  GLuint image=NULL;
+	  ILuint texid=NULL;
+	  //Just a basic check. If both the textID AND the hash are different from NULL that means that 
+	  //we have already the texture and we just want to change the name into the map
+	  if(imageToBeAdded.textID!=NULL && imageToBeAdded.hash!=NULL)
+	  {
+		  textureMap[textureName]=imageToBeAdded;
+		  image=textureMap[textureName].textID;
 	  }
 	  else
 	  {
-		/* Error occured */
-		return -1;
-	  }
-	  ilDeleteImages(1, &texid); 
+		  //It's the same texture with the same name, do nothing!
+		  if(imageToBeAdded.textID==NULL && imageToBeAdded.hash!=NULL)
+		  {
+			  image=textureMap[textureName].textID;
+		  }
+		  //It's a different texture with the same name, warn the user and exit
+		  else if(imageToBeAdded.textID==-1)
+			    {throw 0;}
+		  else
+			  {
+				  //It's a new image, load it
+				  ILboolean success;
+				  ilInit(); /* Initialization of DevIL */
+				  ilGenImages(1, &texid); /* Generation of one image name */
+				  ilBindImage(texid); /* Binding of image name */
+				  success = ilLoadL(IL_TYPE_UNKNOWN,Lump,fileSize); /* Loading of image "image.jpg" */  //USA iLoadImageF
+				  free(Lump);
+				  
 
-	  sprintf_s (m_Singleton->szErrorMessage, NMS_TextureManager::szErrorMessageSize, "Loaded [%s] W/O a hitch!", szFilename);
-	return image;;
+				  if (success) /* If no error occured: */
+				  {
+					success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE); /* Convert every colour component into
+					  unsigned byte. If your image contains alpha channel you can replace IL_RGB with IL_RGBA */
+					if (!success)
+					{
+						LOG.write("NMS_TextureManager::Error in converting the texture in the proper format!\n",LOG_ERROR);
+						ilDeleteImages(1, &texid);					 
+						/* Error occured */
+						return -1;
+					}
+
+
+					//Create the new image
+					glGenTextures(1, &image); /* Texture name generation */
+					glBindTexture(GL_TEXTURE_2D, image);
+					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
+					  /* We will use linear interpolation for magnification filter */
+					  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
+					  /* We will use linear interpolation for minifying filter */
+					  glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_BPP), ilGetInteger(IL_IMAGE_WIDTH),
+							 ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE,
+							 ilGetData()); /* Texture specification */
+
+
+
+					if(_DEBUG)
+						LOG.write("NMS_TextureManager::Texture loaded from Lump!\n",LOG_DEBUG);
+				  }
+				  else
+				  {
+					/* Error occured */
+					LOG.write("NMS_TextureManager::Error in loading the texture from the Lump!\n",LOG_ERROR);
+					ilDeleteImages(1, &texid);
+					return -1;
+				  }
+			  }
+	  }
+	  //Pick the image that has been created to be used in our context
+	  glBindTexture(GL_TEXTURE_2D, image); /* Binding of texture name */
+	  textureMap[textureName].textID=image;
+	  textureMap[textureName].hash=hash;
+	  ilDeleteImages(1, &texid);
+	  //Close the file we are done with it
+	  fclose(fp);
+	  if(_DEBUG)
+	  {
+		  sprintf_s (m_Singleton->m_sMessage, m_Singleton->m_iMessageSize, "NMS_TextureManager::Loaded [%s] without issues!\n", sFilename);
+		  LOG.write(m_sMessage,LOG_DEBUG);
+	  }
+	  return textureMap[textureName].textID;
 }
 
-void NMS_TextureManager::FreeTexture (int nID) {
-	int nIndex = -1;
-	for (int i = 0; i < m_Singleton->nAvailable; i++) {
-		if (m_Singleton->nTexIDs [i] == nID) {
-			m_Singleton->nTexIDs [i] = -1;
-			nIndex = i;	// to indicate a match was found
-			break;		// their _should_ only be one instance of nID (if any)
+void NMS_TextureManager::FreeTexture (char* textureName) {
+	    std::map<char* ,textStruct>::iterator iter = textureMap.find(textureName);
+		if( iter != textureMap.end() ) {
+			//Delete the requested texture
+			glDeleteTextures (1, &textureMap[textureName].textID);
+			if(_DEBUG)
+			{
+				 sprintf_s (m_Singleton->m_sMessage, m_Singleton->m_iMessageSize, "NMS_TextureManager::Deleted image [%s] without issues!\n", textureName);
+				 LOG.write(m_sMessage,LOG_DEBUG);
+			}
 		}
-	}
-
-	if (nIndex != -1) {
-		unsigned int uiGLID = (unsigned int) nID;
-		glDeleteTextures (1, &uiGLID);
-	}
+		  
 }
 
 void NMS_TextureManager::FreeAll (void) {
-	
-	// copy the ids to an unsigned integer array, so GL will like it ;)
-	unsigned int *pUIIDs = new unsigned int [m_Singleton->nNumTextures];
-	int i, j;
-	for (i = 0, j = 0; i < m_Singleton->nNumTextures; i++) {
-		if (m_Singleton->nTexIDs [i] != -1) {
-			pUIIDs [j] = m_Singleton->nTexIDs [i];
-			j++;
-		}
-	}
-
-	glDeleteTextures (m_Singleton->nNumTextures, pUIIDs);
-
-	delete [] pUIIDs;
-	delete [] m_Singleton->nTexIDs;
-	m_Singleton->nTexIDs = new int [INITIAL_SIZE];
-	m_Singleton->nAvailable = INITIAL_SIZE;
-	for (i = 0; i < INITIAL_SIZE; i++)
-		m_Singleton->nTexIDs [i] = -1;
-	
-	m_Singleton->nNumTextures = 0;
+	 std::map<char* ,textStruct>::iterator iter;
+     for( iter = textureMap.begin(); iter != textureMap.end(); ++iter ) 
+	 {
+      glDeleteTextures (1, &textureMap[iter->first].textID);
+     }
+	 if(_DEBUG)
+	 {
+		LOG.write("NMS_TextureManager::Freed the whole memory!\n",LOG_DEBUG);
+	 }
 }
 
-// ===================================================================
-
-int NMS_TextureManager::GetNewTextureID (int nPossibleTextureID) {
-
-	// First check if the possible textureID has already been
-	// used, however the default value is -1, err that is what
-	// this method is passed from LoadTexture ()
-	if (nPossibleTextureID != -1) {
-		for (int i = 0; i < m_Singleton->nAvailable; i++) {
-			if (m_Singleton->nTexIDs [i] == nPossibleTextureID) {
-				FreeTexture (nPossibleTextureID);	// sets nTexIDs [i] to -1...
-				m_Singleton->nNumTextures--;		// since we will add the ID again...
-				break;
-			}
-		}
-	}
-
-	// Actually look for a new one
-	int nNewTextureID;
-	if (nPossibleTextureID == -1) {
+int NMS_TextureManager::GetNewTextureID () {
+		//Get a new texture ID
+		int nNewTextureID;
 		unsigned int nGLID;	
 		glGenTextures (1, &nGLID);
-		nNewTextureID = (int) nGLID;
+		return nNewTextureID = (int) nGLID;
+}
+
+textStruct NMS_TextureManager::checkForHash(shaMap hash,char* textureName)
+{
+	shaMap current=NULL;
+	textStruct toBeReturned;
+	toBeReturned.hash=NULL;
+	toBeReturned.textID=NULL;
+	std::map<char*, textStruct>::const_iterator itr;
+	for(itr = textureMap.begin(); itr != textureMap.end(); ++itr)
+	{
+		if(0==strcmp(hash,itr->second.hash))
+		{
+			if(0==strcmp(itr->first,textureName))
+				toBeReturned.textID=NULL;
+			else
+				toBeReturned.textID=itr->second.textID;
+			//We have found a corresponding texture, just return the ID of the image that is in memory
+			toBeReturned.hash=itr->second.hash;
+			return toBeReturned;
+		}
+		else 
+			//It's an error the user cannot use the same name for two different files!
+			//Warn the user
+			if(0==strcmp(itr->first,textureName))
+			{
+				LOG.write("NMS_TextureManager::Impossible to assign the same name to two different textures!\n",LOG_RUN);
+				toBeReturned.textID=-1;
+				return toBeReturned;
+			}
 	}
-	else	// If the user is handle the textureIDs
-		nNewTextureID = nPossibleTextureID;
-	
-	// find an empty slot in the TexID array
-	int nIndex = 0;
-	while (m_Singleton->nTexIDs [nIndex] != -1 && nIndex < m_Singleton->nAvailable)
-		nIndex++;
-
-	// all space exaused, make MORE!
-	if (nIndex >= m_Singleton->nAvailable) {
-		int *pNewIDs = new int [m_Singleton->nAvailable + TEXTURE_STEP];
-		int i;
-		
-		// copy the old
-		for (i = 0; i < m_Singleton->nAvailable; i++)
-			pNewIDs [i] = m_Singleton->nTexIDs [i];
-		// set the last increment to the newest ID
-		pNewIDs [m_Singleton->nAvailable] = nNewTextureID;
-		// set the new to '-1'
-		for (i = 1; i < TEXTURE_STEP; i++)
-			pNewIDs [i + m_Singleton->nAvailable] = -1;
-
-		m_Singleton->nAvailable += TEXTURE_STEP;
-		delete [] m_Singleton->nTexIDs;
-		m_Singleton->nTexIDs = pNewIDs;
-	}
-	else
-		m_Singleton->nTexIDs [nIndex] = nNewTextureID;
-
-	// Welcome to our Texture Array!
-	m_Singleton->nNumTextures++;
-	return nNewTextureID;
-}
-
-// ===================================================================
-
-char *NMS_TextureManager::GetErrorMessage (void) {
-	return m_Singleton->szErrorMessage;
-}
-
-bool NMS_TextureManager::CheckSize (int nDimension) {
-	// Portability issue, check your endian...
-
-	int i = 1;
-	while (i < nDimension) {
-		i <<= 1;
-		if (i == nDimension)
-			return true;
-	}
-
-	return false;
-}
-
-int	NMS_TextureManager::GetNumTextures (void) {
-	return m_Singleton->nNumTextures;
-}
-
-int NMS_TextureManager::GetAvailableSpace (void) {
-	return m_Singleton->nAvailable;
-}
-
-int NMS_TextureManager::GetTexID (int nIndex) {
-	if (nIndex >= 0 && nIndex < m_Singleton->nAvailable)
-		return m_Singleton->nTexIDs [nIndex];
-
-	// else
-	return 0;
+	return toBeReturned;
 }

@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\nms_math&quot;;&quot;$(SolutionDir)\include\Boost 1.4.4&quot;;&quot;$(SolutionDir)\include&quot;;&quot;$(SolutionDir)\include\Devil 1.7.8&quot;;&quot;$(SolutionDir)\include\SDL 1.2.14&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\nms_math&quot;;&quot;$(SolutionDir)\nms_utilities&quot;;&quot;$(SolutionDir)\include\Boost 1.4.4&quot;;&quot;$(SolutionDir)\include&quot;;&quot;$(SolutionDir)\include\Devil 1.7.8&quot;;&quot;$(SolutionDir)\include\SDL 1.2.14&quot;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -58,8 +58,8 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="sdl.lib sdlmain.lib opengl32.lib glu32.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib advapi32.lib nms_math.lib Devil.lib"
-				AdditionalLibraryDirectories="&quot;$(SolutionDir)\Debug&quot;;&quot;$(SolutionDir)\lib&quot;;&quot;C:\Users\Maja\Kode\itu-engine\nms\lib\SDL 1.2.14&quot;;&quot;$(SolutionDir)\lib\Devil 1.7.8&quot;;&quot;$(SolutionDir)\release&quot;"
+				AdditionalDependencies="sdl.lib sdlmain.lib opengl32.lib glu32.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib advapi32.lib Devil.lib nms_math.lib nms_utilities.lib"
+				AdditionalLibraryDirectories="&quot;$(SolutionDir)\Debug&quot;;&quot;$(SolutionDir)\lib&quot;;&quot;$(SolutionDir)\lib\SDL 1.2.14&quot;;&quot;$(SolutionDir)\lib\Devil 1.7.8&quot;;&quot;$(SolutionDir)\release&quot;"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				EntryPointSymbol=""

@@ -25,9 +25,12 @@ void DrawScene();
 int main(int argc, char* argv[])
 { //Start SDL 
 	engine.NMSInit(WIDTH,HEIGHT,16,"Nemesis Engine",false);
-	obj.LoadModel("models/drfreak/drfreak.md2","models/drfreak/drfreak.tga");
+	obj.LoadModel("models/Baron/BaronBody.md2");
+	obj2.LoadModel("models/Baron/KnightHands.md2");
+	obj.LoadSkin("models/Baron/baron.jpg");
+	obj2.LoadSkin("models/Baron/baron.jpg");
 	obj.SetAnim(BOOM);
-	//TEXMANAGER.LoadTexture("Texture.tga",5666); //Load the crate model
+	obj2.SetAnim(BOOM);
 	while(true)
 	{
 		ProcessEvents(); // elabora gli eventi
@@ -144,6 +147,7 @@ void DrawMD2Model()
 	gluLookAt(-87.0, 45.5, 0, 0, 2, 0, 0.0, 1.0, 0.0);
 	animSpeed+=0.0005;
 	obj.DrawModel(animSpeed);
+	obj2.DrawModel(animSpeed);
 }
 
 void DrawNet(GLfloat size, GLint LinesX, GLint LinesZ)

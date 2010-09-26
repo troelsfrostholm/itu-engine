@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="demo"
-	ProjectGUID="{F40F725E-7DCC-4FD0-BD9D-254D2715AC64}"
-	RootNamespace="demo"
+	Name="nms_utilities"
+	ProjectGUID="{497B05A8-520D-47A1-AD4E-FF9E4CBA2D48}"
+	RootNamespace="nms_utilities"
 	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
@@ -19,7 +19,7 @@
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="1"
+			ConfigurationType="4"
 			CharacterSet="2"
 			>
 			<Tool
@@ -40,7 +40,6 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\include\Devil 1.7.8&quot;;&quot;$(SolutionDir)\nms_utilities&quot;;&quot;$(SolutionDir)\include\Boost 1.4.4&quot;;&quot;$(SolutionDir)\nms_GL&quot;;&quot;$(SolutionDir)\include\SDL 1.2.14&quot;;&quot;$(SolutionDir)\nms_math&quot;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -57,18 +56,10 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="sdl.lib sdlmain.lib opengl32.lib glu32.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib advapi32.lib nms_math.lib Devil.lib nms_GL.lib"
-				AdditionalLibraryDirectories="&quot;$(SolutionDir)\Debug&quot;;&quot;$(SolutionDir)\lib&quot;;&quot;C:\Users\Maja\Kode\itu-engine\nms\lib\SDL 1.2.14&quot;;&quot;$(SolutionDir)\lib\Devil 1.7.8&quot;;&quot;$(SolutionDir)\release&quot;"
-				GenerateDebugInformation="true"
-				SubSystem="2"
-				TargetMachine="1"
+				Name="VCLibrarianTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -78,9 +69,6 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -166,7 +154,15 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\main.cpp"
+				RelativePath=".\NMS_FileManagement.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NMS_LogFunctions.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NMS_sha1.cpp"
 				>
 			</File>
 		</Filter>
@@ -175,6 +171,22 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\NMS_CustomTypes.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NMS_FileManagement.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NMS_LogFunctions.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NMS_sha1.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
