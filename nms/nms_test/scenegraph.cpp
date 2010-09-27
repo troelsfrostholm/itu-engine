@@ -7,7 +7,7 @@ using namespace std;
 //using namespace nms;
 
 BOOST_AUTO_TEST_SUITE( scenegraph );
-
+/*
 class SV : public SceneGraphVisitor
 {
 public:
@@ -17,11 +17,11 @@ public:
 		model.render();
 	}
 	void sg_after(Matrix t, Mesh model) {}
-};
+};*/
 
 BOOST_AUTO_TEST_CASE( scenegraph_node )
 {
-
+/*
 	Mesh model = Mesh();
 
 	Matrix t = Matrix();
@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_CASE( scenegraph_node )
 	s5.addChild(&g2);
 
 	SV v = SV();
-	s.traverse_df(&v);
+	s.traverse_df(&v);*/
 }
 
 BOOST_AUTO_TEST_SUITE_END();

@@ -165,7 +165,8 @@ void Matrix::setCol(unsigned i,const Vector& v)
  {
 	Matrix U = Matrix(); //inverse to be found
 	Matrix tmp = m;
-	int i, j = 1;
+	int i = 1;
+	int j = 1;
 	int M = tmp.getRowL()+1;
 	int N = tmp.getColL()+1;
 	if(M != N)

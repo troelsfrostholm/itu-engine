@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
 	SceneGraphNode* root = engine.getScene();
 	Matrix m = Matrix();
 	root->addChild(new TransformationNode(m));
-	root->addChild(geom);
+	//root->addChild(geom);
 	/*root = NULL;
 	baron = NULL;*/
 	engine.run();
