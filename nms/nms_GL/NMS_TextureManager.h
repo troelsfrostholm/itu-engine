@@ -52,11 +52,6 @@ public :
 private :
 	static NMS_TextureManager *m_Singleton;
 
-	//Get a texture ID
-	int GetNewTextureID ();
-	bool CheckSize (int nDimension);
-
-
 	char m_sMessage[80];
 	static const size_t m_iMessageSize=80*sizeof(char);
 	std::map<char* ,textStruct> textureMap;
