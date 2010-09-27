@@ -100,3 +100,8 @@ void NMS_Framework::cleanup()
 	sceneGraphRoot = NULL;
 	SDL_Quit();
 }
+
+SceneGraphNode* NMS_Framework::getScene()
+{
+	return sceneGraphRoot;
+}

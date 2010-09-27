@@ -5,7 +5,7 @@
 #include "SDL_MemberThread.h"
 #include "NMS_SceneGraph.h"
 
-class NMS_SceneRenderer : public SceneGraphVisitor
+class __declspec(dllexport) NMS_SceneRenderer : public SceneGraphVisitor
 {
 protected:
 	SceneGraphNode* sceneGraphRoot;
@@ -20,6 +20,8 @@ public:
 	int renderingLoop();
 	void render();
 	void setScene(SceneGraphNode* scene, SDL_mutex* sceneGuard);
+	void sg_before(Matrix transform, Mesh model);
+	void sg_after(Matrix transform, Mesh model);
 };
 
 #endif

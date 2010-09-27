@@ -37,6 +37,7 @@ public:
 	static void NMSLoadTexture(char* fileName,int id);
 	void CalculateFrameRate();
 	void cleanup();
+	SceneGraphNode* getScene();
 };
 #endif;
 
