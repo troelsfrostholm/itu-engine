@@ -39,7 +39,9 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/DEXP_STL"
 				Optimization="0"
+				PreprocessorDefinitions="__EXP_NMS_UTILITIES"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"

@@ -4,6 +4,8 @@
 
 #include <cmath>
 
+#pragma warning( disable: 4244 )
+
 #define WIDTH  640
 #define HEIGHT  480
 NMS_Framework engine = NMS_Framework();
@@ -32,6 +34,8 @@ int main(int argc, char* argv[])
 	ALfloat sourceVel[] = {0.0f,0.0f,0.0f};
 	audioEngine.LoadWav("test.wav","test",sourcePos,sourceVel,1.0f,5.0f,true);
 	audioEngine.playSound("test");
+	audioEngine.LoadWav("test2.wav","test2",sourcePos,sourceVel,1.0f,5.0f,true);
+	audioEngine.playSound("test2");
 	obj.LoadModel("models/Baron/BaronBody.md2");
 	obj2.LoadModel("models/Baron/KnightHands.md2");
 	obj.LoadSkin("models/Baron/baron.jpg");

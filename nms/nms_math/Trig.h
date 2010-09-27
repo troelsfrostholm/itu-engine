@@ -1,3 +1,6 @@
+#define TRIG_D __declspec(dllexport)
+
+
 #ifndef TRIG_H__
 #define TRIG_H__
 
@@ -6,7 +9,7 @@
 
 #define PI 3.14159265f;
 
-class __declspec(dllexport) nmsTrig
+class TRIG_D nmsTrig
 {
 public:
 	static double degToRad (double d);

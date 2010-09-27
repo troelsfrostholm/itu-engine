@@ -1,3 +1,9 @@
+#ifdef __EXP_NMS_SOUND
+#    define SOUND_MANAGER_D __declspec(dllexport)
+#else
+#    define SOUND_MANAGER_D __declspec(dllimport)
+#endif
+
 #ifndef __NMS_SOUNDMANAGER
 #define __NMS_SOUNDMANAGER
 
@@ -38,7 +44,7 @@ typedef struct
 
 
 
-class __declspec(dllexport) NMS_SoundManager {
+class SOUND_MANAGER_D NMS_SoundManager {
 public :
 	NMS_SoundManager (void);
 	~NMS_SoundManager (void);

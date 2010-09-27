@@ -1,3 +1,9 @@
+#ifdef __EXP_NMS_GL
+#    define SCENE_RENDERER_D __declspec(dllexport)
+#else
+#    define SCENE_RENDERER_D __declspec(dllimport)
+#endif
+
 #ifndef NMS_SCENE_RENDERER
 #define NMS_SCENE_RENDERER
 
@@ -5,7 +11,7 @@
 #include "SDL_MemberThread.h"
 #include "NMS_SceneGraph.h"
 
-class __declspec(dllexport) NMS_SceneRenderer : public SceneGraphVisitor
+class SCENE_RENDERER_D NMS_SceneRenderer : public SceneGraphVisitor
 {
 protected:
 	SceneGraphNode* sceneGraphRoot;

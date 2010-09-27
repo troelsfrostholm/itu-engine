@@ -1,3 +1,6 @@
+#define QUATERNION_D __declspec(dllexport)
+
+
 #ifndef QUATERNION_H__
 #define QUATERNION_H__
 
@@ -9,7 +12,7 @@
 using namespace std;
 
 //Three space vector class
-class __declspec(dllexport) Quaternion : public Vector{
+class QUATERNION_D Quaternion : public Vector{
 public:
 	Quaternion(void);
 	Quaternion(float x,float y,float z,float w);

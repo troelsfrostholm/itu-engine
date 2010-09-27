@@ -1,3 +1,9 @@
+#ifdef __EXP_NMS_GL
+#    define TEXTUREMANAGER_D __declspec(dllexport)
+#else
+#    define TEXTUREMANAGER_D __declspec(dllimport)
+#endif
+
 #ifndef __NMS_TEXTUREMANAGER
 #define __NMS_TEXTUREMANAGER
 
@@ -17,7 +23,10 @@
 
 //Include Devil Libraries
 #include <IL/il.h>
-		
+
+#pragma warning( disable: 4251 )  //Used to disable this useless warning: http://www.unknownroad.com/rtfm/VisualStudio/warningC4251.html
+
+
 #define NMS_TEXTUREMANAGER	NMS_TextureManager::GetSingleton()
 #define DESTROY_NMS_TEXTUREMANAGER	NMS_TextureManager::Destroy()
 
@@ -29,7 +38,7 @@ typedef struct
 	shaMap hash;
 }textStruct;
 
-class __declspec(dllexport) NMS_TextureManager {
+class TEXTUREMANAGER_D NMS_TextureManager {
 public :
 	NMS_TextureManager (void);
 	~NMS_TextureManager (void);
