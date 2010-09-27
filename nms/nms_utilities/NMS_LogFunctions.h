@@ -27,7 +27,6 @@ class __declspec(dllexport) NMS_LogFunctions
 	public :
 		static void Destroy (void);
 		static void write(char* sMessage,logLevel level);
-		static void setDebugLog(bool bMode);
 
 
 	private:
@@ -35,6 +34,5 @@ class __declspec(dllexport) NMS_LogFunctions
 		FILE* m_FErrorLog;
 		FILE* m_FDebugLog;
 		FILE* m_FRunLog;
-		bool  m_bDebugEnabled;
 };
 #endif

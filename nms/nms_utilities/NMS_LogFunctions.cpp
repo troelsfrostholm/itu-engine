@@ -66,7 +66,3 @@ void NMS_LogFunctions::write(char* sMessage,logLevel level)
 	}
 }
 
-void NMS_LogFunctions::setDebugLog(bool bMode)
-{
-	m_Singleton->m_bDebugEnabled=bMode;
-}
