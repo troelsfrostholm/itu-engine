@@ -24,13 +24,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo", "demo\demo.vcproj", 
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo2", "demo2\demo2.vcproj", "{D60A9FA2-7D69-4400-9E6F-6A07E403AD92}"
 	ProjectSection(ProjectDependencies) = postProject
-			{3EC8E3BA-BB90-4580-A5D5-61349C5E36A8} = {3EC8E3BA-BB90-4580-A5D5-61349C5E36A8}
+		{3EC8E3BA-BB90-4580-A5D5-61349C5E36A8} = {3EC8E3BA-BB90-4580-A5D5-61349C5E36A8}
 	EndProjectSection
 EndProject
-
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nms_utilities", "nms_utilities\nms_utilities.vcproj", "{497B05A8-520D-47A1-AD4E-FF9E4CBA2D48}"
 EndProject
-
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NMS_Sound", "NMS_Sound\NMS_Sound.vcproj", "{ABC0F45A-97B6-42F7-9157-F940ED19D651}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -61,6 +61,10 @@ Global
 		{497B05A8-520D-47A1-AD4E-FF9E4CBA2D48}.Debug|Win32.Build.0 = Debug|Win32
 		{497B05A8-520D-47A1-AD4E-FF9E4CBA2D48}.Release|Win32.ActiveCfg = Release|Win32
 		{497B05A8-520D-47A1-AD4E-FF9E4CBA2D48}.Release|Win32.Build.0 = Release|Win32
+		{ABC0F45A-97B6-42F7-9157-F940ED19D651}.Debug|Win32.ActiveCfg = Debug|Win32
+		{ABC0F45A-97B6-42F7-9157-F940ED19D651}.Debug|Win32.Build.0 = Debug|Win32
+		{ABC0F45A-97B6-42F7-9157-F940ED19D651}.Release|Win32.ActiveCfg = Release|Win32
+		{ABC0F45A-97B6-42F7-9157-F940ED19D651}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

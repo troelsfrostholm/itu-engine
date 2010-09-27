@@ -139,7 +139,7 @@ void Matrix::setCol(unsigned i,const Vector& v)
 }
 
  Matrix operator~(const Matrix &m)
-  {
+ {
 	 Matrix temp(m.getColL(),m.getRowL());
 	 for(unsigned i=1;i<=temp.getRowL();i++)
  		 for(unsigned j=1;j<=temp.getColL();j++)
@@ -147,92 +147,81 @@ void Matrix::setCol(unsigned i,const Vector& v)
 			 (temp)(j,i)=m(i,j);;
 		 }
 	 return temp;
-  }
+ }
 
 
- Matrix Matrix::pivot(unsigned column)
+ void Matrix::swapRows(unsigned i, unsigned j)
  {
-	 Matrix temp=(*this);
-	 float maxValue=abs(temp(1,1));
-     unsigned maxPos=1;
-	 //find the line with the biggest value
-	 for(unsigned i=column;i<=temp.getRowL();i++)
-		 {
-			if(abs((*this)(i,column))>maxValue)
-			{
-				maxValue=temp(i,column);
-				maxPos=i;
-			}
-		 }
-	  if(column!=maxPos)
-	  {
-		  //Substitute the columns
-		  for(unsigned j=column;j<=temp.getColL();j++)
-		  {
-			  maxValue=temp(column,j);
-			  temp(column,j)=temp(maxPos,j);
-			  temp(maxPos,j)=maxValue;
-		  }
-	  }
-	  return temp;
+	 float temp;
+	 for(unsigned k=1; k <= (*this).getColL(); k++)
+	 {
+		 temp = (*this)(i,k);
+		 (*this)(i,k) = (*this)(j,k);
+		 (*this)(j,k) = temp;
+	 }
  }
 
  Matrix operator!(const Matrix &m)
-  {
-	 if(m.getRowL() != m.getColL())
-	 {
+ {
+	Matrix U = Matrix(); //inverse to be found
+	Matrix tmp = m;
+	int i, j = 1;
+	int M = tmp.getRowL()+1;
+	int N = tmp.getColL()+1;
+	if(M != N)
+	{
 		 //To be Fixed
 		 throw 0;
-	 }
-	 else
-	 {
-		 //Calculate the U matrix
-		 bool unswapped=true;
-		 Matrix U=Matrix(m.getRowL(),m.getColL()+m.getRowL());
-		 for(unsigned i=1;i<=U.getRowL();i++)
-		 {
-			 for(unsigned j=1;j<=U.getColL();j++)
-			 //Create the [A|I] matrix in the copy
-			 {
-				if(j<=m.getColL())
-					U(i,j)=m(i,j);
-				else if(j==(m.getColL()+i))
-					U(i,j)=1;
-				else
-					U(i,j)=0;
-			 }
-		 }
-		 //Now apply gauss elimination
-		 for(unsigned i=1;i<=U.getRowL();i++)
-		 {
-			 //Do not swap rows if it is the last row!		 
-			 if(i!=U.getRowL())
-				U=U.pivot(i);
-			 float divisor=U(i,i);
-			 //Normalize the row
-			 for(unsigned j=i;j<=U.getColL();j++)
-			 {
-				 U(i,j)=U(i,j)/divisor;
-			 }
-			 //Now subtract the row from the following ones
-			 for(unsigned z=1;z<=U.getRowL();z++)
-			 {
-				 if(z!=i)
-				 {
-					 float multiplier=U(z,i);
-					 for(unsigned j=i;j<=U.getColL();j++)
-					 {
-						 U(z,j)=U(z,j)-multiplier*U(i,j);
-					 }
-				 }
-			 }
-			 U.debugPrint();
-		 }
-		 //Resize to get only the right part of the matrix, the inverse
-		 U.resize(m.getRowL(),m.getColL(),1,m.getColL()+1);
-		 return U;
-	 }
-  }
+	}
+	else
+	{
+		while (i < M && j < N)
+		{
+			//find the biggest element
+			int maxi = i;
+			for(int k = i+1; k<M; k++)
+			{
+				if(abs(tmp(k,j)) > abs(tmp(maxi,j)))
+				{
+					maxi = k;
+				}
+			}
+			
+			//use gaussian elemination
+			if(tmp(maxi,j) != 0)
+			{
+				//if row not in the right place - swap
+				if(i != maxi){
+					tmp.swapRows(i, maxi);
+					U.swapRows(i,maxi);
+				}
+
+				float divisor = tmp(i,j);
+				for(int k=1; k<N; k++)
+				{
+					U(i,k) = U(i,k)/divisor;
+					tmp(i,k) = tmp(i,k)/divisor;
+				}
+
+				for(int k=1; k<M; k++)
+				{
+					if(k != i)
+					{
+						float multiplier = tmp(k,j);
+						for(int l=1; l<N; l++)
+						{
+							U(k,l) = U(k,l) - U(i,l)*multiplier;
+							tmp(k,l) = tmp(k,l) - tmp(i,l)*multiplier;
+						}
+					}
+				}
+				i++;
+			}
+			j++;
+		}
+	}
+	return U;
+ }
 
 
  void Matrix::rotX(const double& angle)

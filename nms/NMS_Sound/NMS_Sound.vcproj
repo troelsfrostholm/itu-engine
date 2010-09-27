@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="demo2"
-	ProjectGUID="{D60A9FA2-7D69-4400-9E6F-6A07E403AD92}"
-	RootNamespace="demo"
+	Name="NMS_Sound"
+	ProjectGUID="{ABC0F45A-97B6-42F7-9157-F940ED19D651}"
+	RootNamespace="NMS_Sound"
 	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
@@ -19,7 +19,7 @@
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="1"
+			ConfigurationType="2"
 			CharacterSet="2"
 			>
 			<Tool
@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\include\Boost 1.4.4&quot;;&quot;$(SolutionDir)\nms_utilities&quot;;&quot;$(SolutionDir)\include\Devil 1.7.8&quot;;&quot;$(SolutionDir)\nms_GL&quot;;&quot;$(SolutionDir)\include\SDL 1.2.14&quot;;&quot;$(SolutionDir)\nms_math&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\nms_math&quot;;&quot;$(SolutionDir)\nms_utilities&quot;;&quot;$(SolutionDir)\include&quot;;&quot;$(SolutionDir)\include\OpenAL 1.1&quot;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -58,10 +58,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="sdl.lib sdlmain.lib opengl32.lib glu32.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib advapi32.lib nms_math.lib Devil.lib nms_GL.lib"
-				AdditionalLibraryDirectories="&quot;$(SolutionDir)\Debug&quot;;&quot;$(SolutionDir)\lib&quot;;&quot;$(SolutionDir)\lib\SDL 1.2.14&quot;;&quot;$(SolutionDir)\lib\Devil 1.7.8&quot;;&quot;$(SolutionDir)\release&quot;"
+				AdditionalDependencies="odbc32.lib odbccp32.lib nms_utilities.lib OpenAL32.lib alut.lib"
+				AdditionalLibraryDirectories="&quot;$(SolutionDir)\Debug&quot;;&quot;$(SolutionDir)\lib\OpenAL 1.1&quot;;&quot;$(SolutionDir)\lib&quot;;&quot;$(SolutionDir)\release&quot;"
 				GenerateDebugInformation="true"
-				SubSystem="2"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -166,7 +165,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\main.cpp"
+				RelativePath=".\NMS_SoundManager.cpp"
 				>
 			</File>
 		</Filter>
@@ -175,6 +174,10 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\NMS_SoundManager.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"

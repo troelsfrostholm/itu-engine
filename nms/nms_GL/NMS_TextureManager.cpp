@@ -188,13 +188,6 @@ void NMS_TextureManager::FreeAll (void) {
 	 }
 }
 
-int NMS_TextureManager::GetNewTextureID () {
-		//Get a new texture ID
-		int nNewTextureID;
-		unsigned int nGLID;	
-		glGenTextures (1, &nGLID);
-		return nNewTextureID = (int) nGLID;
-}
 
 textStruct NMS_TextureManager::checkForHash(shaMap hash,char* textureName)
 {
