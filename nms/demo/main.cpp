@@ -1,5 +1,7 @@
 #include "NMS_Framework.h"
 #include "MD2Model.h"
+#include "NMS_Audio.h"
+
 #include <cmath>
 
 #define WIDTH  640
@@ -25,6 +27,11 @@ void DrawScene();
 int main(int argc, char* argv[])
 { //Start SDL 
 	engine.NMSInit(WIDTH,HEIGHT,16,"Nemesis Engine",false);
+	NMS_Audio audioEngine;
+	ALfloat sourcePos[] = {0.0f,0.0f,0.0f};
+	ALfloat sourceVel[] = {0.0f,0.0f,0.0f};
+	//audioEngine.LoadWav("test.wav","test",sourcePos,sourceVel,1.0f,5.0f,true);
+	//audioEngine.playSound("test");
 	obj.LoadModel("models/Baron/BaronBody.md2");
 	obj2.LoadModel("models/Baron/KnightHands.md2");
 	obj.LoadSkin("models/Baron/baron.jpg");

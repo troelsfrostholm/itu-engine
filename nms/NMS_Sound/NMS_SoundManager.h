@@ -1,6 +1,10 @@
 #ifndef __NMS_SOUNDMANAGER
 #define __NMS_SOUNDMANAGER
 
+
+#pragma warning( disable: 4251 )  //Used to disable this useless warning: http://www.unknownroad.com/rtfm/VisualStudio/warningC4251.html
+#pragma warning(disable : 4996)  //Disable deprecation warning we do not care about deprecation as long as there's support
+
 #include "NMS_sha1.h"
 #include "NMS_FileManagement.h"
 #include "NMS_LogFunctions.h"
@@ -20,24 +24,6 @@
 #include <map>
 #include <string.h>
 #include <stdio.h>
-
-// Maximum data buffers we will need.
-#define MAX_BUFFERS 50
-
-// Maximum emissions we will need.
-#define MAX_SOURCES 50
-
-typedef ALfloat ALPos[3];
-
-typedef struct
-{
-	ALuint  sourceID;
-	//Position of the source
-	ALenum  SourcesPos;
-	//Velocity of the source
-    ALsizei SourcesVel;
-}sourceStruct;
-
 
 //This structure contains the ID of the sound together with the hash and other important informations
 typedef struct
@@ -75,13 +61,6 @@ public :
 
 private :
 	static NMS_SoundManager *m_Singleton;
-
-
-	// Buffers hold sound data.
-	std::vector<ALuint> Buffers;
-	// Sources are points of emitting sound.
-	std::vector<sourceStruct> Sources;
-
 
 	char m_sMessage[80];
 	static const size_t m_iMessageSize=80*sizeof(char);
