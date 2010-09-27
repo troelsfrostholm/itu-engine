@@ -30,8 +30,8 @@ int main(int argc, char* argv[])
 	NMS_Audio audioEngine;
 	ALfloat sourcePos[] = {0.0f,0.0f,0.0f};
 	ALfloat sourceVel[] = {0.0f,0.0f,0.0f};
-	//audioEngine.LoadWav("test.wav","test",sourcePos,sourceVel,1.0f,5.0f,true);
-	//audioEngine.playSound("test");
+	audioEngine.LoadWav("test.wav","test",sourcePos,sourceVel,1.0f,5.0f,true);
+	audioEngine.playSound("test");
 	obj.LoadModel("models/Baron/BaronBody.md2");
 	obj2.LoadModel("models/Baron/KnightHands.md2");
 	obj.LoadSkin("models/Baron/baron.jpg");
