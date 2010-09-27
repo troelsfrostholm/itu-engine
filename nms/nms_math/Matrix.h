@@ -42,8 +42,6 @@ class __declspec(dllexport) Matrix{
 
 	 //Used to allocate and resize a matrix
 	 void Matrix::memoryRealloc (unsigned row, unsigned col,unsigned startRow,unsigned startCol);
-	 //Used to pivoting on the column specified
-	 Matrix Matrix::pivot(unsigned column);
 
   public:
 	  //CONSTRUCTORS
@@ -73,8 +71,7 @@ class __declspec(dllexport) Matrix{
 	     void Matrix::setCol(unsigned i,const Vector& v);
 	     unsigned Matrix::getRowL() const;
 	     unsigned Matrix::getColL() const;
- 
-
+		 void Matrix::swapRows(unsigned i, unsigned j);
 
 	  //Transposition
 	     friend Matrix  operator~(const Matrix &m);
