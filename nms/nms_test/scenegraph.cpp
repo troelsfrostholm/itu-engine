@@ -7,7 +7,7 @@ using namespace std;
 //using namespace nms;
 
 BOOST_AUTO_TEST_SUITE( scenegraph );
-/*
+
 class SV : public SceneGraphVisitor
 {
 public:
@@ -16,18 +16,21 @@ public:
 		cout << "Called back with matrix: " << t << endl;
 		model.render();
 	}
-	void sg_after(Matrix t, Mesh model) {}
-};*/
+	void sg_after(Matrix t, Mesh model) {
+	cout << "Called back with matrix: " << t << endl;
+		model.render();
+	}
+};
 
 BOOST_AUTO_TEST_CASE( scenegraph_node )
 {
-/*
+
 	Mesh model = Mesh();
 
 	Matrix t = Matrix();
 	t.uScale(2.0f);
-	cout << t << endl;
-	cout << !t << endl;
+	cout << "t is " << endl << t << endl;
+	cout << "inverse t is " << endl << !t << endl;
 	TransformationNode s = TransformationNode(t);
 	TransformationNode s2 = TransformationNode(t);
 	TransformationNode s3 = TransformationNode(t);
@@ -44,7 +47,7 @@ BOOST_AUTO_TEST_CASE( scenegraph_node )
 	s5.addChild(&g2);
 
 	SV v = SV();
-	s.traverse_df(&v);*/
+	s.traverse_df(&v);
 }
 
 BOOST_AUTO_TEST_SUITE_END();

@@ -31,6 +31,8 @@ void NMS_SceneRenderer::render()
 	SDL_LockMutex(sceneGraphGuard);
 	sceneGraphRoot->traverse_df(this);
 	SDL_UnlockMutex(sceneGraphGuard);
+	Mesh m = Mesh();
+	m.render();
 	SDL_GL_SwapBuffers();
 }
 
@@ -44,7 +46,7 @@ void NMS_SceneRenderer::setScene(SceneGraphNode* scene, SDL_mutex* sceneGuard)
 void NMS_SceneRenderer::sg_before(Matrix transform, Mesh model)
 {
 	glLoadIdentity();
-	glMultMatrixf(transform.returnPointer());
+	//glMultMatrixf(transform.returnPointer());
 	model.render();
 
 }

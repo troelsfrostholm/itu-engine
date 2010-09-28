@@ -149,7 +149,6 @@ void Matrix::setCol(unsigned i,const Vector& v)
 	 return temp;
  }
 
-
  void Matrix::swapRows(unsigned i, unsigned j)
  {
 	 float temp;
@@ -223,7 +222,6 @@ void Matrix::setCol(unsigned i,const Vector& v)
 	}
 	return U;
  }
-
 
  void Matrix::rotX(const double& angle)
  {
