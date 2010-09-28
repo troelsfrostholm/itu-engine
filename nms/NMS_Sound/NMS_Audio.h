@@ -1,3 +1,9 @@
+#ifdef __EXP_NMS_SOUND
+#    define AUDIO_D __declspec(dllexport)
+#else
+#    define AUDIO_D __declspec(dllimport)
+#endif
+
 #ifndef __NMS_AUDIO
 #define __NMS_AUDIO
 
@@ -36,7 +42,7 @@ typedef struct
 
 }listenerStruct;
 
-class __declspec(dllexport) NMS_Audio
+class AUDIO_D NMS_Audio
 {
 	public:
 		NMS_Audio();

@@ -1,6 +1,6 @@
 #include "NMS_LogFunctions.h"
 
-NMS_LogFunctions *NMS_LogFunctions::m_Singleton = 0;
+NMS_LogFunctions* NMS_LogFunctions::m_Singleton = 0;
 
 NMS_LogFunctions::NMS_LogFunctions (void) {
 }

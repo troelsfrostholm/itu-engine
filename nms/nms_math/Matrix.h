@@ -1,3 +1,6 @@
+#define MATRIX_D __declspec(dllexport)
+
+
 #ifndef MATRIX_H__
 #define MATRIX_H__
 
@@ -13,7 +16,7 @@
 
 using namespace std;
 
-class __declspec(dllexport) Matrix{
+class MATRIX_D Matrix{
   
    private:
 

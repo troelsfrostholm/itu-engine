@@ -1,3 +1,6 @@
+#define VECTOR_D __declspec(dllexport)
+
+
 #ifndef VECTOR_H__
 #define VECTOR_H__
 
@@ -9,8 +12,8 @@
 using namespace std;
 
 //Three space vector class
-class  __declspec(dllexport) Vector : public Point{
-  friend class Quaternion;
+class  VECTOR_D Vector : public Point{
+ // friend class Quaternion;
   public:
 	  //CONSTRUCTORS
 	    Vector();

@@ -1,3 +1,6 @@
+#define POINT_D __declspec(dllexport)
+
+
 #ifndef POINT_H__
 #define POINT_H__
 
@@ -10,7 +13,7 @@ using namespace std;
 #define NMS_Z 3
 #define W 4
 
-class __declspec(dllexport) Point
+class POINT_D Point
 {
   friend class Vector;
   friend class Matrix;

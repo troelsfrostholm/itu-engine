@@ -1,3 +1,9 @@
+#ifdef __EXP_NMS_GL
+#    define MEMBER_THREAD_D __declspec(dllexport)
+#else
+#    define MEMBER_THREAD_D __declspec(dllimport)
+#endif
+
 #ifndef SDL_MEMBER_THREAD
 #define SDL_MEMBER_THREAD
 

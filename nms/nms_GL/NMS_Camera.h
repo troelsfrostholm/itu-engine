@@ -1,11 +1,16 @@
+#ifdef __EXP_NMS_GL
+#    define CAMERA_D __declspec(dllexport)
+#else
+#    define CAMERA_D __declspec(dllimport)
+#endif
+
 #ifndef NMS_CAMERA_H
 #define NMS_CAMERA_H
 
-#include "Vector.h"
 #include "Matrix.h"
 #include "Quaternion.h"
 
-class  __declspec(dllexport) NMSCameraController
+class  CAMERA_D NMSCameraController
 {
 	public:
 		 NMSCameraController();
@@ -45,7 +50,7 @@ class  __declspec(dllexport) NMSCameraController
 		virtual void init()=0;
 };
 
-class __declspec(dllexport) NMSCameraFPS : public NMSCameraController
+class CAMERA_D NMSCameraFPS : public NMSCameraController
 {
 	public:
 		NMSCameraFPS();
