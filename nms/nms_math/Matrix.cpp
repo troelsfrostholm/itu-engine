@@ -2,7 +2,7 @@
 
 Matrix::Matrix()
 {
-	structPointer = new mat_struct(4,4,0);
+	structPointer = new mat_struct(4,4);
 	for(unsigned i=0;i<16;i++)
 	{
 		if((0==i)||(5==i)||(10==i)||(15==i))
@@ -11,12 +11,6 @@ Matrix::Matrix()
 			structPointer->elements[i]=0;
 	}
 }
-
-Matrix::Matrix(unsigned rows,unsigned cols,float* toBeCopied)
-{
-	structPointer = new mat_struct(rows,cols,toBeCopied);
-}
-
 
 Matrix::~Matrix()
  {
@@ -32,15 +26,34 @@ Matrix::Matrix(unsigned rows, unsigned cols)
  {
    if (rows == 0 || cols == 0)
      throw 0;
-   structPointer = new mat_struct(rows,cols,0);
+   structPointer = new mat_struct(rows,cols);
    for(unsigned i=0;i<rows*cols;i++)
 			structPointer->elements[i]=0;
  }
 
 Matrix::Matrix(const Matrix& m)
 {
-	structPointer=m.structPointer;
-	structPointer->refCounter++;
+	structPointer = new mat_struct(m.getRowL(),m.getColL());
+	for(unsigned i=0; i<m.getRowL();i++){
+		for(unsigned j=0; j<m.getColL();j++){
+			structPointer->elements[i*m.getColL()+j] = m(i+1,j+1);
+		}
+	}
+
+}
+
+const Matrix& Matrix::operator = (const Matrix& m)
+{
+	if (this != &m) {
+		delete structPointer;
+		structPointer = new mat_struct(m.getRowL(),m.getColL());
+		for(unsigned i=0; i<m.getRowL();i++){
+			for(unsigned j=0; j<m.getColL();j++){
+				structPointer->elements[i*m.getColL()+j] = m(i+1,j+1);
+			}
+		}
+	}
+	return *this;
 }
 
 float& Matrix::operator() (unsigned row, unsigned col)
@@ -165,7 +178,8 @@ void Matrix::setCol(unsigned i,const Vector& v)
  {
 	Matrix U = Matrix(); //inverse to be found
 	Matrix tmp = m;
-	int i, j = 1;
+	int i = 1;
+	int j = 1;
 	int M = tmp.getRowL()+1;
 	int N = tmp.getColL()+1;
 	if(M != N)
