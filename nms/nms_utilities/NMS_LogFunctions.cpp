@@ -1,6 +1,6 @@
 #include "NMS_LogFunctions.h"
 
-NMS_LogFunctions *NMS_LogFunctions::m_Singleton = 0;
+NMS_LogFunctions* NMS_LogFunctions::m_Singleton = 0;
 
 NMS_LogFunctions::NMS_LogFunctions (void) {
 }
@@ -66,7 +66,3 @@ void NMS_LogFunctions::write(char* sMessage,logLevel level)
 	}
 }
 
-void NMS_LogFunctions::setDebugLog(bool bMode)
-{
-	m_Singleton->m_bDebugEnabled=bMode;
-}

@@ -39,10 +39,12 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/DEXP_STL"
 				Optimization="0"
 				InlineFunctionExpansion="0"
+				PreprocessorDefinitions="__EXP_NMS_MATH"
 				MinimalRebuild="true"
-				BasicRuntimeChecks="0"
+				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				WarningLevel="3"
 				DebugInformationFormat="3"

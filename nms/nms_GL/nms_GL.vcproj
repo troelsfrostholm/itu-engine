@@ -41,6 +41,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)\nms_math&quot;;&quot;$(SolutionDir)\nms_utilities&quot;;&quot;$(SolutionDir)\include\Boost 1.4.4&quot;;&quot;$(SolutionDir)\include&quot;;&quot;$(SolutionDir)\include\Devil 1.7.8&quot;;&quot;$(SolutionDir)\include\SDL 1.2.14&quot;"
+				PreprocessorDefinitions="__EXP_NMS_GL"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -178,6 +179,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\NMS_Camera.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\NMS_Event.cpp"
 				>
 			</File>
@@ -187,6 +192,10 @@
 			</File>
 			<File
 				RelativePath=".\NMS_SceneGraph.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NMS_SceneRenderer.cpp"
 				>
 			</File>
 			<File
@@ -208,6 +217,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\NMS_Camera.h"
+				>
+			</File>
+			<File
 				RelativePath=".\NMS_Event.h"
 				>
 			</File>
@@ -220,7 +233,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\NMS_SceneRenderer.h"
+				>
+			</File>
+			<File
 				RelativePath=".\NMS_TextureManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SDL_MemberThread.h"
 				>
 			</File>
 		</Filter>

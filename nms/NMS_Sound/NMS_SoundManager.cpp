@@ -42,7 +42,7 @@ ALuint NMS_SoundManager::LoadWav (const char* sFileName,char* sSoundName)
 
 	  //Open the file provided and check for the SHA1 hash to see if we have already another texture like this
 	  FILE	*fp=NULL;
-	  ALbyte* soundMemory=NULL;
+	  ALbyte* soundMemory;
 
 	  //Open the sound file
 	  fopen_s(&fp,sFileName,"rb");
@@ -86,7 +86,7 @@ ALuint NMS_SoundManager::LoadWav (const char* sFileName,char* sSoundName)
 		  //It's the same texture with the same name, do nothing!
 		  if(soundToBeAdded.soundID==NULL && soundToBeAdded.hash!=NULL)
 		  {
-			  buffer=soundMap[sSoundName].soundID;
+			  return soundMap[sSoundName].soundID;
 		  }
 		  //It's a different texture with the same name, warn the user and exit
 		  else if(soundToBeAdded.soundID==-1)
@@ -110,7 +110,9 @@ ALuint NMS_SoundManager::LoadWav (const char* sFileName,char* sSoundName)
 						throw 0;//GetALErrorString(result);
 
 					// Read in the wav data from file. Check that it loaded correctly.
-				   alutLoadWAVMemory(soundMemory, &format, &data, &size, &freq, &loop);
+				   //NOTE: CANNOT LOAD FROM MEMORY, THERE'S A BUG WITH OPENAL loadWAVMemory, we are forced to load the 
+				  //file twice!
+				   alutLoadWAVFile((ALbyte*)sFileName, &format, &data, &size, &freq, &loop);
 				   //Free the allocated space in memory
 				   free(soundMemory);
 
@@ -139,7 +141,6 @@ ALuint NMS_SoundManager::LoadWav (const char* sFileName,char* sSoundName)
 		  sprintf_s (m_Singleton->m_sMessage, m_Singleton->m_iMessageSize, "NMS_SoundManager::Loaded [%s] without issues!\n", sFileName);
 		  LOG.write(m_sMessage,LOG_DEBUG);
 	  }
-	  Buffers.push_back(soundMap[sSoundName].soundID);
 	  return soundMap[sSoundName].soundID;
 }
 

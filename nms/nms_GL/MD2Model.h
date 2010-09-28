@@ -1,3 +1,9 @@
+#ifdef __EXP_NMS_GL
+#    define MD2LOADER_D __declspec(dllexport)
+#else
+#    define MD2LOADER_D __declspec(dllimport)
+#endif
+
 #ifndef __MD2LOADER_H__
 #define __MD2LOADER_H__
 
@@ -131,7 +137,7 @@ typedef struct
 
 } animState_t;
 
-class __declspec(dllexport) MD2Model
+class MD2LOADER_D MD2Model
 {
 	public:
 		static anim_t   animlist[21];       // animation list

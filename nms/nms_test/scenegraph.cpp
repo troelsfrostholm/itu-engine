@@ -7,11 +7,22 @@ using namespace std;
 //using namespace nms;
 
 BOOST_AUTO_TEST_SUITE( scenegraph );
+/*
+class SV : public SceneGraphVisitor
+{
+public:
+	void sg_before(Matrix t, Mesh model) 
+	{
+		cout << "Called back with matrix: " << t << endl;
+		model.render();
+	}
+	void sg_after(Matrix t, Mesh model) {}
+};*/
 
 BOOST_AUTO_TEST_CASE( scenegraph_node )
 {
-	/*MD2Model model = MD2Model();
-	model.LoadModel("models/drfreak/drfreak.md2","models/drfreak/drfreak.tga");
+/*
+	Mesh model = Mesh();
 
 	Matrix t = Matrix();
 	t.uScale(2.0f);
@@ -25,16 +36,15 @@ BOOST_AUTO_TEST_CASE( scenegraph_node )
 	GeometryNode g1 = GeometryNode(&model);
 	GeometryNode g2 = GeometryNode(&model);
 
-	s.addChild(s2);
-	s2.addChild(s3);
-	s3.addChild(s4);
-	s.addChild(s5);
-	s4.addChild(g1);
-	s5.addChild(g2);
+	s.addChild(&s2);
+	s2.addChild(&s3);
+	s3.addChild(&s4);
+	s.addChild(&s5);
+	s4.addChild(&g1);
+	s5.addChild(&g2);
 
-	SceneGraphVisitor v = SceneGraphVisitor();
-	s.traverse_df(v);*/
-
+	SV v = SV();
+	s.traverse_df(&v);*/
 }
 
 BOOST_AUTO_TEST_SUITE_END();

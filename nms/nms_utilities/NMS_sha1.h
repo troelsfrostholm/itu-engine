@@ -25,13 +25,19 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#ifdef __EXP_NMS_UTILITIES
+#    define SHA1_D __declspec(dllexport)
+#else
+#    define SHA1_D __declspec(dllimport)
+#endif
+
 #ifndef SHA1_DEFINED
 #define SHA1_DEFINED
 
 typedef char* shaMap;
 
 
-class __declspec(dllexport) nmsSha1
+class SHA1_D nmsSha1
 {
 public:
 	static shaMap returnSha1(const void *src, const int bytelength);

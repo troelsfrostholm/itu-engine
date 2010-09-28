@@ -19,7 +19,7 @@
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="1"
+			ConfigurationType="2"
 			CharacterSet="0"
 			>
 			<Tool
@@ -41,10 +41,10 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 <<<<<<< HEAD
-				AdditionalIncludeDirectories="&quot;C:\Program Files (x86)\DevIL-SDK-x86-1.7.8\include&quot;;&quot;C:\Program Files\SDL-1.2.14\include&quot;;&quot;$(SolutionDir)\nms_math&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\nms_math&quot;;&quot;$(SolutionDir)\include\Boost 1.4.4&quot;;&quot;$(SolutionDir)\include&quot;;&quot;$(SolutionDir)\include\Devil 1.7.8&quot;;&quot;$(SolutionDir)\include\SDL 1.2.14&quot;"
 =======
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\nms_math&quot;;&quot;$(SolutionDir)\include&quot;"
->>>>>>> 9f21cdaddf35edabdba04fa066aecddade21e3b7
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\nms_math&quot;;&quot;$(SolutionDir)\nms_utilities&quot;;&quot;$(SolutionDir)\include&quot;;&quot;$(SolutionDir)\include\Devil 1.7.8&quot;;&quot;$(SolutionDir)\include\SDL 1.2.14&quot;"
+>>>>>>> 5154c9f164b0afc4b08eddfe2d3903844d9df17a
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -62,12 +62,8 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="sdl.lib sdlmain.lib opengl32.lib glu32.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib advapi32.lib nms_math.lib Devil.lib"
-<<<<<<< HEAD
-				AdditionalLibraryDirectories="&quot;C:\Program Files (x86)\DevIL-SDK-x86-1.7.8\lib&quot;;&quot;C:\Program Files\SDL-1.2.14\lib&quot;;&quot;$(SolutionDir)\Debug&quot;"
-=======
-				AdditionalLibraryDirectories="&quot;$(SolutionDir)\Debug&quot;;&quot;$(SolutionDir)\lib&quot;;&quot;$(SolutionDir)\release&quot;"
->>>>>>> 9f21cdaddf35edabdba04fa066aecddade21e3b7
+				AdditionalDependencies="sdl.lib sdlmain.lib opengl32.lib glu32.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib advapi32.lib Devil.lib nms_math.lib nms_utilities.lib"
+				AdditionalLibraryDirectories="&quot;$(SolutionDir)\Debug&quot;;&quot;$(SolutionDir)\lib&quot;;&quot;$(SolutionDir)\lib\SDL 1.2.14&quot;;&quot;$(SolutionDir)\lib\Devil 1.7.8&quot;;&quot;$(SolutionDir)\release&quot;"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				EntryPointSymbol=""
@@ -178,15 +174,15 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\main.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\MD2Model.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\NMS_AssetManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NMS_Event.cpp"
 				>
 			</File>
 			<File
@@ -216,11 +212,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\NMS_Framework.h"
+				RelativePath=".\NMS_Event.h"
 				>
 			</File>
 			<File
-				RelativePath=".\NMS_SceneGraph.h"
+				RelativePath=".\NMS_Framework.h"
 				>
 			</File>
 			<File

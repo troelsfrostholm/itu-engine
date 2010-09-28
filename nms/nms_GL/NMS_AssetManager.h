@@ -1,3 +1,9 @@
+#ifdef __EXP_NMS_GL
+#    define ASSETMANAGER_D __declspec(dllexport)
+#else
+#    define ASSETMANAGER_D __declspec(dllimport)
+#endif
+
 #ifndef __NMS_ASSETMANAGER
 #define __NMS_ASSETMANAGER
 
@@ -15,7 +21,7 @@
 #define DESTROY_ASSETMANAGER	NMS_AssetManager::Destroy()
 
 
-class __declspec(dllexport) NMS_AssetManager{
+class ASSETMANAGER_D NMS_AssetManager{
 public :
 	NMS_AssetManager (void);
 	~NMS_AssetManager (void);

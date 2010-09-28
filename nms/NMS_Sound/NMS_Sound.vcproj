@@ -41,6 +41,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)\nms_math&quot;;&quot;$(SolutionDir)\nms_utilities&quot;;&quot;$(SolutionDir)\include&quot;;&quot;$(SolutionDir)\include\OpenAL 1.1&quot;"
+				PreprocessorDefinitions="__EXP_NMS_SOUND"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -165,6 +166,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\NMS_Audio.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\NMS_SoundManager.cpp"
 				>
 			</File>
@@ -174,6 +179,10 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\NMS_Audio.h"
+				>
+			</File>
 			<File
 				RelativePath=".\NMS_SoundManager.h"
 				>
