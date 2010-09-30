@@ -1,4 +1,4 @@
-//#include "NMS_SceneGraph.h"
+#include "NMS_SceneGraph.h"
 
 #include <boost/test/unit_test.hpp>
 #include <iostream>

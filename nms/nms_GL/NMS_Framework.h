@@ -17,6 +17,7 @@
 #include "NMS_Event.h"
 #include "NMS_Camera.h"
 #include "NMS_SceneRenderer.h"
+#include "NMS_LightSystem.h"
 #include "SDL_MemberThread.h"
 
 class FRAMEWORK_D NMS_Framework
@@ -31,6 +32,7 @@ public:
 	bool running;
 	bool rendering;
 	NMSCameraFPS camera;
+	NMS_LightSystem light;
 	NMS_Framework();
 	bool NMSInit(int width,int height,int bpp,char* windowTitle,bool fullscreen);
 	void NMSQuit(int i);
@@ -38,6 +40,7 @@ public:
 	void render();
 	int renderingLoop();
 	void processEvents();
+	void enableWireframe(bool reply);
 	static void NMSLoadTexture(char* fileName,int id);
 	void CalculateFrameRate();
 	void cleanup();

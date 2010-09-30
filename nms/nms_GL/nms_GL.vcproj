@@ -175,6 +175,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\NMS_3DObject.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\NMS_AssetManager.cpp"
 				>
 			</File>
@@ -188,6 +192,10 @@
 			</File>
 			<File
 				RelativePath=".\NMS_Framework.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NMS_LightSystem.cpp"
 				>
 			</File>
 			<File
@@ -217,6 +225,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\NMS_3DObject.h"
+				>
+			</File>
+			<File
 				RelativePath=".\NMS_AssetManager.h"
 				>
 			</File>
@@ -230,6 +242,10 @@
 			</File>
 			<File
 				RelativePath=".\NMS_Framework.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NMS_LightSystem.h"
 				>
 			</File>
 			<File
