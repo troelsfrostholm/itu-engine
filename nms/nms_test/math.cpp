@@ -229,4 +229,16 @@ BOOST_AUTO_TEST_CASE( matrix_invertion )
 
 }
 
+BOOST_AUTO_TEST_CASE( matrix_copy )
+{
+	Matrix m1 = Matrix();
+	Matrix m2 = Matrix();
+	m2 = m1;
+	m1(2,2) = 13;
+	cout << m1 << endl;
+	cout << m2 << endl;
+	BOOST_CHECK_EQUAL(m1(2,2), 13);
+	BOOST_CHECK_EQUAL(m2(2,2), 1);
+}
+
 BOOST_AUTO_TEST_SUITE_END();

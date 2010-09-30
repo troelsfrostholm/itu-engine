@@ -26,7 +26,7 @@ class MATRIX_D Matrix{
 		unsigned o_rows, o_cols;
 		unsigned refCounter;
 
-		mat_struct (unsigned row, unsigned col, float* val)
+		mat_struct (unsigned row, unsigned col)
 		{
 			o_rows=row;
 			o_cols=col;
@@ -108,15 +108,6 @@ class MATRIX_D Matrix{
 	  
 
 	  //Copy operator
-	     const Matrix& operator = (const Matrix& m)
-		{
-			m.structPointer->refCounter++;
-			if(--structPointer->refCounter == 0) 
-			{ delete structPointer;
-			  structPointer=NULL;
-			}
-			structPointer=m.structPointer;
-			return *this;
-		}
+	    const Matrix& operator = (const Matrix& m);
 };
 #endif;
