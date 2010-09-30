@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\NMS_utilities&quot;;&quot;$(SolutionDir)\nms_GL&quot;;&quot;$(SolutionDir)\include\Devil 1.7.8&quot;;&quot;$(SolutionDir)\include\Boost 1.4.4&quot;;&quot;$(SolutionDir)\nms_math&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\NMS_utilities&quot;;&quot;$(SolutionDir)\include\SDL 1.2.14&quot;;&quot;$(SolutionDir)\nms_GL&quot;;&quot;$(SolutionDir)\include\Devil 1.7.8&quot;;&quot;$(SolutionDir)\include\Boost 1.4.4&quot;;&quot;$(SolutionDir)\nms_math&quot;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -58,9 +58,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="nms_math.lib nms_GL.lib"
+				AdditionalDependencies="nms_math.lib nms_GL.lib SDL.lib"
 				ShowProgress="1"
-				AdditionalLibraryDirectories="&quot;$(SolutionDir)\debug&quot;;&quot;$(SolutionDir)\lib\Boost 1.4.4&quot;;&quot;$(SolutionDir)\lib&quot;;&quot;$(SolutionDir)\release&quot;"
+				AdditionalLibraryDirectories="&quot;$(SolutionDir)\lib\SDL 1.2.14&quot;;&quot;$(SolutionDir)\debug&quot;;&quot;$(SolutionDir)\lib\Boost 1.4.4&quot;;&quot;$(SolutionDir)\lib&quot;;&quot;$(SolutionDir)\release&quot;"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"

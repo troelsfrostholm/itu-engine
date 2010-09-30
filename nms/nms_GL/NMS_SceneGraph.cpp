@@ -2,7 +2,7 @@
 
 SceneGraphNode::SceneGraphNode()
 {
-
+	children = vector<SceneGraphNode*>();
 }
 
 void SceneGraphNode::addChild(SceneGraphNode* child)
@@ -59,39 +59,40 @@ void GeometryNode::after(SceneGraphVisitor *v, Matrix *m)
 
 void Mesh::render()
 {
-	glColor3f(.3,.3,1.0f);
-	glTranslatef(0.0f, 0.0f, -4.0f);
+	glColor3f(.3f,.3f,1.0f);
+	glTranslatef(0.0f, 0.0f, -10.0f);
 	glBegin(GL_QUADS);
 		// Front Face
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);	// Point 1 (Front)
-		glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);	// Point 2 (Front)
-		glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f,  1.0f);	// Point 3 (Front)
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f,  1.0f);	// Point 4 (Front)
+		glVertex3f(-1.0f, -1.0f,  1.0f);	// Point 1 (Front)
+		glVertex3f( 1.0f, -1.0f,  1.0f);	// Point 2 (Front)
+		glVertex3f( 1.0f,  1.0f,  1.0f);	// Point 3 (Front)
+		glVertex3f(-1.0f,  1.0f,  1.0f);	// Point 4 (Front)
 		// Back Face
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f, -1.0f);	// Point 1 (Back)
-		glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);	// Point 2 (Back)
-		glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);	// Point 3 (Back)
-		glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f, -1.0f);	// Point 4 (Back)
+		glVertex3f(-1.0f, -1.0f, -1.0f);	// Point 1 (Back)
+		glVertex3f(-1.0f,  1.0f, -1.0f);	// Point 2 (Back)
+		glVertex3f( 1.0f,  1.0f, -1.0f);	// Point 3 (Back)
+		glVertex3f( 1.0f, -1.0f, -1.0f);	// Point 4 (Back)
 		// Top Face
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);	// Point 1 (Top)
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f,  1.0f,  1.0f);	// Point 2 (Top)
-		glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f,  1.0f,  1.0f);	// Point 3 (Top)
-		glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);	// Point 4 (Top)
+		glVertex3f(-1.0f,  1.0f, -1.0f);	// Point 1 (Top)
+		glVertex3f(-1.0f,  1.0f,  1.0f);	// Point 2 (Top)
+		glVertex3f( 1.0f,  1.0f,  1.0f);	// Point 3 (Top)
+		glVertex3f( 1.0f,  1.0f, -1.0f);	// Point 4 (Top)
 		// Bottom Face
-		glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f, -1.0f, -1.0f);	// Point 1 (Bottom)
-		glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f, -1.0f, -1.0f);	// Point 2 (Bottom)
-		glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);	// Point 3 (Bottom)
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);	// Point 4 (Bottom)
+		glVertex3f(-1.0f, -1.0f, -1.0f);	// Point 1 (Bottom)
+		glVertex3f( 1.0f, -1.0f, -1.0f);	// Point 2 (Bottom)
+		glVertex3f( 1.0f, -1.0f,  1.0f);	// Point 3 (Bottom)
+		glVertex3f(-1.0f, -1.0f,  1.0f);	// Point 4 (Bottom)
 		// Right face
-		glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f, -1.0f, -1.0f);	// Point 1 (Right)
-		glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);	// Point 2 (Right)
-		glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f,  1.0f,  1.0f);	// Point 3 (Right)
-		glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);	// Point 4 (Right)
+		glVertex3f( 1.0f, -1.0f, -1.0f);	// Point 1 (Right)
+		glVertex3f( 1.0f,  1.0f, -1.0f);	// Point 2 (Right)
+		glVertex3f( 1.0f,  1.0f,  1.0f);	// Point 3 (Right)
+		glVertex3f( 1.0f, -1.0f,  1.0f);	// Point 4 (Right)
 		// Left Face
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f, -1.0f);	// Point 1 (Left)
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);	// Point 2 (Left)
-		glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f,  1.0f,  1.0f);	// Point 3 (Left)
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);	// Point 4 (Left)
+		glVertex3f(-1.0f, -1.0f, -1.0f);	// Point 1 (Left)
+		glVertex3f(-1.0f, -1.0f,  1.0f);	// Point 2 (Left)
+		glVertex3f(-1.0f,  1.0f,  1.0f);	// Point 3 (Left)
+		glVertex3f(-1.0f,  1.0f, -1.0f);	// Point 4 (Left)
 	glEnd();
-	cout << "rendering";
+	glFlush();
+//	cout << "rendering";
 }

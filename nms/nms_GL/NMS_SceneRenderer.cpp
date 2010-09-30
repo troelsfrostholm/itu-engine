@@ -1,19 +1,34 @@
 #include "NMS_SceneRenderer.h"
 
-NMS_SceneRenderer::NMS_SceneRenderer() { }
+NMS_SceneRenderer::NMS_SceneRenderer() { 
+	rendering = false; 
+	sceneGraphRoot = NULL;
+	sceneGraphGuard = NULL;
+}
 
 void NMS_SceneRenderer::up()
 {
 	rendering=true;
-	renderThread = SDL_CreateMemberThread(this, &NMS_SceneRenderer::renderingLoop);
+	start();
+	//renderThread = SDL_CreateMemberThread(this, &NMS_SceneRenderer::renderingLoop);
+	//std::bind1st(std::mem_fun(&NMS_SceneRenderer::renderingLoop), this)
+	//renderThread = SDL_CreateThread(, NULL);
 }
 
 void NMS_SceneRenderer::down()
 {
 	rendering=false;
-	SDL_WaitThread(renderThread, NULL);
+	SDL_Thread* me = getThread();
+	if(me)	
+		SDL_WaitThread(me, NULL);
 	sceneGraphRoot = NULL;
 	sceneGraphGuard = NULL;
+}
+
+int NMS_SceneRenderer::run()
+{
+	renderingLoop();
+	return 0;
 }
 
 int NMS_SceneRenderer::renderingLoop()
@@ -28,9 +43,9 @@ int NMS_SceneRenderer::renderingLoop()
 void NMS_SceneRenderer::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	SDL_LockMutex(sceneGraphGuard);
+	/*SDL_LockMutex(sceneGraphGuard);
 	sceneGraphRoot->traverse_df(this);
-	SDL_UnlockMutex(sceneGraphGuard);
+	SDL_UnlockMutex(sceneGraphGuard);*/
 	Mesh m = Mesh();
 	m.render();
 	SDL_GL_SwapBuffers();

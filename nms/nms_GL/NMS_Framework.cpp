@@ -33,7 +33,7 @@ bool NMS_Framework::NMSInit(int width,int height,int bpp,char* windowTitle,bool 
 	}
 	SDL_WM_SetCaption(windowTitle,NULL);  //Set the name of the window
 	SDL_SetVideoMode(width, height, bpp, flags); //Set the window mode
-	glEnable(GL_TEXTURE_2D); //Initialize OpenGl and texture mapping
+	//glEnable(GL_TEXTURE_2D); //Initialize OpenGl and texture mapping
 	glViewport(0, 0, width, height); // Set the dimensions of the viewport
 	glMatrixMode(GL_PROJECTION);
 	glShadeModel(GL_SMOOTH);							// Enable Smooth Shading
@@ -50,6 +50,8 @@ bool NMS_Framework::NMSInit(int width,int height,int bpp,char* windowTitle,bool 
                 1.0f,
                 500.0f);*/
 	gluPerspective(60.0, (float)width/(float)height, 1.0, width);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 	camera=NMSCameraFPS::NMSCameraFPS();
 	camera.setPos(Vector(0,0,-5.0f));
 	camera.setSpeed(0);
