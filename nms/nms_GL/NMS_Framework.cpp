@@ -33,27 +33,32 @@ bool NMS_Framework::NMSInit(int width,int height,int bpp,char* windowTitle,bool 
 	}
 	SDL_WM_SetCaption(windowTitle,NULL);  //Set the name of the window
 	SDL_SetVideoMode(width, height, bpp, flags); //Set the window mode
-	glEnable(GL_TEXTURE_2D); //Initialize OpenGl and texture mapping
+
+	
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glViewport(0, 0, width, height); // Set the dimensions of the viewport
 	glMatrixMode(GL_PROJECTION);
-	glShadeModel(GL_SMOOTH);							// Enable Smooth Shading
-	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);				// Black Background
+	glLoadIdentity();
+	glEnable(GL_TEXTURE_2D); //Initialize OpenGl and texture mapping
+	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+	glEnable(GL_COLOR_MATERIAL);							// Enable Smooth Shading
 	glClearDepth(1.0f);									// Depth Buffer Setup
 	glEnable(GL_DEPTH_TEST);							// Enables Depth Testing
 	glDepthFunc(GL_LEQUAL);								// The Type Of Depth Testing To Do
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
-	glLoadIdentity();
-	/*glFrustum(    -0.5f,
+	glFrustum(    -0.5f,
                 0.5f,
                 -0.5f*(float)(height/width),
                 0.5f*(float)(height/width),
                 1.0f,
-                500.0f);*/
+                500.0f);
+		
 	gluPerspective(60.0, (float)width/(float)height, 1.0, width);
 	camera=NMSCameraFPS::NMSCameraFPS();
 	camera.setPos(Vector(0,0,-5.0f));
 	camera.setSpeed(0);
 	camera.setSlideSpeed(0);
+	light=NMS_LightSystem::NMS_LightSystem();
 	running=true;
 	return true;
 }
@@ -104,4 +109,12 @@ void NMS_Framework::cleanup()
 SceneGraphNode* NMS_Framework::getScene()
 {
 	return sceneGraphRoot;
+}
+
+void NMS_Framework::enableWireframe(bool reply)
+{
+	if(reply)
+		glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
+	else
+		glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
 }

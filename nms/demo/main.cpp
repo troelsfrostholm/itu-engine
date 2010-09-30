@@ -36,12 +36,17 @@ int main(int argc, char* argv[])
 	audioEngine.playSound("test");
 	audioEngine.LoadWav("test2.wav","test2",sourcePos,sourceVel,1.0f,5.0f,true);
 	audioEngine.playSound("test2");
-	obj.LoadModel("models/Baron/BaronBody.md2");
-	obj2.LoadModel("models/Baron/KnightHands.md2");
-	obj.LoadSkin("models/Baron/baron.jpg");
-	obj2.LoadSkin("models/Baron/baron.jpg");
+	engine.light.Enable(false);
+	LightSource light0 = LightSource();
+	light0.setLightNumber(GL_LIGHT0);
+	light0.setLightValue(&Vector(1,1,1,0));
+	light0.setPosVector(&Vector(0,-50,0,1));
+	engine.light.defineLight(light0);
+	
+	//engine.light.setGlobalAmbient(&Vector(1.0,1.0,1.0,1.0));
+	obj.LoadModel("models/drfreak/drfreak.md2");
+	obj.LoadSkin("models/drfreak/drfreak.tga");
 	obj.SetAnim(BOOM);
-	obj2.SetAnim(BOOM);
 	while(true)
 	{
 		ProcessEvents(); // elabora gli eventi
@@ -156,9 +161,9 @@ void ProcessEvents()
 void DrawMD2Model()
 {
 	gluLookAt(-87.0, 45.5, 0, 0, 2, 0, 0.0, 1.0, 0.0);
-	animSpeed+=0.0005f;
+	//animSpeed+=0.0008f;
+	animSpeed=0;
 	obj.DrawModel(animSpeed);
-	obj2.DrawModel(animSpeed);
 }
 
 void DrawNet(GLfloat size, GLint LinesX, GLint LinesZ)

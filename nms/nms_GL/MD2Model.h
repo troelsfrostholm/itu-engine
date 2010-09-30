@@ -25,8 +25,6 @@
 
 typedef float vec3_t[3];
 
-
-
 typedef enum {
     STAND,
     RUN,
@@ -189,6 +187,9 @@ class MD2LOADER_D MD2Model
 		animState_t         m_anim;             // Animation state
 		float               scaleFactor;            // Scale value for the model
 		pFrame				p_frameData;		//Pointer to the frames array
+
+		static vec3_t   anorms[ 162 ];
+
 };
 
 #endif 

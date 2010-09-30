@@ -33,6 +33,12 @@ anim_t MD2Model::animlist[ 21 ] =
     { 198, 198,  5 },   // BOOM
 };
 
+// precalculated normal vectors
+vec3_t  MD2Model::anorms[ 162 ] = {
+#include    "NMS_anorms.h"
+};
+
+
 
 MD2Model::MD2Model()
 {
@@ -342,8 +348,7 @@ void MD2Model::RenderFrame( void )
 
             //// parse texture coordinates
 			glTexCoord2f( ((float *)ptricmds)[0], ((float *)ptricmds)[1]);
-			float prima=((float *)ptricmds)[0];
-			float seconda=((float *)ptricmds)[1] ;
+			glNormal3fv( anorms[ p_lightnormals[ ptricmds[2] ] ] );
             // draw the vertex
             glVertex3fv( p_modelVertices[ ptricmds[2] ] );
         }
