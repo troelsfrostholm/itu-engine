@@ -4,7 +4,6 @@
 #include "stdafx.h"
 #include "nms_physics.h"
 #include <iostream>
-#include <btBulletDynamicsCommon.h>
 
 void nms_physics::initPhysics(){
 

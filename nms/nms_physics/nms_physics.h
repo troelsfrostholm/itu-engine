@@ -1,4 +1,5 @@
 #include "LinearMath/btAlignedObjectArray.h"
+#include <btBulletDynamicsCommon.h>
 
 class btBroadphaseInterface;
 class btCollisionShape;
@@ -57,7 +58,7 @@ public:
         Pos = initialpos;
     }
 
-    virtual ~ MyKinematicMotionState() {
+    virtual ~NMS_KinematicMotionState() {
     }
 
     virtual void getWorldTransform(btTransform &worldTrans) const {

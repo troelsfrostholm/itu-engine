@@ -106,6 +106,11 @@ void NMS_Framework::cleanup()
 	SDL_Quit();
 }
 
+void NMS_Framework::render()
+{
+	sceneRenderer.render();
+}
+
 SceneGraphNode* NMS_Framework::getScene()
 {
 	return sceneGraphRoot;
