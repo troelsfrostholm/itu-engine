@@ -13,6 +13,9 @@ int main(int argc, char* argv[])
 	InitEngine(WIDTH, HEIGHT, 16, "Demo 2", false);
 	Mesh model = Mesh();
 	SceneGraphNode* root = engine.getScene();
+	Matrix m = Matrix();
+	m.translate(Vector(2.f, 0, 0));
+	TransformationNode* transform = new TransformationNode(m);
 	GeometryNode* geom = new GeometryNode(&model);
 	root->addChild(geom);
 	StartEngine();
