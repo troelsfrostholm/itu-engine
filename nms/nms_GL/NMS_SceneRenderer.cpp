@@ -119,7 +119,9 @@ void NMS_SceneRenderer::setScene(SceneGraphNode* scene, SDL_mutex* sceneGuard)
 void NMS_SceneRenderer::sg_before(Matrix transform, Mesh model)
 {
 	glLoadIdentity();
-	glMultMatrixf(transform.returnPointer());
+	transform.debugPrint();
+	Matrix t_transposed = ~transform;
+	glMultMatrixf(t_transposed.returnPointer());
 	model.render();
 
 }

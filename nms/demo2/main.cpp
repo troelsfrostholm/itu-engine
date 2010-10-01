@@ -29,11 +29,16 @@ int main(int argc, char* argv[])
 	GeometryNode* baron = new GeometryNode(&obj);
 	*/
 	Mesh model = Mesh();
-	GeometryNode* geom = new GeometryNode(&model);
+	GeometryNode geom = GeometryNode(&model);
 	SceneGraphNode* root = engine.getScene();
 	Matrix m = Matrix();
-	root->addChild(new TransformationNode(m));
-	root->addChild(geom);
+	Vector v = Vector(1.f, 1.f, 0.f);
+	//m.rotZ(45.f);
+	m.rotX(5.f);
+	m.debugPrint();
+	TransformationNode t = TransformationNode(m);
+	root->addChild(&t);
+	t.addChild(&geom);
 	
 	/*root = NULL;
 	baron = NULL;*/
