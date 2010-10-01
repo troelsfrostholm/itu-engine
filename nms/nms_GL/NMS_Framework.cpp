@@ -35,7 +35,7 @@ bool NMS_Framework::NMSInit(int width,int height,int bpp,char* windowTitle,bool 
 	SDL_SetVideoMode(width, height, bpp, flags); //Set the window mode
 
 	
-	glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glViewport(0, 0, width, height); // Set the dimensions of the viewport
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
