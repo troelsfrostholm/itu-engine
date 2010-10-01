@@ -47,7 +47,6 @@ void NMS_SceneRenderer::render()
 	sceneGraphRoot->traverse_df(this);
 	//SDL_UnlockMutex(sceneGraphGuard);
 	//SDL_GL_SwapBuffers();
-	m.render();
 }
 
 void NMS_SceneRenderer::setScene(SceneGraphNode* scene, SDL_mutex* sceneGuard)
