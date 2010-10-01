@@ -220,11 +220,10 @@ BOOST_AUTO_TEST_CASE( matrix_product )
 BOOST_AUTO_TEST_CASE( matrix_invertion )
 {
 /*	Matrix identity = Matrix();
-	
 	cout << "Identity" << identity << endl;
 	Matrix identity_inverse = !identity;
 	cout << "Inverse identity" << identity_inverse << endl;
-	BOOST_CHECK_EQUAL(identity, identity_inverse);*/
+	BOOST_CHECK_EQUAL(identity, identity_inverse);
 
 
 }

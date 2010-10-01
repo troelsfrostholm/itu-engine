@@ -42,13 +42,12 @@ int NMS_SceneRenderer::renderingLoop()
 
 void NMS_SceneRenderer::render()
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	/*SDL_LockMutex(sceneGraphGuard);
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//SDL_LockMutex(sceneGraphGuard);
 	sceneGraphRoot->traverse_df(this);
-	SDL_UnlockMutex(sceneGraphGuard);*/
-	Mesh m = Mesh();
+	//SDL_UnlockMutex(sceneGraphGuard);
+	//SDL_GL_SwapBuffers();
 	m.render();
-	SDL_GL_SwapBuffers();
 }
 
 void NMS_SceneRenderer::setScene(SceneGraphNode* scene, SDL_mutex* sceneGuard)

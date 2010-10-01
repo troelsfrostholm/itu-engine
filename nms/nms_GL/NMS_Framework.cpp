@@ -35,7 +35,7 @@ bool NMS_Framework::NMSInit(int width,int height,int bpp,char* windowTitle,bool 
 	SDL_SetVideoMode(width, height, bpp, flags); //Set the window mode
 
 	
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
 	glViewport(0, 0, width, height); // Set the dimensions of the viewport
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -106,6 +106,11 @@ void NMS_Framework::cleanup()
 	SDL_DestroyMutex(sceneGraphGuard);
 	sceneGraphRoot = NULL;
 	SDL_Quit();
+}
+
+void NMS_Framework::render()
+{
+	sceneRenderer.render();
 }
 
 SceneGraphNode* NMS_Framework::getScene()
