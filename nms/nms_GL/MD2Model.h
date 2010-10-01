@@ -160,7 +160,7 @@ class MD2LOADER_D MD2Model
 
 
 		void    Animate( float time );
-		void    Interpolate( vec3_t* vertlist );
+		void    Interpolate( vec3_t* vertlist,vec3_t* lightList);
 		void    RenderFrame();
 
 		//MISC MEMORY AND FILE ROUTINES
@@ -180,7 +180,8 @@ class MD2LOADER_D MD2Model
 
 		vec3_t*     		p_modelVertices;
 		vec3_t*     		p_nextFrameVertices;
-		int*                p_lightnormals;    // normal index array
+		vec3_t*             p_lightnormals;    // normal index array
+		vec3_t*             p_nextLightNormals;
 		int*				p_openGlCommands;
 
 		int        textureID;            // TextureID for the model

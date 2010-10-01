@@ -233,6 +233,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\NMS_anorms.h"
+				>
+			</File>
+			<File
 				RelativePath=".\NMS_AssetManager.h"
 				>
 			</File>

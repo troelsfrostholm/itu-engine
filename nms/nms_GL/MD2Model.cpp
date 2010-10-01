@@ -42,11 +42,12 @@ vec3_t  MD2Model::anorms[ 162 ] = {
 
 MD2Model::MD2Model()
 {
-	fileBuffer	    =NULL;
-	p_frameData	    =NULL;
-	p_modelVertices      =NULL;
-	p_nextFrameVertices  =NULL;
-	p_lightnormals  =NULL;
+	fileBuffer	            =NULL;
+	p_frameData	            =NULL;
+	p_modelVertices         =NULL;
+	p_nextFrameVertices     =NULL;
+	p_lightnormals          =NULL;
+	p_nextLightNormals      =NULL;
 	p_openGlCommands        =NULL;
 }
 
@@ -59,6 +60,7 @@ MD2Model::~MD2Model()
 		Free((void**)&p_frameData[index].pvertices);
 	Free((void**)&p_frameData);
 	Free((void**)&p_lightnormals);
+	Free((void**)&p_nextLightNormals);
 	Free((void**)&p_openGlCommands);
 }
 
@@ -169,6 +171,7 @@ int MD2Model::ReadHeader(byte *buffer,pHeader phead)
 void MD2Model::InitData()
 {
 	p_lightnormals=0;
+	p_nextLightNormals=0;
 	p_openGlCommands=0;
 	scaleFactor=1.0f;
 	textureID=0;
@@ -187,7 +190,8 @@ void MD2Model::InitData()
 	p_modelVertices = (vec3_t*) Malloc(md2Header.numVertices*sizeof(vec3_t));
 	p_nextFrameVertices = (vec3_t*) Malloc(md2Header.numVertices*sizeof(vec3_t));
 	p_openGlCommands        = new int[ numGlCommands ];
-	p_lightnormals = new int[numVertices*numFrames];
+	p_lightnormals=(vec3_t*)Malloc(sizeof(vec3_t)*md2Header.numVertices);
+	p_nextLightNormals=(vec3_t*)Malloc(sizeof(vec3_t)*md2Header.numVertices);
 }
 
 
@@ -268,16 +272,22 @@ void MD2Model::DrawFrame(int frame,int nFrame)
 	int index=0;
 	if (p_modelVertices!=NULL)
 	{
-		memset(p_modelVertices,0,sizeof(vec3_t)*md2Header.numVertices);
-		memset(p_nextFrameVertices,0,sizeof(vec3_t)*md2Header.numVertices);
-
+		/*p_modelVertices=(vec3_t*)Malloc(sizeof(vec3_t)*md2Header.numVertices);
+		p_nextFrameVertices=(vec3_t*)Malloc(sizeof(vec3_t)*md2Header.numVertices);
+		p_lightnormals=(vec3_t*)Malloc(sizeof(vec3_t)*md2Header.numVertices);
+		p_nextLightNormals=(vec3_t*)Malloc(sizeof(vec3_t)*md2Header.numVertices);*/
 		for (index=0;index<md2Header.numVertices;index++)
 		{
 				// Every vertex of frame is multiplied by it's respective scale and then the translation is added.
 				p_modelVertices[index][0] = (p_frameData[frame].pvertices[index].vertex[0] * p_frameData[frame].scale[0])+p_frameData[frame].translate[0];
 				p_modelVertices[index][1] = (p_frameData[frame].pvertices[index].vertex[1] * p_frameData[frame].scale[1])+p_frameData[frame].translate[1];
 				p_modelVertices[index][2] = (p_frameData[frame].pvertices[index].vertex[2] * p_frameData[frame].scale[2])+p_frameData[frame].translate[2];
-				p_lightnormals[index]=p_frameData[frame].pvertices[index].lightNormalIndex;
+				p_lightnormals[index][0]     =      anorms[p_frameData[frame].pvertices[index].lightNormalIndex][0];
+				p_lightnormals[index][1]     =      anorms[p_frameData[frame].pvertices[index].lightNormalIndex][1];
+				p_lightnormals[index][2]     =      anorms[p_frameData[frame].pvertices[index].lightNormalIndex][2];
+				p_nextLightNormals[index][0] =      anorms[p_frameData[nFrame].pvertices[index].lightNormalIndex][0];
+				p_nextLightNormals[index][1] =      anorms[p_frameData[nFrame].pvertices[index].lightNormalIndex][1];
+				p_nextLightNormals[index][2] =      anorms[p_frameData[nFrame].pvertices[index].lightNormalIndex][2];
 				p_nextFrameVertices[index][0] = (p_frameData[nFrame].pvertices[index].vertex[0] * p_frameData[nFrame].scale[0])+p_frameData[nFrame].translate[0];
 				p_nextFrameVertices[index][1] = (p_frameData[nFrame].pvertices[index].vertex[1] * p_frameData[nFrame].scale[1])+p_frameData[nFrame].translate[1];
 				p_nextFrameVertices[index][2] = (p_frameData[nFrame].pvertices[index].vertex[2] * p_frameData[nFrame].scale[2])+p_frameData[nFrame].translate[2];
@@ -320,7 +330,7 @@ void MD2Model::RenderFrame( void )
     glCullFace( GL_BACK );
 
     // interpolate
-	Interpolate( p_modelVertices );
+	Interpolate( p_modelVertices,p_lightnormals );
 
     // bind model's texture
     glBindTexture( GL_TEXTURE_2D, textureID );
@@ -348,7 +358,7 @@ void MD2Model::RenderFrame( void )
 
             //// parse texture coordinates
 			glTexCoord2f( ((float *)ptricmds)[0], ((float *)ptricmds)[1]);
-			glNormal3fv( anorms[ p_lightnormals[ ptricmds[2] ] ] );
+			glNormal3fv( p_lightnormals[ ptricmds[2]] );
             // draw the vertex
             glVertex3fv( p_modelVertices[ ptricmds[2] ] );
         }
@@ -361,22 +371,29 @@ void MD2Model::RenderFrame( void )
 }
 
 
-void MD2Model::Interpolate( vec3_t *vertlist )
+void MD2Model::Interpolate( vec3_t *vertlist,vec3_t* lightList)
 {
 	vec3_t  *curr_v;    // pointer to current frame vertices
     vec3_t  *next_v;    // pointer to next frame vertices
+	vec3_t  *curr_l;    // pointer to current frame vertices
+    vec3_t  *next_l;    // pointer to next frame vertices
 
     // create current frame and next frame's vertex list
     // from the whole vertex list
 	curr_v = p_modelVertices;
     next_v = p_nextFrameVertices;
+	curr_l = p_lightnormals;
+	next_l = p_nextLightNormals;
 
     // interpolate and scale vertices to avoid ugly animation
     for( int i = 0; i < numVertices ; i++ )
     {
-        vertlist[i][0] = (curr_v[i][0] + m_anim.interpol * (next_v[i][0] - curr_v[i][0])) * scaleFactor;
-        vertlist[i][1] = (curr_v[i][1] + m_anim.interpol * (next_v[i][1] - curr_v[i][1])) * scaleFactor;
-        vertlist[i][2] = (curr_v[i][2] + m_anim.interpol * (next_v[i][2] - curr_v[i][2])) * scaleFactor;
+        vertlist[i][0]  = (curr_v[i][0] + m_anim.interpol * (next_v[i][0] - curr_v[i][0])) * scaleFactor;
+        vertlist[i][1]  = (curr_v[i][1] + m_anim.interpol * (next_v[i][1] - curr_v[i][1])) * scaleFactor;
+        vertlist[i][2]  = (curr_v[i][2] + m_anim.interpol * (next_v[i][2] - curr_v[i][2])) * scaleFactor;
+		lightList[i][0] = (curr_l[i][0] + m_anim.interpol * (next_l[i][0] - curr_l[i][0]));
+		lightList[i][1] = (curr_l[i][1] + m_anim.interpol * (next_l[i][1] - curr_l[i][1]));
+		lightList[i][2] = (curr_l[i][2] + m_anim.interpol * (next_l[i][2] - curr_l[i][2]));
     }
 }
 

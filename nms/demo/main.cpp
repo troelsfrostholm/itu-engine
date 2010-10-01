@@ -47,10 +47,10 @@ int main(int argc, char* argv[])
 	engine.light.defineLight(light0);
 	
 	//engine.light.setGlobalAmbient(&Vector(1.0,1.0,1.0,1.0));
-	obj.LoadModel("models/drfreak/drfreak.md2");
-	obj.LoadSkin("models/drfreak/drfreak.tga");
+	obj.LoadModel("models/baron/BaronBody.md2");
+	obj.LoadSkin("models/baron/baron.jpg");
 	obj.SetAnim(BOOM);
-	colObj.LoadModel("models/colladaDuck/duck_triangulate.dae");
+	//colObj.LoadModel("models/colladaDuck/duck_triangulate.dae");
 	while(true)
 	{
 		ProcessEvents(); // elabora gli eventi
@@ -297,8 +297,8 @@ void DrawScene()
 	view=(~view);
 	glMultMatrixf(view.returnPointer());
 	
-	//DrawMD2Model();
+	DrawMD2Model();
 	//DrawSampleScene();
-	DrawColladaModel();
+	//DrawColladaModel();
 	SDL_GL_SwapBuffers();
 }
