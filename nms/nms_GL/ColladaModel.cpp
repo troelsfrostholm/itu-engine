@@ -7,12 +7,28 @@ using namespace std;
 ColladaModel::ColladaModel(){};
 ColladaModel::~ColladaModel(){};
 
+ColMesh::ColMesh()
+{
+	iNormOffset=0;
+	iTextOffset=0;
+	iTriangleCount=0;
+	iVertOffset=0;
+	pTriangleData=NULL;
+	sMeshMaterial=NULL;
+	sNormSource=NULL;
+	sTextSource=NULL;
+	sVertPosition=NULL;
+	sVertSource=NULL;
+	bVertices=false;
+	bTextures=false;
+	bNormals=false;
+	uNumberOfData=0;
+}
+
 void 	ColladaModel::DrawModel(float time)
 {
 	glPushMatrix();
         // rotate the model
-		glRotatef( -90.0, 1.0, 0.0, 0.0 );
-        glRotatef( 180.0f, 0.0, 0.0, 1.0 );
 		RenderFrame();
 	glPopMatrix();
 }
@@ -28,33 +44,44 @@ void 	ColladaModel::RenderFrame()
     glCullFace( GL_BACK );
 	vec9_t vertices;
 	unsigned vertOffset=ColladaModel::dataRead.back().iVertOffset;
-	Source positionSource=Source();
+	Source* positionSource;
 	//Find the right source for the positions inside the sources vector
 	for (i=0; i<dataRead.back().sources.size(); i++) {
 		if(dataRead.back().sources[i].sID==dataRead.back().sVertPosition)
 		{
-			positionSource=dataRead.back().sources[i];
+			positionSource=&dataRead.back().sources[i];
 			break;
 		}
 	}
 	unsigned firstOffset;
 	unsigned secondOffset;
 	unsigned thirdOffset;
+	unsigned numberOfArrays=dataRead.back().uNumberOfData;
+	unsigned numberOfTriangles=dataRead.back().iTriangleCount;
+	unsigned vertexOffset=(*positionSource).offset;
+
+	int*   dataPointer=dataRead.back().pTriangleData;
+	float* vertArray=(*positionSource).pfArray;
+
+
 	glBegin(GL_TRIANGLES);
-	for(unsigned i=0;i<ColladaModel::dataRead.back().iTriangleCount;i++)
+	for(unsigned i=0;i<numberOfTriangles;i++)
 	{
-		firstOffset=dataRead.back().pTriangleData[i*6+vertOffset];
-		vertices[0]=positionSource.pfArray[firstOffset*3+positionSource.offset+0];
-		vertices[1]=positionSource.pfArray[firstOffset*3+positionSource.offset+1];
-		vertices[2]=positionSource.pfArray[firstOffset*3+positionSource.offset+2];
-		secondOffset=dataRead.back().pTriangleData[i*6+vertOffset+2];
-		vertices[3]=positionSource.pfArray[secondOffset*3+positionSource.offset+0];
-		vertices[4]=positionSource.pfArray[secondOffset*3+positionSource.offset+1];
-		vertices[5]=positionSource.pfArray[secondOffset*3+positionSource.offset+2];
-		thirdOffset=dataRead.back().pTriangleData[i*6+vertOffset+4];
-		vertices[6]=positionSource.pfArray[thirdOffset*3+positionSource.offset+0];
-		vertices[7]=positionSource.pfArray[thirdOffset*3+positionSource.offset+1];
-		vertices[8]=positionSource.pfArray[thirdOffset*3+positionSource.offset+2];
+		firstOffset=dataPointer[i*numberOfArrays*3+vertOffset];
+		firstOffset=firstOffset*3+vertexOffset;
+		vertices[0]=vertArray[firstOffset+0];
+		vertices[1]=vertArray[firstOffset+1];
+		vertices[2]=vertArray[firstOffset+2];
+		secondOffset=dataPointer[i*numberOfArrays*3+vertOffset+numberOfArrays];
+		secondOffset=secondOffset*3+vertexOffset;
+		vertices[3]=vertArray[secondOffset+0];
+		vertices[4]=vertArray[secondOffset+1];
+		vertices[5]=vertArray[secondOffset+2];
+		thirdOffset=dataPointer[i*numberOfArrays*3+vertOffset+numberOfArrays*2];
+		thirdOffset=thirdOffset*3+vertexOffset;
+		vertices[6]=vertArray[thirdOffset+0];
+		vertices[7]=vertArray[thirdOffset+1];
+		vertices[8]=vertArray[thirdOffset+2];
 		glVertex3f(vertices[0],vertices[1],vertices[2]);
 		glVertex3f(vertices[3],vertices[4],vertices[5]);
 		glVertex3f(vertices[6],vertices[7],vertices[8]);
@@ -217,6 +244,8 @@ void ColladaModel::readLibraryGeometries(IrrXMLReader* xml)
 								//Save the right array to get the position from
 								dataRead.back().sVertSource=xml->getAttributeValue("source");
 								dataRead.back().iVertOffset=xml->getAttributeValueAsInt("offset");
+								dataRead.back().bVertices=true;
+								dataRead.back().uNumberOfData++;
 							}
 							else
 							if((!strcmp("input",xml->getNodeName()))&&(!strcmp("NORMAL",xml->getAttributeValue("semantic"))))
@@ -224,6 +253,8 @@ void ColladaModel::readLibraryGeometries(IrrXMLReader* xml)
 								//Save the right array to get the position from
 								dataRead.back().sNormSource=xml->getAttributeValue("source");
 								dataRead.back().iNormOffset=xml->getAttributeValueAsInt("offset");
+								dataRead.back().bNormals=true;
+								dataRead.back().uNumberOfData++;
 							}
 							else
 							if((!strcmp("input",xml->getNodeName()))&&(!strcmp("TEXCOORD",xml->getAttributeValue("semantic"))))
@@ -231,6 +262,8 @@ void ColladaModel::readLibraryGeometries(IrrXMLReader* xml)
 								//Save the right array to get the position from
 								dataRead.back().sTextSource=xml->getAttributeValue("source");
 								dataRead.back().iTextOffset=xml->getAttributeValueAsInt("offset");
+								dataRead.back().bTextures=true;
+								dataRead.back().uNumberOfData++;
 							}
 							else
 							if((!strcmp("p",xml->getNodeName()))&&(xml->getNodeType()!=EXN_ELEMENT_END))

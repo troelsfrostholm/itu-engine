@@ -50,7 +50,7 @@ class COLLADAMODEL_D Source
 class COLLADAMODEL_D ColMesh
 {	
   public:
-	ColMesh(){};
+	ColMesh();
 	vector<Source> sources;
 	core::stringc sVertPosition;
 
@@ -70,6 +70,12 @@ class COLLADAMODEL_D ColMesh
 	//Triangles count
 	unsigned iTriangleCount;
 	int* pTriangleData;
+
+	//Data to be loaded
+	bool bVertices;
+	bool bTextures;
+	bool bNormals;
+	unsigned uNumberOfData;
 };
 
 class COLLADAMODEL_D ColladaModel
