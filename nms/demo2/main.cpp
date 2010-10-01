@@ -14,12 +14,14 @@ int main(int argc, char* argv[])
 	obj.LoadSkin("models/Baron/baron.jpg");
 	obj.SetAnim(BOOM);*/
 	//GeometryNode* baron = new GeometryNode(&obj);
+	/*
 	Mesh model = Mesh();
 	GeometryNode* geom = new GeometryNode(&model);
 	SceneGraphNode* root = engine.getScene();
 	Matrix m = Matrix();
 	root->addChild(new TransformationNode(m));
 	root->addChild(geom);
+	*/
 	/*root = NULL;
 	baron = NULL;*/
 	engine.run();

@@ -52,7 +52,6 @@ void NMS_Framework::run()
 	sceneRenderer.up();
 	while(running)
 	{
-		NMS_EVENT.processEvents();
 	}
 	sceneRenderer.down();
 	NMS_Framework::cleanup();

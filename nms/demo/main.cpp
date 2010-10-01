@@ -230,7 +230,7 @@ void DrawSampleScene()
 		glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);	// Point 4 (Left)
 	glEnd();
 
-	glColor3f(.3,.3,.3);
+	glColor3f(0.3f,0.3f,0.3f);
 	glBegin(GL_QUADS);
 	glVertex3f( 0,-1.0, 0);
 	glVertex3f( 0,-1.0,10);

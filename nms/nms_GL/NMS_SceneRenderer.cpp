@@ -1,4 +1,5 @@
 #include "NMS_SceneRenderer.h"
+#include "NMS_Event.h"
 
 NMS_SceneRenderer::NMS_SceneRenderer() { 
 	rendering = false; 
@@ -88,6 +89,7 @@ int NMS_SceneRenderer::run()
 int NMS_SceneRenderer::renderingLoop()
 {
 	while(rendering) {
+		NMS_EVENT.processEvents();
 		render();
 	}
 
@@ -96,7 +98,7 @@ int NMS_SceneRenderer::renderingLoop()
 
 void NMS_SceneRenderer::render()
 {
-	glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	/*SDL_LockMutex(sceneGraphGuard);
 	sceneGraphRoot->traverse_df(this);
@@ -105,7 +107,7 @@ void NMS_SceneRenderer::render()
 	//glLoadIdentity();
 	//Mesh m = Mesh();
 	//m.render();
-	//SDL_GL_SwapBuffers();
+	SDL_GL_SwapBuffers();
 }
 
 void NMS_SceneRenderer::setScene(SceneGraphNode* scene, SDL_mutex* sceneGuard)
