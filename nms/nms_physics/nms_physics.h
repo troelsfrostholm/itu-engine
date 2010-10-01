@@ -75,4 +75,3 @@ public:
 protected:
     btTransform Pos;
 };
-
