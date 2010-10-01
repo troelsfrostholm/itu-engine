@@ -99,13 +99,15 @@ int NMS_SceneRenderer::renderingLoop()
 void NMS_SceneRenderer::render()
 {
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	//SDL_LockMutex(sceneGraphGuard);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	SDL_LockMutex(sceneGraphGuard);
 	sceneGraphRoot->traverse_df(this);
-	//SDL_UnlockMutex(sceneGraphGuard);
+	SDL_UnlockMutex(sceneGraphGuard);
 	//glMatrixMode(GL_MODELVIEW);
 	//glLoadIdentity();
 	//Mesh m = Mesh();
 	//m.render();
+	SDL_GL_SwapBuffers();
 }
 
 void NMS_SceneRenderer::setScene(SceneGraphNode* scene, SDL_mutex* sceneGuard)
