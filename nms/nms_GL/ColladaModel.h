@@ -16,6 +16,7 @@
 #include <irrString.h>
 #include <fast_atof.h>
 #include "NMS_FileManagement.h"
+#include "NMS_AssetManager.h"
 
 #include <windows.h>		// Header File For Windows
 #include <gl\gl.h>			// Header File For The OpenGL32 Library
@@ -98,6 +99,7 @@ private:
 	void removeWhitespaces(char** start);
 	vector<ColMesh> dataRead;
 	string textureFilepath;
+	int textureID;
 
 	//RENDERING THE MODEL
 	void    RenderFrame();
