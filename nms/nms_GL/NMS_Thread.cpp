@@ -20,6 +20,11 @@ SDL_Thread* Thread::getThread()
 	return thread;
 }
 
+int Thread::run()
+{
+	return 0;
+}
+
 int threadProxy( void *pointer )
 {
 	try 

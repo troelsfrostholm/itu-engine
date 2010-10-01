@@ -60,7 +60,7 @@ void GeometryNode::after(SceneGraphVisitor *v, Matrix *m)
 void Mesh::render()
 {
 	glColor3f(.3f,.3f,1.0f);
-	glTranslatef(0.0f, 0.0f, -10.0f);
+	glTranslatef(0.0f, 0.0f, -5.0f);
 	glBegin(GL_QUADS);
 		// Front Face
 		glVertex3f(-1.0f, -1.0f,  1.0f);	// Point 1 (Front)
@@ -93,6 +93,5 @@ void Mesh::render()
 		glVertex3f(-1.0f,  1.0f,  1.0f);	// Point 3 (Left)
 		glVertex3f(-1.0f,  1.0f, -1.0f);	// Point 4 (Left)
 	glEnd();
-	glFlush();
 //	cout << "rendering";
 }

@@ -21,6 +21,7 @@ protected:
 
 public:
 	NMS_SceneRenderer();
+	bool initRendering();
 	void up();
 	void down();
 	int run();

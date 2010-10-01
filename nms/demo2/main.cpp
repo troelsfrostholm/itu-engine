@@ -9,7 +9,7 @@
 
 int main(int argc, char* argv[])
 {
-	
+	/*
 	InitEngine(WIDTH, HEIGHT, 16, "Demo 2", false);
 	Mesh model = Mesh();
 	SceneGraphNode* root = engine.getScene();
@@ -19,24 +19,24 @@ int main(int argc, char* argv[])
 	GeometryNode* geom = new GeometryNode(&model);
 	root->addChild(geom);
 	StartEngine();
-	
-	//engine.NMSInit(WIDTH, HEIGHT, 16, "Demo 2", false);
+	*/
+	engine.NMSInit(WIDTH, HEIGHT, 16, "Demo 2", false);
 	/*
 	MD2Model obj = MD2Model();
 	obj.LoadModel("models/Baron/BaronBody.md2");
 	obj.LoadSkin("models/Baron/baron.jpg");
 	obj.SetAnim(BOOM);
 	GeometryNode* baron = new GeometryNode(&obj);
-	
+	*/
 	Mesh model = Mesh();
 	GeometryNode* geom = new GeometryNode(&model);
 	SceneGraphNode* root = engine.getScene();
 	Matrix m = Matrix();
 	root->addChild(new TransformationNode(m));
 	root->addChild(geom);
-	*/
+	
 	/*root = NULL;
 	baron = NULL;*/
-	//engine.run();
+	engine.run();
 	return 0;
 }
