@@ -12,8 +12,6 @@
 
 using namespace std;
 
-int threadProxy( void *pointer );
-
 /*class Thread
 {
 private:
@@ -72,8 +70,8 @@ BOOST_AUTO_TEST_CASE( sdl_threads )
 {
 
 	
-	X t = X();
-	t.start();
+	//Thread t = Thread();
+	//t.start();
 	//boost::shared_ptr<Thr> p(new Thr());
 	//SDL_CreateThread(&x, NULL);
 }
