@@ -1,6 +1,7 @@
 #include "NMS_Framework.h"
 #include "MD2Model.h"
 #include "NMS_Audio.h"
+#include "ColladaModel.h"
 
 #include <cmath>
 
@@ -12,6 +13,7 @@ NMS_Framework engine = NMS_Framework();
 
 MD2Model obj;
 MD2Model obj2;
+ColladaModel colObj;
 
 
 GLfloat	z=-10.0f;								// Depth Into The Screen
@@ -29,24 +31,26 @@ void DrawScene();
 int main(int argc, char* argv[])
 { //Start SDL 
 	engine.NMSInit(WIDTH,HEIGHT,16,"Nemesis Engine",false);
-	NMS_Audio audioEngine;
-	ALfloat sourcePos[] = {0.0f,0.0f,0.0f};
-	ALfloat sourceVel[] = {0.0f,0.0f,0.0f};
-	audioEngine.LoadWav("test.wav","test",sourcePos,sourceVel,1.0f,5.0f,true);
-	audioEngine.playSound("test");
-	audioEngine.LoadWav("test2.wav","test2",sourcePos,sourceVel,1.0f,5.0f,true);
-	audioEngine.playSound("test2");
-	engine.light.Enable(false);
-	LightSource light0 = LightSource();
-	light0.setLightNumber(GL_LIGHT0);
-	light0.setLightValue(&Vector(1,1,1,0));
-	light0.setPosVector(&Vector(0,-50,0,1));
-	engine.light.defineLight(light0);
-	
-	//engine.light.setGlobalAmbient(&Vector(1.0,1.0,1.0,1.0));
-	obj.LoadModel("models/drfreak/drfreak.md2");
-	obj.LoadSkin("models/drfreak/drfreak.tga");
-	obj.SetAnim(BOOM);
+	colObj=ColladaModel();
+	//NMS_Audio audioEngine;
+	//ALfloat sourcePos[] = {0.0f,0.0f,0.0f};
+	//ALfloat sourceVel[] = {0.0f,0.0f,0.0f};
+	//audioEngine.LoadWav("test.wav","test",sourcePos,sourceVel,1.0f,5.0f,true);
+	//audioEngine.playSound("test");
+	////audioEngine.LoadWav("test2.wav","test2",sourcePos,sourceVel,1.0f,5.0f,true);
+	////audioEngine.playSound("test2");
+	//engine.light.Enable(false);
+	//LightSource light0 = LightSource();
+	//light0.setLightNumber(GL_LIGHT0);
+	//light0.setLightValue(&Vector(1,1,1,0));
+	//light0.setPosVector(&Vector(0,-50,0,1));
+	//engine.light.defineLight(light0);
+	//
+	////engine.light.setGlobalAmbient(&Vector(1.0,1.0,1.0,1.0));
+	//obj.LoadModel("models/drfreak/drfreak.md2");
+	//obj.LoadSkin("models/drfreak/drfreak.tga");
+	//obj.SetAnim(BOOM);
+	colObj.LoadModel("models/colladaDuck/cube_triangulate.dae");
 	while(true)
 	{
 		ProcessEvents(); // elabora gli eventi
@@ -160,12 +164,11 @@ void ProcessEvents()
 
 void DrawMD2Model()
 {
-	gluLookAt(-87.0, 45.5, 0, 0, 2, 0, 0.0, 1.0, 0.0);
-	//animSpeed+=0.0008;
-	animSpeed=0;
+	//gluLookAt(-87.0, 45.5, 0, 0, 2, 0, 0.0, 1.0, 0.0);
+	animSpeed+=0.0008;
 	obj.DrawModel(animSpeed);
 }
-
+	
 void DrawNet(GLfloat size, GLint LinesX, GLint LinesZ)
 {
 	glBegin(GL_LINES);
@@ -276,6 +279,14 @@ void DrawSampleScene()
 	
 }
 
+
+void DrawColladaModel()
+{
+	//gluLookAt(-87.0, 45.5, 0, 0, 2, 0, 0.0, 1.0, 0.0);
+	animSpeed+=0.0008;
+	colObj.DrawModel(animSpeed);
+}
+
 void DrawScene()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -286,7 +297,8 @@ void DrawScene()
 	view=(~view);
 	glMultMatrixf(view.returnPointer());
 	
-	DrawMD2Model();
-	//DrawSampleScene();
+	//DrawMD2Model();
+	DrawSampleScene();
+	DrawColladaModel();
 	SDL_GL_SwapBuffers();
 }

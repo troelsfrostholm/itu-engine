@@ -10,3 +10,14 @@ long nmsFileManagement::FileSize(FILE *fp)
 	fseek(fp,oldpos,SEEK_SET);
 	return curpos;
 }
+
+bool nmsFileManagement::FileExists(const char * filename)
+{
+    if (FILE * file = fopen(filename, "r"))
+    {
+        fclose(file);
+        return true;
+    }
+    return false;
+}
+

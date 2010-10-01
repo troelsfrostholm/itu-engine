@@ -363,8 +363,8 @@ void MD2Model::RenderFrame( void )
 
 void MD2Model::Interpolate( vec3_t *vertlist )
 {
-	vec3_t  *curr_v;    // pointeur to current frame vertices
-    vec3_t  *next_v;    // pointeur to next frame vertices
+	vec3_t  *curr_v;    // pointer to current frame vertices
+    vec3_t  *next_v;    // pointer to next frame vertices
 
     // create current frame and next frame's vertex list
     // from the whole vertex list

@@ -15,5 +15,6 @@ class FILE_MANAGEMENT_D nmsFileManagement
 {
 	public:
 		static long FileSize(FILE *fp);
+		static bool FileExists(const char * filename);
 };
 #endif
