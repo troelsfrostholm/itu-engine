@@ -7,6 +7,7 @@
 #ifndef SDL_MEMBER_THREAD
 #define SDL_MEMBER_THREAD
 
+#include <boost/shared_ptr.hpp>
 #include "SDL.h"
 
 template <typename T>
@@ -30,9 +31,10 @@ private:
 template <typename T>
 SDL_Thread * SDL_CreateMemberThread(T * instance, int (T::*function)())
 {
-    SDL_ThreadProxy<T> proxy(instance, function);
+	boost::shared_ptr<SDL_ThreadProxy<T>> proxy( new SDL_ThreadProxy<T>(instance, function) );
+    //SDL_ThreadProxy<T> proxy(instance, function);
     typedef int (*SDL_ThreadFunction)(void *);
-    return SDL_CreateThread(reinterpret_cast<SDL_ThreadFunction>(SDL_ThreadProxy<T>::run), &proxy); 
+    return SDL_CreateThread(reinterpret_cast<SDL_ThreadFunction>(SDL_ThreadProxy<T>::run), proxy); 
 }
 
 #endif

@@ -2,7 +2,7 @@
 
 SceneGraphNode::SceneGraphNode()
 {
-
+	children = vector<SceneGraphNode*>();
 }
 
 void SceneGraphNode::addChild(SceneGraphNode* child)
@@ -27,7 +27,9 @@ void SceneGraphNode::traverse_df(SceneGraphVisitor *v, Matrix *m)
 
 TransformationNode::TransformationNode(Matrix t)
 {
+	cout << "t is " << t << endl;
 	transform = t;
+	cout << "transform is " << transform << endl;
 }
 
 void TransformationNode::before(SceneGraphVisitor *v, Matrix *m)
@@ -57,5 +59,39 @@ void GeometryNode::after(SceneGraphVisitor *v, Matrix *m)
 
 void Mesh::render()
 {
-	cout << "rendering";
+	glColor3f(.3f,.3f,1.0f);
+	glTranslatef(0.0f, 0.0f, -5.0f);
+	glBegin(GL_QUADS);
+		// Front Face
+		glVertex3f(-1.0f, -1.0f,  1.0f);	// Point 1 (Front)
+		glVertex3f( 1.0f, -1.0f,  1.0f);	// Point 2 (Front)
+		glVertex3f( 1.0f,  1.0f,  1.0f);	// Point 3 (Front)
+		glVertex3f(-1.0f,  1.0f,  1.0f);	// Point 4 (Front)
+		// Back Face
+		glVertex3f(-1.0f, -1.0f, -1.0f);	// Point 1 (Back)
+		glVertex3f(-1.0f,  1.0f, -1.0f);	// Point 2 (Back)
+		glVertex3f( 1.0f,  1.0f, -1.0f);	// Point 3 (Back)
+		glVertex3f( 1.0f, -1.0f, -1.0f);	// Point 4 (Back)
+		// Top Face
+		glVertex3f(-1.0f,  1.0f, -1.0f);	// Point 1 (Top)
+		glVertex3f(-1.0f,  1.0f,  1.0f);	// Point 2 (Top)
+		glVertex3f( 1.0f,  1.0f,  1.0f);	// Point 3 (Top)
+		glVertex3f( 1.0f,  1.0f, -1.0f);	// Point 4 (Top)
+		// Bottom Face
+		glVertex3f(-1.0f, -1.0f, -1.0f);	// Point 1 (Bottom)
+		glVertex3f( 1.0f, -1.0f, -1.0f);	// Point 2 (Bottom)
+		glVertex3f( 1.0f, -1.0f,  1.0f);	// Point 3 (Bottom)
+		glVertex3f(-1.0f, -1.0f,  1.0f);	// Point 4 (Bottom)
+		// Right face
+		glVertex3f( 1.0f, -1.0f, -1.0f);	// Point 1 (Right)
+		glVertex3f( 1.0f,  1.0f, -1.0f);	// Point 2 (Right)
+		glVertex3f( 1.0f,  1.0f,  1.0f);	// Point 3 (Right)
+		glVertex3f( 1.0f, -1.0f,  1.0f);	// Point 4 (Right)
+		// Left Face
+		glVertex3f(-1.0f, -1.0f, -1.0f);	// Point 1 (Left)
+		glVertex3f(-1.0f, -1.0f,  1.0f);	// Point 2 (Left)
+		glVertex3f(-1.0f,  1.0f,  1.0f);	// Point 3 (Left)
+		glVertex3f(-1.0f,  1.0f, -1.0f);	// Point 4 (Left)
+	glEnd();
+//	cout << "rendering";
 }

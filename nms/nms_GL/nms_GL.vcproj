@@ -191,6 +191,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\NMS_Engine.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\NMS_Event.cpp"
 				>
 			</File>
@@ -212,6 +216,10 @@
 			</File>
 			<File
 				RelativePath=".\NMS_TextureManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NMS_Thread.cpp"
 				>
 			</File>
 		</Filter>
@@ -245,6 +253,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\NMS_Engine.h"
+				>
+			</File>
+			<File
 				RelativePath=".\NMS_Event.h"
 				>
 			</File>
@@ -269,7 +281,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\SDL_MemberThread.h"
+				RelativePath=".\NMS_Thread.h"
 				>
 			</File>
 		</Filter>

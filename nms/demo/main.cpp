@@ -226,7 +226,7 @@ void DrawSampleScene()
 		glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);	// Point 4 (Left)
 	glEnd();
 
-	glColor3f(.3,.3,.3);
+	glColor3f(0.3f,0.3f,0.3f);
 	glBegin(GL_QUADS);
 	glVertex3f( 0,-1.0, 0);
 	glVertex3f( 0,-1.0,10);
@@ -234,7 +234,7 @@ void DrawSampleScene()
 	glVertex3f(10,-1.0, 0);
 	glEnd();
 
-	glTranslatef(0.0,0.8,0.0);
+	glTranslatef(0.0f,0.8f,0.0f);
 
 	glScalef(30.0,30.0,30.0);
 	GLfloat size = 2.0;

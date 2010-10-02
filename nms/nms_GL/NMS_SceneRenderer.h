@@ -8,21 +8,23 @@
 #define NMS_SCENE_RENDERER
 
 #include "SDL.h"
-#include "SDL_MemberThread.h"
+#include "NMS_Thread.h"
 #include "NMS_SceneGraph.h"
 
-class SCENE_RENDERER_D NMS_SceneRenderer : public SceneGraphVisitor
+class SCENE_RENDERER_D NMS_SceneRenderer : public SceneGraphVisitor, public Thread
 {
 protected:
 	SceneGraphNode* sceneGraphRoot;
 	SDL_mutex* sceneGraphGuard;
-	SDL_Thread *renderThread;
+//	SDL_Thread *renderThread;
 	bool rendering;
 
 public:
 	NMS_SceneRenderer();
+	bool initRendering();
 	void up();
 	void down();
+	int run();
 	int renderingLoop();
 	void render();
 	void setScene(SceneGraphNode* scene, SDL_mutex* sceneGuard);

@@ -41,6 +41,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/DEXP_STL"
 				Optimization="0"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)include\SDL 1.2.14&quot;"
 				PreprocessorDefinitions="__EXP_NMS_UTILITIES"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -59,6 +60,8 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="SDL.lib"
+				AdditionalLibraryDirectories="&quot;$(SolutionDir)lib\SDL 1.2.14&quot;"
 			/>
 			<Tool
 				Name="VCALinkTool"

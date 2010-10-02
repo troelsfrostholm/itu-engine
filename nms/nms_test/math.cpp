@@ -208,14 +208,24 @@ BOOST_AUTO_TEST_CASE( matrix_construction_and_lookup )
 	//Should test other constructors too
 }
 
-BOOST_AUTO_TEST_CASE( matrix_invertion )
+BOOST_AUTO_TEST_CASE( matrix_product )
+{
+/*	Matrix a = Matrix();
+	a.uScale(2.0f);
+	Matrix b = Matrix();
+	cout << "a * b" << endl;
+	cout << a * b << endl;*/
+}
+
+/*BOOST_AUTO_TEST_CASE( matrix_invertion )
 {
 	Matrix identity = Matrix();
-	
-	cout << identity << endl;
-	Matrix identity_inverse = identity;
-	/*cout << identity_inverse << endl;
-	BOOST_CHECK_EQUAL(identity, identity_inverse);*/
+	cout << "Identity" << identity << endl;
+	Matrix identity_inverse = !identity;
+	cout << "Inverse identity" << identity_inverse << endl;
+	BOOST_CHECK_EQUAL(identity, identity_inverse);
+
+
 }
 
 BOOST_AUTO_TEST_CASE( matrix_copy )
@@ -229,5 +239,5 @@ BOOST_AUTO_TEST_CASE( matrix_copy )
 	BOOST_CHECK_EQUAL(m1(2,2), 13);
 	BOOST_CHECK_EQUAL(m2(2,2), 1);
 }
-
+*/
 BOOST_AUTO_TEST_SUITE_END();
