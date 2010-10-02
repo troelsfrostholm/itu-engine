@@ -56,14 +56,16 @@ public:
 	void TransformationNode::after(SceneGraphVisitor *v, Matrix *m);
 };
 
-class SCENEGRAPH_D GeometryNode : public SceneGraphNode
+class SCENEGRAPH_D GeometryNode : public TransformationNode
 {
 protected:
 	Mesh *model;
 	btRigidBody *collisionBody;
 	
 public:
+	GeometryNode::GeometryNode();
 	GeometryNode::GeometryNode(Mesh *m, btRigidBody *b);
+	GeometryNode::GeometryNode(Mesh *m, Matrix t);
 	void GeometryNode::before(SceneGraphVisitor *v, Matrix *m);
 	void GeometryNode::after(SceneGraphVisitor *v, Matrix *m);
 };

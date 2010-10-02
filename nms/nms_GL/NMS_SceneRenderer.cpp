@@ -91,6 +91,7 @@ int NMS_SceneRenderer::renderingLoop()
 		NMS_EVENT.pollEvents();
 
 		render();
+		SDL_Delay(10);
 	}
 
 	return 0;

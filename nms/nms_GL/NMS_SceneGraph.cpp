@@ -41,22 +41,33 @@ void TransformationNode::multiply(Matrix m)
 
 void TransformationNode::before(SceneGraphVisitor *v, Matrix *m)
 {
-	*m = *m * transform;
+	*m *= transform;
 }
 
 void TransformationNode::after(SceneGraphVisitor *v, Matrix *m)
 {
-	*m = *m * (!transform);
+	*m *= !transform;
 }
 
-GeometryNode::GeometryNode(Mesh *m, btRigidBody *b)
+GeometryNode::GeometryNode() : TransformationNode()
+{ 
+	model = NULL; 
+}
+
+GeometryNode::GeometryNode(Mesh *m) : TransformationNode()
 {
+	model = m;
+}
+
+GeometryNode::GeometryNode(Mesh *m, Matrix t) : TransformationNode(t) 
+{ 
 	model = m;
 	collisionBody = b;
 }
 
 void GeometryNode::before(SceneGraphVisitor *v, Matrix *m)
 {
+	TransformationNode::before(v, m);
 	v->sg_before(*m, *model, collisionBody);
 }
 

@@ -17,6 +17,9 @@ TransformationNode sateliteTNode;
 nms_physics* physics;
 btRigidBody* fallRigidBody;
 btRigidBody* fallRigidBody2;
+GeometryNode geom;
+GeometryNode satelite;
+
 
 void keyPressed(SDLKey key)
 {
@@ -24,10 +27,10 @@ void keyPressed(SDLKey key)
 		case SDLK_UP:
 			Matrix m = Matrix();
 			//m.rotY(0.1f);
-			SDL_LockMutex(sceneGraphGuard);
+			//SDL_LockMutex(sceneGraphGuard);
 			//rotNode.multiply(m);
 			physics->simulatePhysics();
-			SDL_UnlockMutex(sceneGraphGuard);
+			//SDL_UnlockMutex(sceneGraphGuard);
 			break;
 	}
 }
@@ -35,13 +38,14 @@ void keyPressed(SDLKey key)
 void idle( int i )
 {
 	Matrix m = Matrix();
-	m.rotY(0.05f);
-	SDL_LockMutex(sceneGraphGuard);
+	m.rotY(0.5f);
+	//SDL_LockMutex(sceneGraphGuard);
 	physics->simulatePhysics();
-	SDL_Delay(20);
+	m.rotX(0.7f);
+	satelite.multiply(m);
 	//rotNode.multiply(m);
 	//sateliteRNode.multiply(m);
-	SDL_UnlockMutex(sceneGraphGuard);
+	//SDL_UnlockMutex(sceneGraphGuard);
 }
 
 int main(int argc, char* argv[])
@@ -76,8 +80,8 @@ int main(int argc, char* argv[])
 
 
 	Mesh model = Mesh();
-	GeometryNode geom = GeometryNode(&model, fallRigidBody);
-	GeometryNode satelite = GeometryNode(&model, fallRigidBody2);
+	geom = GeometryNode(&model, fallRigidBody);
+	satelite = GeometryNode(&model, fallRigidBody2);
 	SceneGraphNode* root = engine.getScene();
 	Matrix tra = Matrix();
 	Vector v = Vector(0.f, 0.f, -10.f);
