@@ -49,22 +49,22 @@ void TransformationNode::after(SceneGraphVisitor *v, Matrix *m)
 	*m = *m * (!transform);
 }
 
-GeometryNode::GeometryNode(Mesh *m)
+GeometryNode::GeometryNode(NMS_Mesh *m)
 {
 	model = m;
 }
 
 void GeometryNode::before(SceneGraphVisitor *v, Matrix *m)
 {
-	v->sg_before(*m, *model);
+	v->sg_before(*m, model);
 }
 
 void GeometryNode::after(SceneGraphVisitor *v, Matrix *m) 
 {
-	v->sg_after(*m, *model);
+	v->sg_after(*m, model);
 }
 
-void Mesh::render()
+void NMS_Mesh::render(float time)
 {
 	glBegin(GL_QUADS);
 		// Front Face

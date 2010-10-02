@@ -1,2 +1,6 @@
 NMS_TextureManager::Texture Manager Initialized!
+NMS_TextureManager::Trying to load [./duckCM.tga]
+NMS_TextureManager::Lump created correctly!
+NMS_TextureManager::Texture loaded from Lump!
+NMS_TextureManager::Loaded [./duckCM.tga] without issues!
 NMS_TextureManager::Freed the whole memory!

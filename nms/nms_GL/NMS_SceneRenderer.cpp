@@ -114,14 +114,14 @@ void NMS_SceneRenderer::setScene(SceneGraphNode* scene)
 }
 
 //Render meshes as they are traversed in the scene graph
-void NMS_SceneRenderer::sg_before(Matrix transform, Mesh model)
+void NMS_SceneRenderer::sg_before(Matrix transform, NMS_Mesh* model)
 {
 	glLoadIdentity();
 	transform.debugPrint();
 	Matrix t_transposed = ~transform;
 	glMultMatrixf(t_transposed.returnPointer());
-	model.render();
+	(*model).render(0);
 
 }
 
-void NMS_SceneRenderer::sg_after(Matrix transform, Mesh model) {}
+void NMS_SceneRenderer::sg_after(Matrix transform, NMS_Mesh* model) {}

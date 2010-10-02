@@ -153,7 +153,7 @@ void DrawMD2Model()
 {
 	gluLookAt(-87.0, 45.5, 0, 0, 2, 0, 0.0, 1.0, 0.0);
 	animSpeed+=0.0008f;
-	obj.DrawModel(animSpeed);
+	obj.render(animSpeed);
 }
 	
 void DrawNet(GLfloat size, GLint LinesX, GLint LinesZ)
@@ -271,7 +271,7 @@ void DrawColladaModel()
 {
 	gluLookAt(-200.0, 45.5, 0, 0, 2, 0, 0.0, 1.0, 0.0);
 	animSpeed+=0.0008f;
-	colObj.DrawModel(animSpeed);
+	colObj.render(animSpeed);
 }
 
 void DrawScene()

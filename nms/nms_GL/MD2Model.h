@@ -15,6 +15,7 @@
 #include "NMS_AssetManager.h"
 #include "NMS_FileManagement.h"
 #include "NMS_LogFunctions.h"
+#include "NMS_Mesh.h"
 
 #define MAGIC_NO	844121161  //It means IDP2
 
@@ -136,17 +137,17 @@ typedef struct
 
 } animState_t;
 
-class MD2LOADER_D MD2Model
+class MD2LOADER_D MD2Model : public NMS_Mesh
 {
 	public:
 		static anim_t   animlist[21];       // animation list
 		MD2Model();
 		~MD2Model();
 
-		int		LoadModel(const char* fileName);
-		int     LoadSkin(char* fileName);
+		int		LoadModel(const char* sFileName,const char* sTextName);
+		int     LoadSkin(const char* fileName);
 		void    SetAnim( int type );
-		void	DrawModel(float time);
+		void    render(float time);
 		void	DrawFrame(int frame,int nFrame); // base zero
 
 		
@@ -169,6 +170,7 @@ class MD2LOADER_D MD2Model
 		int		ReadHeader(byte *buffer,pHeader phead);			        //Load the header of the model as stored into the buffer
 		
 	private:
+		//Check to avoid crashes: the model has loaded in the right way
 		bool                bModelLoadedCorrectly;
 
 		byte*				fileBuffer;	 //The buffer containing the whole file that has been read
@@ -185,7 +187,8 @@ class MD2LOADER_D MD2Model
 		vec3_t*             p_nextLightNormals;			//Normals of the model in the next frame
 		int*				p_openGlCommands;			//List of the openGL commands
 
-		int        textureID;							// TextureID for the model
+		int					textureID;					// TextureID for the model
+		const char*			sTextureName;
 		animState_t         m_anim;						// Animation state
 		float               scaleFactor;				// Scale value for the model
 		pFrame				p_frameData;				//Pointer to the frames array

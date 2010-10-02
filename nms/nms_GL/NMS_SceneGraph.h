@@ -12,20 +12,15 @@
 #include "Matrix.h"
 #include "MD2Model.h"
 #include "NMS_Mutex.h"
+#include "NMS_Mesh.h"
 
 using namespace std;
-
-class SCENEGRAPH_D Mesh
-{
-public:
-	void render();
-};
 
 class  SCENEGRAPH_D SceneGraphVisitor
 {
 public:
-	virtual void sg_before(Matrix transform, Mesh model) = 0;
-	virtual void sg_after(Matrix transform, Mesh model) = 0;
+	virtual void sg_before(Matrix transform, NMS_Mesh* model) = 0;
+	virtual void sg_after(Matrix transform, NMS_Mesh* model) = 0;
 };
 
 class SCENEGRAPH_D SceneGraphNode
@@ -58,10 +53,10 @@ public:
 class SCENEGRAPH_D GeometryNode : public SceneGraphNode
 {
 protected:
-	Mesh *model;
+	NMS_Mesh *model;
 
 public:
-	GeometryNode::GeometryNode(Mesh *m);
+	GeometryNode::GeometryNode(NMS_Mesh *m);
 	void GeometryNode::before(SceneGraphVisitor *v, Matrix *m);
 	void GeometryNode::after(SceneGraphVisitor *v, Matrix *m);
 };

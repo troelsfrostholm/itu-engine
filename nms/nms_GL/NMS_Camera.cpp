@@ -17,8 +17,6 @@ void NMSCameraFPS::init()
 	fPitchSpd=0;
 	fYawSpd=0;
 	fRollSpd=0;
-
-	qRot=Quaternion(0,0,0,1);
 }
 
 

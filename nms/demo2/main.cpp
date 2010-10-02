@@ -1,6 +1,7 @@
 #include "NMS_Engine.h"
 #include "NMS_Framework.h"
 #include "MD2Model.h"
+#include "ColladaModel.h"
 #include <cmath>
 #include "NMS_Mutex.h"
 
@@ -42,12 +43,15 @@ int main(int argc, char* argv[])
 {
 	engine.NMSInit(WIDTH, HEIGHT, 16, "Demo 2", false);
 
-	Mesh model = Mesh();
+	//MD2Model model = MD2Model();
+	ColladaModel model = ColladaModel();
+	//model.LoadModel("models/drfreak/drfreak.md2","models/drfreak/drfreak.tga");
+	model.LoadModel("models/colladaDuck/duck_triangulate.dae");
 	GeometryNode geom = GeometryNode(&model);
 	GeometryNode satelite = GeometryNode(&model);
 	SceneGraphNode* root = engine.getScene();
 	Matrix tra = Matrix();
-	Vector v = Vector(0.f, 0.f, -10.f);
+	Vector v = Vector(0.f, 0.f, -500.f);
 	tra.translate(v);
 	Matrix rot = Matrix();
 	rot.rotX(45.f);

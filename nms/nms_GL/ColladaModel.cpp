@@ -4,7 +4,12 @@ using namespace irr;
 using namespace io;
 using namespace std;
 
-ColladaModel::ColladaModel(){};
+ColladaModel::ColladaModel()
+{
+	textureID=0;
+	bModelLoadedCorrectly   =false;
+};
+
 ColladaModel::~ColladaModel(){};
 
 ColMesh::ColMesh()
@@ -25,12 +30,20 @@ ColMesh::ColMesh()
 	uNumberOfData=0;
 }
 
-void 	ColladaModel::DrawModel(float time)
+void ColladaModel::render(float time)
 {
-	glPushMatrix();
-        // rotate the model
-		RenderFrame();
-	glPopMatrix();
+	if(bModelLoadedCorrectly)
+	{
+		glPushMatrix();
+			if(textureID==0)
+				LoadSkin((char*)textureFilepath.c_str());
+			RenderFrame();
+		glPopMatrix();
+	}
+	else
+	{
+		LOG.write("MD2Model::DrawModel -> The model has not been loaded correctly cannot draw it!\n",LOG_ERROR);
+	}
 }
 
 int ColladaModel::LoadSkin(char *filename)
@@ -152,7 +165,7 @@ int	ColladaModel::LoadModel(const char* fileName)
 		}
 		// delete the xml parser after usage
 		delete xml;
-		LoadSkin((char*)textureFilepath.c_str());
+		bModelLoadedCorrectly=true;
 		return true;
 	}
 	else

@@ -17,6 +17,7 @@
 #include <fast_atof.h>
 #include "NMS_FileManagement.h"
 #include "NMS_AssetManager.h"
+#include "NMS_Mesh.h"
 
 #include <windows.h>		// Header File For Windows
 #include <gl\gl.h>			// Header File For The OpenGL32 Library
@@ -79,7 +80,7 @@ class COLLADAMODEL_D ColMesh
 	unsigned uNumberOfData;
 };
 
-class COLLADAMODEL_D ColladaModel
+class COLLADAMODEL_D ColladaModel : public NMS_Mesh
 {
 public:
 	ColladaModel();
@@ -87,9 +88,12 @@ public:
 	int		LoadModel(const char* fileName);
 	int     LoadSkin(char* fileName);
 	int     LoadSkin();
-	void	DrawModel(float time);
+	void	render(float time);
 	void	DrawFrame(int frame,int nFrame); // base zero
 private:
+
+	//Check to avoid crashes: the model has loaded in the right way
+	bool                bModelLoadedCorrectly;
 
 	
 	//XML DATA ACQUISITION

@@ -64,12 +64,12 @@ MD2Model::~MD2Model()
 
 
 //Load the model file
-int MD2Model::LoadModel(const char* modelName)
+int MD2Model::LoadModel(const char* sModelName,const char* sTextName)
 {
 	int result=0;
 
 	//Load the file into the buffer
-	result=ReadFile(modelName);
+	result=ReadFile(sModelName);
 	if (result!=0)
 	{
 		LOG.write("MD2Model::LoadModel -> The model has not been loaded correctly!\n",LOG_ERROR);
@@ -91,6 +91,7 @@ int MD2Model::LoadModel(const char* modelName)
     m_anim.fps          = 1;
     m_anim.type         = -1;
 	
+	sTextureName=sTextName;
 	DrawFrame(0,0); // Initially set it to Point to First Frame
 	bModelLoadedCorrectly=true;
 	return 0;
@@ -155,6 +156,7 @@ void MD2Model::InitData()
 	p_openGlCommands=0;
 	scaleFactor=1.0f;
 	textureID=0;
+	sTextureName=NULL;
 
 	//Free the memory we are using
 	nmsFileManagement::Free((void**)&p_modelVertices);
@@ -265,10 +267,14 @@ void MD2Model::DrawFrame(int frame,int nFrame)
 
 
 //Draw the model. Be careful that the model should be loaded starting from frame 0
-void MD2Model::DrawModel(float time)
+void MD2Model::render(float time)
 {
 	if(bModelLoadedCorrectly)
 	{
+		if(textureID==0)
+		{
+			LoadSkin(sTextureName);
+		}
 		 // animate. calculate current frame and next frame
 		if( time > 0.0 )
 			Animate( time );
@@ -302,7 +308,6 @@ void MD2Model::RenderFrame( void )
 
     //Interpolate the vertixes and the light normals for our animations
 	Interpolate( p_modelVertices,p_lightnormals );
-
     // Bind the model texture to our model
     glBindTexture( GL_TEXTURE_2D, textureID );
 	
@@ -369,9 +374,9 @@ void MD2Model::Interpolate( vec3_t *vertlist,vec3_t* lightList)
     }
 }
 
-int MD2Model::LoadSkin(char *filename)
+int MD2Model::LoadSkin(const char *filename)
 {
-	textureID=NMS_ASSETMANAGER.LoadTexture(filename,filename);
+	textureID=NMS_ASSETMANAGER.LoadTexture((char*)filename,(char*)filename);
 	return textureID;
 }
 
