@@ -7,6 +7,10 @@
 #define HEIGHT  480
 //NMS_Framework engine = NMS_Framework();
 
+TransformationNode traNode;
+TransformationNode rotNode;
+TransformationNode rotyNode;
+
 int main(int argc, char* argv[])
 {
 	/*
@@ -31,14 +35,23 @@ int main(int argc, char* argv[])
 	Mesh model = Mesh();
 	GeometryNode geom = GeometryNode(&model);
 	SceneGraphNode* root = engine.getScene();
-	Matrix m = Matrix();
-	Vector v = Vector(1.f, 1.f, 0.f);
+	Matrix tra = Matrix();
+	Vector v = Vector(0.f, 0.f, -10.f);
+	tra.translate(v);
+	Matrix rot = Matrix();
 	//m.rotZ(45.f);
-	m.rotX(5.f);
-	m.debugPrint();
-	TransformationNode t = TransformationNode(m);
-	root->addChild(&t);
-	t.addChild(&geom);
+	rot.rotX(45.f);
+	Matrix roty = Matrix();
+	roty.rotY(30.f);
+	//rot.debugPrint();
+	traNode = TransformationNode(tra);
+	rotNode = TransformationNode(rot);
+	rotyNode = TransformationNode(roty);
+
+	root->addChild(&traNode);
+	traNode.addChild(&rotNode);
+	rotNode.addChild(&rotyNode);
+	rotyNode.addChild(&geom);
 	
 	/*root = NULL;
 	baron = NULL;*/

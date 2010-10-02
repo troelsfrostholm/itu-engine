@@ -89,7 +89,7 @@ int NMS_SceneRenderer::run()
 int NMS_SceneRenderer::renderingLoop()
 {
 	while(rendering) {
-		NMS_EVENT.processEvents();
+		NMS_EVENT.pollEvents();
 		render();
 	}
 

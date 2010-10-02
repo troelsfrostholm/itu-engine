@@ -12,6 +12,9 @@
 //#include "callback.h"
 #include "SDL.h"
 #include <boost/function.hpp>
+#include <list>
+
+using namespace std;
 
 #define NMS_EVENT	NMS_Event::getInstance()
 #define DESTROY_EVENT	NMS_Event::destroy()
@@ -20,14 +23,20 @@ class  EVENT_D NMS_Event
 {
 private:
 	static NMS_Event *singleton;
+	list<SDL_Event> eventQueue;
+	int maxQueueSize;
+	SDL_mutex* eventQueueGuard;
 	boost::function1<void, int> quitCallback;
+	
 
 	NMS_Event::NMS_Event();
 
 public:
 	static NMS_Event& NMS_Event::getInstance();
 	static void destroy (void);
+	void NMS_Event::pollEvents();
 	void NMS_Event::processEvents();
+	void NMS_Event::handleEvent(SDL_Event event);
 
 	template <class T> 
 	void onQuit(T* instance, void (T::*_callback)(int i))

@@ -47,6 +47,7 @@ protected:
 	Matrix transform;
 
 public:
+	TransformationNode::TransformationNode();
 	TransformationNode::TransformationNode(Matrix t);
 	void TransformationNode::before(SceneGraphVisitor *v, Matrix *m);
 	void TransformationNode::after(SceneGraphVisitor *v, Matrix *m);
