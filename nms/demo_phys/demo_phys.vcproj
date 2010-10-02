@@ -2,9 +2,10 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="demo"
-	ProjectGUID="{F40F725E-7DCC-4FD0-BD9D-254D2715AC64}"
-	RootNamespace="demo"
+	Name="demo_phys"
+	ProjectGUID="{7913DBFE-E7EF-49A9-A82E-25B0BC9C02A2}"
+	RootNamespace="demo_phys"
+	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
@@ -20,7 +21,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
-			CharacterSet="2"
+			CharacterSet="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -40,10 +41,12 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\Bullet\src&quot;;&quot;$(SolutionDir)\include\OpenAL 1.1&quot;;&quot;$(SolutionDir)\include\Devil 1.7.8&quot;;&quot;$(SolutionDir)\nms_utilities&quot;;&quot;$(SolutionDir)\include\Boost 1.4.4&quot;;&quot;$(SolutionDir)\nms_GL&quot;;&quot;$(SolutionDir)\include\SDL 1.2.14&quot;;&quot;$(SolutionDir)\NMS_Sound&quot;;&quot;$(SolutionDir)\nms_physics&quot;;&quot;$(SolutionDir)\nms_math&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\nms_physics&quot;;&quot;$(SolutionDir)\Bullet\lib&quot;;&quot;$(SolutionDir)\Bullet\src&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
+				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="4"
 			/>
@@ -58,10 +61,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="sdl.lib sdlmain.lib opengl32.lib glu32.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib advapi32.lib nms_math.lib Devil.lib nms_GL.lib NMS_Sound.lib nms_physics.lib BulletCollision.lib BulletDynamics.lib LinearMath.lib"
-				AdditionalLibraryDirectories="&quot;$(SolutionDir)\Debug&quot;;&quot;$(SolutionDir)\Bullet\lib&quot;;&quot;$(SolutionDir)\lib&quot;;&quot;$(SolutionDir)\lib\SDL 1.2.14&quot;;&quot;$(SolutionDir)\lib\Devil 1.7.8&quot;;&quot;$(SolutionDir)\release&quot;"
+				AdditionalDependencies="nms_physics.lib BulletDynamics.lib BulletCollision.lib LinearMath.lib"
+				LinkIncremental="2"
+				AdditionalLibraryDirectories="&quot;$(SolutionDir)\Release&quot;;&quot;$(SolutionDir)\Bullet\lib&quot;;&quot;$(SolutionDir)\Debug&quot;;&quot;$(SolutionDir)\lib&quot;"
 				GenerateDebugInformation="true"
-				SubSystem="2"
+				SubSystem="1"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -91,7 +95,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
-			CharacterSet="2"
+			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
 			<Tool
@@ -113,8 +117,10 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
+				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
@@ -129,7 +135,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				LinkIncremental="1"
 				GenerateDebugInformation="true"
+				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				TargetMachine="1"

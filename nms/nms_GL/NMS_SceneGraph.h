@@ -11,6 +11,7 @@
 #include <iostream>
 #include "Matrix.h"
 #include "MD2Model.h"
+#include "nms_physics.h"
 
 using namespace std;
 
@@ -56,9 +57,10 @@ class SCENEGRAPH_D GeometryNode : public SceneGraphNode
 {
 protected:
 	Mesh *model;
-
+	btRigidBody *collisionBody;
+	
 public:
-	GeometryNode::GeometryNode(Mesh *m);
+	GeometryNode::GeometryNode(Mesh *m, btRigidBody *b);
 	void GeometryNode::before(SceneGraphVisitor *v, Matrix *m);
 	void GeometryNode::after(SceneGraphVisitor *v, Matrix *m);
 };

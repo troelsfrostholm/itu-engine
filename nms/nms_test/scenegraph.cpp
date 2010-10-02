@@ -36,8 +36,8 @@ BOOST_AUTO_TEST_CASE( scenegraph_node )
 	TransformationNode s3 = TransformationNode(t);
 	TransformationNode s4 = TransformationNode(t);
 	TransformationNode s5 = TransformationNode(t);
-	GeometryNode g1 = GeometryNode(&model);
-	GeometryNode g2 = GeometryNode(&model);
+	GeometryNode g1 = GeometryNode(&model, NULL);
+	GeometryNode g2 = GeometryNode(&model, NULL);
 
 	s.addChild(&s2);
 	s2.addChild(&s3);

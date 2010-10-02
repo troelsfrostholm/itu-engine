@@ -14,11 +14,12 @@ Matrix::Matrix()
 
 Matrix::~Matrix()
  {
-   ++structPointer->refCounter;
-   if (--structPointer->refCounter == 0)
+   if (structPointer->refCounter == 0)
    {
 	   delete structPointer;
 	   structPointer=NULL;
+   }else{
+	   structPointer->refCounter--;
    }
  }
 

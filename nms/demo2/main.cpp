@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
 	GeometryNode* baron = new GeometryNode(&obj);
 	*/
 	Mesh model = Mesh();
-	GeometryNode* geom = new GeometryNode(&model);
+	GeometryNode* geom = new GeometryNode(&model, NULL);
 	SceneGraphNode* root = engine.getScene();
 	Matrix m = Matrix();
 	root->addChild(new TransformationNode(m));

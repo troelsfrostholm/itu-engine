@@ -121,6 +121,7 @@ void NMS_SceneRenderer::sg_before(Matrix transform, Mesh model)
 {
 	glLoadIdentity();
 	//glMultMatrixf(transform.returnPointer());
+	//applyPhysics()
 	model.render();
 
 }

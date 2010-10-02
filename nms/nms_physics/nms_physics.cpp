@@ -1,12 +1,8 @@
-// nms_physics.cpp : Defines the entry point for the console application.
-//
-
-#include "stdafx.h"
 #include "nms_physics.h"
 #include <iostream>
 
-void nms_physics::initPhysics(){
-
+void nms_physics::initPhysics()
+{
 	broadphase = new btDbvtBroadphase();
 
     collisionConfiguration = new btDefaultCollisionConfiguration();
@@ -19,8 +15,8 @@ void nms_physics::initPhysics(){
     dynamicsWorld->setGravity(btVector3(0,-10,0));
 }
 
-void nms_physics::exitPhysics(){
-
+void nms_physics::exitPhysics()
+{
 	int i;
 	for (i=dynamicsWorld->getNumCollisionObjects()-1; i>=0 ;i--)
 	{
@@ -53,31 +49,39 @@ void nms_physics::exitPhysics(){
 
 }
 
-void nms_physics::simulatePhysics(){
+void nms_physics::simulatePhysics()
+{
 	dynamicsWorld->stepSimulation(1/60.f,10);
 }
 
-void nms_physics::addRBody(btRigidBody* body){
+void nms_physics::addRBody(btRigidBody* body)
+{
 	dynamicsWorld->addRigidBody(body);
+}
+
+nms_physics::nms_physics()
+{
+	initPhysics();
+}
+
+nms_physics::~nms_physics()
+{
+	exitPhysics();
 }
 
 int main (void)
 {
-	nms_physics* physics = nms_physics::create();
+	nms_physics* physics = new nms_physics();
     btCollisionShape* groundShape = new btStaticPlaneShape(btVector3(0,1,0),1);
 
     btCollisionShape* fallShape = new btSphereShape(1);
 
-
     btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,-1,0)));
-    btRigidBody::btRigidBodyConstructionInfo
-            groundRigidBodyCI(0,groundMotionState,groundShape,btVector3(0,0,0));
+    btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(0,groundMotionState,groundShape,btVector3(0,0,0));
     btRigidBody* groundRigidBody = new btRigidBody(groundRigidBodyCI);
 	physics->addRBody(groundRigidBody);
 
-
-    btDefaultMotionState* fallMotionState =
-            new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,50,0)));
+    btDefaultMotionState* fallMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,50,0)));
     btScalar mass = 1;
     btVector3 fallInertia(0,0,0);
     fallShape->calculateLocalInertia(mass,fallInertia);
@@ -85,14 +89,13 @@ int main (void)
     btRigidBody* fallRigidBody = new btRigidBody(fallRigidBodyCI);
     physics->addRBody(fallRigidBody);
 
+    for (int i=0 ; i<300 ; i++)
+	{
+		physics->simulatePhysics();
+        btTransform trans;
+        fallRigidBody->getMotionState()->getWorldTransform(trans);
 
-    for (int i=0 ; i<300 ; i++) {
-            physics->simulatePhysics();
-
-            btTransform trans;
-            fallRigidBody->getMotionState()->getWorldTransform(trans);
-
-            std::cout << "sphere height: " << trans.getOrigin().getY() << std::endl;
+        std::cout << "sphere height: " << trans.getOrigin().getY() << std::endl;
     }
 
     return 0;
