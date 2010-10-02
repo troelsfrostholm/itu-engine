@@ -23,9 +23,9 @@ void keyPressed(SDLKey key)
 		case SDLK_UP:
 			Matrix m = Matrix();
 			m.rotY(0.1f);
-			SDL_LockMutex(sceneGraphGuard);
+			//SDL_LockMutex(sceneGraphGuard);
 			rotNode.multiply(m);
-			SDL_UnlockMutex(sceneGraphGuard);
+			//SDL_UnlockMutex(sceneGraphGuard);
 			break;
 	}
 }
@@ -33,13 +33,13 @@ void keyPressed(SDLKey key)
 void idle( int i )
 {
 	Matrix m = Matrix();
-	m.rotY(0.05f);
-	SDL_LockMutex(sceneGraphGuard);
+	m.rotY(0.5f);
+	//SDL_LockMutex(sceneGraphGuard);
 	rotNode.multiply(m);
 	sateliteRNode.multiply(m);
-	m.rotX(0.07f);
+	m.rotX(0.7f);
 	satelite.multiply(m);
-	SDL_UnlockMutex(sceneGraphGuard);
+	//SDL_UnlockMutex(sceneGraphGuard);
 }
 
 int main(int argc, char* argv[])
