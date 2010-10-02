@@ -51,7 +51,7 @@ void nms_physics::exitPhysics()
 
 void nms_physics::simulatePhysics()
 {
-	dynamicsWorld->stepSimulation(1/60.f,10);
+	dynamicsWorld->stepSimulation(1/100.f,10);
 }
 
 void nms_physics::addRBody(btRigidBody* body)

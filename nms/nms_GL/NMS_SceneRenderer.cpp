@@ -89,6 +89,7 @@ int NMS_SceneRenderer::renderingLoop()
 {
 	while(rendering) {
 		NMS_EVENT.pollEvents();
+
 		render();
 	}
 
@@ -114,14 +115,26 @@ void NMS_SceneRenderer::setScene(SceneGraphNode* scene)
 }
 
 //Render meshes as they are traversed in the scene graph
-void NMS_SceneRenderer::sg_before(Matrix transform, Mesh model)
+void NMS_SceneRenderer::sg_before(Matrix transform, Mesh model, btRigidBody *b)
 {
 	glLoadIdentity();
 	transform.debugPrint();
 	Matrix t_transposed = ~transform;
 	glMultMatrixf(t_transposed.returnPointer());
+	applyPhysics(NULL, b);
 	model.render();
 
 }
 
 void NMS_SceneRenderer::sg_after(Matrix transform, Mesh model) {}
+
+void NMS_SceneRenderer::applyPhysics(Matrix *m, btRigidBody *b)
+{
+	btScalar matrix[16];
+	btTransform trans;
+	//glPushMatrix();
+	b->getMotionState()->getWorldTransform(trans);
+	trans.getOpenGLMatrix(matrix);
+	glMultMatrixf(matrix);
+	//glPopMatrix();
+}

@@ -25,7 +25,7 @@ public:
 class  SCENEGRAPH_D SceneGraphVisitor
 {
 public:
-	virtual void sg_before(Matrix transform, Mesh model) = 0;
+	virtual void sg_before(Matrix transform, Mesh model, btRigidBody *b) = 0;
 	virtual void sg_after(Matrix transform, Mesh model) = 0;
 };
 

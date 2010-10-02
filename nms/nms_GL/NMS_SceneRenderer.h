@@ -28,8 +28,9 @@ public:
 	int renderingLoop();
 	void render();
 	void setScene(SceneGraphNode* scene);
-	void sg_before(Matrix transform, Mesh model);
+	void sg_before(Matrix transform, Mesh model, btRigidBody *b);
 	void sg_after(Matrix transform, Mesh model);
+	void NMS_SceneRenderer::applyPhysics(Matrix *m, btRigidBody *b);
 };
 
 #endif

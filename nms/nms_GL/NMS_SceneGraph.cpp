@@ -57,7 +57,7 @@ GeometryNode::GeometryNode(Mesh *m, btRigidBody *b)
 
 void GeometryNode::before(SceneGraphVisitor *v, Matrix *m)
 {
-	v->sg_before(*m, *model);
+	v->sg_before(*m, *model, collisionBody);
 }
 
 void GeometryNode::after(SceneGraphVisitor *v, Matrix *m) 
@@ -102,15 +102,4 @@ void Mesh::render()
 		glVertex3f(-1.0f,  1.0f, -1.0f);	// Point 4 (Left)
 	glEnd();
 //	cout << "rendering";
-}
-
-void applyPhysics(Matrix *m, btRigidBody *b)
-{
-	btScalar matrix[16];
-	btTransform trans;
-	glPushMatrix();
-	b->getMotionState()->getWorldTransform(trans);
-	trans.getOpenGLMatrix(matrix);
-	glMultMatrixf(matrix);
-	glPopMatrix();
 }
