@@ -13,6 +13,8 @@ TransformationNode rotNode;
 TransformationNode rotyNode;
 TransformationNode sateliteRNode;
 TransformationNode sateliteTNode;
+GeometryNode geom;
+GeometryNode satelite;
 
 
 void keyPressed(SDLKey key)
@@ -35,6 +37,8 @@ void idle( int i )
 	SDL_LockMutex(sceneGraphGuard);
 	rotNode.multiply(m);
 	sateliteRNode.multiply(m);
+	m.rotX(0.07f);
+	satelite.multiply(m);
 	SDL_UnlockMutex(sceneGraphGuard);
 }
 
@@ -43,8 +47,8 @@ int main(int argc, char* argv[])
 	engine.NMSInit(WIDTH, HEIGHT, 16, "Demo 2", false);
 
 	Mesh model = Mesh();
-	GeometryNode geom = GeometryNode(&model);
-	GeometryNode satelite = GeometryNode(&model);
+	geom = GeometryNode(&model);
+	satelite = GeometryNode(&model);
 	SceneGraphNode* root = engine.getScene();
 	Matrix tra = Matrix();
 	Vector v = Vector(0.f, 0.f, -10.f);

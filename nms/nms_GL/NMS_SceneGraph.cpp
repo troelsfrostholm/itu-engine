@@ -41,21 +41,32 @@ void TransformationNode::multiply(Matrix m)
 
 void TransformationNode::before(SceneGraphVisitor *v, Matrix *m)
 {
-	*m = *m * transform;
+	*m *= transform;
 }
 
 void TransformationNode::after(SceneGraphVisitor *v, Matrix *m)
 {
-	*m = *m * (!transform);
+	*m *= !transform;
 }
 
-GeometryNode::GeometryNode(Mesh *m)
+GeometryNode::GeometryNode() : TransformationNode()
+{ 
+	model = NULL; 
+}
+
+GeometryNode::GeometryNode(Mesh *m) : TransformationNode()
 {
+	model = m;
+}
+
+GeometryNode::GeometryNode(Mesh *m, Matrix t) : TransformationNode(t) 
+{ 
 	model = m;
 }
 
 void GeometryNode::before(SceneGraphVisitor *v, Matrix *m)
 {
+	TransformationNode::before(v, m);
 	v->sg_before(*m, *model);
 }
 
