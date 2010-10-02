@@ -19,6 +19,7 @@
 #include "NMS_SceneRenderer.h"
 #include "NMS_LightSystem.h"
 #include "SDL_MemberThread.h"
+#include "NMS_Mutex.h"
 
 class FRAMEWORK_D NMS_Framework
 {
@@ -26,7 +27,6 @@ protected:
 	int flags;
 	NMS_SceneRenderer sceneRenderer;
 	SceneGraphNode* sceneGraphRoot;
-	SDL_mutex* sceneGraphGuard;
 	
 public:
 	bool running;
