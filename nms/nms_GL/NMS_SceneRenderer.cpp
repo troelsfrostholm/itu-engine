@@ -4,7 +4,6 @@
 NMS_SceneRenderer::NMS_SceneRenderer() { 
 	rendering = false; 
 	sceneGraphRoot = NULL;
-	sceneGraphGuard = NULL;
 }
 
 bool NMS_SceneRenderer::initRendering()
@@ -89,7 +88,7 @@ int NMS_SceneRenderer::run()
 int NMS_SceneRenderer::renderingLoop()
 {
 	while(rendering) {
-		NMS_EVENT.processEvents();
+		NMS_EVENT.pollEvents();
 		render();
 	}
 
@@ -103,25 +102,24 @@ void NMS_SceneRenderer::render()
 	SDL_LockMutex(sceneGraphGuard);
 	sceneGraphRoot->traverse_df(this);
 	SDL_UnlockMutex(sceneGraphGuard);
-	//glMatrixMode(GL_MODELVIEW);
 	//glLoadIdentity();
 	//Mesh m = Mesh();
 	//m.render();
 	SDL_GL_SwapBuffers();
 }
 
-void NMS_SceneRenderer::setScene(SceneGraphNode* scene, SDL_mutex* sceneGuard)
+void NMS_SceneRenderer::setScene(SceneGraphNode* scene)
 {
 	sceneGraphRoot = scene;
-	sceneGraphGuard = sceneGuard;
 }
 
 //Render meshes as they are traversed in the scene graph
 void NMS_SceneRenderer::sg_before(Matrix transform, Mesh model)
 {
 	glLoadIdentity();
-	//glMultMatrixf(transform.returnPointer());
-	//applyPhysics()
+	transform.debugPrint();
+	Matrix t_transposed = ~transform;
+	glMultMatrixf(t_transposed.returnPointer());
 	model.render();
 
 }

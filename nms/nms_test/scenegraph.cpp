@@ -28,10 +28,12 @@ BOOST_AUTO_TEST_CASE( scenegraph_node )
 	Mesh model = Mesh();
 
 	Matrix t = Matrix();
-	t.uScale(2.0f);
+	Matrix root_t = Matrix();
+	Vector vec = Vector(1.f, 0.f, 0.f);
+	t.translate(vec);
 	cout << "t is " << endl << t << endl;
 	cout << "inverse t is " << endl << !t << endl;
-	TransformationNode s = TransformationNode(t);
+	TransformationNode s = TransformationNode(root_t);
 	TransformationNode s2 = TransformationNode(t);
 	TransformationNode s3 = TransformationNode(t);
 	TransformationNode s4 = TransformationNode(t);

@@ -61,6 +61,7 @@
 				AdditionalDependencies="BulletCollision.lib BulletDynamics.lib LinearMath.lib"
 				AdditionalLibraryDirectories="$(SolutionDir)\Bullet\lib"
 				GenerateDebugInformation="true"
+				BaseAddress="0x60400000"
 				TargetMachine="1"
 			/>
 			<Tool

@@ -1,17 +1,18 @@
 #include "NMS_Framework.h"
 
-
 NMS_Framework::NMS_Framework(){};
 
 bool NMS_Framework::NMSInit(int width,int height,int bpp,char* windowTitle,bool fullscreen)
 {
+	//Initialize mutexes
+	initMutexes();
+
 	//Instantiate sub-systems
 	sceneRenderer = NMS_SceneRenderer();
 	
 	//Create scene-graph
 	sceneGraphRoot = new TransformationNode(Matrix());
-	sceneGraphGuard = SDL_CreateMutex();
-	sceneRenderer.setScene(sceneGraphRoot, sceneGraphGuard);
+	sceneRenderer.setScene(sceneGraphRoot);
 
 	//set callback for quitting
 	NMS_EVENT.onQuit(this, &NMS_Framework::NMSQuit);
@@ -52,6 +53,7 @@ void NMS_Framework::run()
 	sceneRenderer.up();
 	while(running)
 	{
+		NMS_EVENT.processEvents();
 	}
 	sceneRenderer.down();
 	NMS_Framework::cleanup();

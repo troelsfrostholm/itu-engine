@@ -62,6 +62,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="SDL.lib"
 				AdditionalLibraryDirectories="&quot;$(SolutionDir)lib\SDL 1.2.14&quot;"
+				BaseAddress="0x60600000"
 			/>
 			<Tool
 				Name="VCALinkTool"
