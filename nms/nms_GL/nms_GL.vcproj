@@ -209,6 +209,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\NMS_Mutex.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\NMS_SceneGraph.cpp"
 				>
 			</File>
@@ -260,6 +264,10 @@
 			</File>
 			<File
 				RelativePath=".\NMS_LightSystem.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NMS_Mutex.h"
 				>
 			</File>
 			<File

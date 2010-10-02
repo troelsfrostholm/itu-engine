@@ -4,7 +4,6 @@
 NMS_SceneRenderer::NMS_SceneRenderer() { 
 	rendering = false; 
 	sceneGraphRoot = NULL;
-	sceneGraphGuard = NULL;
 }
 
 bool NMS_SceneRenderer::initRendering()
@@ -109,10 +108,9 @@ void NMS_SceneRenderer::render()
 	SDL_GL_SwapBuffers();
 }
 
-void NMS_SceneRenderer::setScene(SceneGraphNode* scene, SDL_mutex* sceneGuard)
+void NMS_SceneRenderer::setScene(SceneGraphNode* scene)
 {
 	sceneGraphRoot = scene;
-	sceneGraphGuard = sceneGuard;
 }
 
 //Render meshes as they are traversed in the scene graph

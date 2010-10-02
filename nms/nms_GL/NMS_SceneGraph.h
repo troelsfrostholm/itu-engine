@@ -11,6 +11,7 @@
 #include <iostream>
 #include "Matrix.h"
 #include "MD2Model.h"
+#include "NMS_Mutex.h"
 
 using namespace std;
 
