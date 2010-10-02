@@ -6,9 +6,6 @@ NMS_AssetManager *NMS_AssetManager::m_Singleton = 0;
 //NOTE: The constructor is NEVER called directly because this is a singletone class.
 //When the GetSingletone command is issue the constructor will be called, to initialize data just use Initialize
 NMS_AssetManager::NMS_AssetManager (void) {
-	// This is just to be clean, but all 'real' data
-	// is in m_Singleton
-	
 	szErrorMessage [0] = '\0';
 }
 

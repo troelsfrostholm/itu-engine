@@ -35,8 +35,8 @@ int main(int argc, char* argv[])
 	NMS_Audio audioEngine;
 	ALfloat sourcePos[] = {0.0f,0.0f,0.0f};
 	ALfloat sourceVel[] = {0.0f,0.0f,0.0f};
-	audioEngine.LoadWav("test.wav","test",sourcePos,sourceVel,1.0f,5.0f,true);
-	audioEngine.playSound("test");
+	//audioEngine.LoadWav("test.wav","test",sourcePos,sourceVel,1.0f,5.0f,true);
+	//audioEngine.playSound("test");
 	//audioEngine.LoadWav("test2.wav","test2",sourcePos,sourceVel,1.0f,5.0f,true);
 	//audioEngine.playSound("test2");
 	engine.light.Enable(false);
@@ -47,8 +47,8 @@ int main(int argc, char* argv[])
 	engine.light.defineLight(light0);
 	
 	//engine.light.setGlobalAmbient(&Vector(1.0,1.0,1.0,1.0));
-	obj.LoadModel("models/baron/BaronBody.md2");
-	obj.LoadSkin("models/baron/baron.jpg");
+	//obj.LoadModel("models/baron/BaronBody.md2");
+	//obj.LoadSkin("models/baron/baron.jpg");
 	obj.SetAnim(BOOM);
 	//colObj.LoadModel("models/colladaDuck/duck_triangulate.dae");
 	while(true)
@@ -79,7 +79,6 @@ void ProcessEvents()
 			switch( event.key.keysym.sym ) 
 			{ case SDLK_UP:
 				   engine.camera.setRSpeedX(+90.0f);
-				   //xspeed-=0.1f; 
 			       break; 
 			  case SDLK_DOWN:engine.camera.setRSpeedX(-90.0f); 
 				   break; 
@@ -100,8 +99,6 @@ void ProcessEvents()
 			  case SDLK_s:engine.camera.setSpeed(-0.01f);
 				   break;
 			  case SDLK_q:;
-				  //xspeed=0.0;
-				  //yspeed=0.0;
 				   break;
 			  case SDLK_ESCAPE:engine.NMSQuit(0);
 				   break;
@@ -111,7 +108,6 @@ void ProcessEvents()
 		case SDL_KEYUP:
 			switch( event.key.keysym.sym ) 
 			{ case SDLK_UP:engine.camera.setRSpeedX(0);
-				   //xspeed-=0.1f; 
 			       break; 
 			  case SDLK_DOWN:engine.camera.setRSpeedX(0); 
 				   break; 
@@ -132,8 +128,6 @@ void ProcessEvents()
 			  case SDLK_s:engine.camera.setSpeed(0);
 				   break;
 			  case SDLK_q:;
-				  //xspeed=0.0;
-				  //yspeed=0.0;
 				   break;
 			  case SDLK_ESCAPE:engine.NMSQuit(0);
 				   break;
@@ -146,7 +140,6 @@ void ProcessEvents()
 				Vector rot=engine.camera.getRotation();
 				SDL_GetRelativeMouseState(&MouseX,&MouseY);
 				//Pitch rotation, with the mouse is up and down
-				//rot[NMS_X]=(MouseY-HEIGHT/2)*0.01f;
 				rot[NMS_X]+=(MouseY)*0.01f;
 				//Yaw rotation, with the mouse you can do it using the left right position
 				rot[NMS_Y]+=(MouseX)*0.01f;
@@ -164,8 +157,8 @@ void ProcessEvents()
 
 void DrawMD2Model()
 {
-	//gluLookAt(-87.0, 45.5, 0, 0, 2, 0, 0.0, 1.0, 0.0);
-	animSpeed+=0.0008;
+	gluLookAt(-87.0, 45.5, 0, 0, 2, 0, 0.0, 1.0, 0.0);
+	animSpeed+=0.0008f;
 	obj.DrawModel(animSpeed);
 }
 	
@@ -283,7 +276,7 @@ void DrawSampleScene()
 void DrawColladaModel()
 {
 	gluLookAt(-200.0, 45.5, 0, 0, 2, 0, 0.0, 1.0, 0.0);
-	animSpeed+=0.0008;
+	animSpeed+=0.0008f;
 	colObj.DrawModel(animSpeed);
 }
 

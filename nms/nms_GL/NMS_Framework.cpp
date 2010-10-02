@@ -98,8 +98,8 @@ void NMS_Framework::run()
 
 void NMS_Framework::cleanup()
 {
-	//Be sure to remove all the textures we have loaded from the memory!
-	NMS_TEXTUREMANAGER.FreeAll();
+	//Be sure to remove all the assets we have loaded!
+	NMS_ASSETMANAGER.FreeAll();
 	delete(sceneGraphRoot);
 	SDL_DestroyMutex(sceneGraphGuard);
 	sceneGraphRoot = NULL;

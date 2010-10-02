@@ -1,11 +1,7 @@
 #include "MD2Model.h"
-//#include "NMS_Framework.h" 
 
 
-// ----------------------------------------------
-// initialize the 21 MD2 model animations.
-// ----------------------------------------------
-
+//Initialize the vector of the 21 possible animations for an MD2 model
 anim_t MD2Model::animlist[ 21 ] = 
 {
     // first, last, fps
@@ -33,7 +29,7 @@ anim_t MD2Model::animlist[ 21 ] =
     { 198, 198,  5 },   // BOOM
 };
 
-// precalculated normal vectors
+// Load the precalculated normal vectors
 vec3_t  MD2Model::anorms[ 162 ] = {
 #include    "NMS_anorms.h"
 };
@@ -42,6 +38,7 @@ vec3_t  MD2Model::anorms[ 162 ] = {
 
 MD2Model::MD2Model()
 {
+	bModelLoadedCorrectly   =false;
 	fileBuffer	            =NULL;
 	p_frameData	            =NULL;
 	p_modelVertices         =NULL;
@@ -53,15 +50,15 @@ MD2Model::MD2Model()
 
 MD2Model::~MD2Model()
 {
-	Free((void**)&fileBuffer);
-	Free((void**)&p_modelVertices);
-	Free((void**)&p_nextFrameVertices);
+	nmsFileManagement::Free((void**)&fileBuffer);
+	nmsFileManagement::Free((void**)&p_modelVertices);
+	nmsFileManagement::Free((void**)&p_nextFrameVertices);
 	for (int index=0;index<md2Header.numFrames;index++)
-		Free((void**)&p_frameData[index].pvertices);
-	Free((void**)&p_frameData);
-	Free((void**)&p_lightnormals);
-	Free((void**)&p_nextLightNormals);
-	Free((void**)&p_openGlCommands);
+		nmsFileManagement::Free((void**)&p_frameData[index].pvertices);
+	nmsFileManagement::Free((void**)&p_frameData);
+	nmsFileManagement::Free((void**)&p_lightnormals);
+	nmsFileManagement::Free((void**)&p_nextLightNormals);
+	nmsFileManagement::Free((void**)&p_openGlCommands);
 }
 
 
@@ -74,7 +71,10 @@ int MD2Model::LoadModel(const char* modelName)
 	//Load the file into the buffer
 	result=ReadFile(modelName);
 	if (result!=0)
+	{
+		LOG.write("MD2Model::LoadModel -> The model has not been loaded correctly!\n",LOG_ERROR);
 		return result;
+	}
 
 	//Read the header of the file stored into the buffer
 	result=ReadHeader(fileBuffer,&md2Header);
@@ -92,30 +92,12 @@ int MD2Model::LoadModel(const char* modelName)
     m_anim.type         = -1;
 	
 	DrawFrame(0,0); // Initially set it to Point to First Frame
+	bModelLoadedCorrectly=true;
 	return 0;
 }
 
 
-//Allocate the memory space with regard to the type to be used. Return a pointer to the memory allocation
-void* MD2Model::Malloc(size_t size)
-{
-	void* p=malloc(size);
-	if (p==NULL)
-		return p;
-	memset(p,0,size);
 
-	return p;
-}
-
-//Free the memory space pointed by the given pointer. Set to void** to receive every kind of pointers
-void MD2Model::Free(void** p)
-{
-	if (*p!=NULL)
-	{
-		free(*p);
-		*p=NULL;
-	}
-}
 
 //Read the model file
 int MD2Model::ReadFile(const char* fileName)
@@ -128,7 +110,7 @@ int MD2Model::ReadFile(const char* fileName)
 		return 1;
 
 	//Free the memory to store the file into the buffer
-	Free((void**)&fileBuffer);
+	nmsFileManagement::Free((void**)&fileBuffer);
 
 	//Calculate the size of the file
 	long fileSize= nmsFileManagement::FileSize(fp);
@@ -136,7 +118,7 @@ int MD2Model::ReadFile(const char* fileName)
 		return 1;
 
 	//Allocate the space needed to keep the file into the buffer
-	fileBuffer=(byte*)Malloc(fileSize);
+	fileBuffer=(byte*)nmsFileManagement::Malloc(fileSize);
 	if (!fileBuffer)
 		return 1;
 
@@ -165,9 +147,7 @@ int MD2Model::ReadHeader(byte *buffer,pHeader phead)
 	return 0;
 }
 
-/*
-	Name : InitData
-*/
+
 void MD2Model::InitData()
 {
 	p_lightnormals=0;
@@ -177,45 +157,35 @@ void MD2Model::InitData()
 	textureID=0;
 
 	//Free the memory we are using
-	Free((void**)&p_modelVertices);
-	Free((void**)&p_frameData);
+	nmsFileManagement::Free((void**)&p_modelVertices);
+	nmsFileManagement::Free((void**)&p_nextFrameVertices);
+	nmsFileManagement::Free((void**)&p_lightnormals);
+	nmsFileManagement::Free((void**)&p_nextLightNormals);
+	nmsFileManagement::Free((void**)&p_frameData);
 	if (p_frameData!=NULL)
 	{
 		for (int index=0;index<md2Header.numFrames;index++)
-			Free((void**)&p_frameData[index].pvertices);
-		Free((void**)&p_frameData);
+			nmsFileManagement::Free((void**)&p_frameData[index].pvertices);
+		nmsFileManagement::Free((void**)&p_frameData);
 	}
 
-	//Allocate the space for the vertices and the vertices used in the next frame
-	p_modelVertices = (vec3_t*) Malloc(md2Header.numVertices*sizeof(vec3_t));
-	p_nextFrameVertices = (vec3_t*) Malloc(md2Header.numVertices*sizeof(vec3_t));
-	p_openGlCommands        = new int[ numGlCommands ];
-	p_lightnormals=(vec3_t*)Malloc(sizeof(vec3_t)*md2Header.numVertices);
-	p_nextLightNormals=(vec3_t*)Malloc(sizeof(vec3_t)*md2Header.numVertices);
+	//Allocate the space for the vertices and the vertices used in the next frame,
+	//the ligthing normals and the normals used in the next frame
+	//and the opengl command list to be able to draw our model
+	p_modelVertices		= (vec3_t*) nmsFileManagement::Malloc(md2Header.numVertices*sizeof(vec3_t));
+	p_nextFrameVertices = (vec3_t*) nmsFileManagement::Malloc(md2Header.numVertices*sizeof(vec3_t));
+	p_lightnormals      = (vec3_t*) nmsFileManagement::Malloc(sizeof(vec3_t)*md2Header.numVertices);
+	p_nextLightNormals  = (vec3_t*) nmsFileManagement::Malloc(sizeof(vec3_t)*md2Header.numVertices);
+	p_openGlCommands    =  new int[ numGlCommands ];
 }
 
 
-
-
-
-
-
-
-
-
-
-/*
-	Name : LoadData
-*/
 void MD2Model::LoadData()
 {
 	LoadFrames();
 	LoadGLCommands();
 }
 
-/*
-	Name : LoadFrames
-*/
 void MD2Model::LoadFrames()
 {
 	int index=0;
@@ -228,14 +198,14 @@ void MD2Model::LoadFrames()
 	//The total number of vertexes per frame, return the space for it
 	long	frameVertSize	= md2Header.numVertices * sizeof(TriangleVertex); 
 
-	p_frameData =(pFrame)Malloc(frameHeaderSize);
+	p_frameData =(pFrame)nmsFileManagement::Malloc(frameHeaderSize);
 	if (!p_frameData)
 		return;
 
 	//Create the space for each vertex, for each frame
 	for (index=0;index< md2Header.numFrames;index++)
 	{
-		p_frameData[index].pvertices = (pTriangleVertex)Malloc(frameVertSize);
+		p_frameData[index].pvertices = (pTriangleVertex)nmsFileManagement::Malloc(frameVertSize);
 		if (!p_frameData[index].pvertices)
 			return;
 	}
@@ -250,9 +220,7 @@ void MD2Model::LoadFrames()
 	}
 }
 
-/*
-	Name : LoadGLCommands
-*/
+
 void MD2Model::LoadGLCommands()
 {
 	int index=0;
@@ -272,22 +240,21 @@ void MD2Model::DrawFrame(int frame,int nFrame)
 	int index=0;
 	if (p_modelVertices!=NULL)
 	{
-		/*p_modelVertices=(vec3_t*)Malloc(sizeof(vec3_t)*md2Header.numVertices);
-		p_nextFrameVertices=(vec3_t*)Malloc(sizeof(vec3_t)*md2Header.numVertices);
-		p_lightnormals=(vec3_t*)Malloc(sizeof(vec3_t)*md2Header.numVertices);
-		p_nextLightNormals=(vec3_t*)Malloc(sizeof(vec3_t)*md2Header.numVertices);*/
 		for (index=0;index<md2Header.numVertices;index++)
 		{
 				// Every vertex of frame is multiplied by it's respective scale and then the translation is added.
 				p_modelVertices[index][0] = (p_frameData[frame].pvertices[index].vertex[0] * p_frameData[frame].scale[0])+p_frameData[frame].translate[0];
 				p_modelVertices[index][1] = (p_frameData[frame].pvertices[index].vertex[1] * p_frameData[frame].scale[1])+p_frameData[frame].translate[1];
 				p_modelVertices[index][2] = (p_frameData[frame].pvertices[index].vertex[2] * p_frameData[frame].scale[2])+p_frameData[frame].translate[2];
+				// Take the normal vectors for the model
 				p_lightnormals[index][0]     =      anorms[p_frameData[frame].pvertices[index].lightNormalIndex][0];
 				p_lightnormals[index][1]     =      anorms[p_frameData[frame].pvertices[index].lightNormalIndex][1];
 				p_lightnormals[index][2]     =      anorms[p_frameData[frame].pvertices[index].lightNormalIndex][2];
+				// Take the normal vectors for the model for the next frame
 				p_nextLightNormals[index][0] =      anorms[p_frameData[nFrame].pvertices[index].lightNormalIndex][0];
 				p_nextLightNormals[index][1] =      anorms[p_frameData[nFrame].pvertices[index].lightNormalIndex][1];
 				p_nextLightNormals[index][2] =      anorms[p_frameData[nFrame].pvertices[index].lightNormalIndex][2];
+				// Take vertices for the next frame
 				p_nextFrameVertices[index][0] = (p_frameData[nFrame].pvertices[index].vertex[0] * p_frameData[nFrame].scale[0])+p_frameData[nFrame].translate[0];
 				p_nextFrameVertices[index][1] = (p_frameData[nFrame].pvertices[index].vertex[1] * p_frameData[nFrame].scale[1])+p_frameData[nFrame].translate[1];
 				p_nextFrameVertices[index][2] = (p_frameData[nFrame].pvertices[index].vertex[2] * p_frameData[nFrame].scale[2])+p_frameData[nFrame].translate[2];
@@ -296,21 +263,26 @@ void MD2Model::DrawFrame(int frame,int nFrame)
 }
 
 
-/*
-	Name : Draw()
-	// frame : is base zero index
-*/
+
+//Draw the model. Be careful that the model should be loaded starting from frame 0
 void MD2Model::DrawModel(float time)
 {
-	 // animate. calculate current frame and next frame
-    if( time > 0.0 )
-        Animate( time );
-	glPushMatrix();
-        // rotate the model
-        glRotatef( -90.0, 1.0, 0.0, 0.0 );
-        glRotatef( 180.0f, 0.0, 0.0, 1.0 );
-		RenderFrame();
-	glPopMatrix();
+	if(bModelLoadedCorrectly)
+	{
+		 // animate. calculate current frame and next frame
+		if( time > 0.0 )
+			Animate( time );
+		glPushMatrix();
+			// rotate the model
+			glRotatef( -90.0, 1.0, 0.0, 0.0 );
+			glRotatef( 180.0f, 0.0, 0.0, 1.0 );
+			RenderFrame();
+		glPopMatrix();
+	}
+	else
+	{
+		LOG.write("MD2Model::DrawModel -> The model has not been loaded correctly cannot draw it!\n",LOG_ERROR);
+	}
 }
 
 
@@ -319,24 +291,23 @@ void MD2Model::RenderFrame( void )
     int              *ptricmds = p_openGlCommands;       // pointer on gl commands
 
 
-    // reverse the orientation of front-facing
-    // polygons because gl command list's triangles
-    // have clockwise winding
+	//Reverse the orientation of the polygon facing because
+	//gl command list's triangles are clockwise winded
     glPushAttrib( GL_POLYGON_BIT );
     glFrontFace( GL_CW );
 
-    //// enable backface culling
+    //This is to enable backface culling
     glEnable( GL_CULL_FACE );
     glCullFace( GL_BACK );
 
-    // interpolate
+    //Interpolate the vertixes and the light normals for our animations
 	Interpolate( p_modelVertices,p_lightnormals );
 
-    // bind model's texture
+    // Bind the model texture to our model
     glBindTexture( GL_TEXTURE_2D, textureID );
 	
 
-    // draw each triangle!
+    //Find if we are using fans or strips
     while( int i = *(ptricmds++) )
     {
         if( i < 0 )
@@ -348,24 +319,25 @@ void MD2Model::RenderFrame( void )
         {
             glBegin( GL_TRIANGLE_STRIP );
         }
-
-		
-        for( /* nothing */; i > 0; i--, ptricmds += 3 )
+	
+		//Draw the triangles now. The number of drawings are determined by the number
+		//of openglCommands
+        for(; i > 0; i--, ptricmds += 3 )
         {
             // ptricmds[0] : texture coordinate s
             // ptricmds[1] : texture coordinate t
             // ptricmds[2] : vertex index to render
 
-            //// parse texture coordinates
+            //Parse and apply texture coordinates
 			glTexCoord2f( ((float *)ptricmds)[0], ((float *)ptricmds)[1]);
+			//Parse and apply the light normals
 			glNormal3fv( p_lightnormals[ ptricmds[2]] );
-            // draw the vertex
+            //Draw the vertices
             glVertex3fv( p_modelVertices[ ptricmds[2] ] );
         }
 
         glEnd();
     }
-
     glDisable( GL_CULL_FACE );
     glPopAttrib();
 }
@@ -406,14 +378,21 @@ int MD2Model::LoadSkin(char *filename)
 
 void MD2Model::SetAnim( int type )
 {
-    if( (type < 0) || (type > MAX_ANIMATIONS) )
-        type = 0;
+	if(bModelLoadedCorrectly)
+	{
+		if( (type < 0) || (type > MAX_ANIMATIONS) )
+			type = 0;
 
-    m_anim.startframe   = animlist[ type ].first_frame;
-    m_anim.endframe     = animlist[ type ].last_frame;
-    m_anim.next_frame   = animlist[ type ].first_frame + 1;
-    m_anim.fps          = animlist[ type ].fps;
-    m_anim.type         = type;
+		m_anim.startframe   = animlist[ type ].first_frame;
+		m_anim.endframe     = animlist[ type ].last_frame;
+		m_anim.next_frame   = animlist[ type ].first_frame + 1;
+		m_anim.fps          = animlist[ type ].fps;
+		m_anim.type         = type;
+	}
+	else
+	{
+		LOG.write("MD2Model::SetAnim ->The model has not been loaded correctly cannot draw it!\n",LOG_ERROR);
+	}
 }
 
 void MD2Model::Animate( float time )
@@ -432,8 +411,7 @@ void MD2Model::Animate( float time )
         m_anim.old_time = m_anim.curr_time;
     }
 
-    // prevent having a current/next frame greater
-    // than the total number of frames...
+    //We don't want the current/next frame to be greater than the maximum number of frames...
     if( m_anim.curr_frame > (numFrames - 1) )
         m_anim.curr_frame = 0;
 

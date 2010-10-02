@@ -8,7 +8,6 @@
 #define NMS_CAMERA_H
 
 #include "Matrix.h"
-#include "Quaternion.h"
 
 class  CAMERA_D NMSCameraController
 {
@@ -33,7 +32,6 @@ class  CAMERA_D NMSCameraController
 		Vector vUp;		   //Up vector of the camera
 		Vector vDir;	   //Direction vector of the camera
 		Vector vVel;	   //Velocity vector of the camera
-		Quaternion qRot;   //Quaternion used for the rotations
 		
 		//Rotation speed with respect to the local axes
 		float fRollSpd;
