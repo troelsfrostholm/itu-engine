@@ -34,14 +34,19 @@ TransformationNode::TransformationNode(Matrix t)
 	transform = t;
 }
 
+void TransformationNode::multiply(Matrix m)
+{
+	transform = transform * m;
+}
+
 void TransformationNode::before(SceneGraphVisitor *v, Matrix *m)
 {
-	*m *= transform;
+	*m = *m * transform;
 }
 
 void TransformationNode::after(SceneGraphVisitor *v, Matrix *m)
 {
-	*m *= (!transform);
+	*m = *m * (!transform);
 }
 
 GeometryNode::GeometryNode(Mesh *m)

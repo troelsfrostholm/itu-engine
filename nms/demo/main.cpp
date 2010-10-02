@@ -16,11 +16,7 @@ MD2Model obj2;
 
 GLfloat	z=-10.0f;								// Depth Into The Screen
 
-
 float animSpeed=1;
-
-
-
 
 void ProcessEvents();
 
@@ -61,8 +57,6 @@ int main(int argc, char* argv[])
 	engine.cleanup();
 	return 0; 
 };
-
-
 
 void ProcessEvents()
 {

@@ -26,8 +26,9 @@ private:
 	list<SDL_Event> eventQueue;
 	int maxQueueSize;
 	SDL_mutex* eventQueueGuard;
+
 	boost::function1<void, int> quitCallback;
-	
+	boost::function1<void, SDLKey> keyPressedCallback;	
 
 	NMS_Event::NMS_Event();
 
@@ -42,6 +43,11 @@ public:
 	void onQuit(T* instance, void (T::*_callback)(int i))
 	{
 		quitCallback = std::bind1st(std::mem_fun(_callback), instance);
+	}
+
+	void onKeyPressed(void (_callback)(SDLKey keysym))
+	{
+		keyPressedCallback = _callback;
 	}
 };
 

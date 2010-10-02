@@ -4,6 +4,7 @@ NMS_Event *NMS_Event::singleton = 0;
 
 NMS_Event::NMS_Event()
 {
+	singleton = NULL;
 	eventQueueGuard = SDL_CreateMutex();
 }
 
@@ -52,6 +53,9 @@ void NMS_Event::handleEvent(SDL_Event event)
 		  case SDLK_ESCAPE:
 			  quitCallback(0);
 			   break;
+		  default:
+			  keyPressedCallback( event.key.keysym.sym );
+			  break;
 		}
 		break;
 	// A key has been released

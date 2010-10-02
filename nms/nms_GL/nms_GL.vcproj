@@ -47,6 +47,7 @@
 				RuntimeLibrary="3"
 				WarningLevel="3"
 				DebugInformationFormat="4"
+				CallingConvention="0"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -62,9 +63,14 @@
 				AdditionalDependencies="sdl.lib sdlmain.lib opengl32.lib glu32.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib advapi32.lib Devil.lib nms_math.lib nms_utilities.lib"
 				AdditionalLibraryDirectories="&quot;$(SolutionDir)\Debug&quot;;&quot;$(SolutionDir)\lib&quot;;&quot;$(SolutionDir)\lib\SDL 1.2.14&quot;;&quot;$(SolutionDir)\lib\Devil 1.7.8&quot;;&quot;$(SolutionDir)\release&quot;"
 				GenerateDebugInformation="true"
+				AssemblyDebug="1"
+				GenerateMapFile="true"
+				MapFileName="gl_map"
+				MapExports="true"
 				SubSystem="2"
 				EntryPointSymbol=""
 				ResourceOnlyDLL="false"
+				BaseAddress="0x60800000"
 				TargetMachine="1"
 			/>
 			<Tool
