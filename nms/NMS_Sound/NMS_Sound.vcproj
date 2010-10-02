@@ -62,6 +62,7 @@
 				AdditionalDependencies="odbc32.lib odbccp32.lib nms_utilities.lib OpenAL32.lib alut.lib"
 				AdditionalLibraryDirectories="&quot;$(SolutionDir)\Debug&quot;;&quot;$(SolutionDir)\lib\OpenAL 1.1&quot;;&quot;$(SolutionDir)\lib&quot;;&quot;$(SolutionDir)\release&quot;"
 				GenerateDebugInformation="true"
+				BaseAddress="0x60500000"
 				TargetMachine="1"
 			/>
 			<Tool

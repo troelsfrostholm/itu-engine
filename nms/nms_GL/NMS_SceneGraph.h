@@ -11,6 +11,7 @@
 #include <iostream>
 #include "Matrix.h"
 #include "MD2Model.h"
+#include "NMS_Mutex.h"
 
 using namespace std;
 
@@ -47,7 +48,9 @@ protected:
 	Matrix transform;
 
 public:
+	TransformationNode::TransformationNode();
 	TransformationNode::TransformationNode(Matrix t);
+	void TransformationNode::multiply(Matrix m);
 	void TransformationNode::before(SceneGraphVisitor *v, Matrix *m);
 	void TransformationNode::after(SceneGraphVisitor *v, Matrix *m);
 };

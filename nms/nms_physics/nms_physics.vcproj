@@ -66,6 +66,7 @@
 				AdditionalLibraryDirectories="$(SolutionDir)\Bullet\lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
+				BaseAddress="0x60400000"
 				TargetMachine="1"
 			/>
 			<Tool
