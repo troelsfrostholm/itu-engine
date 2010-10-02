@@ -65,7 +65,7 @@ protected:
 public:
 	GeometryNode::GeometryNode();
 	GeometryNode::GeometryNode(Mesh *m, btRigidBody *b);
-	GeometryNode::GeometryNode(Mesh *m, Matrix t);
+	GeometryNode::GeometryNode(Mesh *m, btRigidBody *b, Matrix t);
 	void GeometryNode::before(SceneGraphVisitor *v, Matrix *m);
 	void GeometryNode::after(SceneGraphVisitor *v, Matrix *m);
 };

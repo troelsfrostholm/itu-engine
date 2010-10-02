@@ -54,12 +54,13 @@ GeometryNode::GeometryNode() : TransformationNode()
 	model = NULL; 
 }
 
-GeometryNode::GeometryNode(Mesh *m) : TransformationNode()
+GeometryNode::GeometryNode(Mesh *m, btRigidBody *b) : TransformationNode()
 {
 	model = m;
+	collisionBody = b;
 }
 
-GeometryNode::GeometryNode(Mesh *m, Matrix t) : TransformationNode(t) 
+GeometryNode::GeometryNode(Mesh *m, btRigidBody *b, Matrix t) : TransformationNode(t) 
 { 
 	model = m;
 	collisionBody = b;

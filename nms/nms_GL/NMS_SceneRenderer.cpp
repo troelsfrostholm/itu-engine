@@ -1,10 +1,20 @@
 #include "NMS_SceneRenderer.h"
 #include "NMS_Event.h"
 
-NMS_SceneRenderer::NMS_SceneRenderer() { 
+NMS_SceneRenderer::NMS_SceneRenderer() 
+{
+	this->physics = NULL;
 	rendering = false; 
 	sceneGraphRoot = NULL;
 }
+
+NMS_SceneRenderer::NMS_SceneRenderer(nms_physics *physics) 
+{
+	this->physics = physics;
+	rendering = false; 
+	sceneGraphRoot = NULL;
+}
+
 
 bool NMS_SceneRenderer::initRendering()
 {
@@ -89,9 +99,10 @@ int NMS_SceneRenderer::renderingLoop()
 {
 	while(rendering) {
 		NMS_EVENT.pollEvents();
-
+		float ms = getDeltaTimeMicroseconds();
+		physics->simulatePhysics(ms);
 		render();
-		SDL_Delay(10);
+		SDL_Delay(40);
 	}
 
 	return 0;

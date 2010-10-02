@@ -11,16 +11,20 @@
 #include "NMS_Mutex.h"
 #include "NMS_Thread.h"
 #include "NMS_SceneGraph.h"
+#include "nms_physics.h"
 
 class SCENE_RENDERER_D NMS_SceneRenderer : public SceneGraphVisitor, public Thread
 {
 protected:
 	SceneGraphNode* sceneGraphRoot;
+	nms_physics *physics;
 //	SDL_Thread *renderThread;
 	bool rendering;
+	btClock m_clock;
 
 public:
 	NMS_SceneRenderer();
+	NMS_SceneRenderer(nms_physics *physics);
 	bool initRendering();
 	void up();
 	void down();
@@ -31,6 +35,12 @@ public:
 	void sg_before(Matrix transform, Mesh model, btRigidBody *b);
 	void sg_after(Matrix transform, Mesh model);
 	void NMS_SceneRenderer::applyPhysics(Matrix *m, btRigidBody *b);
+	btScalar getDeltaTimeMicroseconds()
+	{
+		btScalar dt = (btScalar)m_clock.getTimeMicroseconds();
+		m_clock.reset();
+		return dt;
+	}
 };
 
 #endif

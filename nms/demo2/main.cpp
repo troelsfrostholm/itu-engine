@@ -14,7 +14,6 @@ TransformationNode rotNode;
 TransformationNode rotyNode;
 TransformationNode sateliteRNode;
 TransformationNode sateliteTNode;
-nms_physics* physics;
 btRigidBody* fallRigidBody;
 btRigidBody* fallRigidBody2;
 GeometryNode geom;
@@ -29,7 +28,6 @@ void keyPressed(SDLKey key)
 			//m.rotY(0.1f);
 			//SDL_LockMutex(sceneGraphGuard);
 			//rotNode.multiply(m);
-			physics->simulatePhysics();
 			//SDL_UnlockMutex(sceneGraphGuard);
 			break;
 	}
@@ -40,9 +38,9 @@ void idle( int i )
 	Matrix m = Matrix();
 	m.rotY(0.5f);
 	//SDL_LockMutex(sceneGraphGuard);
-	physics->simulatePhysics();
+	//physics->simulatePhysics();
 	m.rotX(0.7f);
-	satelite.multiply(m);
+	//satelite.multiply(m);
 	//rotNode.multiply(m);
 	//sateliteRNode.multiply(m);
 	//SDL_UnlockMutex(sceneGraphGuard);
@@ -51,14 +49,13 @@ void idle( int i )
 int main(int argc, char* argv[])
 {
 	engine.NMSInit(WIDTH, HEIGHT, 16, "Demo 2", false);
-
-	physics = new nms_physics();
-
+	btQuaternion q;
+	q.setEuler(0, 0.25, -0.05);
 	btCollisionShape* groundShape = new btStaticPlaneShape(btVector3(0,1,0),1);
-	btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,-10,0)));
+	btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(q,btVector3(0,-10,0)));
     btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(0,groundMotionState,groundShape,btVector3(0,0,0));
     btRigidBody* groundRigidBody = new btRigidBody(groundRigidBodyCI);
-	physics->addRBody(groundRigidBody);
+	engine.physics->addRBody(groundRigidBody);
 
 	btCollisionShape* fallShape = new btSphereShape(4);
 	btDefaultMotionState* fallMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0)));
@@ -67,7 +64,7 @@ int main(int argc, char* argv[])
     fallShape->calculateLocalInertia(mass,fallInertia);
     btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI(mass,fallMotionState,fallShape,fallInertia);
     fallRigidBody = new btRigidBody(fallRigidBodyCI);
-    physics->addRBody(fallRigidBody);
+    engine.physics->addRBody(fallRigidBody);
 
 	btCollisionShape* fallShape2 = new btSphereShape(4);
 	btDefaultMotionState* fallMotionState2 = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,0,-10)));
@@ -76,7 +73,7 @@ int main(int argc, char* argv[])
     fallShape2->calculateLocalInertia(mass,fallInertia2);
     btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI2(mass,fallMotionState2,fallShape2,fallInertia2);
     fallRigidBody2 = new btRigidBody(fallRigidBodyCI2);
-    physics->addRBody(fallRigidBody2);
+    engine.physics->addRBody(fallRigidBody2);
 
 
 	Mesh model = Mesh();

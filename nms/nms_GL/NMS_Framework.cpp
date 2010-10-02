@@ -7,8 +7,10 @@ bool NMS_Framework::NMSInit(int width,int height,int bpp,char* windowTitle,bool 
 	//Initialize mutexes
 	initMutexes();
 
+	physics = new nms_physics();
+
 	//Instantiate sub-systems
-	sceneRenderer = NMS_SceneRenderer();
+	sceneRenderer = NMS_SceneRenderer(physics);
 	
 	//Create scene-graph
 	sceneGraphRoot = new TransformationNode(Matrix());

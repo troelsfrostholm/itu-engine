@@ -41,7 +41,7 @@ class PHYSICS_D nms_physics
 		~nms_physics();
 		void initPhysics();
 		void exitPhysics();
-		void simulatePhysics();
+		void simulatePhysics(float ms);
 
 		btDynamicsWorld* getDynamicsWorld()
 		{
