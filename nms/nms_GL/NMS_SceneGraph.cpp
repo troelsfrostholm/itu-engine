@@ -3,11 +3,18 @@
 SceneGraphNode::SceneGraphNode()
 {
 	children = vector<SceneGraphNode*>();
+	parent = NULL;
 }
 
 void SceneGraphNode::addChild(SceneGraphNode* child)
 {
 	children.push_back(child);
+	child->setParent(this);
+}
+
+void SceneGraphNode::setParent(SceneGraphNode* _parent)
+{
+	parent = _parent;
 }
 
 void SceneGraphNode::traverse_df(SceneGraphVisitor *v)

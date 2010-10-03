@@ -32,6 +32,8 @@ class SCENEGRAPH_D SceneGraphNode
 {
 protected:
 	vector<SceneGraphNode*> children;
+	SceneGraphNode* parent;
+	void setParent(SceneGraphNode* _parent);
 
 public:
 	SceneGraphNode::SceneGraphNode();
