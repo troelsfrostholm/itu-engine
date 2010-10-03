@@ -1,10 +1,20 @@
 #include "NMS_SceneRenderer.h"
 #include "NMS_Event.h"
 
-NMS_SceneRenderer::NMS_SceneRenderer() { 
+NMS_SceneRenderer::NMS_SceneRenderer() 
+{
+	this->physics = NULL;
 	rendering = false; 
 	sceneGraphRoot = NULL;
 }
+
+NMS_SceneRenderer::NMS_SceneRenderer(nms_physics *physics) 
+{
+	this->physics = physics;
+	rendering = false; 
+	sceneGraphRoot = NULL;
+}
+
 
 bool NMS_SceneRenderer::initRendering()
 {
@@ -97,9 +107,9 @@ int NMS_SceneRenderer::renderingLoop()
 	while(rendering) {
 		currentTime+=0.0008f;
 		NMS_EVENT.pollEvents();
+		physics->simulatePhysics();
 		render();
 	}
-
 	return 0;
 }
 
@@ -122,13 +132,22 @@ void NMS_SceneRenderer::setScene(SceneGraphNode* scene)
 }
 
 //Render meshes as they are traversed in the scene graph
-void NMS_SceneRenderer::sg_before(Matrix transform, NMS_Mesh* model)
+void NMS_SceneRenderer::sg_before(Matrix transform, NMS_Mesh* model, btRigidBody *b)
 {
 	glLoadIdentity();
 	Matrix t_transposed = ~transform;
 	glMultMatrixf(t_transposed.returnPointer());
+	applyPhysics(b);
 	(*model).render(currentTime);
-
 }
 
 void NMS_SceneRenderer::sg_after(Matrix transform, NMS_Mesh* model) {}
+
+void NMS_SceneRenderer::applyPhysics(btRigidBody *b)
+{
+	btScalar matrix[16];
+	btTransform trans;
+	b->getMotionState()->getWorldTransform(trans);
+	trans.getOpenGLMatrix(matrix);
+	glMultMatrixf(matrix);
+}

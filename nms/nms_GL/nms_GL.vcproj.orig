@@ -40,16 +40,14 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-<<<<<<< HEAD
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\nms_math&quot;;&quot;$(SolutionDir)\include\Boost 1.4.4&quot;;&quot;$(SolutionDir)\include&quot;;&quot;$(SolutionDir)\include\Devil 1.7.8&quot;;&quot;$(SolutionDir)\include\SDL 1.2.14&quot;"
-=======
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\nms_math&quot;;&quot;$(SolutionDir)\nms_utilities&quot;;&quot;$(SolutionDir)\include&quot;;&quot;$(SolutionDir)\include\Devil 1.7.8&quot;;&quot;$(SolutionDir)\include\SDL 1.2.14&quot;"
->>>>>>> 5154c9f164b0afc4b08eddfe2d3903844d9df17a
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\nms_math&quot;;&quot;$(SolutionDir)\nms_utilities&quot;;&quot;$(SolutionDir)\include\Boost 1.4.4&quot;;&quot;$(SolutionDir)\include&quot;;&quot;$(SolutionDir)\include\Devil 1.7.8&quot;;&quot;$(SolutionDir)\include\SDL 1.2.14&quot;;&quot;$(SolutionDir)\include\irrXML 1.2&quot;$(SolutionDir)\nms_physics&quot;;&quot;$(SolutionDir)\Bullet\src&quot;"
+				PreprocessorDefinitions="__EXP_NMS_GL"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				WarningLevel="3"
 				DebugInformationFormat="4"
+				CallingConvention="0"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -62,12 +60,17 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="sdl.lib sdlmain.lib opengl32.lib glu32.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib advapi32.lib Devil.lib nms_math.lib nms_utilities.lib"
-				AdditionalLibraryDirectories="&quot;$(SolutionDir)\Debug&quot;;&quot;$(SolutionDir)\lib&quot;;&quot;$(SolutionDir)\lib\SDL 1.2.14&quot;;&quot;$(SolutionDir)\lib\Devil 1.7.8&quot;;&quot;$(SolutionDir)\release&quot;"
+				AdditionalDependencies="sdl.lib sdlmain.lib opengl32.lib glu32.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib advapi32.lib Devil.lib nms_math.lib nms_utilities.lib irrXML.lib nms_physics.lib BulletDynamics.lib BulletCollision.lib LinearMath.lib"
+				AdditionalLibraryDirectories="&quot;$(SolutionDir)\Debug&quot;;&quot;$(SolutionDir)\lib&quot;;&quot;$(SolutionDir)\lib\SDL 1.2.14&quot;;&quot;$(SolutionDir)\lib\irrXML 1.2&quot;;&quot;$(SolutionDir)\lib\Devil 1.7.8&quot;;&quot;$(SolutionDir)\release&quot;$(SolutionDir)\Bullet\lib&quot;"
 				GenerateDebugInformation="true"
+				AssemblyDebug="1"
+				GenerateMapFile="true"
+				MapFileName="gl_map"
+				MapExports="true"
 				SubSystem="2"
 				EntryPointSymbol=""
 				ResourceOnlyDLL="false"
+				BaseAddress="0x60800000"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -174,11 +177,27 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\ColladaModel.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\MD2Model.cpp"
 				>
 			</File>
 			<File
+				RelativePath=".\NMS_3DObject.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\NMS_AssetManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NMS_Camera.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NMS_Engine.cpp"
 				>
 			</File>
 			<File
@@ -190,11 +209,27 @@
 				>
 			</File>
 			<File
+				RelativePath=".\NMS_LightSystem.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NMS_Mutex.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\NMS_SceneGraph.cpp"
 				>
 			</File>
 			<File
+				RelativePath=".\NMS_SceneRenderer.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\NMS_TextureManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NMS_Thread.cpp"
 				>
 			</File>
 		</Filter>
@@ -204,11 +239,31 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\ColladaModel.h"
+				>
+			</File>
+			<File
 				RelativePath=".\MD2Model.h"
 				>
 			</File>
 			<File
+				RelativePath=".\NMS_3DObject.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NMS_anorms.h"
+				>
+			</File>
+			<File
 				RelativePath=".\NMS_AssetManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NMS_Camera.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NMS_Engine.h"
 				>
 			</File>
 			<File
@@ -220,11 +275,31 @@
 				>
 			</File>
 			<File
+				RelativePath=".\NMS_LightSystem.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NMS_Mesh.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NMS_Mutex.h"
+				>
+			</File>
+			<File
 				RelativePath=".\NMS_SceneGraph.h"
 				>
 			</File>
 			<File
+				RelativePath=".\NMS_SceneRenderer.h"
+				>
+			</File>
+			<File
 				RelativePath=".\NMS_TextureManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NMS_Thread.h"
 				>
 			</File>
 		</Filter>
