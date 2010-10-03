@@ -66,7 +66,16 @@ void NMS_Event::handleEvent(SDL_Event event)
 		  case SDLK_ESCAPE:
 			  quitCallback(0);
 			   break;
+		  default:
+			  keyReleasedCallback( event.key.keysym.sym );
+			  break;
 		} 
+		break;
+
+	case SDL_MOUSEMOTION:
+		int MouseX,MouseY;
+		SDL_GetRelativeMouseState(&MouseX,&MouseY);
+		mouseMovedCallback(MouseX, MouseY);
 		break;
 	// The window has been closed
 	case SDL_QUIT:

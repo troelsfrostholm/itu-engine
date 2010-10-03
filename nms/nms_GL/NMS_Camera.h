@@ -8,8 +8,9 @@
 #define NMS_CAMERA_H
 
 #include "Matrix.h"
+#include "NMS_Scenegraph.h"
 
-class  CAMERA_D NMSCameraController
+class  CAMERA_D NMSCameraController : public CameraNode
 {
 	public:
 		 void UpdateCamera(float fElapsedTime);
@@ -38,6 +39,9 @@ class  CAMERA_D NMSCameraController
 		 void  setSlideSpeed(float f){fSlide=f;}
 		 float getSpeed(){return fSpeed;}
 		 float getSlideSpeed(){return fSlide;}
+
+		 void before(SceneGraphVisitor *v, Matrix *m);
+		 void after(SceneGraphVisitor *v, Matrix *m);
 
 		 Matrix returnViewMatrix();
 

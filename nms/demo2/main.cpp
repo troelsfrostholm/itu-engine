@@ -7,6 +7,7 @@
 #include "NMS_Mutex.h"
 #include "NMS_LightSystem.h"
 #include "NMS_Audio.h"
+#include "NMS_Camera.h"
 
 #define WIDTH  640
 #define HEIGHT  480
@@ -22,7 +23,37 @@ btRigidBody* fallRigidBody;
 btRigidBody* fallRigidBody2;
 GeometryNode geom;
 GeometryNode satelite;
-CameraNode cam;
+NMSCameraFPS cam;
+
+
+void mouseMoved(int MouseX, int MouseY)
+{
+	Vector rot=cam.getRotation();
+	//SDL_GetRelativeMouseState(&MouseX,&MouseY);
+	//Pitch rotation, with the mouse is up and down
+	rot[NMS_X]+=(MouseY)*0.03f;
+	//Yaw rotation, with the mouse you can do it using the left right position
+	rot[NMS_Y]+=(MouseX)*0.03f;	
+	cam.setRotation(rot[NMS_X],rot[NMS_Y],rot[NMS_Z]);
+}
+
+void keyReleased(SDLKey key)
+{
+	switch( key ) {
+		case SDLK_a:
+			 cam.setSlideSpeed(0);
+			 break;
+		case SDLK_d:
+			 cam.setSlideSpeed(0);
+			 break;
+		case SDLK_w:
+			 cam.setSpeed(0);
+			 break;
+		case SDLK_s:
+			 cam.setSpeed(0);
+			 break;
+	}
+}
 
 
 void keyPressed(SDLKey key)
@@ -35,19 +66,25 @@ void keyPressed(SDLKey key)
 			//rotNode.multiply(m);
 			//SDL_UnlockMutex(sceneGraphGuard);
 			break;
+
+		 case SDLK_a:
+			 cam.setSlideSpeed(+0.01f);
+				   break;
+		 case SDLK_d:
+			 cam.setSlideSpeed(-0.01f);
+				   break;
+		 case SDLK_w:
+			 cam.setSpeed(+0.01f);
+				   break;
+		 case SDLK_s:
+			 cam.setSpeed(-0.01f);
+				   break;
 	}
 }
 
 void idle( int i )
 {
-	//Matrix m = Matrix();
-	//m.rotY(0.8f);
-	//SDL_LockMutex(sceneGraphGuard);
-	////m.rotX(0.7f);
-	//satelite.multiply(m);
-	//rotNode.multiply(m);
-	//sateliteRNode.multiply(m);
-	//SDL_UnlockMutex(sceneGraphGuard);
+	cam.UpdateCamera(1);
 }
 
 int main(int argc, char* argv[])
@@ -107,7 +144,7 @@ int main(int argc, char* argv[])
 	
 
 	geom = GeometryNode(&model, fallRigidBody);
-	satelite = GeometryNode(&model, fallRigidBody2);
+	satelite = GeometryNode(&model2, fallRigidBody2);
 	GeometryNode light = GeometryNode(&light0,fallRigidBody2);
 	SceneGraphNode* root = engine.getScene();
 	Matrix tra = Matrix();
@@ -124,7 +161,7 @@ int main(int argc, char* argv[])
 	sateliteRNode = TransformationNode(roty);
 	sateliteTNode = TransformationNode(tra);
 
-	cam = CameraNode();
+	cam = NMSCameraFPS();
 	Vector camTV = Vector(0.f, 2.f, 5.f);
 	Matrix camTM = Matrix();
 	camTM.translate(camTV);
@@ -141,6 +178,8 @@ int main(int argc, char* argv[])
 	sateliteRNode.addChild(&satelite);
 	
 	NMS_EVENT.onKeyPressed(&keyPressed);
+	NMS_EVENT.onKeyReleased(&keyReleased);
+	NMS_EVENT.onMouseMoved(&mouseMoved);
 	NMS_EVENT.onIdle(&idle);
 
 	NMS_SceneRenderer* renderer = engine.getRenderer();
