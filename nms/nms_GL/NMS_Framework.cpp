@@ -57,8 +57,7 @@ void NMS_Framework::run()
 	{
 		SDL_LockMutex(sceneGraphGuard);
 		NMS_EVENT.processEvents();
-		SDL_UnlockMutex(sceneGraphGuard);
-		SDL_Delay(10);
+		SDL_UnlockMutex(sceneGraphGuard);	
 	}
 	sceneRenderer.down();
 	NMS_Framework::cleanup();

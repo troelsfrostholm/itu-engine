@@ -24,7 +24,7 @@ void keyPressed(SDLKey key)
 {
 	switch( key ) {
 		case SDLK_UP:
-			Matrix m = Matrix();
+			//Matrix m = Matrix();
 			//m.rotY(0.1f);
 			//SDL_LockMutex(sceneGraphGuard);
 			//rotNode.multiply(m);
@@ -35,11 +35,11 @@ void keyPressed(SDLKey key)
 
 void idle( int i )
 {
-	Matrix m = Matrix();
-	m.rotY(0.5f);
+	//Matrix m = Matrix();
+	//m.rotY(0.5f);
 	//SDL_LockMutex(sceneGraphGuard);
 	//physics->simulatePhysics();
-	m.rotX(0.7f);
+	//m.rotX(0.7f);
 	//satelite.multiply(m);
 	//rotNode.multiply(m);
 	//sateliteRNode.multiply(m);
@@ -57,7 +57,7 @@ int main(int argc, char* argv[])
     btRigidBody* groundRigidBody = new btRigidBody(groundRigidBodyCI);
 	engine.physics->addRBody(groundRigidBody);
 
-	btCollisionShape* fallShape = new btSphereShape(4);
+	btCollisionShape* fallShape = new btBoxShape(btVector3(2,2,2));
 	btDefaultMotionState* fallMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0)));
     btScalar mass = 0.1f;
     btVector3 fallInertia(0,0,0);
@@ -66,7 +66,7 @@ int main(int argc, char* argv[])
     fallRigidBody = new btRigidBody(fallRigidBodyCI);
     engine.physics->addRBody(fallRigidBody);
 
-	btCollisionShape* fallShape2 = new btSphereShape(4);
+	btCollisionShape* fallShape2 = new btBoxShape(btVector3(2,2,2));
 	btDefaultMotionState* fallMotionState2 = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,0,-10)));
     mass = 0.1f;
     btVector3 fallInertia2(0,0,0);
@@ -74,7 +74,6 @@ int main(int argc, char* argv[])
     btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI2(mass,fallMotionState2,fallShape2,fallInertia2);
     fallRigidBody2 = new btRigidBody(fallRigidBodyCI2);
     engine.physics->addRBody(fallRigidBody2);
-
 
 	Mesh model = Mesh();
 	geom = GeometryNode(&model, fallRigidBody);

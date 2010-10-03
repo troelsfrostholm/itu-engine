@@ -99,12 +99,9 @@ int NMS_SceneRenderer::renderingLoop()
 {
 	while(rendering) {
 		NMS_EVENT.pollEvents();
-		float ms = getDeltaTimeMicroseconds();
-		physics->simulatePhysics(ms);
+		physics->simulatePhysics();
 		render();
-		SDL_Delay(40);
 	}
-
 	return 0;
 }
 
@@ -130,23 +127,19 @@ void NMS_SceneRenderer::setScene(SceneGraphNode* scene)
 void NMS_SceneRenderer::sg_before(Matrix transform, Mesh model, btRigidBody *b)
 {
 	glLoadIdentity();
-	transform.debugPrint();
 	Matrix t_transposed = ~transform;
 	glMultMatrixf(t_transposed.returnPointer());
-	applyPhysics(NULL, b);
+	applyPhysics(b);
 	model.render();
-
 }
 
 void NMS_SceneRenderer::sg_after(Matrix transform, Mesh model) {}
 
-void NMS_SceneRenderer::applyPhysics(Matrix *m, btRigidBody *b)
+void NMS_SceneRenderer::applyPhysics(btRigidBody *b)
 {
 	btScalar matrix[16];
 	btTransform trans;
-	//glPushMatrix();
 	b->getMotionState()->getWorldTransform(trans);
 	trans.getOpenGLMatrix(matrix);
 	glMultMatrixf(matrix);
-	//glPopMatrix();
 }

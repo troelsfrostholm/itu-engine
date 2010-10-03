@@ -20,7 +20,6 @@ protected:
 	nms_physics *physics;
 //	SDL_Thread *renderThread;
 	bool rendering;
-	btClock m_clock;
 
 public:
 	NMS_SceneRenderer();
@@ -34,13 +33,7 @@ public:
 	void setScene(SceneGraphNode* scene);
 	void sg_before(Matrix transform, Mesh model, btRigidBody *b);
 	void sg_after(Matrix transform, Mesh model);
-	void NMS_SceneRenderer::applyPhysics(Matrix *m, btRigidBody *b);
-	btScalar getDeltaTimeMicroseconds()
-	{
-		btScalar dt = (btScalar)m_clock.getTimeMicroseconds();
-		m_clock.reset();
-		return dt;
-	}
+	void applyPhysics(btRigidBody *b);
 };
 
 #endif

@@ -23,32 +23,29 @@ class btRigidBody;
 
 class PHYSICS_D nms_physics
 {
-	btDynamicsWorld* dynamicsWorld;
-
-	//Keep collision shapes, for deletion/cleanup
-	btAlignedObjectArray<btCollisionShape*>	collisionShapes;
-
-	btBroadphaseInterface*	broadphase;
-
-	btCollisionDispatcher*	dispatcher;
-
-	btConstraintSolver*	solver;
-
-	btDefaultCollisionConfiguration* collisionConfiguration;
+	private:
+		btDynamicsWorld* dynamicsWorld;
+		//Keep collision shapes, for deletion/cleanup
+		btAlignedObjectArray<btCollisionShape*>	collisionShapes;
+		btBroadphaseInterface*	broadphase;
+		btCollisionDispatcher*	dispatcher;
+		btConstraintSolver*	solver;
+		btDefaultCollisionConfiguration* collisionConfiguration;
+		btClock clock;
 
 	public:
 		nms_physics();
 		~nms_physics();
 		void initPhysics();
 		void exitPhysics();
-		void simulatePhysics(float ms);
+		void simulatePhysics();
+		void addRBody(btRigidBody* body);
+		btScalar getDeltaTimeSeconds();
 
 		btDynamicsWorld* getDynamicsWorld()
 		{
 			return dynamicsWorld;
 		}
-
-		void addRBody(btRigidBody* body);
 };
 
 class PHYSICS_D NMS_KinematicMotionState : public btMotionState 

@@ -46,12 +46,12 @@ void nms_physics::exitPhysics()
 	delete dispatcher;
 
 	delete collisionConfiguration;
-
 }
 
-void nms_physics::simulatePhysics(float ms)
+void nms_physics::simulatePhysics()
 {
-	dynamicsWorld->stepSimulation(ms / 1000000.f);
+	float s = getDeltaTimeSeconds();
+	dynamicsWorld->stepSimulation(s, 1);
 }
 
 void nms_physics::addRBody(btRigidBody* body)
@@ -67,4 +67,13 @@ nms_physics::nms_physics()
 nms_physics::~nms_physics()
 {
 	exitPhysics();
+}
+
+/* This code is taken from the Bullet demo */
+btScalar nms_physics::getDeltaTimeSeconds()
+{
+	btScalar dt = (btScalar)clock.getTimeMicroseconds();
+	dt = dt /1000000.f; //Convert microseconds to seconds
+	clock.reset();
+	return dt;
 }
