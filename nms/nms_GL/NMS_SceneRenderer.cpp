@@ -56,6 +56,13 @@ bool NMS_SceneRenderer::initRendering()
 	gluPerspective(60.0, (float)width/(float)height, 1.0, width);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+	
+
+	//Enable Light
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_LIGHTING);
+	glShadeModel(GL_SMOOTH);
+	currentTime=1;
 	return true;
 }
 
@@ -88,6 +95,7 @@ int NMS_SceneRenderer::run()
 int NMS_SceneRenderer::renderingLoop()
 {
 	while(rendering) {
+		currentTime+=0.0008f;
 		NMS_EVENT.pollEvents();
 		render();
 	}
@@ -117,10 +125,9 @@ void NMS_SceneRenderer::setScene(SceneGraphNode* scene)
 void NMS_SceneRenderer::sg_before(Matrix transform, NMS_Mesh* model)
 {
 	glLoadIdentity();
-	transform.debugPrint();
 	Matrix t_transposed = ~transform;
 	glMultMatrixf(t_transposed.returnPointer());
-	(*model).render(0);
+	(*model).render(currentTime);
 
 }
 

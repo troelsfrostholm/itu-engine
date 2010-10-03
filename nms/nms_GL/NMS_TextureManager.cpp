@@ -54,6 +54,7 @@ int NMS_TextureManager::LoadTexture (const char* sFilename,char* textureName) {
 		LOG.write("NMS_TextureManager::Cannot open the texture file!\n",LOG_ERROR);
 		return -1;
 	  }
+	 
 
 	  //Calculate the size of the file
 	  long fileSize= nmsFileManagement::FileSize(fp);

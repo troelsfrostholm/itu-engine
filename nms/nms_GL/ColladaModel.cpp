@@ -82,8 +82,8 @@ void 	ColladaModel::RenderFrame()
 	unsigned vertexOffset=dataRead.back().iVertOffset;
 	unsigned textureOffset=dataRead.back().iTextOffset;
 
-	unsigned vertexStride;
-	unsigned textureStride;
+	//unsigned vertexStride;
+	//unsigned textureStride;
 
 
 

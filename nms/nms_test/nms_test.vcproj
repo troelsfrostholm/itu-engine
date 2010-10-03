@@ -176,10 +176,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\NMS_3DObject_test.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\scenegraph.cpp"
 				>
 			</File>

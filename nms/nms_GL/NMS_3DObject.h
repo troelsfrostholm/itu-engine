@@ -18,6 +18,7 @@
 #include <string>
 #include <iostream>
 #include <stdexcept>
+#include "NMS_Mesh.h"
 
 
 
@@ -26,7 +27,7 @@
 #include <gl\glu.h>			// Header File For The GLu32 Library 
 
 
-class OBJECT_D NMS_3DObject
+class OBJECT_D NMS_3DObject : public NMS_Mesh
 {
     public:
 		NMS_3DObject();

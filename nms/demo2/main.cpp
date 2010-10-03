@@ -4,6 +4,7 @@
 #include "ColladaModel.h"
 #include <cmath>
 #include "NMS_Mutex.h"
+#include "NMS_LightSystem.h"
 
 #define WIDTH  640
 #define HEIGHT  480
@@ -43,15 +44,31 @@ int main(int argc, char* argv[])
 {
 	engine.NMSInit(WIDTH, HEIGHT, 16, "Demo 2", false);
 
-	//MD2Model model = MD2Model();
-	ColladaModel model = ColladaModel();
-	//model.LoadModel("models/drfreak/drfreak.md2","models/drfreak/drfreak.tga");
-	model.LoadModel("models/colladaDuck/duck_triangulate.dae");
+	MD2Model model = MD2Model();
+	MD2Model model2 = MD2Model();
+
+	//ColladaModel model2 = ColladaModel();
+	model.LoadModel("models/drfreak/drfreak.md2","models/drfreak/drfreak.tga");
+	model2.LoadModel("models/hobgoblin/hobgoblin.md2","models/hobgoblin/hobgoblin.png");
+	//model2.LoadModel("models/colladaDuck/duck_triangulate.dae");
+	model.SetAnim(RUN);
+	model2.SetAnim(JUMP);
+
+
+
+	//LIGHT DEFINITION
+	LightSource light0 = LightSource();
+	light0.setLightNumber(GL_LIGHT0);
+	light0.setLightValue(&Vector(1,1,1,0));
+	light0.setPosVector(&Vector(0,-50,0,1));
+	light0.defineLight(light0);
+
 	GeometryNode geom = GeometryNode(&model);
-	GeometryNode satelite = GeometryNode(&model);
+	GeometryNode satelite = GeometryNode(&model2);
+	GeometryNode light = GeometryNode(&light0);
 	SceneGraphNode* root = engine.getScene();
 	Matrix tra = Matrix();
-	Vector v = Vector(0.f, 0.f, -500.f);
+	Vector v = Vector(0.f, 0.f, -50.f);
 	tra.translate(v);
 	Matrix rot = Matrix();
 	rot.rotX(45.f);
@@ -65,6 +82,7 @@ int main(int argc, char* argv[])
 	sateliteTNode = TransformationNode(tra);
 
 	root->addChild(&traNode);
+	root->addChild(&light);
 	traNode.addChild(&rotNode);
 	rotNode.addChild(&rotyNode);
 	rotyNode.addChild(&geom);

@@ -28,6 +28,7 @@ protected:
 	NMS_SceneRenderer sceneRenderer;
 	SceneGraphNode* sceneGraphRoot;
 	
+	
 public:
 	bool running;
 	bool rendering;

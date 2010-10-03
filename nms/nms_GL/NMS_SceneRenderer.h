@@ -19,6 +19,7 @@ protected:
 	SceneGraphNode* sceneGraphRoot;
 //	SDL_Thread *renderThread;
 	bool rendering;
+	float currentTime;
 
 public:
 	NMS_SceneRenderer();
