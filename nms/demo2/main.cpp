@@ -6,6 +6,8 @@
 #include <cmath>
 #include "NMS_Mutex.h"
 #include "NMS_LightSystem.h"
+#include "NMS_Audio.h"
+#include "NMS_Camera.h"
 
 #define WIDTH  640
 #define HEIGHT  480
@@ -19,9 +21,40 @@ TransformationNode sateliteTNode;
 TransformationNode camTNode;
 btRigidBody* fallRigidBody;
 btRigidBody* fallRigidBody2;
+btRigidBody* fallRigidBody3;
 GeometryNode geom;
 GeometryNode satelite;
-CameraNode cam;
+NMSCameraFPS cam;
+
+
+void mouseMoved(int MouseX, int MouseY)
+{
+	Vector rot=cam.getRotation();
+	//SDL_GetRelativeMouseState(&MouseX,&MouseY);
+	//Pitch rotation, with the mouse is up and down
+	rot[NMS_X]+=(MouseY)*0.03f;
+	//Yaw rotation, with the mouse you can do it using the left right position
+	rot[NMS_Y]+=(MouseX)*0.03f;	
+	cam.setRotation(rot[NMS_X],rot[NMS_Y],rot[NMS_Z]);
+}
+
+void keyReleased(SDLKey key)
+{
+	switch( key ) {
+		case SDLK_a:
+			 cam.setSlideSpeed(0);
+			 break;
+		case SDLK_d:
+			 cam.setSlideSpeed(0);
+			 break;
+		case SDLK_w:
+			 cam.setSpeed(0);
+			 break;
+		case SDLK_s:
+			 cam.setSpeed(0);
+			 break;
+	}
+}
 
 
 void keyPressed(SDLKey key)
@@ -34,19 +67,25 @@ void keyPressed(SDLKey key)
 			//rotNode.multiply(m);
 			//SDL_UnlockMutex(sceneGraphGuard);
 			break;
+
+		 case SDLK_a:
+			 cam.setSlideSpeed(+0.01f);
+				   break;
+		 case SDLK_d:
+			 cam.setSlideSpeed(-0.01f);
+				   break;
+		 case SDLK_w:
+			 cam.setSpeed(+0.01f);
+				   break;
+		 case SDLK_s:
+			 cam.setSpeed(-0.01f);
+				   break;
 	}
 }
 
 void idle( int i )
 {
-	//Matrix m = Matrix();
-	//m.rotY(0.8f);
-	//SDL_LockMutex(sceneGraphGuard);
-	////m.rotX(0.7f);
-	//satelite.multiply(m);
-	//rotNode.multiply(m);
-	//sateliteRNode.multiply(m);
-	//SDL_UnlockMutex(sceneGraphGuard);
+	cam.UpdateCamera(1);
 }
 
 int main(int argc, char* argv[])
@@ -78,13 +117,23 @@ int main(int argc, char* argv[])
     fallRigidBody2 = new btRigidBody(fallRigidBodyCI2);
     engine.physics->addRBody(fallRigidBody2);
 
+	btCollisionShape* fallShape3 = new btBoxShape(btVector3(2,2,2));
+	btDefaultMotionState* fallMotionState3 = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,0,-10)));
+    mass = 1.0f;
+    btVector3 fallInertia3(0,0,0);
+    fallShape3->calculateLocalInertia(mass,fallInertia3);
+    btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI3(mass,fallMotionState2,fallShape2,fallInertia2);
+    fallRigidBody3 = new btRigidBody(fallRigidBodyCI3);
+    engine.physics->addRBody(fallRigidBody3);
+
+
 	MD2Model model = MD2Model();
 	MD2Model model2 = MD2Model();
 
-	//ColladaModel model2 = ColladaModel();
+	ColladaModel model3 = ColladaModel();
 	model.LoadModel("models/drfreak/drfreak.md2","models/drfreak/drfreak.tga");
 	model2.LoadModel("models/hobgoblin/hobgoblin.md2","models/hobgoblin/hobgoblin.png");
-	//model2.LoadModel("models/colladaDuck/duck_triangulate.dae");
+	model3.LoadModel("models/colladaDuck/duck_triangulate.dae");
 	model.SetAnim(RUN);
 	model2.SetAnim(JUMP);
 
@@ -97,8 +146,16 @@ int main(int argc, char* argv[])
 	light0.setPosVector(&Vector(0,-50,0,1));
 	light0.defineLight(light0);
 
+	//SOUND DEFINITION
+	NMS_Audio audioEngine;
+	ALfloat sourcePos[] = {0.0f,0.0f,0.0f};
+	ALfloat sourceVel[] = {0.0f,0.0f,0.0f};
+	audioEngine.LoadWav("sounds/BackgroundMusic.wav","Background",sourcePos,sourceVel,1.0f,0.3f,true);
+	audioEngine.playSound("Background");
+	
+	GeometryNode duckGeo = GeometryNode(&model3,fallRigidBody3);
 	geom = GeometryNode(&model, fallRigidBody);
-	satelite = GeometryNode(&model, fallRigidBody2);
+	satelite = GeometryNode(&model2, fallRigidBody2);
 	GeometryNode light = GeometryNode(&light0,fallRigidBody2);
 	SceneGraphNode* root = engine.getScene();
 	Matrix tra = Matrix();
@@ -115,14 +172,18 @@ int main(int argc, char* argv[])
 	sateliteRNode = TransformationNode(roty);
 	sateliteTNode = TransformationNode(tra);
 
-	cam = CameraNode();
+	cam = NMSCameraFPS();
 	Vector camTV = Vector(0.f, 2.f, 5.f);
 	Matrix camTM = Matrix();
 	camTM.translate(camTV);
 	cam.multiply(camTM);
+	Matrix scale = Matrix();
+	scale.uScale(0.10f);
+	duckGeo.multiply(scale);
 
 	root->addChild(&traNode);
 	root->addChild(&light);
+	root->addChild(&duckGeo);
 	traNode.addChild(&rotNode);
 	rotNode.addChild(&rotyNode);
 	rotyNode.addChild(&geom);
@@ -132,6 +193,8 @@ int main(int argc, char* argv[])
 	sateliteRNode.addChild(&satelite);
 	
 	NMS_EVENT.onKeyPressed(&keyPressed);
+	NMS_EVENT.onKeyReleased(&keyReleased);
+	NMS_EVENT.onMouseMoved(&mouseMoved);
 	NMS_EVENT.onIdle(&idle);
 
 	NMS_SceneRenderer* renderer = engine.getRenderer();

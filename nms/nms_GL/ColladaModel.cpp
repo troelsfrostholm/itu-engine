@@ -55,86 +55,87 @@ int ColladaModel::LoadSkin(char *filename)
 void 	ColladaModel::RenderFrame()
 {
 	unsigned i=0;
-	
-    // enable backface culling
-	vec9_t vertices;
-	unsigned vertOffset=dataRead.back().iVertOffset;
-	Source* positionSource;
-	Source* textureSource;
-	//Find the right source for the positions inside the sources vector
-	for (i=0; i<dataRead.back().sources.size(); i++) {
-		if(dataRead.back().sources[i].sID==dataRead.back().sVertPosition)
-		{
-			positionSource=&dataRead.back().sources[i];
-		}
-		else
-		if(dataRead.back().sources[i].sID==dataRead.back().sTextSource)
-		{
-			textureSource=&dataRead.back().sources[i];
-		}
-	}
-	unsigned firstOffset;
-	unsigned secondOffset;
-	unsigned thirdOffset;
-	unsigned numberOfArrays=dataRead.back().uNumberOfData;
-	unsigned numberOfTriangles=dataRead.back().iTriangleCount;
-
-	unsigned vertexOffset=dataRead.back().iVertOffset;
-	unsigned textureOffset=dataRead.back().iTextOffset;
-
-	//unsigned vertexStride;
-	//unsigned textureStride;
-
-
-
-	int*   dataPointer=dataRead.back().pTriangleData;
-	float* vertArray=(*positionSource).pfArray;
-	float* textArray=(*textureSource).pfArray;
-	bool   textEnabled=dataRead.back().bTextures;
-
+	unsigned j=0;
 	glBindTexture( GL_TEXTURE_2D, textureID );
-
-	glBegin(GL_TRIANGLES);
-	for(unsigned i=0;i<numberOfTriangles;i++)
+	for(j=0;j<dataRead.size();j++)
 	{
-		if(textEnabled)
-		{
-			firstOffset=dataPointer[i*numberOfArrays*3+textureOffset];
-			firstOffset=firstOffset*2;
-			vertices[0]=textArray[firstOffset+0];
-			vertices[1]=textArray[firstOffset+1];
-			secondOffset=dataPointer[i*numberOfArrays*3+textureOffset+numberOfArrays];
-			secondOffset=secondOffset*2;
-			vertices[2]=textArray[secondOffset+0];
-			vertices[3]=textArray[secondOffset+1];
-			thirdOffset=dataPointer[i*numberOfArrays*3+textureOffset+numberOfArrays*2];
-			thirdOffset=thirdOffset*2;
-			vertices[4]=textArray[thirdOffset+0];
-			vertices[5]=textArray[thirdOffset+1];
-			glTexCoord2f(vertices[0],vertices[1]);
-			glTexCoord2f(vertices[2],vertices[3]);
-			glTexCoord2f(vertices[4],vertices[5]);
+		vec9_t vertices;
+		unsigned vertOffset=dataRead.back().iVertOffset;
+		Source* positionSource;
+		Source* textureSource;
+		//Find the right source for the positions inside the sources vector
+		for (i=0; i<dataRead.back().sources.size(); i++) {
+			if(dataRead.back().sources[i].sID==dataRead.back().sVertPosition)
+			{
+				positionSource=&dataRead.back().sources[i];
+			}
+			else
+			if(dataRead.back().sources[i].sID==dataRead.back().sTextSource)
+			{
+				textureSource=&dataRead.back().sources[i];
+			}
 		}
-		firstOffset=dataPointer[i*numberOfArrays*3+vertOffset];
-		firstOffset=firstOffset*3;
-		vertices[0]=vertArray[firstOffset+0];
-		vertices[1]=vertArray[firstOffset+1];
-		vertices[2]=vertArray[firstOffset+2];
-		secondOffset=dataPointer[i*numberOfArrays*3+vertOffset+numberOfArrays];
-		secondOffset=secondOffset*3;
-		vertices[3]=vertArray[secondOffset+0];
-		vertices[4]=vertArray[secondOffset+1];
-		vertices[5]=vertArray[secondOffset+2];
-		thirdOffset=dataPointer[i*numberOfArrays*3+vertOffset+numberOfArrays*2];
-		thirdOffset=thirdOffset*3;
-		vertices[6]=vertArray[thirdOffset+0];
-		vertices[7]=vertArray[thirdOffset+1];
-		vertices[8]=vertArray[thirdOffset+2];
-		glVertex3f(vertices[0],vertices[1],vertices[2]);
-		glVertex3f(vertices[3],vertices[4],vertices[5]);
-		glVertex3f(vertices[6],vertices[7],vertices[8]);
+		unsigned firstOffset;
+		unsigned secondOffset;
+		unsigned thirdOffset;
+		unsigned numberOfArrays=dataRead.back().uNumberOfData;
+		unsigned numberOfTriangles=dataRead.back().iTriangleCount;
+
+		unsigned vertexOffset=dataRead.back().iVertOffset;
+		unsigned textureOffset=dataRead.back().iTextOffset;
+
+		unsigned vertexStride=(*positionSource).stride;
+		unsigned textureStride=(*textureSource).stride;
+
+
+
+		int*   dataPointer=dataRead.back().pTriangleData;
+		float* vertArray=(*positionSource).pfArray;
+		float* textArray=(*textureSource).pfArray;
+		bool   textEnabled=dataRead.back().bTextures;
+
+		glBegin(GL_TRIANGLES);
+		for(unsigned i=0;i<numberOfTriangles;i++)
+		{
+			if(textEnabled)
+			{
+				firstOffset=dataPointer[i*numberOfArrays*3+textureOffset];
+				firstOffset=firstOffset*textureStride;
+				vertices[0][0]=textArray[firstOffset+0];
+				vertices[0][1]=textArray[firstOffset+1];
+				secondOffset=dataPointer[i*numberOfArrays*3+textureOffset+numberOfArrays];
+				secondOffset=secondOffset*textureStride;
+				vertices[1][0]=textArray[secondOffset+0];
+				vertices[1][1]=textArray[secondOffset+1];
+				thirdOffset=dataPointer[i*numberOfArrays*3+textureOffset+numberOfArrays*2];
+				thirdOffset=thirdOffset*textureStride;
+				vertices[2][0]=textArray[thirdOffset+0];
+				vertices[2][1]=textArray[thirdOffset+1];
+				glTexCoord2fv(vertices[0]);
+				glTexCoord2fv(vertices[1]);
+				glTexCoord2fv(vertices[2]);
+			}
+			firstOffset=dataPointer[i*numberOfArrays*3+vertOffset];
+			firstOffset=firstOffset*vertexStride;
+			vertices[0][0]=vertArray[firstOffset+0];
+			vertices[0][1]=vertArray[firstOffset+1];
+			vertices[0][2]=vertArray[firstOffset+2];
+			secondOffset=dataPointer[i*numberOfArrays*3+vertOffset+numberOfArrays];
+			secondOffset=secondOffset*vertexStride;
+			vertices[1][0]=vertArray[secondOffset+0];
+			vertices[1][1]=vertArray[secondOffset+1];
+			vertices[1][2]=vertArray[secondOffset+2];
+			thirdOffset=dataPointer[i*numberOfArrays*3+vertOffset+numberOfArrays*2];
+			thirdOffset=thirdOffset*vertexStride;
+			vertices[2][0]=vertArray[thirdOffset+0];
+			vertices[2][1]=vertArray[thirdOffset+1];
+			vertices[2][2]=vertArray[thirdOffset+2];
+			glVertex3fv(vertices[0]);
+			glVertex3fv(vertices[1]);
+			glVertex3fv(vertices[2]);
+		}
+		glEnd();
 	}
-	glEnd();
 }
 
 

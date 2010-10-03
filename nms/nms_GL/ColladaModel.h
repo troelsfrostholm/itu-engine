@@ -29,7 +29,7 @@ using namespace irr;
 using namespace io;
 using namespace std;
 
-typedef float vec9_t[9];
+typedef float vec9_t[3][3];
 
 
 class COLLADAMODEL_D Source

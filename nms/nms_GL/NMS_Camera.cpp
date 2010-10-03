@@ -14,10 +14,25 @@ void NMSCameraFPS::init()
 	fRotY=0;
 	fRotZ=0;
 
+	fSpeed=0.0f;
+	fSlide=0.0f;
+
 	fPitchSpd=0;
 	fYawSpd=0;
 	fRollSpd=0;
 }
+
+
+void NMSCameraController::before(SceneGraphVisitor *v, Matrix *m)
+{
+	*m *= !returnViewMatrix();
+}
+
+void NMSCameraController::after(SceneGraphVisitor *v, Matrix *m)
+{
+	*m *= returnViewMatrix();
+}
+
 
 
 
