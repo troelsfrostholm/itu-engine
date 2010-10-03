@@ -33,6 +33,13 @@ public:
 	virtual void sg_after(Matrix transform, Mesh model) = 0;
 };
 
+class  SCENEGRAPH_D EmptySceneVisitor : public SceneGraphVisitor
+{
+public:
+	void sg_before(Matrix transform, Mesh model) {}
+	void sg_after(Matrix transform, Mesh model) {}
+};
+
 class SCENEGRAPH_D SceneGraphNode
 {
 protected:
@@ -75,4 +82,10 @@ public:
 	void GeometryNode::before(SceneGraphVisitor *v, Matrix *m);
 	void GeometryNode::after(SceneGraphVisitor *v, Matrix *m);
 };
+
+class SCENEGRAPH_D CameraNode : public TransformationNode
+{
+
+};
+
 #endif

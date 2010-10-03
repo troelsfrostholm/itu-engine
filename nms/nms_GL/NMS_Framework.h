@@ -45,6 +45,7 @@ public:
 	void CalculateFrameRate();
 	void cleanup();
 	SceneGraphNode* getScene();
+	NMS_SceneRenderer* getRenderer();
 };
 #endif;
 

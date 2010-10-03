@@ -3,6 +3,7 @@
 NMS_SceneRenderer::NMS_SceneRenderer() { 
 	rendering = false; 
 	sceneGraphRoot = NULL;
+	current_camera = NULL;
 }
 
 bool NMS_SceneRenderer::initRendering()
@@ -102,7 +103,10 @@ void NMS_SceneRenderer::render()
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	SDL_LockMutex(sceneGraphGuard);
-	sceneGraphRoot->traverse_df(this);
+	Matrix m = Matrix();
+	EmptySceneVisitor v = EmptySceneVisitor();
+	current_camera->backtrack_to_root(&v, &m);
+	sceneGraphRoot->traverse_df(this, &m);
 	SDL_UnlockMutex(sceneGraphGuard);
 	SDL_GL_SwapBuffers();
 }
@@ -110,6 +114,11 @@ void NMS_SceneRenderer::render()
 void NMS_SceneRenderer::setScene(SceneGraphNode* scene)
 {
 	sceneGraphRoot = scene;
+}
+
+void NMS_SceneRenderer::setCurrentCamera(CameraNode* camera)
+{
+	current_camera = camera;
 }
 
 //Render meshes as they are traversed in the scene graph

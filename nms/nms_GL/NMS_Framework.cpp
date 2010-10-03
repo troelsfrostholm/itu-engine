@@ -11,8 +11,9 @@ bool NMS_Framework::NMSInit(int width,int height,int bpp,char* windowTitle,bool 
 	sceneRenderer = NMS_SceneRenderer();
 	
 	//Create scene-graph
-	sceneGraphRoot = new TransformationNode(Matrix());
+	sceneGraphRoot = new CameraNode();
 	sceneRenderer.setScene(sceneGraphRoot);
+	sceneRenderer.setCurrentCamera((CameraNode*)sceneGraphRoot);
 
 	//set callback for quitting
 	NMS_EVENT.onQuit(this, &NMS_Framework::NMSQuit);
@@ -68,6 +69,11 @@ void NMS_Framework::render()
 SceneGraphNode* NMS_Framework::getScene()
 {
 	return sceneGraphRoot;
+}
+
+NMS_SceneRenderer* NMS_Framework::getRenderer()
+{
+	return &sceneRenderer;
 }
 
 void NMS_Framework::enableWireframe(bool reply)
