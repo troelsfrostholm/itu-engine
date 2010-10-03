@@ -9,6 +9,9 @@
 
 #include "LinearMath/btAlignedObjectArray.h"
 #include <btBulletDynamicsCommon.h>
+#include "BulletCollision\CollisionDispatch\btGhostObject.h"
+#include <vector>
+#include <boost/function.hpp>
 
 class btBroadphaseInterface;
 class btCollisionShape;
@@ -20,6 +23,7 @@ class btDefaultCollisionConfiguration;
 class btCollisionShape;
 class btDynamicsWorld;
 class btRigidBody;
+class btGhostObject;
 
 class PHYSICS_D nms_physics
 {
@@ -31,7 +35,10 @@ class PHYSICS_D nms_physics
 		btCollisionDispatcher*	dispatcher;
 		btConstraintSolver*	solver;
 		btDefaultCollisionConfiguration* collisionConfiguration;
+		btGhostPairCallback *m_ghostPairCallback;
 		btClock clock;
+		std::vector<btPairCachingGhostObject*> triggers;
+		boost::function1<void, int> triggerCallback;
 
 	public:
 		nms_physics();
@@ -41,11 +48,10 @@ class PHYSICS_D nms_physics
 		void simulatePhysics();
 		void addRBody(btRigidBody* body);
 		btScalar getDeltaTimeSeconds();
-
-		btDynamicsWorld* getDynamicsWorld()
-		{
-			return dynamicsWorld;
-		}
+		void createTrigger(btCollisionShape *triggershape, btTransform &position, void (_callback)(int i));
+		int checkTrigger(btPairCachingGhostObject *ghostObject);
+		void checkAllTriggers();
+		btDynamicsWorld* getDynamicsWorld();
 };
 
 class PHYSICS_D NMS_KinematicMotionState : public btMotionState 

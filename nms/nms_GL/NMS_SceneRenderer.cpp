@@ -45,7 +45,7 @@ bool NMS_SceneRenderer::initRendering()
 	SDL_SetVideoMode(width, height, bpp, flags); //Set the window mode
 
 	
-	glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glViewport(0, 0, width, height); // Set the dimensions of the viewport
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -100,6 +100,7 @@ int NMS_SceneRenderer::renderingLoop()
 	while(rendering) {
 		NMS_EVENT.pollEvents();
 		physics->simulatePhysics();
+		physics->checkAllTriggers();
 		render();
 	}
 	return 0;

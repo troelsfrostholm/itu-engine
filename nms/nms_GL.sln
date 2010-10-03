@@ -40,6 +40,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo_phys", "demo_phys\demo
 		{BC04FEE9-2884-4666-8E9A-8E94BE24D338} = {BC04FEE9-2884-4666-8E9A-8E94BE24D338}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "trigger_demo", "trigger_demo\trigger_demo.vcproj", "{237DDD87-ACDD-4FC0-970F-D27BADCD33C2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -120,6 +122,14 @@ Global
 		{7913DBFE-E7EF-49A9-A82E-25B0BC9C02A2}.Release|Win32.Build.0 = Release|Win32
 		{7913DBFE-E7EF-49A9-A82E-25B0BC9C02A2}.RelWithDebInfo|Win32.ActiveCfg = Release|Win32
 		{7913DBFE-E7EF-49A9-A82E-25B0BC9C02A2}.RelWithDebInfo|Win32.Build.0 = Release|Win32
+		{237DDD87-ACDD-4FC0-970F-D27BADCD33C2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{237DDD87-ACDD-4FC0-970F-D27BADCD33C2}.Debug|Win32.Build.0 = Debug|Win32
+		{237DDD87-ACDD-4FC0-970F-D27BADCD33C2}.MinSizeRel|Win32.ActiveCfg = Release|Win32
+		{237DDD87-ACDD-4FC0-970F-D27BADCD33C2}.MinSizeRel|Win32.Build.0 = Release|Win32
+		{237DDD87-ACDD-4FC0-970F-D27BADCD33C2}.Release|Win32.ActiveCfg = Release|Win32
+		{237DDD87-ACDD-4FC0-970F-D27BADCD33C2}.Release|Win32.Build.0 = Release|Win32
+		{237DDD87-ACDD-4FC0-970F-D27BADCD33C2}.RelWithDebInfo|Win32.ActiveCfg = Release|Win32
+		{237DDD87-ACDD-4FC0-970F-D27BADCD33C2}.RelWithDebInfo|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

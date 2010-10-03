@@ -13,6 +13,12 @@ void nms_physics::initPhysics()
     dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher,broadphase,solver,collisionConfiguration);
 
     dynamicsWorld->setGravity(btVector3(0,-10,0));
+
+	m_ghostPairCallback = new btGhostPairCallback();
+	dynamicsWorld->getBroadphase()->getOverlappingPairCache()->setInternalGhostPairCallback(m_ghostPairCallback);
+
+	triggers = std::vector<btPairCachingGhostObject*>();
+
 }
 
 void nms_physics::exitPhysics()
@@ -59,6 +65,11 @@ void nms_physics::addRBody(btRigidBody* body)
 	dynamicsWorld->addRigidBody(body);
 }
 
+btDynamicsWorld* nms_physics::getDynamicsWorld()
+{
+	return dynamicsWorld;
+}
+
 nms_physics::nms_physics()
 {
 	initPhysics();
@@ -76,4 +87,43 @@ btScalar nms_physics::getDeltaTimeSeconds()
 	dt = dt /1000000.f; //Convert microseconds to seconds
 	clock.reset();
 	return dt;
+}
+
+void nms_physics::createTrigger(btCollisionShape *triggershape, btTransform &position, void (_callback)(int i))
+{
+	btPairCachingGhostObject *TriggerGhostObject = new btPairCachingGhostObject();
+	TriggerGhostObject->setCollisionShape(triggershape);
+	TriggerGhostObject->setWorldTransform(position);
+
+	TriggerGhostObject->setCollisionFlags(btCollisionObject::CF_NO_CONTACT_RESPONSE);
+
+	dynamicsWorld->addCollisionObject(TriggerGhostObject);
+
+	triggers.push_back(TriggerGhostObject);
+
+	triggerCallback = _callback;
+}
+
+void nms_physics::checkAllTriggers()
+{
+	for(unsigned int i=0; i < triggers.size(); i++) 
+	{
+		checkTrigger(triggers[i]);
+	}
+}
+
+int nms_physics::checkTrigger(btPairCachingGhostObject *ghostObject)
+{
+	int triggered = 0;
+	btAlignedObjectArray<btCollisionObject*>& overlappingObjects = ghostObject->getOverlappingPairs();	
+	const int numObjects = overlappingObjects.size();	
+	for(int i=0; i<numObjects; i++)
+	{
+		btCollisionObject*	colObject = overlappingObjects[i];
+		/// Do something with colObj
+		triggered = 1;
+		triggerCallback(triggered);
+		break;
+	}
+	return triggered;
 }
