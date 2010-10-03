@@ -30,6 +30,7 @@ using namespace io;
 using namespace std;
 
 typedef float vec9_t[3][3];
+typedef float vec6_t[3][2];
 
 
 class COLLADAMODEL_D Source
@@ -48,36 +49,42 @@ class COLLADAMODEL_D Source
 	  unsigned stride;
 };
 
+class COLLADAMODEL_D Triangle
+{	
+    public:
+	  Triangle();
+	  core::stringc sVertSource;
+	  core::stringc sNormSource;
+	  core::stringc sTextSource;
+
+	  //Mesh data definitions
+		core::stringc sTriangleMaterial;
+
+	  unsigned iVertOffset;
+	  unsigned iNormOffset;
+	  unsigned iTextOffset;
+
+	  //Triangles count
+	  unsigned iTriangleCount;
+	  int* pTriangleData;
+
+	  unsigned iTriangleOffset;
+
+	  //Data to be loaded
+		bool bVertices;
+		bool bTextures;
+		bool bNormals;
+		unsigned uNumberOfData;
+	
+};
 
 class COLLADAMODEL_D ColMesh
 {	
   public:
 	ColMesh();
 	vector<Source> sources;
+	vector<Triangle> triangles;
 	core::stringc sVertPosition;
-
-	//Mesh data definitions
-	core::stringc sMeshMaterial;
-
-
-	core::stringc sVertSource;
-	unsigned iVertOffset;
-	core::stringc sNormSource;
-	unsigned iNormOffset;
-	core::stringc sTextSource;
-	unsigned iTextOffset;
-
-
-
-	//Triangles count
-	unsigned iTriangleCount;
-	int* pTriangleData;
-
-	//Data to be loaded
-	bool bVertices;
-	bool bTextures;
-	bool bNormals;
-	unsigned uNumberOfData;
 };
 
 class COLLADAMODEL_D ColladaModel : public NMS_Mesh

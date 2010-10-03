@@ -133,7 +133,7 @@ int main(int argc, char* argv[])
 	ColladaModel model3 = ColladaModel();
 	model.LoadModel("models/drfreak/drfreak.md2","models/drfreak/drfreak.tga");
 	model2.LoadModel("models/hobgoblin/hobgoblin.md2","models/hobgoblin/hobgoblin.png");
-	model3.LoadModel("models/colladaDuck/duck_triangulate.dae");
+	model3.LoadModel("models/Duck/Duck.dae");
 	model.SetAnim(RUN);
 	model2.SetAnim(JUMP);
 

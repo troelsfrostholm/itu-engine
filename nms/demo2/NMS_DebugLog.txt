@@ -11,8 +11,8 @@ NMS_TextureManager::Trying to load [models/hobgoblin/hobgoblin.png]
 NMS_TextureManager::Lump created correctly!
 NMS_TextureManager::Texture loaded from Lump!
 NMS_TextureManager::Loaded [models/hobgoblin/hobgoblin.png] without issues!
-NMS_TextureManager::Trying to load [./duckCM.tga]
+NMS_TextureManager::Trying to load [models/Duck/duckCM.tga]
 NMS_TextureManager::Lump created correctly!
 NMS_TextureManager::Texture loaded from Lump!
-NMS_TextureManager::Loaded [./duckCM.tga] without issues!
+NMS_TextureManager::Loaded [models/Duck/duckCM.tga] without issues!
 NMS_TextureManager::Freed the whole memory!
