@@ -11,6 +11,7 @@
 #include "NMS_Mutex.h"
 #include "NMS_Thread.h"
 #include "NMS_SceneGraph.h"
+#include "NMS_Event.h"
 
 class SCENE_RENDERER_D NMS_SceneRenderer : public SceneGraphVisitor, public Thread
 {
@@ -30,6 +31,7 @@ public:
 	void setScene(SceneGraphNode* scene);
 	void sg_before(Matrix transform, Mesh model);
 	void sg_after(Matrix transform, Mesh model);
+	void CalculateFrameRate();
 };
 
 #endif

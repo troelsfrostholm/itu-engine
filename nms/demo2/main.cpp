@@ -33,7 +33,7 @@ void keyPressed(SDLKey key)
 void idle( int i )
 {
 	Matrix m = Matrix();
-	m.rotY(0.5f);
+	m.rotY(0.8f);
 	//SDL_LockMutex(sceneGraphGuard);
 	rotNode.multiply(m);
 	sateliteRNode.multiply(m);

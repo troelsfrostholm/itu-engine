@@ -1,5 +1,4 @@
 #include "NMS_SceneRenderer.h"
-#include "NMS_Event.h"
 
 NMS_SceneRenderer::NMS_SceneRenderer() { 
 	rendering = false; 
@@ -56,6 +55,7 @@ bool NMS_SceneRenderer::initRendering()
 	gluPerspective(60.0, (float)width/(float)height, 1.0, width);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+	glTranslatef(0.f, 0.f, -10.0f);
 	return true;
 }
 
@@ -90,7 +90,8 @@ int NMS_SceneRenderer::renderingLoop()
 	while(rendering) {
 		NMS_EVENT.pollEvents();
 		render();
-		SDL_Delay(10);
+		CalculateFrameRate();
+		//SDL_Delay(10);
 	}
 
 	return 0;
@@ -103,9 +104,10 @@ void NMS_SceneRenderer::render()
 	SDL_LockMutex(sceneGraphGuard);
 	sceneGraphRoot->traverse_df(this);
 	SDL_UnlockMutex(sceneGraphGuard);
-	//glLoadIdentity();
-	//Mesh m = Mesh();
-	//m.render();
+	/*glTranslatef(0.05f, 0.f, 0.f);
+	glRotatef(1.f, 0.f, 0.f, 1.f);
+	Mesh m = Mesh();
+	m.render();*/
 	SDL_GL_SwapBuffers();
 }
 
@@ -118,7 +120,6 @@ void NMS_SceneRenderer::setScene(SceneGraphNode* scene)
 void NMS_SceneRenderer::sg_before(Matrix transform, Mesh model)
 {
 	glLoadIdentity();
-	transform.debugPrint();
 	Matrix t_transposed = ~transform;
 	glMultMatrixf(t_transposed.returnPointer());
 	model.render();
@@ -126,3 +127,20 @@ void NMS_SceneRenderer::sg_before(Matrix transform, Mesh model)
 }
 
 void NMS_SceneRenderer::sg_after(Matrix transform, Mesh model) {}
+
+void NMS_SceneRenderer::CalculateFrameRate()
+{
+	static float framesPerSecond = 0.0f;
+	static float lastTime = 0.0f;
+	static char strCaption[80] = {0};
+	static size_t strCaptionSize = 80*sizeof(char);
+	float currentTime = SDL_GetTicks() * 0.001f;
+	++framesPerSecond;
+	if( currentTime - lastTime > 1.0f )
+	{
+		lastTime = currentTime;
+		sprintf_s(strCaption,strCaptionSize,"Frames per Second: %d",int(framesPerSecond));
+		SDL_WM_SetCaption(strCaption,NULL);
+		framesPerSecond = 0;
+	}
+}
