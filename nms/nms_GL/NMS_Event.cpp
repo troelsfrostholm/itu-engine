@@ -41,7 +41,7 @@ void NMS_Event::processEvents()
 		eventQueue.pop_front();
 	}
 	SDL_UnlockMutex(eventQueueGuard);
-	//idleCallback( 0 );
+	idleCallback( 0 );
 }
 
 void NMS_Event::handleEvent(SDL_Event event)

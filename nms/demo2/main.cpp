@@ -37,14 +37,14 @@ void keyPressed(SDLKey key)
 
 void idle( int i )
 {
-	Matrix m = Matrix();
-	m.rotY(0.5f);
-	SDL_LockMutex(sceneGraphGuard);
-	m.rotX(0.7f);
-	satelite.multiply(m);
-	rotNode.multiply(m);
-	sateliteRNode.multiply(m);
-	SDL_UnlockMutex(sceneGraphGuard);
+	//Matrix m = Matrix();
+	//m.rotY(0.5f);
+	//SDL_LockMutex(sceneGraphGuard);
+	////m.rotX(0.7f);
+	//satelite.multiply(m);
+	//rotNode.multiply(m);
+	//sateliteRNode.multiply(m);
+	//SDL_UnlockMutex(sceneGraphGuard);
 }
 
 int main(int argc, char* argv[])
@@ -58,9 +58,9 @@ int main(int argc, char* argv[])
     btRigidBody* groundRigidBody = new btRigidBody(groundRigidBodyCI);
 	engine.physics->addRBody(groundRigidBody);
 
-	btCollisionShape* fallShape = new btBoxShape(btVector3(2,2,2));
+	btCollisionShape* fallShape = new btSphereShape(4);
 	btDefaultMotionState* fallMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0)));
-    btScalar mass = 0.1f;
+    btScalar mass = 1.0f;
     btVector3 fallInertia(0,0,0);
     fallShape->calculateLocalInertia(mass,fallInertia);
     btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI(mass,fallMotionState,fallShape,fallInertia);
@@ -69,7 +69,7 @@ int main(int argc, char* argv[])
 
 	btCollisionShape* fallShape2 = new btBoxShape(btVector3(2,2,2));
 	btDefaultMotionState* fallMotionState2 = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,0,-10)));
-    mass = 0.1f;
+    mass = 1.0f;
     btVector3 fallInertia2(0,0,0);
     fallShape2->calculateLocalInertia(mass,fallInertia2);
     btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI2(mass,fallMotionState2,fallShape2,fallInertia2);
@@ -77,8 +77,6 @@ int main(int argc, char* argv[])
     engine.physics->addRBody(fallRigidBody2);
 
 	MD2Model model = MD2Model();
-	geom = GeometryNode(&model, fallRigidBody);
-	satelite = GeometryNode(&model, fallRigidBody2);
 	MD2Model model2 = MD2Model();
 
 	//ColladaModel model2 = ColladaModel();
@@ -97,7 +95,8 @@ int main(int argc, char* argv[])
 	light0.setPosVector(&Vector(0,-50,0,1));
 	light0.defineLight(light0);
 
-	GeometryNode satelite = GeometryNode(&model2,fallRigidBody);
+	geom = GeometryNode(&model, fallRigidBody);
+	satelite = GeometryNode(&model, fallRigidBody2);
 	GeometryNode light = GeometryNode(&light0,fallRigidBody2);
 	SceneGraphNode* root = engine.getScene();
 	Matrix tra = Matrix();

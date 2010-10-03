@@ -1,6 +1,6 @@
  nms_GL
 
- Timestamp is 4ca87974 (Sun Oct 03 14:39:16 2010)
+ Timestamp is 4ca87cf8 (Sun Oct 03 14:54:16 2010)
 
  Preferred load address is 60800000
 
@@ -954,144 +954,144 @@
  0001:00021020       ??_GNMS_Event@@QAEPAXI@Z   60822020 f i NMS_Event.obj
  0001:00021080       ?pollEvents@NMS_Event@@QAEXXZ 60822080 f   NMS_Event.obj
  0001:00021120       ?processEvents@NMS_Event@@QAEXXZ 60822120 f   NMS_Event.obj
- 0001:000211c0       ?handleEvent@NMS_Event@@QAEXTSDL_Event@@@Z 608221c0 f   NMS_Event.obj
- 0001:00021290       ??0?$list@TSDL_Event@@V?$allocator@TSDL_Event@@@std@@@std@@QAE@XZ 60822290 f i NMS_Event.obj
- 0001:00021330       ?size@?$list@TSDL_Event@@V?$allocator@TSDL_Event@@@std@@@std@@QBEIXZ 60822330 f i NMS_Event.obj
- 0001:00021360       ?front@?$list@TSDL_Event@@V?$allocator@TSDL_Event@@@std@@@std@@QAEAATSDL_Event@@XZ 60822360 f i NMS_Event.obj
- 0001:00021420       ?pop_front@?$list@TSDL_Event@@V?$allocator@TSDL_Event@@@std@@@std@@QAEXXZ 60822420 f i NMS_Event.obj
- 0001:00021500       ?push_back@?$list@TSDL_Event@@V?$allocator@TSDL_Event@@@std@@@std@@QAEXABTSDL_Event@@@Z 60822500 f i NMS_Event.obj
- 0001:000215d0       ??0?$function1@XH@boost@@QAE@XZ 608225d0 f i NMS_Event.obj
- 0001:00021620       ??0?$function1@XW4SDLKey@@@boost@@QAE@XZ 60822620 f i NMS_Event.obj
- 0001:00021670       ?end@?$list@TSDL_Event@@V?$allocator@TSDL_Event@@@std@@@std@@QAE?AV?$_Iterator@$00@12@XZ 60822670 f i NMS_Event.obj
- 0001:000216e0       ??0?$allocator@TSDL_Event@@@std@@QAE@XZ 608226e0 f i NMS_Event.obj
- 0001:00021710       ??D?$_Iterator@$00@?$list@TSDL_Event@@V?$allocator@TSDL_Event@@@std@@@std@@QBEAATSDL_Event@@XZ 60822710 f i NMS_Event.obj
- 0001:00021750       ??R?$function1@XH@boost@@QBEXH@Z 60822750 f i NMS_Event.obj
- 0001:00021830       ??0bad_function_call@boost@@QAE@XZ 60822830 f i NMS_Event.obj
- 0001:000218f0       ??0runtime_error@std@@QAE@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@1@@Z 608228f0 f i NMS_Event.obj
- 0001:000219a0       ??1runtime_error@std@@UAE@XZ 608229a0 f i NMS_Event.obj
- 0001:00021a10       ?what@runtime_error@std@@UBEPBDXZ 60822a10 f i NMS_Event.obj
- 0001:00021a60       ??_Eruntime_error@std@@UAEPAXI@Z 60822a60 f i NMS_Event.obj
- 0001:00021a60       ??_Gruntime_error@std@@UAEPAXI@Z 60822a60 f i NMS_Event.obj
- 0001:00021ac0       ??_Ebad_function_call@boost@@UAEPAXI@Z 60822ac0 f i NMS_Event.obj
- 0001:00021ac0       ??_Gbad_function_call@boost@@UAEPAXI@Z 60822ac0 f i NMS_Event.obj
- 0001:00021b20       ??1bad_function_call@boost@@UAE@XZ 60822b20 f i NMS_Event.obj
- 0001:00021b60       ??R?$function1@XW4SDLKey@@@boost@@QBEXW4SDLKey@@@Z 60822b60 f i NMS_Event.obj
- 0001:00021c40       ??$throw_exception@Vbad_function_call@boost@@@boost@@YAXABVbad_function_call@0@@Z 60822c40 f i NMS_Event.obj
- 0001:00021d10       ?throw_exception_assert_compatibility@boost@@YAXABVexception@std@@@Z 60822d10 f i NMS_Event.obj
- 0001:00021d40       ??0runtime_error@std@@QAE@ABV01@@Z 60822d40 f i NMS_Event.obj
- 0001:00021df0       ??0?$clone_impl@U?$error_info_injector@Vbad_function_call@boost@@@exception_detail@boost@@@exception_detail@boost@@QAE@ABV012@@Z 60822df0 f i NMS_Event.obj
- 0001:00021e90       ??0?$error_info_injector@Vbad_function_call@boost@@@exception_detail@boost@@QAE@ABU012@@Z 60822e90 f i NMS_Event.obj
- 0001:00021f60       ??0bad_function_call@boost@@QAE@ABV01@@Z 60822f60 f i NMS_Event.obj
- 0001:00021fc0       ??0exception@boost@@QAE@ABV01@@Z 60822fc0 f i NMS_Event.obj
- 0001:00022040       ??0clone_base@exception_detail@boost@@QAE@ABV012@@Z 60823040 f i NMS_Event.obj
- 0001:00022080       ??_Gclone_base@exception_detail@boost@@UAEPAXI@Z 60823080 f i NMS_Event.obj
- 0001:00022080       ??_Eclone_base@exception_detail@boost@@UAEPAXI@Z 60823080 f i NMS_Event.obj
- 0001:000220e0       ??1clone_base@exception_detail@boost@@UAE@XZ 608230e0 f i NMS_Event.obj
- 0001:00022120       ??_G?$clone_impl@U?$error_info_injector@Vbad_function_call@boost@@@exception_detail@boost@@@exception_detail@boost@@UAEPAXI@Z 60823120 f i NMS_Event.obj
- 0001:00022120       ??_E?$clone_impl@U?$error_info_injector@Vbad_function_call@boost@@@exception_detail@boost@@@exception_detail@boost@@UAEPAXI@Z 60823120 f i NMS_Event.obj
- 0001:00022180       ??_G?$error_info_injector@Vbad_function_call@boost@@@exception_detail@boost@@UAEPAXI@Z 60823180 f i NMS_Event.obj
- 0001:00022180       ??_E?$error_info_injector@Vbad_function_call@boost@@@exception_detail@boost@@UAEPAXI@Z 60823180 f i NMS_Event.obj
- 0001:000221e0       ??0?$refcount_ptr@Uerror_info_container@exception_detail@boost@@@exception_detail@boost@@QAE@ABV012@@Z 608231e0 f i NMS_Event.obj
- 0001:00022230       ?add_ref@?$refcount_ptr@Uerror_info_container@exception_detail@boost@@@exception_detail@boost@@AAEXXZ 60823230 f i NMS_Event.obj
- 0001:00022290       ??1?$error_info_injector@Vbad_function_call@boost@@@exception_detail@boost@@UAE@XZ 60823290 f i NMS_Event.obj
- 0001:000222f0       ??1exception@boost@@MAE@XZ 608232f0 f i NMS_Event.obj
- 0001:00022340       ??1?$refcount_ptr@Uerror_info_container@exception_detail@boost@@@exception_detail@boost@@QAE@XZ 60823340 f i NMS_Event.obj
- 0001:00022380       ?release@?$refcount_ptr@Uerror_info_container@exception_detail@boost@@@exception_detail@boost@@AAEXXZ 60823380 f i NMS_Event.obj
- 0001:000223f0       ??1?$clone_impl@U?$error_info_injector@Vbad_function_call@boost@@@exception_detail@boost@@@exception_detail@boost@@UAE@XZ 608233f0 f i NMS_Event.obj
- 0001:00022460       ?clone@?$clone_impl@U?$error_info_injector@Vbad_function_call@boost@@@exception_detail@boost@@@exception_detail@boost@@EBEPBVclone_base@23@XZ 60823460 f i NMS_Event.obj
- 0001:00022550       ?rethrow@?$clone_impl@U?$error_info_injector@Vbad_function_call@boost@@@exception_detail@boost@@@exception_detail@boost@@EBEXXZ 60823550 f i NMS_Event.obj
- 0001:000225b0       ??$enable_error_info@Vbad_function_call@boost@@@boost@@YA?AU?$error_info_injector@Vbad_function_call@boost@@@exception_detail@0@ABVbad_function_call@0@@Z 608235b0 f i NMS_Event.obj
- 0001:00022610       ??$enable_current_exception@U?$error_info_injector@Vbad_function_call@boost@@@exception_detail@boost@@@boost@@YA?AV?$clone_impl@U?$error_info_injector@Vbad_function_call@boost@@@exception_detail@boost@@@exception_detail@0@ABU?$error_info_injector@Vbad_function_call@boost@@@20@@Z 60823610 f i NMS_Event.obj
- 0001:00022670       ??0?$error_info_injector@Vbad_function_call@boost@@@exception_detail@boost@@QAE@ABVbad_function_call@2@@Z 60823670 f i NMS_Event.obj
- 0001:00022710       ??0exception@boost@@IAE@XZ 60823710 f i NMS_Event.obj
- 0001:00022780       ??0?$refcount_ptr@Uerror_info_container@exception_detail@boost@@@exception_detail@boost@@QAE@XZ 60823780 f i NMS_Event.obj
- 0001:000227c0       ??0?$clone_impl@U?$error_info_injector@Vbad_function_call@boost@@@exception_detail@boost@@@exception_detail@boost@@QAE@ABU?$error_info_injector@Vbad_function_call@boost@@@12@@Z 608237c0 f i NMS_Event.obj
- 0001:000228c0       ?copy_boost_exception@exception_detail@boost@@YAXPAVexception@2@PBV32@@Z 608238c0 f i NMS_Event.obj
- 0001:00022a00       ??4?$refcount_ptr@Uerror_info_container@exception_detail@boost@@@exception_detail@boost@@QAEAAV012@ABV012@@Z 60823a00 f i NMS_Event.obj
- 0001:00022a50       ?get@?$refcount_ptr@Uerror_info_container@exception_detail@boost@@@exception_detail@boost@@QBEPAUerror_info_container@23@XZ 60823a50 f i NMS_Event.obj
- 0001:00022a80       ?adopt@?$refcount_ptr@Uerror_info_container@exception_detail@boost@@@exception_detail@boost@@QAEXPAUerror_info_container@23@@Z 60823a80 f i NMS_Event.obj
- 0001:00022ae0       ??0clone_base@exception_detail@boost@@QAE@XZ 60823ae0 f i NMS_Event.obj
- 0001:00022b20       ??_E?$clone_impl@U?$error_info_injector@Vbad_function_call@boost@@@exception_detail@boost@@@exception_detail@boost@@WCM@AEPAXI@Z 60823b20 f i NMS_Event.obj
- 0001:00022b30       ??_E?$error_info_injector@Vbad_function_call@boost@@@exception_detail@boost@@WCM@AEPAXI@Z 60823b30 f i NMS_Event.obj
- 0001:00022b40       ??_E?$clone_impl@U?$error_info_injector@Vbad_function_call@boost@@@exception_detail@boost@@@exception_detail@boost@@WEA@AEPAXI@Z 60823b40 f i NMS_Event.obj
- 0001:00022b50       ??0NMS_Framework@@QAE@XZ   60823b50 f   NMS_Framework.obj
- 0001:00022bf0       ?NMSInit@NMS_Framework@@QAE_NHHHPAD_N@Z 60823bf0 f   NMS_Framework.obj
- 0001:00022e50       ?NMSQuit@NMS_Framework@@QAEXH@Z 60823e50 f   NMS_Framework.obj
- 0001:00022e90       ?CalculateFrameRate@NMS_Framework@@QAEXXZ 60823e90 f   NMS_Framework.obj
- 0001:00022f70       ?run@NMS_Framework@@QAEXXZ 60823f70 f   NMS_Framework.obj
- 0001:00023000       ?cleanup@NMS_Framework@@QAEXXZ 60824000 f   NMS_Framework.obj
- 0001:000230a0       ??_GSceneGraphNode@@QAEPAXI@Z 608240a0 f i NMS_Framework.obj
- 0001:00023100       ?render@NMS_Framework@@QAEXXZ 60824100 f   NMS_Framework.obj
- 0001:00023150       ?getScene@NMS_Framework@@QAEPAVSceneGraphNode@@XZ 60824150 f   NMS_Framework.obj
- 0001:00023180       ?enableWireframe@NMS_Framework@@QAEX_N@Z 60824180 f   NMS_Framework.obj
- 0001:00023200       ??$onQuit@VNMS_Framework@@@NMS_Event@@QAEXPAVNMS_Framework@@P81@AEXH@Z@Z 60824200 f i NMS_Framework.obj
- 0001:00023280       ??$mem_fun@XVNMS_Framework@@H@std@@YA?AV?$mem_fun1_t@XVNMS_Framework@@H@0@P8NMS_Framework@@AEXH@Z@Z 60824280 f i NMS_Framework.obj
- 0001:000232d0       ??$bind1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@PAVNMS_Framework@@@std@@YA?AV?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@0@ABV?$mem_fun1_t@XVNMS_Framework@@H@0@ABQAVNMS_Framework@@@Z 608242d0 f i NMS_Framework.obj
- 0001:00023350       ??$?4V?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@@?$function1@XH@boost@@QAEAAV01@V?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@@Z 60824350 f i NMS_Framework.obj
- 0001:00023410       ??0?$mem_fun1_t@XVNMS_Framework@@H@std@@QAE@P8NMS_Framework@@AEXH@Z@Z 60824410 f i NMS_Framework.obj
- 0001:00023450       ??0?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@QAE@ABV?$mem_fun1_t@XVNMS_Framework@@H@1@ABQAVNMS_Framework@@@Z 60824450 f i NMS_Framework.obj
- 0001:000234a0       ??$assign_to@V?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@@?$function1@XH@boost@@AAEXV?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@@Z 608244a0 f i NMS_Framework.obj
- 0001:00023530       ?manage@?$functor_manager@V?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@@function@detail@boost@@SAXABTfunction_buffer@234@AAT5234@W4functor_manager_operation_type@234@@Z 60824530 f i NMS_Framework.obj
- 0001:000235c0       ?invoke@?$void_function_obj_invoker1@V?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@XH@function@detail@boost@@SAXAATfunction_buffer@234@H@Z 608245c0 f i NMS_Framework.obj
- 0001:00023620       ??R?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@QBEXAAH@Z 60824620 f i NMS_Framework.obj
- 0001:00023670       ?manager@?$functor_manager@V?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@@function@detail@boost@@CAXABTfunction_buffer@234@AAT5234@W4functor_manager_operation_type@234@Ufunction_obj_tag@234@@Z 60824670 f i NMS_Framework.obj
- 0001:000236d0       ??R?$mem_fun1_t@XVNMS_Framework@@H@std@@QBEXPAVNMS_Framework@@H@Z 608246d0 f i NMS_Framework.obj
- 0001:00023720       ?manager@?$functor_manager@V?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@@function@detail@boost@@CAXABTfunction_buffer@234@AAT5234@W4functor_manager_operation_type@234@U?$bool_@$00@mpl@4@@Z 60824720 f i NMS_Framework.obj
- 0001:00023770       ?manage_small@?$functor_manager_common@V?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@@function@detail@boost@@SAXABTfunction_buffer@234@AAT5234@W4functor_manager_operation_type@234@@Z 60824770 f i NMS_Framework.obj
- 0001:00023860       ??$assign_to@V?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@@?$basic_vtable1@XH@function@detail@boost@@QAE_NV?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@AATfunction_buffer@123@@Z 60824860 f i NMS_Framework.obj
- 0001:000238c0       ??$assign_to@V?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@@?$basic_vtable1@XH@function@detail@boost@@AAE_NV?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@AATfunction_buffer@123@Ufunction_obj_tag@123@@Z 608248c0 f i NMS_Framework.obj
- 0001:00023950       ?has_empty_target@function@detail@boost@@YA_NZZ 60824950 f i NMS_Framework.obj
- 0001:00023980       ??$addressof@V?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@@boost@@YAPAV?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@AAV12@@Z 60824980 f i NMS_Framework.obj
- 0001:000239e0       ??$assign_functor@V?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@@?$basic_vtable1@XH@function@detail@boost@@AAEXV?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@AATfunction_buffer@123@U?$bool_@$00@mpl@3@@Z 608249e0 f i NMS_Framework.obj
- 0001:00023a60       ?f@?$addressof_impl@V?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@@detail@boost@@SAPAV?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@AAV45@J@Z 60824a60 f i NMS_Framework.obj
- 0001:00023a90       ??0?$addr_impl_ref@V?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@@detail@boost@@QAE@AAV?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@@Z 60824a90 f i NMS_Framework.obj
- 0001:00023ad0       ??B?$addr_impl_ref@V?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@@detail@boost@@QBEAAV?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@XZ 60824ad0 f i NMS_Framework.obj
- 0001:00023b00       ??0LightSource@@QAE@XZ     60824b00 f   NMS_LightSystem.obj
- 0001:00023c00       ?getAttFact@LightSource@@QAEMXZ 60824c00 f   NMS_LightSystem.obj
- 0001:00023c30       ?getAttType@LightSource@@QAEIXZ 60824c30 f   NMS_LightSystem.obj
- 0001:00023c60       ?getIntDis@LightSource@@QAEMXZ 60824c60 f   NMS_LightSystem.obj
- 0001:00023c90       ?getLightNumber@LightSource@@QAEIXZ 60824c90 f   NMS_LightSystem.obj
- 0001:00023cc0       ?getLightValue@LightSource@@QAE?AVVector@@XZ 60824cc0 f   NMS_LightSystem.obj
- 0001:00023d30       ?setLightNumber@LightSource@@QAEXI@Z 60824d30 f   NMS_LightSystem.obj
- 0001:00023d70       ?setLightValue@LightSource@@QAEXPBVVector@@@Z 60824d70 f   NMS_LightSystem.obj
- 0001:00023dc0       ?setIntDis@LightSource@@QAEXM@Z 60824dc0 f   NMS_LightSystem.obj
- 0001:00023e00       ?setAttType@LightSource@@QAEXI@Z 60824e00 f   NMS_LightSystem.obj
- 0001:00023e40       ?setAttFact@LightSource@@QAEXM@Z 60824e40 f   NMS_LightSystem.obj
- 0001:00023e80       ??0NMS_LightSystem@@QAE@XZ 60824e80 f   NMS_LightSystem.obj
- 0001:00023eb0       ?Enable@NMS_LightSystem@@QAEXH@Z 60824eb0 f   NMS_LightSystem.obj
- 0001:00023f40       ?Disable@NMS_LightSystem@@QAEXXZ 60824f40 f   NMS_LightSystem.obj
- 0001:00023f90       ??0AmbientLight@@QAE@XZ    60824f90 f   NMS_LightSystem.obj
- 0001:00023ff0       ?setGlobalAmbient@AmbientLight@@QAEXPBVVector@@@Z 60824ff0 f   NMS_LightSystem.obj
- 0001:00024080       ?getGlobalAmbient@AmbientLight@@QAE?AVVector@@XZ 60825080 f   NMS_LightSystem.obj
- 0001:000241b0       ?render@AmbientLight@@UAEXM@Z 608251b0 f   NMS_LightSystem.obj
- 0001:00024220       ?defineLight@LightSource@@QAEXV1@@Z 60825220 f   NMS_LightSystem.obj
- 0001:000242e0       ?render@LightSource@@UAEXM@Z 608252e0 f   NMS_LightSystem.obj
- 0001:00024770       ?initMutexes@@YAXXZ        60825770 f   NMS_Mutex.obj
- 0001:000247b0       ??0SceneGraphNode@@QAE@XZ  608257b0 f   NMS_SceneGraph.obj
- 0001:00024880       ?addChild@SceneGraphNode@@QAEXPAV1@@Z 60825880 f   NMS_SceneGraph.obj
- 0001:000248d0       ?traverse_df@SceneGraphNode@@QAEXPAVSceneGraphVisitor@@@Z 608258d0 f   NMS_SceneGraph.obj
- 0001:00024990       ?traverse_df@SceneGraphNode@@QAEXPAVSceneGraphVisitor@@PAVMatrix@@@Z 60825990 f   NMS_SceneGraph.obj
- 0001:00024a50       ??0TransformationNode@@QAE@XZ 60825a50 f   NMS_SceneGraph.obj
- 0001:00024ae0       ??0TransformationNode@@QAE@VMatrix@@@Z 60825ae0 f   NMS_SceneGraph.obj
- 0001:00024b90       ?multiply@TransformationNode@@QAEXVMatrix@@@Z 60825b90 f   NMS_SceneGraph.obj
- 0001:00024c60       ?before@TransformationNode@@UAEXPAVSceneGraphVisitor@@PAVMatrix@@@Z 60825c60 f   NMS_SceneGraph.obj
- 0001:00024cb0       ?after@TransformationNode@@UAEXPAVSceneGraphVisitor@@PAVMatrix@@@Z 60825cb0 f   NMS_SceneGraph.obj
- 0001:00024d70       ??0GeometryNode@@QAE@XZ    60825d70 f   NMS_SceneGraph.obj
- 0001:00024dd0       ??0GeometryNode@@QAE@PAVNMS_Mesh@@PAVbtRigidBody@@@Z 60825dd0 f   NMS_SceneGraph.obj
- 0001:00024e30       ??0GeometryNode@@QAE@PAVNMS_Mesh@@PAVbtRigidBody@@VMatrix@@@Z 60825e30 f   NMS_SceneGraph.obj
- 0001:00024ef0       ?before@GeometryNode@@UAEXPAVSceneGraphVisitor@@PAVMatrix@@@Z 60825ef0 f   NMS_SceneGraph.obj
- 0001:00024f70       ?after@GeometryNode@@UAEXPAVSceneGraphVisitor@@PAVMatrix@@@Z 60825f70 f   NMS_SceneGraph.obj
- 0001:00024fe0       ?render@NMS_Mesh@@UAEXM@Z  60825fe0 f   NMS_SceneGraph.obj
- 0001:00025440       ??0?$vector@PAVSceneGraphNode@@V?$allocator@PAVSceneGraphNode@@@std@@@std@@QAE@XZ 60826440 f i NMS_SceneGraph.obj
- 0001:000254e0       ??A?$vector@PAVSceneGraphNode@@V?$allocator@PAVSceneGraphNode@@@std@@@std@@QAEAAPAVSceneGraphNode@@I@Z 608264e0 f i NMS_SceneGraph.obj
- 0001:00025610       ?push_back@?$vector@PAVSceneGraphNode@@V?$allocator@PAVSceneGraphNode@@@std@@@std@@QAEXABQAVSceneGraphNode@@@Z 60826610 f i NMS_SceneGraph.obj
- 0001:00025740       ?insert@?$vector@PAVSceneGraphNode@@V?$allocator@PAVSceneGraphNode@@@std@@@std@@QAE?AV?$_Vector_iterator@PAVSceneGraphNode@@V?$allocator@PAVSceneGraphNode@@@std@@@2@V?$_Vector_const_iterator@PAVSceneGraphNode@@V?$allocator@PAVSceneGraphNode@@@std@@@2@ABQAVSceneGraphNode@@@Z 60826740 f i NMS_SceneGraph.obj
- 0001:000258d0       ?_Ufill@?$vector@PAVSceneGraphNode@@V?$allocator@PAVSceneGraphNode@@@std@@@std@@IAEPAPAVSceneGraphNode@@PAPAV3@IABQAV3@@Z 608268d0 f i NMS_SceneGraph.obj
- 0001:00025930       ??0?$allocator@PAVSceneGraphNode@@@std@@QAE@XZ 60826930 f i NMS_SceneGraph.obj
- 0001:00025960       ?_Insert_n@?$vector@PAVSceneGraphNode@@V?$allocator@PAVSceneGraphNode@@@std@@@std@@IAEXV?$_Vector_const_iterator@PAVSceneGraphNode@@V?$allocator@PAVSceneGraphNode@@@std@@@2@IABQAVSceneGraphNode@@@Z 60826960 f i NMS_SceneGraph.obj
- 0001:00025db0       ??H?$_Vector_iterator@PAVSceneGraphNode@@V?$allocator@PAVSceneGraphNode@@@std@@@std@@QBE?AV01@H@Z 60826db0 f i NMS_SceneGraph.obj
- 0001:00025e90       ??0?$_Vector_iterator@PAVSceneGraphNode@@V?$allocator@PAVSceneGraphNode@@@std@@@std@@QAE@ABV01@@Z 60826e90 f i NMS_SceneGraph.obj
- 0001:00025ee0       ??Y?$_Vector_iterator@PAVSceneGraphNode@@V?$allocator@PAVSceneGraphNode@@@std@@@std@@QAEAAV01@H@Z 60826ee0 f i NMS_SceneGraph.obj
+ 0001:000211d0       ?handleEvent@NMS_Event@@QAEXTSDL_Event@@@Z 608221d0 f   NMS_Event.obj
+ 0001:000212a0       ??0?$list@TSDL_Event@@V?$allocator@TSDL_Event@@@std@@@std@@QAE@XZ 608222a0 f i NMS_Event.obj
+ 0001:00021340       ?size@?$list@TSDL_Event@@V?$allocator@TSDL_Event@@@std@@@std@@QBEIXZ 60822340 f i NMS_Event.obj
+ 0001:00021370       ?front@?$list@TSDL_Event@@V?$allocator@TSDL_Event@@@std@@@std@@QAEAATSDL_Event@@XZ 60822370 f i NMS_Event.obj
+ 0001:00021430       ?pop_front@?$list@TSDL_Event@@V?$allocator@TSDL_Event@@@std@@@std@@QAEXXZ 60822430 f i NMS_Event.obj
+ 0001:00021510       ?push_back@?$list@TSDL_Event@@V?$allocator@TSDL_Event@@@std@@@std@@QAEXABTSDL_Event@@@Z 60822510 f i NMS_Event.obj
+ 0001:000215e0       ??0?$function1@XH@boost@@QAE@XZ 608225e0 f i NMS_Event.obj
+ 0001:00021630       ??0?$function1@XW4SDLKey@@@boost@@QAE@XZ 60822630 f i NMS_Event.obj
+ 0001:00021680       ?end@?$list@TSDL_Event@@V?$allocator@TSDL_Event@@@std@@@std@@QAE?AV?$_Iterator@$00@12@XZ 60822680 f i NMS_Event.obj
+ 0001:000216f0       ??0?$allocator@TSDL_Event@@@std@@QAE@XZ 608226f0 f i NMS_Event.obj
+ 0001:00021720       ??D?$_Iterator@$00@?$list@TSDL_Event@@V?$allocator@TSDL_Event@@@std@@@std@@QBEAATSDL_Event@@XZ 60822720 f i NMS_Event.obj
+ 0001:00021760       ??R?$function1@XH@boost@@QBEXH@Z 60822760 f i NMS_Event.obj
+ 0001:00021840       ??0bad_function_call@boost@@QAE@XZ 60822840 f i NMS_Event.obj
+ 0001:00021900       ??0runtime_error@std@@QAE@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@1@@Z 60822900 f i NMS_Event.obj
+ 0001:000219b0       ??1runtime_error@std@@UAE@XZ 608229b0 f i NMS_Event.obj
+ 0001:00021a20       ?what@runtime_error@std@@UBEPBDXZ 60822a20 f i NMS_Event.obj
+ 0001:00021a70       ??_Eruntime_error@std@@UAEPAXI@Z 60822a70 f i NMS_Event.obj
+ 0001:00021a70       ??_Gruntime_error@std@@UAEPAXI@Z 60822a70 f i NMS_Event.obj
+ 0001:00021ad0       ??_Ebad_function_call@boost@@UAEPAXI@Z 60822ad0 f i NMS_Event.obj
+ 0001:00021ad0       ??_Gbad_function_call@boost@@UAEPAXI@Z 60822ad0 f i NMS_Event.obj
+ 0001:00021b30       ??1bad_function_call@boost@@UAE@XZ 60822b30 f i NMS_Event.obj
+ 0001:00021b70       ??R?$function1@XW4SDLKey@@@boost@@QBEXW4SDLKey@@@Z 60822b70 f i NMS_Event.obj
+ 0001:00021c50       ??$throw_exception@Vbad_function_call@boost@@@boost@@YAXABVbad_function_call@0@@Z 60822c50 f i NMS_Event.obj
+ 0001:00021d20       ?throw_exception_assert_compatibility@boost@@YAXABVexception@std@@@Z 60822d20 f i NMS_Event.obj
+ 0001:00021d50       ??0runtime_error@std@@QAE@ABV01@@Z 60822d50 f i NMS_Event.obj
+ 0001:00021e00       ??0?$clone_impl@U?$error_info_injector@Vbad_function_call@boost@@@exception_detail@boost@@@exception_detail@boost@@QAE@ABV012@@Z 60822e00 f i NMS_Event.obj
+ 0001:00021ea0       ??0?$error_info_injector@Vbad_function_call@boost@@@exception_detail@boost@@QAE@ABU012@@Z 60822ea0 f i NMS_Event.obj
+ 0001:00021f70       ??0bad_function_call@boost@@QAE@ABV01@@Z 60822f70 f i NMS_Event.obj
+ 0001:00021fd0       ??0exception@boost@@QAE@ABV01@@Z 60822fd0 f i NMS_Event.obj
+ 0001:00022050       ??0clone_base@exception_detail@boost@@QAE@ABV012@@Z 60823050 f i NMS_Event.obj
+ 0001:00022090       ??_Gclone_base@exception_detail@boost@@UAEPAXI@Z 60823090 f i NMS_Event.obj
+ 0001:00022090       ??_Eclone_base@exception_detail@boost@@UAEPAXI@Z 60823090 f i NMS_Event.obj
+ 0001:000220f0       ??1clone_base@exception_detail@boost@@UAE@XZ 608230f0 f i NMS_Event.obj
+ 0001:00022130       ??_G?$clone_impl@U?$error_info_injector@Vbad_function_call@boost@@@exception_detail@boost@@@exception_detail@boost@@UAEPAXI@Z 60823130 f i NMS_Event.obj
+ 0001:00022130       ??_E?$clone_impl@U?$error_info_injector@Vbad_function_call@boost@@@exception_detail@boost@@@exception_detail@boost@@UAEPAXI@Z 60823130 f i NMS_Event.obj
+ 0001:00022190       ??_G?$error_info_injector@Vbad_function_call@boost@@@exception_detail@boost@@UAEPAXI@Z 60823190 f i NMS_Event.obj
+ 0001:00022190       ??_E?$error_info_injector@Vbad_function_call@boost@@@exception_detail@boost@@UAEPAXI@Z 60823190 f i NMS_Event.obj
+ 0001:000221f0       ??0?$refcount_ptr@Uerror_info_container@exception_detail@boost@@@exception_detail@boost@@QAE@ABV012@@Z 608231f0 f i NMS_Event.obj
+ 0001:00022240       ?add_ref@?$refcount_ptr@Uerror_info_container@exception_detail@boost@@@exception_detail@boost@@AAEXXZ 60823240 f i NMS_Event.obj
+ 0001:000222a0       ??1?$error_info_injector@Vbad_function_call@boost@@@exception_detail@boost@@UAE@XZ 608232a0 f i NMS_Event.obj
+ 0001:00022300       ??1exception@boost@@MAE@XZ 60823300 f i NMS_Event.obj
+ 0001:00022350       ??1?$refcount_ptr@Uerror_info_container@exception_detail@boost@@@exception_detail@boost@@QAE@XZ 60823350 f i NMS_Event.obj
+ 0001:00022390       ?release@?$refcount_ptr@Uerror_info_container@exception_detail@boost@@@exception_detail@boost@@AAEXXZ 60823390 f i NMS_Event.obj
+ 0001:00022400       ??1?$clone_impl@U?$error_info_injector@Vbad_function_call@boost@@@exception_detail@boost@@@exception_detail@boost@@UAE@XZ 60823400 f i NMS_Event.obj
+ 0001:00022470       ?clone@?$clone_impl@U?$error_info_injector@Vbad_function_call@boost@@@exception_detail@boost@@@exception_detail@boost@@EBEPBVclone_base@23@XZ 60823470 f i NMS_Event.obj
+ 0001:00022560       ?rethrow@?$clone_impl@U?$error_info_injector@Vbad_function_call@boost@@@exception_detail@boost@@@exception_detail@boost@@EBEXXZ 60823560 f i NMS_Event.obj
+ 0001:000225c0       ??$enable_error_info@Vbad_function_call@boost@@@boost@@YA?AU?$error_info_injector@Vbad_function_call@boost@@@exception_detail@0@ABVbad_function_call@0@@Z 608235c0 f i NMS_Event.obj
+ 0001:00022620       ??$enable_current_exception@U?$error_info_injector@Vbad_function_call@boost@@@exception_detail@boost@@@boost@@YA?AV?$clone_impl@U?$error_info_injector@Vbad_function_call@boost@@@exception_detail@boost@@@exception_detail@0@ABU?$error_info_injector@Vbad_function_call@boost@@@20@@Z 60823620 f i NMS_Event.obj
+ 0001:00022680       ??0?$error_info_injector@Vbad_function_call@boost@@@exception_detail@boost@@QAE@ABVbad_function_call@2@@Z 60823680 f i NMS_Event.obj
+ 0001:00022720       ??0exception@boost@@IAE@XZ 60823720 f i NMS_Event.obj
+ 0001:00022790       ??0?$refcount_ptr@Uerror_info_container@exception_detail@boost@@@exception_detail@boost@@QAE@XZ 60823790 f i NMS_Event.obj
+ 0001:000227d0       ??0?$clone_impl@U?$error_info_injector@Vbad_function_call@boost@@@exception_detail@boost@@@exception_detail@boost@@QAE@ABU?$error_info_injector@Vbad_function_call@boost@@@12@@Z 608237d0 f i NMS_Event.obj
+ 0001:000228d0       ?copy_boost_exception@exception_detail@boost@@YAXPAVexception@2@PBV32@@Z 608238d0 f i NMS_Event.obj
+ 0001:00022a10       ??4?$refcount_ptr@Uerror_info_container@exception_detail@boost@@@exception_detail@boost@@QAEAAV012@ABV012@@Z 60823a10 f i NMS_Event.obj
+ 0001:00022a60       ?get@?$refcount_ptr@Uerror_info_container@exception_detail@boost@@@exception_detail@boost@@QBEPAUerror_info_container@23@XZ 60823a60 f i NMS_Event.obj
+ 0001:00022a90       ?adopt@?$refcount_ptr@Uerror_info_container@exception_detail@boost@@@exception_detail@boost@@QAEXPAUerror_info_container@23@@Z 60823a90 f i NMS_Event.obj
+ 0001:00022af0       ??0clone_base@exception_detail@boost@@QAE@XZ 60823af0 f i NMS_Event.obj
+ 0001:00022b30       ??_E?$clone_impl@U?$error_info_injector@Vbad_function_call@boost@@@exception_detail@boost@@@exception_detail@boost@@WCM@AEPAXI@Z 60823b30 f i NMS_Event.obj
+ 0001:00022b40       ??_E?$error_info_injector@Vbad_function_call@boost@@@exception_detail@boost@@WCM@AEPAXI@Z 60823b40 f i NMS_Event.obj
+ 0001:00022b50       ??_E?$clone_impl@U?$error_info_injector@Vbad_function_call@boost@@@exception_detail@boost@@@exception_detail@boost@@WEA@AEPAXI@Z 60823b50 f i NMS_Event.obj
+ 0001:00022b60       ??0NMS_Framework@@QAE@XZ   60823b60 f   NMS_Framework.obj
+ 0001:00022c00       ?NMSInit@NMS_Framework@@QAE_NHHHPAD_N@Z 60823c00 f   NMS_Framework.obj
+ 0001:00022e60       ?NMSQuit@NMS_Framework@@QAEXH@Z 60823e60 f   NMS_Framework.obj
+ 0001:00022ea0       ?CalculateFrameRate@NMS_Framework@@QAEXXZ 60823ea0 f   NMS_Framework.obj
+ 0001:00022f80       ?run@NMS_Framework@@QAEXXZ 60823f80 f   NMS_Framework.obj
+ 0001:00023010       ?cleanup@NMS_Framework@@QAEXXZ 60824010 f   NMS_Framework.obj
+ 0001:000230b0       ??_GSceneGraphNode@@QAEPAXI@Z 608240b0 f i NMS_Framework.obj
+ 0001:00023110       ?render@NMS_Framework@@QAEXXZ 60824110 f   NMS_Framework.obj
+ 0001:00023160       ?getScene@NMS_Framework@@QAEPAVSceneGraphNode@@XZ 60824160 f   NMS_Framework.obj
+ 0001:00023190       ?enableWireframe@NMS_Framework@@QAEX_N@Z 60824190 f   NMS_Framework.obj
+ 0001:00023210       ??$onQuit@VNMS_Framework@@@NMS_Event@@QAEXPAVNMS_Framework@@P81@AEXH@Z@Z 60824210 f i NMS_Framework.obj
+ 0001:00023290       ??$mem_fun@XVNMS_Framework@@H@std@@YA?AV?$mem_fun1_t@XVNMS_Framework@@H@0@P8NMS_Framework@@AEXH@Z@Z 60824290 f i NMS_Framework.obj
+ 0001:000232e0       ??$bind1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@PAVNMS_Framework@@@std@@YA?AV?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@0@ABV?$mem_fun1_t@XVNMS_Framework@@H@0@ABQAVNMS_Framework@@@Z 608242e0 f i NMS_Framework.obj
+ 0001:00023360       ??$?4V?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@@?$function1@XH@boost@@QAEAAV01@V?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@@Z 60824360 f i NMS_Framework.obj
+ 0001:00023420       ??0?$mem_fun1_t@XVNMS_Framework@@H@std@@QAE@P8NMS_Framework@@AEXH@Z@Z 60824420 f i NMS_Framework.obj
+ 0001:00023460       ??0?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@QAE@ABV?$mem_fun1_t@XVNMS_Framework@@H@1@ABQAVNMS_Framework@@@Z 60824460 f i NMS_Framework.obj
+ 0001:000234b0       ??$assign_to@V?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@@?$function1@XH@boost@@AAEXV?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@@Z 608244b0 f i NMS_Framework.obj
+ 0001:00023540       ?manage@?$functor_manager@V?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@@function@detail@boost@@SAXABTfunction_buffer@234@AAT5234@W4functor_manager_operation_type@234@@Z 60824540 f i NMS_Framework.obj
+ 0001:000235d0       ?invoke@?$void_function_obj_invoker1@V?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@XH@function@detail@boost@@SAXAATfunction_buffer@234@H@Z 608245d0 f i NMS_Framework.obj
+ 0001:00023630       ??R?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@QBEXAAH@Z 60824630 f i NMS_Framework.obj
+ 0001:00023680       ?manager@?$functor_manager@V?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@@function@detail@boost@@CAXABTfunction_buffer@234@AAT5234@W4functor_manager_operation_type@234@Ufunction_obj_tag@234@@Z 60824680 f i NMS_Framework.obj
+ 0001:000236e0       ??R?$mem_fun1_t@XVNMS_Framework@@H@std@@QBEXPAVNMS_Framework@@H@Z 608246e0 f i NMS_Framework.obj
+ 0001:00023730       ?manager@?$functor_manager@V?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@@function@detail@boost@@CAXABTfunction_buffer@234@AAT5234@W4functor_manager_operation_type@234@U?$bool_@$00@mpl@4@@Z 60824730 f i NMS_Framework.obj
+ 0001:00023780       ?manage_small@?$functor_manager_common@V?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@@function@detail@boost@@SAXABTfunction_buffer@234@AAT5234@W4functor_manager_operation_type@234@@Z 60824780 f i NMS_Framework.obj
+ 0001:00023870       ??$assign_to@V?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@@?$basic_vtable1@XH@function@detail@boost@@QAE_NV?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@AATfunction_buffer@123@@Z 60824870 f i NMS_Framework.obj
+ 0001:000238d0       ??$assign_to@V?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@@?$basic_vtable1@XH@function@detail@boost@@AAE_NV?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@AATfunction_buffer@123@Ufunction_obj_tag@123@@Z 608248d0 f i NMS_Framework.obj
+ 0001:00023960       ?has_empty_target@function@detail@boost@@YA_NZZ 60824960 f i NMS_Framework.obj
+ 0001:00023990       ??$addressof@V?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@@boost@@YAPAV?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@AAV12@@Z 60824990 f i NMS_Framework.obj
+ 0001:000239f0       ??$assign_functor@V?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@@?$basic_vtable1@XH@function@detail@boost@@AAEXV?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@AATfunction_buffer@123@U?$bool_@$00@mpl@3@@Z 608249f0 f i NMS_Framework.obj
+ 0001:00023a70       ?f@?$addressof_impl@V?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@@detail@boost@@SAPAV?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@AAV45@J@Z 60824a70 f i NMS_Framework.obj
+ 0001:00023aa0       ??0?$addr_impl_ref@V?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@@detail@boost@@QAE@AAV?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@@Z 60824aa0 f i NMS_Framework.obj
+ 0001:00023ae0       ??B?$addr_impl_ref@V?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@@detail@boost@@QBEAAV?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@XZ 60824ae0 f i NMS_Framework.obj
+ 0001:00023b10       ??0LightSource@@QAE@XZ     60824b10 f   NMS_LightSystem.obj
+ 0001:00023c10       ?getAttFact@LightSource@@QAEMXZ 60824c10 f   NMS_LightSystem.obj
+ 0001:00023c40       ?getAttType@LightSource@@QAEIXZ 60824c40 f   NMS_LightSystem.obj
+ 0001:00023c70       ?getIntDis@LightSource@@QAEMXZ 60824c70 f   NMS_LightSystem.obj
+ 0001:00023ca0       ?getLightNumber@LightSource@@QAEIXZ 60824ca0 f   NMS_LightSystem.obj
+ 0001:00023cd0       ?getLightValue@LightSource@@QAE?AVVector@@XZ 60824cd0 f   NMS_LightSystem.obj
+ 0001:00023d40       ?setLightNumber@LightSource@@QAEXI@Z 60824d40 f   NMS_LightSystem.obj
+ 0001:00023d80       ?setLightValue@LightSource@@QAEXPBVVector@@@Z 60824d80 f   NMS_LightSystem.obj
+ 0001:00023dd0       ?setIntDis@LightSource@@QAEXM@Z 60824dd0 f   NMS_LightSystem.obj
+ 0001:00023e10       ?setAttType@LightSource@@QAEXI@Z 60824e10 f   NMS_LightSystem.obj
+ 0001:00023e50       ?setAttFact@LightSource@@QAEXM@Z 60824e50 f   NMS_LightSystem.obj
+ 0001:00023e90       ??0NMS_LightSystem@@QAE@XZ 60824e90 f   NMS_LightSystem.obj
+ 0001:00023ec0       ?Enable@NMS_LightSystem@@QAEXH@Z 60824ec0 f   NMS_LightSystem.obj
+ 0001:00023f50       ?Disable@NMS_LightSystem@@QAEXXZ 60824f50 f   NMS_LightSystem.obj
+ 0001:00023fa0       ??0AmbientLight@@QAE@XZ    60824fa0 f   NMS_LightSystem.obj
+ 0001:00024000       ?setGlobalAmbient@AmbientLight@@QAEXPBVVector@@@Z 60825000 f   NMS_LightSystem.obj
+ 0001:00024090       ?getGlobalAmbient@AmbientLight@@QAE?AVVector@@XZ 60825090 f   NMS_LightSystem.obj
+ 0001:000241c0       ?render@AmbientLight@@UAEXM@Z 608251c0 f   NMS_LightSystem.obj
+ 0001:00024230       ?defineLight@LightSource@@QAEXV1@@Z 60825230 f   NMS_LightSystem.obj
+ 0001:000242f0       ?render@LightSource@@UAEXM@Z 608252f0 f   NMS_LightSystem.obj
+ 0001:00024780       ?initMutexes@@YAXXZ        60825780 f   NMS_Mutex.obj
+ 0001:000247c0       ??0SceneGraphNode@@QAE@XZ  608257c0 f   NMS_SceneGraph.obj
+ 0001:00024890       ?addChild@SceneGraphNode@@QAEXPAV1@@Z 60825890 f   NMS_SceneGraph.obj
+ 0001:000248e0       ?traverse_df@SceneGraphNode@@QAEXPAVSceneGraphVisitor@@@Z 608258e0 f   NMS_SceneGraph.obj
+ 0001:000249a0       ?traverse_df@SceneGraphNode@@QAEXPAVSceneGraphVisitor@@PAVMatrix@@@Z 608259a0 f   NMS_SceneGraph.obj
+ 0001:00024a60       ??0TransformationNode@@QAE@XZ 60825a60 f   NMS_SceneGraph.obj
+ 0001:00024af0       ??0TransformationNode@@QAE@VMatrix@@@Z 60825af0 f   NMS_SceneGraph.obj
+ 0001:00024ba0       ?multiply@TransformationNode@@QAEXVMatrix@@@Z 60825ba0 f   NMS_SceneGraph.obj
+ 0001:00024c70       ?before@TransformationNode@@UAEXPAVSceneGraphVisitor@@PAVMatrix@@@Z 60825c70 f   NMS_SceneGraph.obj
+ 0001:00024cc0       ?after@TransformationNode@@UAEXPAVSceneGraphVisitor@@PAVMatrix@@@Z 60825cc0 f   NMS_SceneGraph.obj
+ 0001:00024d80       ??0GeometryNode@@QAE@XZ    60825d80 f   NMS_SceneGraph.obj
+ 0001:00024de0       ??0GeometryNode@@QAE@PAVNMS_Mesh@@PAVbtRigidBody@@@Z 60825de0 f   NMS_SceneGraph.obj
+ 0001:00024e40       ??0GeometryNode@@QAE@PAVNMS_Mesh@@PAVbtRigidBody@@VMatrix@@@Z 60825e40 f   NMS_SceneGraph.obj
+ 0001:00024f00       ?before@GeometryNode@@UAEXPAVSceneGraphVisitor@@PAVMatrix@@@Z 60825f00 f   NMS_SceneGraph.obj
+ 0001:00024f80       ?after@GeometryNode@@UAEXPAVSceneGraphVisitor@@PAVMatrix@@@Z 60825f80 f   NMS_SceneGraph.obj
+ 0001:00024ff0       ?render@NMS_Mesh@@UAEXM@Z  60825ff0 f   NMS_SceneGraph.obj
+ 0001:00025450       ??0?$vector@PAVSceneGraphNode@@V?$allocator@PAVSceneGraphNode@@@std@@@std@@QAE@XZ 60826450 f i NMS_SceneGraph.obj
+ 0001:000254f0       ??A?$vector@PAVSceneGraphNode@@V?$allocator@PAVSceneGraphNode@@@std@@@std@@QAEAAPAVSceneGraphNode@@I@Z 608264f0 f i NMS_SceneGraph.obj
+ 0001:00025620       ?push_back@?$vector@PAVSceneGraphNode@@V?$allocator@PAVSceneGraphNode@@@std@@@std@@QAEXABQAVSceneGraphNode@@@Z 60826620 f i NMS_SceneGraph.obj
+ 0001:00025750       ?insert@?$vector@PAVSceneGraphNode@@V?$allocator@PAVSceneGraphNode@@@std@@@std@@QAE?AV?$_Vector_iterator@PAVSceneGraphNode@@V?$allocator@PAVSceneGraphNode@@@std@@@2@V?$_Vector_const_iterator@PAVSceneGraphNode@@V?$allocator@PAVSceneGraphNode@@@std@@@2@ABQAVSceneGraphNode@@@Z 60826750 f i NMS_SceneGraph.obj
+ 0001:000258e0       ?_Ufill@?$vector@PAVSceneGraphNode@@V?$allocator@PAVSceneGraphNode@@@std@@@std@@IAEPAPAVSceneGraphNode@@PAPAV3@IABQAV3@@Z 608268e0 f i NMS_SceneGraph.obj
+ 0001:00025940       ??0?$allocator@PAVSceneGraphNode@@@std@@QAE@XZ 60826940 f i NMS_SceneGraph.obj
+ 0001:00025970       ?_Insert_n@?$vector@PAVSceneGraphNode@@V?$allocator@PAVSceneGraphNode@@@std@@@std@@IAEXV?$_Vector_const_iterator@PAVSceneGraphNode@@V?$allocator@PAVSceneGraphNode@@@std@@@2@IABQAVSceneGraphNode@@@Z 60826970 f i NMS_SceneGraph.obj
+ 0001:00025dc0       ??H?$_Vector_iterator@PAVSceneGraphNode@@V?$allocator@PAVSceneGraphNode@@@std@@@std@@QBE?AV01@H@Z 60826dc0 f i NMS_SceneGraph.obj
+ 0001:00025ea0       ??0?$_Vector_iterator@PAVSceneGraphNode@@V?$allocator@PAVSceneGraphNode@@@std@@@std@@QAE@ABV01@@Z 60826ea0 f i NMS_SceneGraph.obj
+ 0001:00025ef0       ??Y?$_Vector_iterator@PAVSceneGraphNode@@V?$allocator@PAVSceneGraphNode@@@std@@@std@@QAEAAV01@H@Z 60826ef0 f i NMS_SceneGraph.obj
  0001:00025f40       ??Y?$_Vector_const_iterator@PAVSceneGraphNode@@V?$allocator@PAVSceneGraphNode@@@std@@@std@@QAEAAV01@H@Z 60826f40 f i NMS_SceneGraph.obj
  0001:00026080       ??$unchecked_uninitialized_fill_n@PAPAVSceneGraphNode@@IPAV1@V?$allocator@PAVSceneGraphNode@@@std@@@stdext@@YAXPAPAVSceneGraphNode@@IABQAV1@AAV?$allocator@PAVSceneGraphNode@@@std@@@Z 60827080 f i NMS_SceneGraph.obj
  0001:00026100       ??$_Umove@PAPAVSceneGraphNode@@@?$vector@PAVSceneGraphNode@@V?$allocator@PAVSceneGraphNode@@@std@@@std@@IAEPAPAVSceneGraphNode@@PAPAV2@00@Z 60827100 f i NMS_SceneGraph.obj
@@ -3096,9 +3096,9 @@
  0001:0001e063       __catch$??$?4P6AXW4SDLKey@@@Z@?$function1@XW4SDLKey@@@boost@@QAEAAV01@P6AXW4SDLKey@@@Z@Z$0 6081f063 f i NMS_Engine.obj
  0001:0001ea30       __catch$??$_Insert@V?$_Const_iterator@$00@?$list@TSDL_Event@@V?$allocator@TSDL_Event@@@std@@@std@@@?$list@TSDL_Event@@V?$allocator@TSDL_Event@@@std@@@std@@QAEXV?$_Const_iterator@$00@01@00Uforward_iterator_tag@1@@Z$0 6081fa30 f i NMS_Engine.obj
  0001:0001fa50       __catch$?_Buynode@?$list@TSDL_Event@@V?$allocator@TSDL_Event@@@std@@@std@@IAEPAU_Node@?$_List_nod@TSDL_Event@@V?$allocator@TSDL_Event@@@std@@@2@PAU342@0ABTSDL_Event@@@Z$0 60820a50 f i NMS_Engine.obj
- 0001:000233b7       __catch$??$?4V?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@@?$function1@XH@boost@@QAEAAV01@V?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@@Z$0 608243b7 f i NMS_Framework.obj
- 0001:00025b0c       __catch$?_Insert_n@?$vector@PAVSceneGraphNode@@V?$allocator@PAVSceneGraphNode@@@std@@@std@@IAEXV?$_Vector_const_iterator@PAVSceneGraphNode@@V?$allocator@PAVSceneGraphNode@@@std@@@2@IABQAVSceneGraphNode@@@Z$0 60826b0c f i NMS_SceneGraph.obj
- 0001:00025c3e       __catch$?_Insert_n@?$vector@PAVSceneGraphNode@@V?$allocator@PAVSceneGraphNode@@@std@@@std@@IAEXV?$_Vector_const_iterator@PAVSceneGraphNode@@V?$allocator@PAVSceneGraphNode@@@std@@@2@IABQAVSceneGraphNode@@@Z$2 60826c3e f i NMS_SceneGraph.obj
+ 0001:000233c7       __catch$??$?4V?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@@?$function1@XH@boost@@QAEAAV01@V?$binder1st@V?$mem_fun1_t@XVNMS_Framework@@H@std@@@std@@@Z$0 608243c7 f i NMS_Framework.obj
+ 0001:00025b1c       __catch$?_Insert_n@?$vector@PAVSceneGraphNode@@V?$allocator@PAVSceneGraphNode@@@std@@@std@@IAEXV?$_Vector_const_iterator@PAVSceneGraphNode@@V?$allocator@PAVSceneGraphNode@@@std@@@2@IABQAVSceneGraphNode@@@Z$0 60826b1c f i NMS_SceneGraph.obj
+ 0001:00025c4e       __catch$?_Insert_n@?$vector@PAVSceneGraphNode@@V?$allocator@PAVSceneGraphNode@@@std@@@std@@IAEXV?$_Vector_const_iterator@PAVSceneGraphNode@@V?$allocator@PAVSceneGraphNode@@@std@@@2@IABQAVSceneGraphNode@@@Z$2 60826c4e f i NMS_SceneGraph.obj
  0001:0002a9da       __catch$?threadProxy@@YAHPAX@Z$0 6082b9da f   NMS_Thread.obj
  0001:0002aa34       __catch$?threadProxy@@YAHPAX@Z$1 6082ba34 f   NMS_Thread.obj
  0001:0002ed10       ?DebuggerProbe@@YAHK@Z     6082fd10 f   MSVCRTD:_error_.obj
