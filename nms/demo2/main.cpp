@@ -21,6 +21,7 @@ TransformationNode sateliteTNode;
 TransformationNode camTNode;
 btRigidBody* fallRigidBody;
 btRigidBody* fallRigidBody2;
+btRigidBody* fallRigidBody3;
 GeometryNode geom;
 GeometryNode satelite;
 NMSCameraFPS cam;
@@ -116,13 +117,23 @@ int main(int argc, char* argv[])
     fallRigidBody2 = new btRigidBody(fallRigidBodyCI2);
     engine.physics->addRBody(fallRigidBody2);
 
+	btCollisionShape* fallShape3 = new btBoxShape(btVector3(2,2,2));
+	btDefaultMotionState* fallMotionState3 = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,0,-10)));
+    mass = 1.0f;
+    btVector3 fallInertia3(0,0,0);
+    fallShape3->calculateLocalInertia(mass,fallInertia3);
+    btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI3(mass,fallMotionState2,fallShape2,fallInertia2);
+    fallRigidBody3 = new btRigidBody(fallRigidBodyCI3);
+    engine.physics->addRBody(fallRigidBody3);
+
+
 	MD2Model model = MD2Model();
 	MD2Model model2 = MD2Model();
 
-	//ColladaModel model2 = ColladaModel();
+	ColladaModel model3 = ColladaModel();
 	model.LoadModel("models/drfreak/drfreak.md2","models/drfreak/drfreak.tga");
 	model2.LoadModel("models/hobgoblin/hobgoblin.md2","models/hobgoblin/hobgoblin.png");
-	//model2.LoadModel("models/colladaDuck/duck_triangulate.dae");
+	model3.LoadModel("models/colladaDuck/duck_triangulate.dae");
 	model.SetAnim(RUN);
 	model2.SetAnim(JUMP);
 
@@ -142,7 +153,7 @@ int main(int argc, char* argv[])
 	audioEngine.LoadWav("sounds/BackgroundMusic.wav","Background",sourcePos,sourceVel,1.0f,0.3f,true);
 	audioEngine.playSound("Background");
 	
-
+	GeometryNode duckGeo = GeometryNode(&model3,fallRigidBody3);
 	geom = GeometryNode(&model, fallRigidBody);
 	satelite = GeometryNode(&model2, fallRigidBody2);
 	GeometryNode light = GeometryNode(&light0,fallRigidBody2);
@@ -166,9 +177,13 @@ int main(int argc, char* argv[])
 	Matrix camTM = Matrix();
 	camTM.translate(camTV);
 	cam.multiply(camTM);
+	Matrix scale = Matrix();
+	scale.uScale(0.10f);
+	duckGeo.multiply(scale);
 
 	root->addChild(&traNode);
 	root->addChild(&light);
+	root->addChild(&duckGeo);
 	traNode.addChild(&rotNode);
 	rotNode.addChild(&rotyNode);
 	rotyNode.addChild(&geom);
