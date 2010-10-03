@@ -1,6 +1,7 @@
 #include "NMS_Framework.h"
 #include "MD2Model.h"
 #include "NMS_Audio.h"
+#include "ColladaModel.h"
 
 #include <cmath>
 
@@ -12,6 +13,7 @@ NMS_Framework engine = NMS_Framework();
 
 MD2Model obj;
 MD2Model obj2;
+ColladaModel colObj;
 
 
 GLfloat	z=-10.0f;								// Depth Into The Screen
@@ -25,7 +27,7 @@ void DrawScene();
 int main(int argc, char* argv[])
 { //Start SDL 
 	engine.NMSInit(WIDTH,HEIGHT,16,"Nemesis Engine",false);
-
+	colObj=ColladaModel();
 
 
 	//  HACK TO MAKE IT RUN WITHOUT SCENEGRAPH!
@@ -83,23 +85,24 @@ int main(int argc, char* argv[])
 
 
 	NMS_Audio audioEngine;
-	ALfloat sourcePos[] = {0.0f,0.0f,0.0f};
-	ALfloat sourceVel[] = {0.0f,0.0f,0.0f};
-	audioEngine.LoadWav("test.wav","test",sourcePos,sourceVel,1.0f,5.0f,true);
-	audioEngine.playSound("test");
-	audioEngine.LoadWav("test2.wav","test2",sourcePos,sourceVel,1.0f,5.0f,true);
-	audioEngine.playSound("test2");
-	engine.light.Enable(false);
-	LightSource light0 = LightSource();
-	light0.setLightNumber(GL_LIGHT0);
-	light0.setLightValue(&Vector(1,1,1,0));
-	light0.setPosVector(&Vector(0,-50,0,1));
-	engine.light.defineLight(light0);
+	//ALfloat sourcePos[] = {0.0f,0.0f,0.0f};
+	//ALfloat sourceVel[] = {0.0f,0.0f,0.0f};
+	////audioEngine.LoadWav("test.wav","test",sourcePos,sourceVel,1.0f,5.0f,true);
+	////audioEngine.playSound("test");
+	////audioEngine.LoadWav("test2.wav","test2",sourcePos,sourceVel,1.0f,5.0f,true);
+	////audioEngine.playSound("test2");
+	//engine.light.Enable(false);
+	//LightSource light0 = LightSource();
+	//light0.setLightNumber(GL_LIGHT0);
+	//light0.setLightValue(&Vector(1,1,1,0));
+	//light0.setPosVector(&Vector(0,-50,0,1));
+	//engine.light.defineLight(light0);
 	
 	//engine.light.setGlobalAmbient(&Vector(1.0,1.0,1.0,1.0));
-	obj.LoadModel("models/drfreak/drfreak.md2");
-	obj.LoadSkin("models/drfreak/drfreak.tga");
+	//obj.LoadModel("models/baron/BaronBody.md2");
+	//obj.LoadSkin("models/baron/baron.jpg");
 	obj.SetAnim(BOOM);
+	//colObj.LoadModel("models/colladaDuck/duck_triangulate.dae");
 	while(true)
 	{
 		ProcessEvents(); // elabora gli eventi
@@ -126,7 +129,6 @@ void ProcessEvents()
 			switch( event.key.keysym.sym ) 
 			{ case SDLK_UP:
 				   engine.camera.setRSpeedX(+90.0f);
-				   //xspeed-=0.1f; 
 			       break; 
 			  case SDLK_DOWN:engine.camera.setRSpeedX(-90.0f); 
 				   break; 
@@ -147,8 +149,6 @@ void ProcessEvents()
 			  case SDLK_s:engine.camera.setSpeed(-0.01f);
 				   break;
 			  case SDLK_q:;
-				  //xspeed=0.0;
-				  //yspeed=0.0;
 				   break;
 			  case SDLK_ESCAPE:engine.NMSQuit(0);
 				   break;
@@ -158,7 +158,6 @@ void ProcessEvents()
 		case SDL_KEYUP:
 			switch( event.key.keysym.sym ) 
 			{ case SDLK_UP:engine.camera.setRSpeedX(0);
-				   //xspeed-=0.1f; 
 			       break; 
 			  case SDLK_DOWN:engine.camera.setRSpeedX(0); 
 				   break; 
@@ -179,8 +178,6 @@ void ProcessEvents()
 			  case SDLK_s:engine.camera.setSpeed(0);
 				   break;
 			  case SDLK_q:;
-				  //xspeed=0.0;
-				  //yspeed=0.0;
 				   break;
 			  case SDLK_ESCAPE:engine.NMSQuit(0);
 				   break;
@@ -193,7 +190,6 @@ void ProcessEvents()
 				Vector rot=engine.camera.getRotation();
 				SDL_GetRelativeMouseState(&MouseX,&MouseY);
 				//Pitch rotation, with the mouse is up and down
-				//rot[NMS_X]=(MouseY-HEIGHT/2)*0.01f;
 				rot[NMS_X]+=(MouseY)*0.01f;
 				//Yaw rotation, with the mouse you can do it using the left right position
 				rot[NMS_Y]+=(MouseX)*0.01f;
@@ -212,11 +208,10 @@ void ProcessEvents()
 void DrawMD2Model()
 {
 	gluLookAt(-87.0, 45.5, 0, 0, 2, 0, 0.0, 1.0, 0.0);
-	//animSpeed+=0.0008f;
-	animSpeed=0;
-	obj.DrawModel(animSpeed);
+	animSpeed+=0.0008f;
+	obj.render(animSpeed);
 }
-
+	
 void DrawNet(GLfloat size, GLint LinesX, GLint LinesZ)
 {
 	glBegin(GL_LINES);
@@ -324,7 +319,14 @@ void DrawSampleScene()
 	glFlush();
 
 	glPopMatrix();
-	
+}
+
+
+void DrawColladaModel()
+{
+	gluLookAt(-200.0, 45.5, 0, 0, 2, 0, 0.0, 1.0, 0.0);
+	animSpeed+=0.0008f;
+	colObj.render(animSpeed);
 }
 
 void DrawScene()
@@ -339,5 +341,6 @@ void DrawScene()
 	
 	DrawMD2Model();
 	//DrawSampleScene();
+	//DrawColladaModel();
 	SDL_GL_SwapBuffers();
 }

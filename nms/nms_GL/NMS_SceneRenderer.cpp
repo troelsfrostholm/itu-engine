@@ -1,5 +1,4 @@
 #include "NMS_SceneRenderer.h"
-#include "NMS_Event.h"
 
 NMS_SceneRenderer::NMS_SceneRenderer() 
 {
@@ -13,6 +12,7 @@ NMS_SceneRenderer::NMS_SceneRenderer(nms_physics *physics)
 	this->physics = physics;
 	rendering = false; 
 	sceneGraphRoot = NULL;
+	current_camera = NULL;
 }
 
 
@@ -66,6 +66,13 @@ bool NMS_SceneRenderer::initRendering()
 	gluPerspective(60.0, (float)width/(float)height, 1.0, width);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+	
+
+	//Enable Light
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_LIGHTING);
+	glShadeModel(GL_SMOOTH);
+	currentTime=1;
 	return true;
 }
 
@@ -98,10 +105,13 @@ int NMS_SceneRenderer::run()
 int NMS_SceneRenderer::renderingLoop()
 {
 	while(rendering) {
+		currentTime+=0.0008f;
 		NMS_EVENT.pollEvents();
 		physics->simulatePhysics();
 		physics->checkAllTriggers();
 		render();
+		CalculateFrameRate();
+		//SDL_Delay(10);
 	}
 	return 0;
 }
@@ -111,11 +121,11 @@ void NMS_SceneRenderer::render()
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	SDL_LockMutex(sceneGraphGuard);
-	sceneGraphRoot->traverse_df(this);
+	Matrix m = Matrix();
+	EmptySceneVisitor v = EmptySceneVisitor();
+	current_camera->backtrack_to_root(&v, &m);
+	sceneGraphRoot->traverse_df(this, &m);
 	SDL_UnlockMutex(sceneGraphGuard);
-	//glLoadIdentity();
-	//Mesh m = Mesh();
-	//m.render();
 	SDL_GL_SwapBuffers();
 }
 
@@ -124,21 +134,43 @@ void NMS_SceneRenderer::setScene(SceneGraphNode* scene)
 	sceneGraphRoot = scene;
 }
 
+void NMS_SceneRenderer::setCurrentCamera(CameraNode* camera)
+{
+	current_camera = camera;
+}
+
 //Render meshes as they are traversed in the scene graph
-void NMS_SceneRenderer::sg_before(Matrix transform, Mesh model, btRigidBody *b)
+void NMS_SceneRenderer::sg_before(Matrix transform, NMS_Mesh* model, btRigidBody *b)
 {
 	glLoadIdentity();
 	Matrix t_transposed = ~transform;
 	glMultMatrixf(t_transposed.returnPointer());
 	applyPhysics(b);
-	model.render();
+	(*model).render(currentTime);
 }
 
-void NMS_SceneRenderer::sg_after(Matrix transform, Mesh model) {}
+void NMS_SceneRenderer::sg_after(Matrix transform, NMS_Mesh* model) {}
+
+void NMS_SceneRenderer::CalculateFrameRate()
+{
+	static float framesPerSecond = 0.0f;
+	static float lastTime = 0.0f;
+	static char strCaption[80] = {0};
+	static size_t strCaptionSize = 80*sizeof(char);
+	float currentTime = SDL_GetTicks() * 0.001f;
+	++framesPerSecond;
+	if( currentTime - lastTime > 1.0f )
+	{
+		lastTime = currentTime;
+		sprintf_s(strCaption,strCaptionSize,"Frames per Second: %d",int(framesPerSecond));
+		SDL_WM_SetCaption(strCaption,NULL);
+		framesPerSecond = 0;
+	}
+}
 
 void NMS_SceneRenderer::applyPhysics(btRigidBody *b)
 {
-	btScalar matrix[16];
+btScalar matrix[16];
 	btTransform trans;
 	b->getMotionState()->getWorldTransform(trans);
 	trans.getOpenGLMatrix(matrix);

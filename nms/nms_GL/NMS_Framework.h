@@ -29,6 +29,7 @@ protected:
 	NMS_SceneRenderer sceneRenderer;
 	SceneGraphNode* sceneGraphRoot;
 	
+	
 public:
 	nms_physics* physics;
 	bool running;
@@ -47,6 +48,7 @@ public:
 	void CalculateFrameRate();
 	void cleanup();
 	SceneGraphNode* getScene();
+	NMS_SceneRenderer* getRenderer();
 };
 #endif;
 

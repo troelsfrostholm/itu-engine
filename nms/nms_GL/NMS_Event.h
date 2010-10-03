@@ -29,7 +29,11 @@ private:
 
 	boost::function1<void, int> quitCallback;
 	boost::function1<void, int> idleCallback;
-	boost::function1<void, SDLKey> keyPressedCallback;	
+	boost::function1<void, SDLKey> keyPressedCallback;
+	boost::function1<void, SDLKey> keyReleasedCallback;
+	boost::function2<void, int, int> mouseMovedCallback;
+
+	
 
 	NMS_Event::NMS_Event();
 
@@ -54,6 +58,16 @@ public:
 	void onKeyPressed(void (_callback)(SDLKey keysym))
 	{
 		keyPressedCallback = _callback;
+	}
+
+	void onKeyReleased(void (_callback)(SDLKey keysym))
+	{
+		keyReleasedCallback = _callback;
+	}
+
+	void onMouseMoved(void (_callback)(int x, int y))
+	{
+		mouseMovedCallback = _callback;
 	}
 };
 

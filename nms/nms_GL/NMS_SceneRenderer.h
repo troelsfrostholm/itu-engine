@@ -11,15 +11,19 @@
 #include "NMS_Mutex.h"
 #include "NMS_Thread.h"
 #include "NMS_SceneGraph.h"
+#include "NMS_Event.h"
+#include "NMS_Mesh.h"
 #include "nms_physics.h"
 
 class SCENE_RENDERER_D NMS_SceneRenderer : public SceneGraphVisitor, public Thread
 {
 protected:
 	SceneGraphNode* sceneGraphRoot;
+	CameraNode* current_camera;
 	nms_physics *physics;
 //	SDL_Thread *renderThread;
 	bool rendering;
+	float currentTime;
 
 public:
 	NMS_SceneRenderer();
@@ -31,9 +35,11 @@ public:
 	int renderingLoop();
 	void render();
 	void setScene(SceneGraphNode* scene);
-	void sg_before(Matrix transform, Mesh model, btRigidBody *b);
-	void sg_after(Matrix transform, Mesh model);
+	void setCurrentCamera(CameraNode* camera);
+	void sg_before(Matrix transform, NMS_Mesh* model, btRigidBody *b);
+	void sg_after(Matrix transform, NMS_Mesh* model);
 	void applyPhysics(btRigidBody *b);
+	void CalculateFrameRate();
 };
 
 #endif

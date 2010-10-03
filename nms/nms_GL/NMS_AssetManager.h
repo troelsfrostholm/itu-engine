@@ -43,7 +43,7 @@ public :
 	void FreeMD2Model  (int nID);
 	void FreeAll       (void);
 
-public :	// Debug / Utilitarian
+public :
 	char *GetErrorMessage (void);
 	
 private :

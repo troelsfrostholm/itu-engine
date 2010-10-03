@@ -8,22 +8,41 @@
 #define NMS_CAMERA_H
 
 #include "Matrix.h"
-#include "Quaternion.h"
+#include "NMS_Scenegraph.h"
 
-class  CAMERA_D NMSCameraController
+class  CAMERA_D NMSCameraController : public CameraNode
 {
 	public:
-		 NMSCameraController();
-		 ~NMSCameraController();
-
 		 void UpdateCamera(float fElapsedTime);
 
 		//Access methods
+		 Vector getRotation();
 		 Vector getPos() {return vPosition;}
 		 Vector getRight() {return vRight;}
 		 Vector getUp() {return vUp;}
 		 Vector getDir() {return vDir;}
 		 Vector getVelocity() {return vVel;}
+		 void setPos(Vector &v){vPosition=v;}
+		 void setRight(Vector &v){vRight=v;}
+		 void setUp(Vector &v){vUp=v;}
+		 void setDir(Vector &v){vDir=v;}
+
+		 void setRotation(float rx, float ry, float rz);
+		 void setRSpeedX(float f){fPitchSpd=f;}
+		 void setRSpeedY(float f){fYawSpd=f;}
+		 void setRSpeedZ(float f){fRollSpd=f;}
+		 float getRSpeedX(){return fPitchSpd;}
+		 float getRSpeedY(){return fYawSpd;}
+		 float getRSpeedZ(){return fRollSpd;}
+
+		 void  setSpeed(float f){fSpeed=f;}
+		 void  setSlideSpeed(float f){fSlide=f;}
+		 float getSpeed(){return fSpeed;}
+		 float getSlideSpeed(){return fSlide;}
+
+		 void before(SceneGraphVisitor *v, Matrix *m);
+		 void after(SceneGraphVisitor *v, Matrix *m);
+
 		 Matrix returnViewMatrix();
 
 	protected:
@@ -33,7 +52,6 @@ class  CAMERA_D NMSCameraController
 		Vector vUp;		   //Up vector of the camera
 		Vector vDir;	   //Direction vector of the camera
 		Vector vVel;	   //Velocity vector of the camera
-		Quaternion qRot;   //Quaternion used for the rotations
 		
 		//Rotation speed with respect to the local axes
 		float fRollSpd;
@@ -44,6 +62,9 @@ class  CAMERA_D NMSCameraController
 		float fRotX;
 		float fRotY;
 		float fRotZ;
+
+		float fSpeed;
+		float fSlide;
 
 		//Protected methods
 		virtual void recalcAxes()=0;
@@ -56,32 +77,12 @@ class CAMERA_D NMSCameraFPS : public NMSCameraController
 		NMSCameraFPS();
 		~NMSCameraFPS();
 
-		Vector getRotation();
-		void UpdateCamera(float fET);
-
-		void setRSpeedX(float f){fPitchSpd=f;}
-		void setRSpeedY(float f){fYawSpd=f;}
-		float getRSpeedX(){return fPitchSpd;}
-		float getRSpeedY(){return fYawSpd;}
-		
-		void setSpeed(float f){fSpeed=f;}
-		void setSlideSpeed(float f){fSlide=f;}
-		float getSpeed(){return fSpeed;}
-		float getSlideSpeed(){return fSlide;}
-
-		void setRotation(float rx, float ry, float rz);
-		void setPos(Vector &v){vPosition=v;}
-		void setRight(Vector &v){vRight=v;}
-		void setUp(Vector &v){vUp=v;}
-		void setDir(Vector &v){vDir=v;}
-
 protected:
 	void recalcAxes();
 	void init();
 
 private:
-	float fSpeed;
-	float fSlide;
+	
 };
 
 #endif
