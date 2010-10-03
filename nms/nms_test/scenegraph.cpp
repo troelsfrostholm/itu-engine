@@ -12,7 +12,7 @@ BOOST_AUTO_TEST_SUITE( scenegraph );
 class SV : public SceneGraphVisitor
 {
 public:
-	void sg_before(Matrix t, NMS_Mesh* model) 
+	void sg_before(Matrix t, NMS_Mesh* model, btRigidBody *b) 
 	{
 		cout << "Called back with matrix: " << t << endl;
 		(*model).render(0);
@@ -39,8 +39,19 @@ BOOST_AUTO_TEST_CASE( scenegraph_node )
 	TransformationNode s3 = TransformationNode(t);
 	TransformationNode s4 = TransformationNode(t);
 	TransformationNode s5 = TransformationNode(t);
-	GeometryNode g1 = GeometryNode(&model, NULL);
-	GeometryNode g2 = GeometryNode(&model, NULL);
+
+	//btRigidBody rb = btRigidBody();
+	btCollisionShape* fallShape2 = new btBoxShape(btVector3(2,2,2));
+	btDefaultMotionState* fallMotionState2 = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,0,-10)));
+    float mass = 1.0f;
+    btVector3 fallInertia2(0,0,0);
+    fallShape2->calculateLocalInertia(mass,fallInertia2);
+    btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI2(mass,fallMotionState2,fallShape2,fallInertia2);
+    btRigidBody* fallRigidBody2 = new btRigidBody(fallRigidBodyCI2);
+
+	//GeometryNode::GeometryNode(NMS_Mesh *m, btRigidBody *b);
+	GeometryNode g1 = GeometryNode(model, fallRigidBody2);
+	GeometryNode g2 = GeometryNode(model, fallRigidBody2);
 
 	s.addChild(&s2);
 	s2.addChild(&s3);
@@ -57,8 +68,6 @@ BOOST_AUTO_TEST_CASE( scenegraph_backtrack_to_root )
 {
 	cout << endl << endl << "Examining scene graph backtracking" << endl;
 
-	Mesh model = Mesh();
-
 	Matrix t = Matrix();
 	Matrix root_t = Matrix();
 	Vector vec = Vector(1.f, 0.f, 0.f);
@@ -70,8 +79,8 @@ BOOST_AUTO_TEST_CASE( scenegraph_backtrack_to_root )
 	TransformationNode s3 = TransformationNode(t);
 	TransformationNode s4 = TransformationNode(t);
 	TransformationNode s5 = TransformationNode(t);
-	GeometryNode g1 = GeometryNode(&model);
-	GeometryNode g2 = GeometryNode(&model);
+	GeometryNode g1 = GeometryNode();
+	GeometryNode g2 = GeometryNode();
 
 	s.addChild(&s2);
 	s2.addChild(&s3);

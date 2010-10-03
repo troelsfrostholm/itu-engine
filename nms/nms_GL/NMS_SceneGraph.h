@@ -33,8 +33,8 @@ public:
 class  SCENEGRAPH_D EmptySceneVisitor : public SceneGraphVisitor
 {
 public:
-	void sg_before(Matrix transform, Mesh model) {}
-	void sg_after(Matrix transform, Mesh model) {}
+	void sg_before(Matrix transform, NMS_Mesh* model, btRigidBody *b) {}
+	void sg_after(Matrix transform, NMS_Mesh* model) {}
 };
 
 class SCENEGRAPH_D SceneGraphNode
