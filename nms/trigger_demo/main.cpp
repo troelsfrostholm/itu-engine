@@ -5,6 +5,7 @@
 #include <cmath>
 #include "NMS_Mutex.h"
 #include "BulletCollision\CollisionDispatch\btGhostObject.h"
+#include "NMS_Audio.h"
 
 #define WIDTH  640
 #define HEIGHT  480
@@ -76,7 +77,7 @@ int main(int argc, char* argv[])
     fallRigidBody2 = new btRigidBody(fallRigidBodyCI2);
     engine.physics->addRBody(fallRigidBody2);
 
-	engine.physics->createTrigger(new btSphereShape(2), btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0)), &idle);
+	engine.physics->createTrigger(new btSphereShape(2), btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0)), &playSoundTrigger);
 
 	Mesh model = Mesh();
 	geom = GeometryNode(&model, fallRigidBody);
@@ -89,6 +90,12 @@ int main(int argc, char* argv[])
 	rot.rotX(45.f);
 	Matrix roty = Matrix();
 	roty.rotY(30.f);
+
+	//SOUND DEFINITION
+	NMS_Audio audioEngine;
+	ALfloat sourcePos[] = {0.0f,0.0f,0.0f};
+	ALfloat sourceVel[] = {0.0f,0.0f,0.0f};
+	audioEngine.LoadWav("sounds/test.wav","Test",sourcePos,sourceVel,1.0f,0.3f,true);
 
 	traNode = TransformationNode(tra);
 	rotNode = TransformationNode(rot);
@@ -109,4 +116,9 @@ int main(int argc, char* argv[])
 	
 	engine.run();
 	return 0;
+}
+
+void playSoundTrigger( int i )
+{
+	audioEngine.playSound("Test");	
 }

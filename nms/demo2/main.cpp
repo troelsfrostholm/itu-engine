@@ -118,8 +118,6 @@ int main(int argc, char* argv[])
     fallRigidBody2 = new btRigidBody(fallRigidBodyCI2);
     engine.physics->addRBody(fallRigidBody2);
 
-	engine.physics->createTrigger(new btSphereShape(2), btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0)), &idle);
-
 	btCollisionShape* fallShape3 = new btBoxShape(btVector3(2,2,2));
 	btDefaultMotionState* fallMotionState3 = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,0,-10)));
     mass = 1.0f;
