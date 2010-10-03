@@ -175,10 +175,6 @@
 				RelativePath=".\math.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\scenegraph.cpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
