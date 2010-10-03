@@ -14,6 +14,8 @@
 #include <stdio.h>
 #include "NMS_AssetManager.h"
 #include "NMS_FileManagement.h"
+#include "NMS_LogFunctions.h"
+#include "NMS_Mesh.h"
 
 #define MAGIC_NO	844121161  //It means IDP2
 
@@ -135,17 +137,17 @@ typedef struct
 
 } animState_t;
 
-class MD2LOADER_D MD2Model
+class MD2LOADER_D MD2Model : public NMS_Mesh
 {
 	public:
 		static anim_t   animlist[21];       // animation list
 		MD2Model();
 		~MD2Model();
 
-		int		LoadModel(const char* fileName);
-		int     LoadSkin(char* fileName);
+		int		LoadModel(const char* sFileName,const char* sTextName);
+		int     LoadSkin(const char* fileName);
 		void    SetAnim( int type );
-		void	DrawModel(float time);
+		void    render(float time);
 		void	DrawFrame(int frame,int nFrame); // base zero
 
 		
@@ -160,16 +162,17 @@ class MD2LOADER_D MD2Model
 
 
 		void    Animate( float time );
-		void    Interpolate( vec3_t* vertlist );
+		void    Interpolate( vec3_t* vertlist,vec3_t* lightList);
 		void    RenderFrame();
 
 		//MISC MEMORY AND FILE ROUTINES
-		void*	Malloc(size_t size);                                    //Allocate the memory space with regard to the type to be used. Return a pointer to the memory allocation
-		void	Free(void** p);                                         //Free the memory space pointed by the given pointer
 		int		ReadFile(const char* fileName);						    //Read the model file
 		int		ReadHeader(byte *buffer,pHeader phead);			        //Load the header of the model as stored into the buffer
 		
 	private:
+		//Check to avoid crashes: the model has loaded in the right way
+		bool                bModelLoadedCorrectly;
+
 		byte*				fileBuffer;	 //The buffer containing the whole file that has been read
 		Header				md2Header;	 //Our MD2 header, useful to get the offset of the components
 
@@ -178,17 +181,19 @@ class MD2LOADER_D MD2Model
 		int					numVertices;
 		int					numGlCommands;
 
-		vec3_t*     		p_modelVertices;
-		vec3_t*     		p_nextFrameVertices;
-		int*                p_lightnormals;    // normal index array
-		int*				p_openGlCommands;
+		vec3_t*     		p_modelVertices;			//Vertices of the current frame
+		vec3_t*     		p_nextFrameVertices;		//Vertices of the next frame in the animation
+		vec3_t*             p_lightnormals;				//Normals of the model in the current frame
+		vec3_t*             p_nextLightNormals;			//Normals of the model in the next frame
+		int*				p_openGlCommands;			//List of the openGL commands
 
-		int        textureID;            // TextureID for the model
-		animState_t         m_anim;             // Animation state
-		float               scaleFactor;            // Scale value for the model
-		pFrame				p_frameData;		//Pointer to the frames array
+		int					textureID;					// TextureID for the model
+		const char*			sTextureName;
+		animState_t         m_anim;						// Animation state
+		float               scaleFactor;				// Scale value for the model
+		pFrame				p_frameData;				//Pointer to the frames array
 
-		static vec3_t   anorms[ 162 ];
+		static vec3_t   anorms[ 162 ];					//Vectors of precalculated normals for the model
 
 };
 

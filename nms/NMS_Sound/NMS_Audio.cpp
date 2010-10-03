@@ -25,13 +25,19 @@ void NMS_Audio::LoadWav(char* sFileName,char* sSoundName,ALfloat* pSourcePos,ALf
 	source.iBufferID=NMS_SOUNDMANAGER.LoadWav(sFileName,sSoundName);
 
     if ((result = alGetError()) != AL_NO_ERROR)
-        throw 0;//GetALErrorString(result);
+	{
+		LOG.write("NMS_Audio::LoadWav -> Impossible to create the stream for the sound file!\n",LOG_ERROR);
+        throw 0;
+	}
 
     // Generate a source.
 	alGenSources(1,&source.iSourceID);
 
     if ((result = alGetError()) != AL_NO_ERROR)
-        throw 0;// GetALErrorString(result);
+	{
+		LOG.write("NMS_Audio::LoadWav -> Impossible to create the source for the sound file!\n",LOG_ERROR);
+        throw 0;
+	}
 
     // Setup the source properties.
 	alSourcei (source.iSourceID, AL_BUFFER,   source.iBufferID   );
@@ -54,35 +60,44 @@ void NMS_Audio::SetListenerValues(ALfloat* pListenerPos,ALfloat* pListenerVel,AL
 
 void NMS_Audio::playSound(char* sSoundName)
 {
+	bool bPlayable=true;
 	//Check if the name is already inside our map, if it not, generate an error
 	std::map<char* ,sourceStruct>::iterator iter = sourceMap.find(sSoundName);
 	if( iter == sourceMap.end() ) 
 	{
-		throw 0;
+		LOG.write("NMS_Audio::playSound -> Cannot play a sound that has not been created!\n",LOG_ERROR);
+		bPlayable=false;
 	}
-	alSourcePlay(iter->second.iSourceID);
+	if(bPlayable)
+		alSourcePlay(iter->second.iSourceID);
 }
 
 void NMS_Audio::pauseSound(char* sSoundName)
 {
+	bool bPausable=true;
 	//Check if the name is already inside our map, if it not, generate an error
 	std::map<char* ,sourceStruct>::iterator iter = sourceMap.find(sSoundName);
 	if( iter == sourceMap.end() ) 
 	{
-		throw 0;
+		LOG.write("NMS_Audio::playSound -> Cannot pause a sound that has not been created!\n",LOG_ERROR);
+		bPausable=false;
 	}
-	alSourcePause(iter->second.iSourceID);
+	if(bPausable)
+		alSourcePause(iter->second.iSourceID);
 }
 
 void NMS_Audio::stopSound(char* sSoundName)
 {
+	bool bStoppable=true;
 	//Check if the name is already inside our map, if it not, generate an error
 	std::map<char* ,sourceStruct>::iterator iter = sourceMap.find(sSoundName);
 	if( iter == sourceMap.end() ) 
 	{
-		throw 0;
+		LOG.write("NMS_Audio::playSound -> Cannot stop a sound that has not been created!\n",LOG_ERROR);
+		bStoppable=false;
 	}
-	alSourceStop(iter->second.iSourceID);
+	if(bStoppable)
+		alSourceStop(iter->second.iSourceID);
 }
 
 NMS_Audio::NMS_Audio()

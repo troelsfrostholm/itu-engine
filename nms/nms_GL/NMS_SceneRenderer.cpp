@@ -1,10 +1,20 @@
 #include "NMS_SceneRenderer.h"
 
-NMS_SceneRenderer::NMS_SceneRenderer() { 
+NMS_SceneRenderer::NMS_SceneRenderer() 
+{
+	this->physics = NULL;
+	rendering = false; 
+	sceneGraphRoot = NULL;
+}
+
+NMS_SceneRenderer::NMS_SceneRenderer(nms_physics *physics) 
+{
+	this->physics = physics;
 	rendering = false; 
 	sceneGraphRoot = NULL;
 	current_camera = NULL;
 }
+
 
 bool NMS_SceneRenderer::initRendering()
 {
@@ -56,7 +66,13 @@ bool NMS_SceneRenderer::initRendering()
 	gluPerspective(60.0, (float)width/(float)height, 1.0, width);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glTranslatef(0.f, 0.f, -10.0f);
+	
+
+	//Enable Light
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_LIGHTING);
+	glShadeModel(GL_SMOOTH);
+	currentTime=1;
 	return true;
 }
 
@@ -89,12 +105,13 @@ int NMS_SceneRenderer::run()
 int NMS_SceneRenderer::renderingLoop()
 {
 	while(rendering) {
+		currentTime+=0.0008f;
 		NMS_EVENT.pollEvents();
+		physics->simulatePhysics();
 		render();
 		CalculateFrameRate();
 		//SDL_Delay(10);
 	}
-
 	return 0;
 }
 
@@ -122,16 +139,16 @@ void NMS_SceneRenderer::setCurrentCamera(CameraNode* camera)
 }
 
 //Render meshes as they are traversed in the scene graph
-void NMS_SceneRenderer::sg_before(Matrix transform, Mesh model)
+void NMS_SceneRenderer::sg_before(Matrix transform, NMS_Mesh* model, btRigidBody *b)
 {
 	glLoadIdentity();
 	Matrix t_transposed = ~transform;
 	glMultMatrixf(t_transposed.returnPointer());
-	model.render();
-
+	applyPhysics(b);
+	(*model).render(currentTime);
 }
 
-void NMS_SceneRenderer::sg_after(Matrix transform, Mesh model) {}
+void NMS_SceneRenderer::sg_after(Matrix transform, NMS_Mesh* model) {}
 
 void NMS_SceneRenderer::CalculateFrameRate()
 {
@@ -148,4 +165,13 @@ void NMS_SceneRenderer::CalculateFrameRate()
 		SDL_WM_SetCaption(strCaption,NULL);
 		framesPerSecond = 0;
 	}
+}
+
+void NMS_SceneRenderer::applyPhysics(btRigidBody *b)
+{
+btScalar matrix[16];
+	btTransform trans;
+	b->getMotionState()->getWorldTransform(trans);
+	trans.getOpenGLMatrix(matrix);
+	glMultMatrixf(matrix);
 }

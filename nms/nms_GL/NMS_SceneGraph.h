@@ -12,25 +12,22 @@
 #ifndef NMS_Scenegraph_H__
 #define NMS_Scenegraph_H__
 
+
 #include <vector>
 #include <iostream>
 #include "Matrix.h"
 #include "MD2Model.h"
 #include "NMS_Mutex.h"
+#include "NMS_Mesh.h"
+#include "nms_physics.h"
 
 using namespace std;
-
-class SCENEGRAPH_D Mesh
-{
-public:
-	void render();
-};
 
 class  SCENEGRAPH_D SceneGraphVisitor
 {
 public:
-	virtual void sg_before(Matrix transform, Mesh model) = 0;
-	virtual void sg_after(Matrix transform, Mesh model) = 0;
+	virtual void sg_before(Matrix transform, NMS_Mesh* model, btRigidBody *b) = 0;
+	virtual void sg_after(Matrix transform, NMS_Mesh* model) = 0;
 };
 
 class  SCENEGRAPH_D EmptySceneVisitor : public SceneGraphVisitor
@@ -73,12 +70,13 @@ public:
 class SCENEGRAPH_D GeometryNode : public TransformationNode
 {
 protected:
-	Mesh *model;
-
+	NMS_Mesh *model;
+	btRigidBody *collisionBody;
+	
 public:
 	GeometryNode::GeometryNode();
-	GeometryNode::GeometryNode(Mesh *m);
-	GeometryNode::GeometryNode(Mesh *m, Matrix t);
+	GeometryNode::GeometryNode(NMS_Mesh *m, btRigidBody *b);
+	GeometryNode::GeometryNode(NMS_Mesh *m, btRigidBody *b, Matrix t);
 	void GeometryNode::before(SceneGraphVisitor *v, Matrix *m);
 	void GeometryNode::after(SceneGraphVisitor *v, Matrix *m);
 };

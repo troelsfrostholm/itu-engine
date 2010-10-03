@@ -7,8 +7,10 @@ bool NMS_Framework::NMSInit(int width,int height,int bpp,char* windowTitle,bool 
 	//Initialize mutexes
 	initMutexes();
 
+	physics = new nms_physics();
+
 	//Instantiate sub-systems
-	sceneRenderer = NMS_SceneRenderer();
+	sceneRenderer = NMS_SceneRenderer(physics);
 	
 	//Create scene-graph
 	sceneGraphRoot = new CameraNode();
@@ -44,8 +46,7 @@ void NMS_Framework::run()
 	{
 		SDL_LockMutex(sceneGraphGuard);
 		NMS_EVENT.processEvents();
-		SDL_UnlockMutex(sceneGraphGuard);
-		SDL_Delay(10);
+		SDL_UnlockMutex(sceneGraphGuard);	
 	}
 	sceneRenderer.down();
 	NMS_Framework::cleanup();
@@ -53,8 +54,8 @@ void NMS_Framework::run()
 
 void NMS_Framework::cleanup()
 {
-	//Be sure to remove all the textures we have loaded from the memory!
-	NMS_TEXTUREMANAGER.FreeAll();
+	//Be sure to remove all the assets we have loaded!
+	NMS_ASSETMANAGER.FreeAll();
 	delete(sceneGraphRoot);
 	SDL_DestroyMutex(sceneGraphGuard);
 	sceneGraphRoot = NULL;

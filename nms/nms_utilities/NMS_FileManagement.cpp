@@ -10,3 +10,33 @@ long nmsFileManagement::FileSize(FILE *fp)
 	fseek(fp,oldpos,SEEK_SET);
 	return curpos;
 }
+
+bool nmsFileManagement::FileExists(const char * filename)
+{
+    if (FILE * file = fopen(filename, "r"))
+    {
+        fclose(file);
+        return true;
+    }
+    return false;
+}
+
+//Allocate the memory space with regard to the type to be used. Return a pointer to the memory allocation
+void* nmsFileManagement::Malloc(size_t size)
+{
+	void* p=malloc(size);
+	if (p==NULL)
+		return p;
+	memset(p,0,size);
+	return p;
+}
+
+//Free the memory space pointed by the given pointer. Set to void** to receive every kind of pointers
+void nmsFileManagement::Free(void** p)
+{
+	if (*p!=NULL)
+	{
+		free(*p);
+		*p=NULL;
+	}
+}

@@ -1,7 +1,8 @@
-#include "NMS_SceneGraph.h"
-
 #include <boost/test/unit_test.hpp>
 #include <iostream>
+#include "NMS_Mesh.h"
+#include "NMS_SceneGraph.h"
+
 
 using namespace std;
 //using namespace nms;
@@ -11,21 +12,21 @@ BOOST_AUTO_TEST_SUITE( scenegraph );
 class SV : public SceneGraphVisitor
 {
 public:
-	void sg_before(Matrix t, Mesh model) 
+	void sg_before(Matrix t, NMS_Mesh* model) 
 	{
 		cout << "Called back with matrix: " << t << endl;
-		model.render();
+		(*model).render(0);
 	}
-	void sg_after(Matrix t, Mesh model) {
+	void sg_after(Matrix t, NMS_Mesh* model) {
 	cout << "Called back with matrix: " << t << endl;
-		model.render();
+		(*model).render(0);
 	}
 };
 
 BOOST_AUTO_TEST_CASE( scenegraph_node )
 {
 
-	Mesh model = Mesh();
+	NMS_Mesh* model = &MD2Model();
 
 	Matrix t = Matrix();
 	Matrix root_t = Matrix();
@@ -38,8 +39,8 @@ BOOST_AUTO_TEST_CASE( scenegraph_node )
 	TransformationNode s3 = TransformationNode(t);
 	TransformationNode s4 = TransformationNode(t);
 	TransformationNode s5 = TransformationNode(t);
-	GeometryNode g1 = GeometryNode(&model);
-	GeometryNode g2 = GeometryNode(&model);
+	GeometryNode g1 = GeometryNode(&model, NULL);
+	GeometryNode g2 = GeometryNode(&model, NULL);
 
 	s.addChild(&s2);
 	s2.addChild(&s3);

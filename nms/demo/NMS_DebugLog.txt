@@ -1,0 +1,6 @@
+NMS_SoundManager::Sound Manager Initialized!
+NMS_SoundManager::Trying to load [test.wav]
+NMS_TextureManager::Lump created correctly!
+NMS_SoundManager::Loaded [test.wav] without issues!
+NMS_TextureManager::Texture Manager Initialized!
+NMS_TextureManager::Freed the whole memory!

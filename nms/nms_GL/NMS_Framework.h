@@ -20,6 +20,7 @@
 #include "NMS_LightSystem.h"
 #include "SDL_MemberThread.h"
 #include "NMS_Mutex.h"
+#include "nms_physics.h"
 
 class FRAMEWORK_D NMS_Framework
 {
@@ -28,7 +29,9 @@ protected:
 	NMS_SceneRenderer sceneRenderer;
 	SceneGraphNode* sceneGraphRoot;
 	
+	
 public:
+	nms_physics* physics;
 	bool running;
 	bool rendering;
 	NMSCameraFPS camera;

@@ -1,5 +1,16 @@
+#ifdef __EXP_NMS_PHYSICS
+#    define PHYSICS_D __declspec(dllexport)
+#else
+#    define PHYSICS_D __declspec(dllimport)
+#endif
+
+#ifndef __NMS_PHYSICS
+#define __NMS_PHYSICS
+
 #include "LinearMath/btAlignedObjectArray.h"
 #include <btBulletDynamicsCommon.h>
+
+#pragma warning( disable: 4251 )  //Used to disable this useless warning: http://www.unknownroad.com/rtfm/VisualStudio/warningC4251.html
 
 class btBroadphaseInterface;
 class btCollisionShape;
@@ -8,70 +19,62 @@ class btCollisionDispatcher;
 class btConstraintSolver;
 struct btCollisionAlgorithmCreateFunc;
 class btDefaultCollisionConfiguration;
-class	btCollisionShape;
-class	btDynamicsWorld;
-class	btRigidBody;
+class btCollisionShape;
+class btDynamicsWorld;
+class btRigidBody;
 
-class nms_physics
+class PHYSICS_D nms_physics
 {
-	btDynamicsWorld* dynamicsWorld;
-
-	//keep the collision shapes, for deletion/cleanup
-	btAlignedObjectArray<btCollisionShape*>	collisionShapes;
-
-	btBroadphaseInterface*	broadphase;
-
-	btCollisionDispatcher*	dispatcher;
-
-	btConstraintSolver*	solver;
-
-	btDefaultCollisionConfiguration* collisionConfiguration;
+	private:
+		btDynamicsWorld* dynamicsWorld;
+		//Keep collision shapes, for deletion/cleanup
+		btAlignedObjectArray<btCollisionShape*>	collisionShapes;
+		btBroadphaseInterface*	broadphase;
+		btCollisionDispatcher*	dispatcher;
+		btConstraintSolver*	solver;
+		btDefaultCollisionConfiguration* collisionConfiguration;
+		btClock clock;
 
 	public:
-		nms_physics(){}
-		virtual ~nms_physics()
-		{
-			exitPhysics();
-		}
+		nms_physics();
+		~nms_physics();
 		void initPhysics();
 		void exitPhysics();
 		void simulatePhysics();
+		void addRBody(btRigidBody* body);
+		btScalar getDeltaTimeSeconds();
 
 		btDynamicsWorld* getDynamicsWorld()
 		{
 			return dynamicsWorld;
 		}
+};
 
-		void addRBody(btRigidBody* body);
-
-		static nms_physics* create()
+class PHYSICS_D NMS_KinematicMotionState : public btMotionState 
+{
+	public:
+		NMS_KinematicMotionState(const btTransform &initialpos)
 		{
-			nms_physics* physics = new nms_physics;
-			physics->initPhysics();
-			return physics;
-		}	
+			position = initialpos;
+		}
+
+		virtual ~NMS_KinematicMotionState() {
+		}
+
+		virtual void getWorldTransform(btTransform &worldTrans) const
+		{
+			worldTrans = position;
+		}
+
+		void setKinematicPos(btTransform &currentPos)
+		{
+			position = currentPos;
+		}
+
+		virtual void setWorldTransform(const btTransform &worldTrans){
+		}
+
+	protected:
+		btTransform position;
 };
-
-class NMS_KinematicMotionState : public btMotionState {
-public:
-    NMS_KinematicMotionState(const btTransform &initialpos) {
-        Pos = initialpos;
-    }
-
-    virtual ~NMS_KinematicMotionState() {
-    }
-
-    virtual void getWorldTransform(btTransform &worldTrans) const {
-        worldTrans = Pos;
-    }
-
-    void setKinematicPos(btTransform &currentPos) {
-        Pos = currentPos;
-    }
-
-    virtual void setWorldTransform(const btTransform &worldTrans) {
-    }
-
-protected:
-    btTransform Pos;
-};
+#endif

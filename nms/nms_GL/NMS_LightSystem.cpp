@@ -10,6 +10,7 @@ LightSource::LightSource()
 	fIntDis=NULL;
 	eAttType=NULL;
 	fAttFactor=NULL;
+	bToBeUpdated=false;
 }
 
 GLfloat LightSource::getAttFact()
@@ -27,7 +28,7 @@ GLenum LightSource::getLightNumber()
 Vector LightSource::getLightValue()
 {return vLightValue;}
 
-void       LightSource::setLightNumber(GLenum eNumber)
+void  LightSource::setLightNumber(GLenum eNumber)
 {eLightNumber=eNumber;}
 
 void LightSource::setLightValue(const Vector* vValue)
@@ -56,7 +57,7 @@ void NMS_LightSystem::Enable(int bShading)
 {
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_LIGHTING);
-	//glEnable(bShading);
+	glEnable(bShading);
 	glShadeModel(GL_SMOOTH);
 }
 
@@ -65,38 +66,72 @@ void NMS_LightSystem::Disable()
 	glDisable(GL_LIGHTING);
 }
 
-void NMS_LightSystem::setGlobalAmbient(const Vector* vVector)
+AmbientLight::AmbientLight()
 {
-	GLfloat* temp=new GLfloat[4];
-			temp[0]=(*vVector)[1];
-			temp[1]=(*vVector)[2];
-			temp[2]=(*vVector)[3];
-			temp[3]=(*vVector)[4];
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, temp);
+	bToBeUpdated=false;
 }
 
-void NMS_LightSystem::defineLight(LightSource source)
+void AmbientLight::setGlobalAmbient(const Vector* vVector)
+{
+	bToBeUpdated=true;
+	aLightValue[0]=(*vVector)[1];
+	aLightValue[1]=(*vVector)[2];
+	aLightValue[2]=(*vVector)[3];
+	aLightValue[3]=(*vVector)[4];
+}
+
+Vector AmbientLight::getGlobalAmbient()
+{
+	Vector temp=Vector();
+	temp[1]=aLightValue[0];
+	temp[2]=aLightValue[1];
+	temp[3]=aLightValue[2];
+	temp[4]=aLightValue[3];
+	return temp;
+}
+
+void AmbientLight::render(float time)
+{
+	if(bToBeUpdated)
+	{
+		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, aLightValue);
+		bToBeUpdated=false;
+	}
+}
+
+void LightSource::defineLight(LightSource source)
 {
 	if(source.getLightNumber()==NULL)
 		throw 0;
 	else
 	{
-			GLfloat* temp=new GLfloat[4];
-			temp[0]=(source.getPosVector())[1];
-			temp[1]=(source.getPosVector())[2];
-			temp[2]=(source.getPosVector())[3];
-			temp[3]=(source.getPosVector())[4];
-			glLightfv(source.getLightNumber(),GL_POSITION,temp);
-			temp[0]=(source.getLightValue())[1];
-			temp[1]=(source.getLightValue())[2];
-			temp[2]=(source.getLightValue())[3];
-			temp[3]=(source.getLightValue())[4];
-			glLightfv(source.getLightNumber(),GL_AMBIENT_AND_DIFFUSE,temp);
-			temp=new GLfloat[3];
-			temp[0]=(source.getDirVector())[1];
-			temp[1]=(source.getDirVector())[2];
-			temp[2]=(source.getDirVector())[3];
-			glLightfv(source.getLightNumber(),GL_SPOT_DIRECTION,temp);
+			(*this)=source;
+			bToBeUpdated=true;
 	}
-	glEnable(source.getLightNumber());
+	
+}
+
+void LightSource::render(float time)
+{
+	if(bToBeUpdated)
+	{
+		    GLfloat* temp=new GLfloat[4];
+			temp[0]=(getPosVector())[1];
+			temp[1]=(getPosVector())[2];
+			temp[2]=(getPosVector())[3];
+			temp[3]=(getPosVector())[4];
+			glLightfv(getLightNumber(),GL_POSITION,temp);
+			temp[0]=(getLightValue())[1];
+			temp[1]=(getLightValue())[2];
+			temp[2]=(getLightValue())[3];
+			temp[3]=(getLightValue())[4];
+			glLightfv(getLightNumber(),GL_AMBIENT_AND_DIFFUSE,temp);
+			temp=new GLfloat[3];
+			temp[0]=(getDirVector())[1];
+			temp[1]=(getDirVector())[2];
+			temp[2]=(getDirVector())[3];
+			glLightfv(getLightNumber(),GL_SPOT_DIRECTION,temp);
+			glEnable(getLightNumber());
+			bToBeUpdated=false;
+	}
 }

@@ -70,28 +70,30 @@ GeometryNode::GeometryNode() : TransformationNode()
 	model = NULL; 
 }
 
-GeometryNode::GeometryNode(Mesh *m) : TransformationNode()
+GeometryNode::GeometryNode(NMS_Mesh *m, btRigidBody *b) : TransformationNode()
 {
 	model = m;
+	collisionBody = b;
 }
 
-GeometryNode::GeometryNode(Mesh *m, Matrix t) : TransformationNode(t) 
+GeometryNode::GeometryNode(NMS_Mesh *m, btRigidBody *b, Matrix t) : TransformationNode(t) 
 { 
 	model = m;
+	collisionBody = b;
 }
 
 void GeometryNode::before(SceneGraphVisitor *v, Matrix *m)
 {
 	TransformationNode::before(v, m);
-	v->sg_before(*m, *model);
+	v->sg_before(*m, model, collisionBody);
 }
 
 void GeometryNode::after(SceneGraphVisitor *v, Matrix *m) 
 {
-	v->sg_after(*m, *model);
+	v->sg_after(*m, model);
 }
 
-void Mesh::render()
+void NMS_Mesh::render(float time)
 {
 	glBegin(GL_QUADS);
 		// Front Face
