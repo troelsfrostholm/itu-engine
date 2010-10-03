@@ -33,19 +33,7 @@ void NMS_Framework::NMSQuit(int i)
 
 void NMS_Framework::CalculateFrameRate()
 {
-	static float framesPerSecond = 0.0f;
-	static float lastTime = 0.0f;
-	static char strCaption[80] = {0};
-	static size_t strCaptionSize = 80*sizeof(char);
-	float currentTime = SDL_GetTicks() * 0.001f;
-	++framesPerSecond;
-	if( currentTime - lastTime > 1.0f )
-	{
-		lastTime = currentTime;
-		sprintf_s(strCaption,strCaptionSize,"Frames per Second: %d",int(framesPerSecond));
-		SDL_WM_SetCaption(strCaption,NULL);
-		framesPerSecond = 0;
-	}
+	sceneRenderer.CalculateFrameRate();
 }
 
 void NMS_Framework::run()

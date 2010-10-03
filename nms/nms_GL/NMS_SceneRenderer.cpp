@@ -104,10 +104,6 @@ void NMS_SceneRenderer::render()
 	SDL_LockMutex(sceneGraphGuard);
 	sceneGraphRoot->traverse_df(this);
 	SDL_UnlockMutex(sceneGraphGuard);
-	/*glTranslatef(0.05f, 0.f, 0.f);
-	glRotatef(1.f, 0.f, 0.f, 1.f);
-	Mesh m = Mesh();
-	m.render();*/
 	SDL_GL_SwapBuffers();
 }
 

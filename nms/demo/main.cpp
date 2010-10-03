@@ -267,7 +267,6 @@ void DrawSampleScene()
 	glFlush();
 
 	glPopMatrix();
-	
 }
 
 void DrawScene()
