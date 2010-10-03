@@ -127,7 +127,7 @@ int main(int argc, char* argv[])
 	rotNode.addChild(&rotyNode);
 	rotyNode.addChild(&geom);
 	geom.addChild(&sateliteTNode);
-	geom.addChild(&cam);
+	root->addChild(&cam);
 	sateliteTNode.addChild(&sateliteRNode);
 	sateliteRNode.addChild(&satelite);
 	
