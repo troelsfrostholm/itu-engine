@@ -1,3 +1,8 @@
+/*
+	Scene graph does not protect you against circular dependencies. If you make one, 
+	functions like traverse_df and backtrack_to_root will make infinite loops. 
+*/
+
 #ifdef __EXP_NMS_GL
 #    define SCENEGRAPH_D __declspec(dllexport)
 #else
@@ -39,6 +44,7 @@ public:
 	SceneGraphNode::SceneGraphNode();
 	void traverse_df(SceneGraphVisitor *v);            //depth first traversal, starting with identity matrix
 	void traverse_df(SceneGraphVisitor *v, Matrix *m); //depth first traversal, starting with matrix m
+	void backtrack_to_root(SceneGraphVisitor *v, Matrix *m);
 	void addChild(SceneGraphNode* child);
 	virtual void SceneGraphNode::before(SceneGraphVisitor *v, Matrix *m) = 0;
 	virtual void SceneGraphNode::after(SceneGraphVisitor *v, Matrix *m) = 0;

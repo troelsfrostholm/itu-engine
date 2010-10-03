@@ -32,6 +32,15 @@ void SceneGraphNode::traverse_df(SceneGraphVisitor *v, Matrix *m)
 	after(v, m);
 }
 
+void SceneGraphNode::backtrack_to_root(SceneGraphVisitor *v, Matrix *m)
+{
+	if(!parent)  {  //This is the root node
+		return;
+	}
+	after(v, m);
+	parent->backtrack_to_root(v, m);
+}
+
 TransformationNode::TransformationNode() : SceneGraphNode()
 {
 }
