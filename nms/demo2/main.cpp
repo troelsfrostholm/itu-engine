@@ -17,10 +17,12 @@ TransformationNode rotNode;
 TransformationNode rotyNode;
 TransformationNode sateliteRNode;
 TransformationNode sateliteTNode;
+TransformationNode camTNode;
 btRigidBody* fallRigidBody;
 btRigidBody* fallRigidBody2;
 GeometryNode geom;
 GeometryNode satelite;
+CameraNode cam;
 
 
 void keyPressed(SDLKey key)
@@ -39,7 +41,7 @@ void keyPressed(SDLKey key)
 void idle( int i )
 {
 	//Matrix m = Matrix();
-	//m.rotY(0.5f);
+	//m.rotY(0.8f);
 	//SDL_LockMutex(sceneGraphGuard);
 	////m.rotX(0.7f);
 	//satelite.multiply(m);
@@ -122,17 +124,27 @@ int main(int argc, char* argv[])
 	sateliteRNode = TransformationNode(roty);
 	sateliteTNode = TransformationNode(tra);
 
+	cam = CameraNode();
+	Vector camTV = Vector(0.f, 2.f, 5.f);
+	Matrix camTM = Matrix();
+	camTM.translate(camTV);
+	cam.multiply(camTM);
+
 	root->addChild(&traNode);
 	root->addChild(&light);
 	traNode.addChild(&rotNode);
 	rotNode.addChild(&rotyNode);
 	rotyNode.addChild(&geom);
 	geom.addChild(&sateliteTNode);
+	geom.addChild(&cam);
 	sateliteTNode.addChild(&sateliteRNode);
 	sateliteRNode.addChild(&satelite);
 	
 	NMS_EVENT.onKeyPressed(&keyPressed);
 	NMS_EVENT.onIdle(&idle);
+
+	NMS_SceneRenderer* renderer = engine.getRenderer();
+	renderer->setCurrentCamera(&cam);
 	
 	engine.run();
 	return 0;

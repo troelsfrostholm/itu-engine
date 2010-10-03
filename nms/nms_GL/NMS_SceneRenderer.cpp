@@ -1,5 +1,4 @@
 #include "NMS_SceneRenderer.h"
-#include "NMS_Event.h"
 
 NMS_SceneRenderer::NMS_SceneRenderer() 
 {
@@ -13,6 +12,7 @@ NMS_SceneRenderer::NMS_SceneRenderer(nms_physics *physics)
 	this->physics = physics;
 	rendering = false; 
 	sceneGraphRoot = NULL;
+	current_camera = NULL;
 }
 
 
@@ -109,6 +109,8 @@ int NMS_SceneRenderer::renderingLoop()
 		NMS_EVENT.pollEvents();
 		physics->simulatePhysics();
 		render();
+		CalculateFrameRate();
+		//SDL_Delay(10);
 	}
 	return 0;
 }
@@ -118,17 +120,22 @@ void NMS_SceneRenderer::render()
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	SDL_LockMutex(sceneGraphGuard);
-	sceneGraphRoot->traverse_df(this);
+	Matrix m = Matrix();
+	EmptySceneVisitor v = EmptySceneVisitor();
+	current_camera->backtrack_to_root(&v, &m);
+	sceneGraphRoot->traverse_df(this, &m);
 	SDL_UnlockMutex(sceneGraphGuard);
-	//glLoadIdentity();
-	//Mesh m = Mesh();
-	//m.render();
 	SDL_GL_SwapBuffers();
 }
 
 void NMS_SceneRenderer::setScene(SceneGraphNode* scene)
 {
 	sceneGraphRoot = scene;
+}
+
+void NMS_SceneRenderer::setCurrentCamera(CameraNode* camera)
+{
+	current_camera = camera;
 }
 
 //Render meshes as they are traversed in the scene graph
@@ -143,9 +150,26 @@ void NMS_SceneRenderer::sg_before(Matrix transform, NMS_Mesh* model, btRigidBody
 
 void NMS_SceneRenderer::sg_after(Matrix transform, NMS_Mesh* model) {}
 
+void NMS_SceneRenderer::CalculateFrameRate()
+{
+	static float framesPerSecond = 0.0f;
+	static float lastTime = 0.0f;
+	static char strCaption[80] = {0};
+	static size_t strCaptionSize = 80*sizeof(char);
+	float currentTime = SDL_GetTicks() * 0.001f;
+	++framesPerSecond;
+	if( currentTime - lastTime > 1.0f )
+	{
+		lastTime = currentTime;
+		sprintf_s(strCaption,strCaptionSize,"Frames per Second: %d",int(framesPerSecond));
+		SDL_WM_SetCaption(strCaption,NULL);
+		framesPerSecond = 0;
+	}
+}
+
 void NMS_SceneRenderer::applyPhysics(btRigidBody *b)
 {
-	btScalar matrix[16];
+btScalar matrix[16];
 	btTransform trans;
 	b->getMotionState()->getWorldTransform(trans);
 	trans.getOpenGLMatrix(matrix);

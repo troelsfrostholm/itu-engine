@@ -13,8 +13,9 @@ bool NMS_Framework::NMSInit(int width,int height,int bpp,char* windowTitle,bool 
 	sceneRenderer = NMS_SceneRenderer(physics);
 	
 	//Create scene-graph
-	sceneGraphRoot = new TransformationNode(Matrix());
+	sceneGraphRoot = new CameraNode();
 	sceneRenderer.setScene(sceneGraphRoot);
+	sceneRenderer.setCurrentCamera((CameraNode*)sceneGraphRoot);
 
 	//set callback for quitting
 	NMS_EVENT.onQuit(this, &NMS_Framework::NMSQuit);
@@ -35,19 +36,7 @@ void NMS_Framework::NMSQuit(int i)
 
 void NMS_Framework::CalculateFrameRate()
 {
-	static float framesPerSecond = 0.0f;
-	static float lastTime = 0.0f;
-	static char strCaption[80] = {0};
-	static size_t strCaptionSize = 80*sizeof(char);
-	float currentTime = SDL_GetTicks() * 0.001f;
-	++framesPerSecond;
-	if( currentTime - lastTime > 1.0f )
-	{
-		lastTime = currentTime;
-		sprintf_s(strCaption,strCaptionSize,"Frames per Second: %d",int(framesPerSecond));
-		SDL_WM_SetCaption(strCaption,NULL);
-		framesPerSecond = 0;
-	}
+	sceneRenderer.CalculateFrameRate();
 }
 
 void NMS_Framework::run()
@@ -81,6 +70,11 @@ void NMS_Framework::render()
 SceneGraphNode* NMS_Framework::getScene()
 {
 	return sceneGraphRoot;
+}
+
+NMS_SceneRenderer* NMS_Framework::getRenderer()
+{
+	return &sceneRenderer;
 }
 
 void NMS_Framework::enableWireframe(bool reply)
