@@ -6,6 +6,7 @@
 #include <cmath>
 #include "NMS_Mutex.h"
 #include "NMS_LightSystem.h"
+#include "NMS_Audio.h"
 
 #define WIDTH  640
 #define HEIGHT  480
@@ -94,6 +95,14 @@ int main(int argc, char* argv[])
 	light0.setLightValue(&Vector(1,1,1,0));
 	light0.setPosVector(&Vector(0,-50,0,1));
 	light0.defineLight(light0);
+
+	//SOUND DEFINITION
+	NMS_Audio audioEngine;
+	ALfloat sourcePos[] = {0.0f,0.0f,0.0f};
+	ALfloat sourceVel[] = {0.0f,0.0f,0.0f};
+	audioEngine.LoadWav("sounds/BackgroundMusic.wav","Background",sourcePos,sourceVel,1.0f,0.3f,true);
+	audioEngine.playSound("Background");
+	
 
 	geom = GeometryNode(&model, fallRigidBody);
 	satelite = GeometryNode(&model, fallRigidBody2);

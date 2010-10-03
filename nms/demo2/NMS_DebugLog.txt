@@ -1,3 +1,7 @@
+NMS_SoundManager::Sound Manager Initialized!
+NMS_SoundManager::Trying to load [sounds/BackgroundMusic.wav]
+NMS_TextureManager::Lump created correctly!
+NMS_SoundManager::Loaded [sounds/BackgroundMusic.wav] without issues!
 NMS_TextureManager::Texture Manager Initialized!
 NMS_TextureManager::Trying to load [models/drfreak/drfreak.tga]
 NMS_TextureManager::Lump created correctly!
