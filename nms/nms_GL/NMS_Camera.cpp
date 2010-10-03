@@ -20,15 +20,6 @@ void NMSCameraFPS::init()
 }
 
 
-NMSCameraController::NMSCameraController()
-{
-}
-
-NMSCameraController::~NMSCameraController()
-{
-}
-
-
 
 Matrix NMSCameraController::returnViewMatrix()
 {
@@ -43,6 +34,32 @@ Matrix NMSCameraController::returnViewMatrix()
 	return toBeReturned;
 }
 
+void NMSCameraController::setRotation(float rx, float ry, float rz)
+{
+	fRotX=rx;
+	fRotY=ry;
+	fRotZ=rz;
+	recalcAxes();
+}
+
+Vector NMSCameraController::getRotation()
+{
+	return Vector(fRotX,fRotY,fRotZ);
+}
+
+void NMSCameraController::UpdateCamera(float fET)
+{
+	Vector vTemp;
+	fRotX+=fPitchSpd*fET;
+	fRotY+=fYawSpd*fET;
+	fRotZ+=fRollSpd*fET;
+
+	vVel=vDir*fSpeed*fET;
+	vTemp=vRight*fSlide*fET;
+	vPosition+=vVel+vTemp;
+	recalcAxes();
+}
+
 
 
 //CAMERA FPS FUNCTION DEFINITIONS
@@ -55,18 +72,7 @@ NMSCameraFPS::~NMSCameraFPS()
 {
 }
 
-void NMSCameraFPS::setRotation(float rx, float ry, float rz)
-{
-	fRotX=rx;
-	fRotY=ry;
-	fRotZ=rz;
-	recalcAxes();
-}
 
-Vector NMSCameraFPS::getRotation()
-{
-	return Vector(fRotX,fRotY,fRotZ);
-}
 
 void NMSCameraFPS::recalcAxes()
 {
@@ -108,15 +114,3 @@ void NMSCameraFPS::recalcAxes()
 	vUp=vUp.normal();
 }
 
-void NMSCameraFPS::UpdateCamera(float fET)
-{
-	Vector vTemp;
-	fRotX+=fPitchSpd*fET;
-	fRotY+=fYawSpd*fET;
-	fRotZ+=fRollSpd*fET;
-
-	vVel=vDir*fSpeed*fET;
-	vTemp=vRight*fSlide*fET;
-	vPosition+=vVel+vTemp;
-	recalcAxes();
-}

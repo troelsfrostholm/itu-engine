@@ -1,8 +1,8 @@
-#include "NMS_SceneGraph.h"
-
 #include <boost/test/unit_test.hpp>
 #include <iostream>
 #include "NMS_Mesh.h"
+#include "NMS_SceneGraph.h"
+
 
 using namespace std;
 //using namespace nms;

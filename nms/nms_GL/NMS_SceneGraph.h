@@ -7,13 +7,14 @@
 #ifndef NMS_Scenegraph_H__
 #define NMS_Scenegraph_H__
 
+
 #include <vector>
 #include <iostream>
 #include "Matrix.h"
 #include "MD2Model.h"
-#include "nms_physics.h"
 #include "NMS_Mutex.h"
 #include "NMS_Mesh.h"
+#include "nms_physics.h"
 
 using namespace std;
 
