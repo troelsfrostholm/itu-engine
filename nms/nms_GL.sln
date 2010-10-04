@@ -42,6 +42,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo_phys", "demo_phys\demo
 		{BC04FEE9-2884-4666-8E9A-8E94BE24D338} = {BC04FEE9-2884-4666-8E9A-8E94BE24D338}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo3", "demo3\demo3.vcproj", "{E4B4A19D-4EF1-4286-AE54-41254899DADC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3EC8E3BA-BB90-4580-A5D5-61349C5E36A8} = {3EC8E3BA-BB90-4580-A5D5-61349C5E36A8}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -122,6 +127,14 @@ Global
 		{7913DBFE-E7EF-49A9-A82E-25B0BC9C02A2}.Release|Win32.Build.0 = Release|Win32
 		{7913DBFE-E7EF-49A9-A82E-25B0BC9C02A2}.RelWithDebInfo|Win32.ActiveCfg = Release|Win32
 		{7913DBFE-E7EF-49A9-A82E-25B0BC9C02A2}.RelWithDebInfo|Win32.Build.0 = Release|Win32
+		{E4B4A19D-4EF1-4286-AE54-41254899DADC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E4B4A19D-4EF1-4286-AE54-41254899DADC}.Debug|Win32.Build.0 = Debug|Win32
+		{E4B4A19D-4EF1-4286-AE54-41254899DADC}.MinSizeRel|Win32.ActiveCfg = Release|Win32
+		{E4B4A19D-4EF1-4286-AE54-41254899DADC}.MinSizeRel|Win32.Build.0 = Release|Win32
+		{E4B4A19D-4EF1-4286-AE54-41254899DADC}.Release|Win32.ActiveCfg = Release|Win32
+		{E4B4A19D-4EF1-4286-AE54-41254899DADC}.Release|Win32.Build.0 = Release|Win32
+		{E4B4A19D-4EF1-4286-AE54-41254899DADC}.RelWithDebInfo|Win32.ActiveCfg = Release|Win32
+		{E4B4A19D-4EF1-4286-AE54-41254899DADC}.RelWithDebInfo|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

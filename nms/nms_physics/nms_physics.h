@@ -56,6 +56,7 @@ class PHYSICS_D NMS_KinematicMotionState : public btMotionState
 		NMS_KinematicMotionState(const btTransform &initialpos)
 		{
 			position = initialpos;
+			userSetPosition = false;
 		}
 
 		virtual ~NMS_KinematicMotionState() {
@@ -68,13 +69,21 @@ class PHYSICS_D NMS_KinematicMotionState : public btMotionState
 
 		void setKinematicPos(btTransform &currentPos)
 		{
-			position = currentPos;
+			userPosition = currentPos;
+			userSetPosition = true;
 		}
 
 		virtual void setWorldTransform(const btTransform &worldTrans){
+			position = worldTrans;
+			if(userSetPosition) {
+				position = userPosition;
+				userSetPosition = false;
+			}
 		}
 
 	protected:
 		btTransform position;
+		btTransform userPosition;
+		bool userSetPosition;
 };
 #endif

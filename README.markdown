@@ -14,3 +14,5 @@ Dependencies
 - Boost (unit tests, function)
 (Not included)
 - OpenGL
+
+You have to install OpenAL to run the demos

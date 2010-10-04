@@ -169,7 +169,7 @@ void NMS_SceneRenderer::CalculateFrameRate()
 
 void NMS_SceneRenderer::applyPhysics(btRigidBody *b)
 {
-btScalar matrix[16];
+	btScalar matrix[16];
 	btTransform trans;
 	b->getMotionState()->getWorldTransform(trans);
 	trans.getOpenGLMatrix(matrix);
