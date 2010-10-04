@@ -26,7 +26,6 @@ GeometryNode geom;
 GeometryNode satelite;
 NMSCameraFPS cam;
 
-
 void mouseMoved(int MouseX, int MouseY)
 {
 	Vector rot=cam.getRotation();
@@ -53,6 +52,9 @@ void keyReleased(SDLKey key)
 		case SDLK_s:
 			 cam.setSpeed(0);
 			 break;
+		case SDLK_UP:
+			((NMS_KinematicMotionState*) fallRigidBody->getMotionState())->setKinematicPos( btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0)) );
+			break;
 	}
 }
 
@@ -86,6 +88,7 @@ void keyPressed(SDLKey key)
 void idle( int i )
 {
 	cam.UpdateCamera(1);
+	//((NMS_KinematicMotionState*) fallRigidBody->getMotionState())->setKinematicPos( btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0)) );
 }
 
 int main(int argc, char* argv[])
@@ -100,8 +103,9 @@ int main(int argc, char* argv[])
 	engine.physics->addRBody(groundRigidBody);
 
 	btCollisionShape* fallShape = new btSphereShape(4);
-	btDefaultMotionState* fallMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0)));
-    btScalar mass = 1.0f;
+	NMS_KinematicMotionState* fallMotionState = new NMS_KinematicMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0)));
+    //btDefaultMotionState* fallMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0)));
+	btScalar mass = 1.0f;
     btVector3 fallInertia(0,0,0);
     fallShape->calculateLocalInertia(mass,fallInertia);
     btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI(mass,fallMotionState,fallShape,fallInertia);
@@ -118,11 +122,11 @@ int main(int argc, char* argv[])
     engine.physics->addRBody(fallRigidBody2);
 
 	btCollisionShape* fallShape3 = new btBoxShape(btVector3(2,2,2));
-	btDefaultMotionState* fallMotionState3 = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,0,-10)));
+	btDefaultMotionState* fallMotionState3 = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,20,0)));
     mass = 1.0f;
     btVector3 fallInertia3(0,0,0);
     fallShape3->calculateLocalInertia(mass,fallInertia3);
-    btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI3(mass,fallMotionState2,fallShape2,fallInertia2);
+    btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI3(mass,fallMotionState3,fallShape3,fallInertia3);
     fallRigidBody3 = new btRigidBody(fallRigidBodyCI3);
     engine.physics->addRBody(fallRigidBody3);
 
@@ -153,7 +157,7 @@ int main(int argc, char* argv[])
 	audioEngine.LoadWav("sounds/BackgroundMusic.wav","Background",sourcePos,sourceVel,1.0f,0.3f,true);
 	audioEngine.playSound("Background");
 	
-	GeometryNode duckGeo = GeometryNode(&model3,fallRigidBody3);
+	GeometryNode duckGeo = GeometryNode(&model3,fallRigidBody);
 	geom = GeometryNode(&model, fallRigidBody);
 	satelite = GeometryNode(&model2, fallRigidBody2);
 	GeometryNode light = GeometryNode(&light0,fallRigidBody2);
@@ -173,22 +177,24 @@ int main(int argc, char* argv[])
 	sateliteTNode = TransformationNode(tra);
 
 	cam = NMSCameraFPS();
+	CameraNode cam2 = CameraNode();
 	Vector camTV = Vector(0.f, 2.f, 5.f);
 	Matrix camTM = Matrix();
 	camTM.translate(camTV);
 	cam.multiply(camTM);
+	cam2.multiply(camTM);
 	Matrix scale = Matrix();
 	scale.uScale(0.10f);
 	duckGeo.multiply(scale);
 
 	root->addChild(&traNode);
 	root->addChild(&light);
-	root->addChild(&duckGeo);
+	root->addChild(&geom);
 	traNode.addChild(&rotNode);
 	rotNode.addChild(&rotyNode);
-	rotyNode.addChild(&geom);
+	rotyNode.addChild(&duckGeo);
 	geom.addChild(&sateliteTNode);
-	root->addChild(&cam);
+	duckGeo.addChild(&cam);
 	sateliteTNode.addChild(&sateliteRNode);
 	sateliteRNode.addChild(&satelite);
 	

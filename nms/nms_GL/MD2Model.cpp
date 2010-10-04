@@ -344,6 +344,7 @@ void MD2Model::RenderFrame( void )
         glEnd();
     }
     glDisable( GL_CULL_FACE );
+	glBindTexture( GL_TEXTURE_2D, NULL );
     glPopAttrib();
 }
 
