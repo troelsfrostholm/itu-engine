@@ -56,6 +56,7 @@ void 	ColladaModel::RenderFrame()
 {
 	unsigned i=0;
 	unsigned j=0;
+	glEnable(GL_TEXTURE_2D);
 	glBindTexture( GL_TEXTURE_2D, textureID );
 	for(j=0;j<dataRead.size();j++)
 	{
@@ -86,8 +87,6 @@ void 	ColladaModel::RenderFrame()
 
 		unsigned vertexStride=(*positionSource).stride;
 		unsigned textureStride=(*textureSource).stride;
-
-
 
 		int*   dataPointer=dataRead.back().pTriangleData;
 		float* vertArray=(*positionSource).pfArray;
@@ -135,6 +134,7 @@ void 	ColladaModel::RenderFrame()
 			glVertex3fv(vertices[2]);
 		}
 		glEnd();
+		glDisable(GL_TEXTURE_2D);
 	}
 }
 

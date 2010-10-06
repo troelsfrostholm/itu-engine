@@ -309,6 +309,7 @@ void MD2Model::RenderFrame( void )
     //Interpolate the vertixes and the light normals for our animations
 	Interpolate( p_modelVertices,p_lightnormals );
     // Bind the model texture to our model
+	glEnable(GL_TEXTURE_2D);
     glBindTexture( GL_TEXTURE_2D, textureID );
 	
 
@@ -344,7 +345,7 @@ void MD2Model::RenderFrame( void )
         glEnd();
     }
     glDisable( GL_CULL_FACE );
-	glBindTexture( GL_TEXTURE_2D, NULL );
+	glDisable(GL_TEXTURE_2D);
     glPopAttrib();
 }
 

@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="$(SolutionDir)\Bullet\src"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\Bullet\src&quot;;&quot;$(SolutionDir)\include\Boost 1.4.4&quot;"
 				PreprocessorDefinitions="__EXP_NMS_PHYSICS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"

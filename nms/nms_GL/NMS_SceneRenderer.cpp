@@ -108,6 +108,7 @@ int NMS_SceneRenderer::renderingLoop()
 		currentTime+=0.0008f;
 		NMS_EVENT.pollEvents();
 		physics->simulatePhysics();
+		physics->checkAllTriggers();
 		render();
 		CalculateFrameRate();
 		//SDL_Delay(10);
