@@ -12,22 +12,27 @@ ColladaModel::ColladaModel()
 
 ColladaModel::~ColladaModel(){};
 
+
+Triangle::Triangle()
+{
+	  iNormOffset=0;
+	  iTextOffset=0;
+	  iVertOffset=0;
+	  sNormSource=NULL;
+	  sTextSource=NULL;
+	  sVertSource=NULL;
+	  sTriangleMaterial=NULL;
+	  iTriangleCount=0;
+	  pTriangleData=NULL;
+	  iTriangleCount=0;
+	  bVertices=false;
+	  bTextures=false;
+	  bNormals=false;
+	  uNumberOfData=0;
+}
 ColMesh::ColMesh()
 {
-	iNormOffset=0;
-	iTextOffset=0;
-	iTriangleCount=0;
-	iVertOffset=0;
-	pTriangleData=NULL;
-	sMeshMaterial=NULL;
-	sNormSource=NULL;
-	sTextSource=NULL;
 	sVertPosition=NULL;
-	sVertSource=NULL;
-	bVertices=false;
-	bTextures=false;
-	bNormals=false;
-	uNumberOfData=0;
 }
 
 void ColladaModel::render(float time)
@@ -55,86 +60,92 @@ int ColladaModel::LoadSkin(char *filename)
 void 	ColladaModel::RenderFrame()
 {
 	unsigned i=0;
-	unsigned j=0;
+	unsigned t=0;
+	unsigned m=0;
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture( GL_TEXTURE_2D, textureID );
-	for(j=0;j<dataRead.size();j++)
+	//FOR EACH MESH
+	for(m=0;m<dataRead.size();m++)
 	{
 		vec9_t vertices;
-		unsigned vertOffset=dataRead.back().iVertOffset;
+		vec6_t textures;
+		
 		Source* positionSource;
 		Source* textureSource;
 		//Find the right source for the positions inside the sources vector
-		for (i=0; i<dataRead.back().sources.size(); i++) {
-			if(dataRead.back().sources[i].sID==dataRead.back().sVertPosition)
-			{
-				positionSource=&dataRead.back().sources[i];
-			}
-			else
-			if(dataRead.back().sources[i].sID==dataRead.back().sTextSource)
-			{
-				textureSource=&dataRead.back().sources[i];
-			}
-		}
 		unsigned firstOffset;
 		unsigned secondOffset;
 		unsigned thirdOffset;
-		unsigned numberOfArrays=dataRead.back().uNumberOfData;
-		unsigned numberOfTriangles=dataRead.back().iTriangleCount;
-
-		unsigned vertexOffset=dataRead.back().iVertOffset;
-		unsigned textureOffset=dataRead.back().iTextOffset;
-
-		unsigned vertexStride=(*positionSource).stride;
-		unsigned textureStride=(*textureSource).stride;
-
-		int*   dataPointer=dataRead.back().pTriangleData;
-		float* vertArray=(*positionSource).pfArray;
-		float* textArray=(*textureSource).pfArray;
-		bool   textEnabled=dataRead.back().bTextures;
-
-		glBegin(GL_TRIANGLES);
-		for(unsigned i=0;i<numberOfTriangles;i++)
+		//For each triangle declaration
+		for(t=0;t<dataRead[m].triangles.size();t++)
 		{
-			if(textEnabled)
-			{
-				firstOffset=dataPointer[i*numberOfArrays*3+textureOffset];
-				firstOffset=firstOffset*textureStride;
-				vertices[0][0]=textArray[firstOffset+0];
-				vertices[0][1]=textArray[firstOffset+1];
-				secondOffset=dataPointer[i*numberOfArrays*3+textureOffset+numberOfArrays];
-				secondOffset=secondOffset*textureStride;
-				vertices[1][0]=textArray[secondOffset+0];
-				vertices[1][1]=textArray[secondOffset+1];
-				thirdOffset=dataPointer[i*numberOfArrays*3+textureOffset+numberOfArrays*2];
-				thirdOffset=thirdOffset*textureStride;
-				vertices[2][0]=textArray[thirdOffset+0];
-				vertices[2][1]=textArray[thirdOffset+1];
-				glTexCoord2fv(vertices[0]);
-				glTexCoord2fv(vertices[1]);
-				glTexCoord2fv(vertices[2]);
-			}
-			firstOffset=dataPointer[i*numberOfArrays*3+vertOffset];
-			firstOffset=firstOffset*vertexStride;
-			vertices[0][0]=vertArray[firstOffset+0];
-			vertices[0][1]=vertArray[firstOffset+1];
-			vertices[0][2]=vertArray[firstOffset+2];
-			secondOffset=dataPointer[i*numberOfArrays*3+vertOffset+numberOfArrays];
-			secondOffset=secondOffset*vertexStride;
-			vertices[1][0]=vertArray[secondOffset+0];
-			vertices[1][1]=vertArray[secondOffset+1];
-			vertices[1][2]=vertArray[secondOffset+2];
-			thirdOffset=dataPointer[i*numberOfArrays*3+vertOffset+numberOfArrays*2];
-			thirdOffset=thirdOffset*vertexStride;
-			vertices[2][0]=vertArray[thirdOffset+0];
-			vertices[2][1]=vertArray[thirdOffset+1];
-			vertices[2][2]=vertArray[thirdOffset+2];
-			glVertex3fv(vertices[0]);
-			glVertex3fv(vertices[1]);
-			glVertex3fv(vertices[2]);
-		}
-		glEnd();
+			   unsigned numberOfArrays=dataRead[m].triangles[t].uNumberOfData;
+			   unsigned vertOffset=dataRead[m].triangles[t].iVertOffset;
+			   for (i=0; i<dataRead[m].sources.size(); i++) {
+					if(dataRead[m].sources[i].sID==dataRead[m].sVertPosition)
+					{
+						positionSource=&dataRead[m].sources[i];
+					}
+					else
+					if(dataRead[m].sources[i].sID==dataRead[m].triangles[t].sTextSource)
+					{
+						textureSource=&dataRead[m].sources[i];
+					}
+				}
+				unsigned numberOfTriangles=dataRead[m].triangles[t].iTriangleCount;
+				unsigned vertexOffset=dataRead[m].triangles[t].iVertOffset;
+				unsigned textureOffset=dataRead[m].triangles[t].iTextOffset;
+
+				unsigned vertexStride=(*positionSource).stride;
+				unsigned textureStride=(*textureSource).stride;
+				
+				int* dataPointer=dataRead[m].triangles[t].pTriangleData;
+				GLfloat* vertArray=(*positionSource).pfArray;
+				GLfloat* textArray=(*textureSource).pfArray;
+				bool   textEnabled=dataRead[m].triangles[t].bTextures;
+				glBegin(GL_TRIANGLES);
+				for(i=0;i<numberOfTriangles;i++)
+				{
+					if(textEnabled)
+					{
+						firstOffset=dataPointer[i*numberOfArrays*3+textureOffset];
+						firstOffset=firstOffset*textureStride;
+						textures[0][0]=textArray[firstOffset];
+						textures[0][1]=textArray[firstOffset+1];
+						secondOffset=dataPointer[i*numberOfArrays*3+textureOffset+numberOfArrays];
+						secondOffset=secondOffset*textureStride;
+						textures[1][0]=textArray[secondOffset];
+						textures[1][1]=textArray[secondOffset+1];
+						thirdOffset=dataPointer[i*numberOfArrays*3+textureOffset+numberOfArrays*2];
+						thirdOffset=thirdOffset*textureStride;
+						textures[2][0]=textArray[thirdOffset];
+						textures[2][1]=textArray[thirdOffset+1];
+					}
+					firstOffset=dataPointer[i*numberOfArrays*3+vertOffset];
+					firstOffset=firstOffset*vertexStride;
+					vertices[0][0]=vertArray[firstOffset];
+					vertices[0][1]=vertArray[firstOffset+1];
+					vertices[0][2]=vertArray[firstOffset+2];
+					secondOffset=dataPointer[i*numberOfArrays*3+vertOffset+numberOfArrays];
+					secondOffset=secondOffset*vertexStride;
+					vertices[1][0]=vertArray[secondOffset];
+					vertices[1][1]=vertArray[secondOffset+1];
+					vertices[1][2]=vertArray[secondOffset+2];
+					thirdOffset=dataPointer[i*numberOfArrays*3+vertOffset+numberOfArrays*2];
+					thirdOffset=thirdOffset*vertexStride;
+					vertices[2][0]=vertArray[thirdOffset];
+					vertices[2][1]=vertArray[thirdOffset+1];
+					vertices[2][2]=vertArray[thirdOffset+2];
+					glTexCoord2fv(textures[0]);
+					glVertex3fv(vertices[0]);
+					glTexCoord2fv(textures[1]);
+					glVertex3fv(vertices[1]);
+					glTexCoord2fv(textures[2]);
+					glVertex3fv(vertices[2]);
+				}
+				glEnd();
 		glDisable(GL_TEXTURE_2D);
+		}
 	}
 }
 
@@ -282,9 +293,11 @@ void ColladaModel::readLibraryGeometries(IrrXMLReader* xml)
 					}
 					if (!strcmp("triangles",xml->getNodeName()))
 					{
-						dataRead.back().iTriangleCount=xml->getAttributeValueAsInt("count");
-						dataRead.back().sMeshMaterial=xml->getAttributeValue("material");
+						Triangle triangle =  Triangle();
+						triangle.iTriangleCount=xml->getAttributeValueAsInt("count");
+						triangle.sTriangleMaterial=xml->getAttributeValue("material");
 						xml->read();
+						int toBeRetrieved=0;
 						//While we are still in the vertices section...
 						while(strcmp("triangles",xml->getNodeName()))
 						{
@@ -292,35 +305,38 @@ void ColladaModel::readLibraryGeometries(IrrXMLReader* xml)
 							if((!strcmp("input",xml->getNodeName()))&&(!strcmp("VERTEX",xml->getAttributeValue("semantic"))))
 							{
 								//Save the right array to get the position from
-								dataRead.back().sVertSource=xml->getAttributeValue("source");
-								dataRead.back().sVertSource.replace('#',' ');
-								dataRead.back().sVertSource.trim();
-								dataRead.back().iVertOffset=xml->getAttributeValueAsInt("offset");
-								dataRead.back().bVertices=true;
-								dataRead.back().uNumberOfData++;
+								triangle.sVertSource=xml->getAttributeValue("source");
+								triangle.sVertSource.replace('#',' ');
+								triangle.sVertSource.trim();
+								triangle.iVertOffset=xml->getAttributeValueAsInt("offset");
+								triangle.bVertices=true;
+								triangle.uNumberOfData++;
+								toBeRetrieved=3;
 							}
 							else
 							if((!strcmp("input",xml->getNodeName()))&&(!strcmp("NORMAL",xml->getAttributeValue("semantic"))))
 							{
 								//Save the right array to get the position from
-								dataRead.back().sNormSource=xml->getAttributeValue("source");
-								dataRead.back().sNormSource.replace('#',' ');
-								dataRead.back().sNormSource.trim();
-								dataRead.back().iNormOffset=xml->getAttributeValueAsInt("offset");
-								dataRead.back().bNormals=true;
-								dataRead.back().uNumberOfData++;
+								triangle.sNormSource=xml->getAttributeValue("source");
+								triangle.sNormSource.replace('#',' ');
+								triangle.sNormSource.trim();
+								triangle.iNormOffset=xml->getAttributeValueAsInt("offset");
+								triangle.bNormals=true;
+								triangle.uNumberOfData++;
+								toBeRetrieved=3;
 							}
 							else
 							if((!strcmp("input",xml->getNodeName()))&&(!strcmp("TEXCOORD",xml->getAttributeValue("semantic"))))
 							{
 								//Save the right array to get the position from
-								dataRead.back().sTextSource=xml->getAttributeValue("source");
+								triangle.sTextSource=xml->getAttributeValue("source");
 								//Remove the # character
-								dataRead.back().sTextSource.replace('#',' ');
-								dataRead.back().sTextSource.trim();
-								dataRead.back().iTextOffset=xml->getAttributeValueAsInt("offset");
-								dataRead.back().bTextures=true;
-								dataRead.back().uNumberOfData++;
+								triangle.sTextSource.replace('#',' ');
+								triangle.sTextSource.trim();
+								triangle.iTextOffset=xml->getAttributeValueAsInt("offset");
+								triangle.bTextures=true;
+								triangle.uNumberOfData++;
+								toBeRetrieved=2;
 							}
 							else
 							if((!strcmp("p",xml->getNodeName()))&&(xml->getNodeType()!=EXN_ELEMENT_END))
@@ -328,15 +344,16 @@ void ColladaModel::readLibraryGeometries(IrrXMLReader* xml)
 								xml->read();
 								//Save the offset related to the positions in the arrays
 							    char* charArray=(char*)xml->getNodeData();
-								int maxTriangles=dataRead.back().iTriangleCount*9;
-								dataRead.back().pTriangleData=new int[maxTriangles];
-								int* tempArray=dataRead.back().pTriangleData;
+								int maxTriangles=triangle.iTriangleCount*3*triangle.uNumberOfData;
+								triangle.pTriangleData=new int[maxTriangles];
+								int* tempArray=triangle.pTriangleData;
 								for (int i=0; i<maxTriangles; i++)
 									tempArray[i]=strtol(charArray,&charArray,10);
 							}
 							xml->read();
 							core::stringc name=xml->getNodeName();
 						}
+						dataRead.back().triangles.push_back(triangle);
 					}
 				} 
 				break;
@@ -347,15 +364,10 @@ void ColladaModel::readLibraryGeometries(IrrXMLReader* xml)
 					char* charArray=(char*)xml->getNodeData();
 					int maxVertices=dataRead.back().sources.back().nElements;
 					dataRead.back().sources.back().pfArray=new float[maxVertices];
-					float* tempArray=dataRead.back().sources.back().pfArray;
+					GLfloat* tempArray=dataRead.back().sources.back().pfArray;
+					float fToBeConverted;
 					for (int i=0; i<maxVertices; i++)
-					{
-						removeWhitespaces(&charArray);
-						float fToBeConverted;
-						//Copy a float into the array
-						charArray = core::fast_atof_move(charArray, fToBeConverted);
-						tempArray[i] = fToBeConverted;
-					}
+									tempArray[i]=(GLfloat)strtod(charArray,&charArray);
 					nextIsArray = false;
 				}
 			}

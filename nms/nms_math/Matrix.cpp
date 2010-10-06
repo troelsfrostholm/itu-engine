@@ -14,13 +14,8 @@ Matrix::Matrix()
 
 Matrix::~Matrix()
  {
-   if (structPointer->refCounter == 0)
-   {
-	   delete structPointer;
-	   structPointer=NULL;
-   }else{
-	   structPointer->refCounter--;
-   }
+	delete structPointer;
+	structPointer=NULL;
  }
 
 Matrix::Matrix(unsigned rows, unsigned cols)

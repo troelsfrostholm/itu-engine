@@ -24,13 +24,11 @@ class MATRIX_D Matrix{
 		{
 		float *elements;
 		unsigned o_rows, o_cols;
-		unsigned refCounter;
 
 		mat_struct (unsigned row, unsigned col)
 		{
 			o_rows=row;
 			o_cols=col;
-			refCounter = 0;
 
 			elements = new float [o_rows*o_cols];
 		}
