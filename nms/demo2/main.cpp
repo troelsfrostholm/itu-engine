@@ -133,7 +133,7 @@ int main(int argc, char* argv[])
 	ColladaModel model3 = ColladaModel();
 	model.LoadModel("models/drfreak/drfreak.md2","models/drfreak/drfreak.tga");
 	model2.LoadModel("models/hobgoblin/hobgoblin.md2","models/hobgoblin/hobgoblin.png");
-	model3.LoadModel("models/Duck/Duck.dae");
+	model3.LoadModel("models/Astroboy/Astroboy.dae");
 	model.SetAnim(RUN);
 	model2.SetAnim(JUMP);
 
@@ -178,7 +178,7 @@ int main(int argc, char* argv[])
 	camTM.translate(camTV);
 	cam.multiply(camTM);
 	Matrix scale = Matrix();
-	scale.uScale(0.10f);
+	scale.uScale(1.0f);
 	duckGeo.multiply(scale);
 
 	root->addChild(&traNode);

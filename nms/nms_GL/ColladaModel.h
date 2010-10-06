@@ -29,8 +29,8 @@ using namespace irr;
 using namespace io;
 using namespace std;
 
-typedef float vec9_t[3][3];
-typedef float vec6_t[3][2];
+typedef GLfloat vec9_t[3][3];
+typedef GLfloat vec6_t[3][2];
 
 
 class COLLADAMODEL_D Source
@@ -40,7 +40,7 @@ class COLLADAMODEL_D Source
 	  core::stringc sName;
 	  core::stringc sID;
 
-	  float* pfArray;
+	  GLfloat* pfArray;
 	  unsigned nElements;
 
 	//Accessor variables

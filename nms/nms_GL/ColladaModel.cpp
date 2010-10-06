@@ -99,8 +99,8 @@ void 	ColladaModel::RenderFrame()
 				unsigned textureStride=(*textureSource).stride;
 
 				int*   dataPointer=dataRead[m].triangles[t].pTriangleData;
-				float* vertArray=(*positionSource).pfArray;
-				float* textArray=(*textureSource).pfArray;
+				GLfloat* vertArray=(*positionSource).pfArray;
+				GLfloat* textArray=(*textureSource).pfArray;
 				bool   textEnabled=dataRead[m].triangles[t].bTextures;
 				glBegin(GL_TRIANGLES);
 				for(i=0;i<numberOfTriangles;i++)
@@ -109,37 +109,37 @@ void 	ColladaModel::RenderFrame()
 					{
 						firstOffset=dataPointer[i*numberOfArrays*3+textureOffset];
 						firstOffset=firstOffset*textureStride;
-						textures[0][0]=textArray[firstOffset+0];
+						textures[0][0]=textArray[firstOffset];
 						textures[0][1]=textArray[firstOffset+1];
 						secondOffset=dataPointer[i*numberOfArrays*3+textureOffset+numberOfArrays];
 						secondOffset=secondOffset*textureStride;
-						textures[1][0]=textArray[secondOffset+0];
+						textures[1][0]=textArray[secondOffset];
 						textures[1][1]=textArray[secondOffset+1];
 						thirdOffset=dataPointer[i*numberOfArrays*3+textureOffset+numberOfArrays*2];
 						thirdOffset=thirdOffset*textureStride;
-						textures[2][0]=textArray[thirdOffset+0];
+						textures[2][0]=textArray[thirdOffset];
 						textures[2][1]=textArray[thirdOffset+1];
-						glTexCoord2fv(textures[0]);
-						glTexCoord2fv(textures[1]);
-						glTexCoord2fv(textures[2]);
 					}
 					firstOffset=dataPointer[i*numberOfArrays*3+vertOffset];
 					firstOffset=firstOffset*vertexStride;
-					vertices[0][0]=vertArray[firstOffset+0];
+					vertices[0][0]=vertArray[firstOffset];
 					vertices[0][1]=vertArray[firstOffset+1];
 					vertices[0][2]=vertArray[firstOffset+2];
 					secondOffset=dataPointer[i*numberOfArrays*3+vertOffset+numberOfArrays];
 					secondOffset=secondOffset*vertexStride;
-					vertices[1][0]=vertArray[secondOffset+0];
+					vertices[1][0]=vertArray[secondOffset];
 					vertices[1][1]=vertArray[secondOffset+1];
 					vertices[1][2]=vertArray[secondOffset+2];
 					thirdOffset=dataPointer[i*numberOfArrays*3+vertOffset+numberOfArrays*2];
 					thirdOffset=thirdOffset*vertexStride;
-					vertices[2][0]=vertArray[thirdOffset+0];
+					vertices[2][0]=vertArray[thirdOffset];
 					vertices[2][1]=vertArray[thirdOffset+1];
 					vertices[2][2]=vertArray[thirdOffset+2];
+					glTexCoord2fv(textures[0]);
 					glVertex3fv(vertices[0]);
+					glTexCoord2fv(textures[1]);
 					glVertex3fv(vertices[1]);
+					glTexCoord2fv(textures[2]);
 					glVertex3fv(vertices[2]);
 				}
 				glEnd();
@@ -362,15 +362,10 @@ void ColladaModel::readLibraryGeometries(IrrXMLReader* xml)
 					char* charArray=(char*)xml->getNodeData();
 					int maxVertices=dataRead.back().sources.back().nElements;
 					dataRead.back().sources.back().pfArray=new float[maxVertices];
-					float* tempArray=dataRead.back().sources.back().pfArray;
+					GLfloat* tempArray=dataRead.back().sources.back().pfArray;
 					float fToBeConverted;
 					for (int i=0; i<maxVertices; i++)
-					{
-						removeWhitespaces(&charArray);
-						//Copy a float into the array
-						charArray = core::fast_atof_move(charArray, fToBeConverted);
-						tempArray[i] = fToBeConverted;
-					}
+									tempArray[i]=(GLfloat)strtod(charArray,&charArray);
 					nextIsArray = false;
 				}
 			}
