@@ -26,6 +26,7 @@ obj/
 [Rr]elease*/
 _ReSharper*/
 [Tt]est[Rr]esult*
+nms/nms_GL/gl_map
 #Ignore debug logs
 MatrixDebug.txt
 #Ignore backups

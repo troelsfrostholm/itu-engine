@@ -29,6 +29,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nms_utilities", "nms_utilities\nms_utilities.vcproj", "{497B05A8-520D-47A1-AD4E-FF9E4CBA2D48}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NMS_Sound", "NMS_Sound\NMS_Sound.vcproj", "{ABC0F45A-97B6-42F7-9157-F940ED19D651}"
+	ProjectSection(ProjectDependencies) = postProject
+		{497B05A8-520D-47A1-AD4E-FF9E4CBA2D48} = {497B05A8-520D-47A1-AD4E-FF9E4CBA2D48}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nms_physics", "nms_physics\nms_physics.vcproj", "{BC04FEE9-2884-4666-8E9A-8E94BE24D338}"
 EndProject
@@ -48,6 +51,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "scenegraph_demo", "scenegra
 		{497B05A8-520D-47A1-AD4E-FF9E4CBA2D48} = {497B05A8-520D-47A1-AD4E-FF9E4CBA2D48}
 		{3EC8E3BA-BB90-4580-A5D5-61349C5E36A8} = {3EC8E3BA-BB90-4580-A5D5-61349C5E36A8}
 		{BC04FEE9-2884-4666-8E9A-8E94BE24D338} = {BC04FEE9-2884-4666-8E9A-8E94BE24D338}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo3", "demo3\demo3.vcproj", "{E4B4A19D-4EF1-4286-AE54-41254899DADC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3EC8E3BA-BB90-4580-A5D5-61349C5E36A8} = {3EC8E3BA-BB90-4580-A5D5-61349C5E36A8}
 	EndProjectSection
 EndProject
 Global
@@ -130,6 +138,14 @@ Global
 		{FB680F8D-98BC-4143-B509-EA13B3212CAC}.Release|Win32.Build.0 = Release|Win32
 		{FB680F8D-98BC-4143-B509-EA13B3212CAC}.RelWithDebInfo|Win32.ActiveCfg = Release|Win32
 		{FB680F8D-98BC-4143-B509-EA13B3212CAC}.RelWithDebInfo|Win32.Build.0 = Release|Win32
+		{E4B4A19D-4EF1-4286-AE54-41254899DADC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E4B4A19D-4EF1-4286-AE54-41254899DADC}.Debug|Win32.Build.0 = Debug|Win32
+		{E4B4A19D-4EF1-4286-AE54-41254899DADC}.MinSizeRel|Win32.ActiveCfg = Release|Win32
+		{E4B4A19D-4EF1-4286-AE54-41254899DADC}.MinSizeRel|Win32.Build.0 = Release|Win32
+		{E4B4A19D-4EF1-4286-AE54-41254899DADC}.Release|Win32.ActiveCfg = Release|Win32
+		{E4B4A19D-4EF1-4286-AE54-41254899DADC}.Release|Win32.Build.0 = Release|Win32
+		{E4B4A19D-4EF1-4286-AE54-41254899DADC}.RelWithDebInfo|Win32.ActiveCfg = Release|Win32
+		{E4B4A19D-4EF1-4286-AE54-41254899DADC}.RelWithDebInfo|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

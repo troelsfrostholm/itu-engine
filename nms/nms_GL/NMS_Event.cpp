@@ -2,10 +2,18 @@
 
 NMS_Event *NMS_Event::singleton = 0;
 
+void NoMouseEvent(int x, int y) { };
+void NoKeyEvent(SDLKey key) { };
+void NoIdleEvent(int i) { };
+
 NMS_Event::NMS_Event()
 {
 	singleton = NULL;
 	eventQueueGuard = SDL_CreateMutex();
+	mouseMovedCallback = &NoMouseEvent;
+	keyPressedCallback = &NoKeyEvent;
+	keyReleasedCallback = &NoKeyEvent;
+	idleCallback = &NoIdleEvent;
 }
 
 NMS_Event &NMS_Event::getInstance()
