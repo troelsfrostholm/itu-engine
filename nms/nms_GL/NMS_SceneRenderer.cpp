@@ -45,7 +45,7 @@ bool NMS_SceneRenderer::initRendering()
 	SDL_SetVideoMode(width, height, bpp, flags); //Set the window mode
 
 	
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
 	glViewport(0, 0, width, height); // Set the dimensions of the viewport
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -170,7 +170,7 @@ void NMS_SceneRenderer::CalculateFrameRate()
 
 void NMS_SceneRenderer::applyPhysics(btRigidBody *b)
 {
-btScalar matrix[16];
+	btScalar matrix[16];
 	btTransform trans;
 	b->getMotionState()->getWorldTransform(trans);
 	trans.getOpenGLMatrix(matrix);

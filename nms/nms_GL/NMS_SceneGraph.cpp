@@ -91,4 +91,5 @@ void GeometryNode::before(SceneGraphVisitor *v, Matrix *m)
 void GeometryNode::after(SceneGraphVisitor *v, Matrix *m) 
 {
 	v->sg_after(*m, model);
+	TransformationNode::after(v, m);
 }

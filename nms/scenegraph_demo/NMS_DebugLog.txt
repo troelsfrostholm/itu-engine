@@ -1,0 +1,10 @@
+NMS_TextureManager::Texture Manager Initialized!
+NMS_TextureManager::Trying to load [models/drfreak/drfreak.tga]
+NMS_TextureManager::Lump created correctly!
+NMS_TextureManager::Texture loaded from Lump!
+NMS_TextureManager::Loaded [models/drfreak/drfreak.tga] without issues!
+NMS_TextureManager::Trying to load [models/hobgoblin/hobgoblin.png]
+NMS_TextureManager::Lump created correctly!
+NMS_TextureManager::Texture loaded from Lump!
+NMS_TextureManager::Loaded [models/hobgoblin/hobgoblin.png] without issues!
+NMS_TextureManager::Freed the whole memory!

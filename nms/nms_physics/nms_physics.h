@@ -55,7 +55,7 @@ class PHYSICS_D nms_physics
 		void checkAllTriggers();
 		btDynamicsWorld* getDynamicsWorld();
 };
-
+/*
 class PHYSICS_D NMS_KinematicMotionState : public btMotionState 
 {
 	public:
@@ -83,4 +83,5 @@ class PHYSICS_D NMS_KinematicMotionState : public btMotionState
 	protected:
 		btTransform position;
 };
+*/
 #endif
