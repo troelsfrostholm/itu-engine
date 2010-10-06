@@ -108,6 +108,7 @@ int NMS_SceneRenderer::renderingLoop()
 		currentTime+=0.0008f;
 		NMS_EVENT.pollEvents();
 		physics->simulatePhysics();
+		physics->checkAllTriggers();
 		render();
 		CalculateFrameRate();
 		//SDL_Delay(10);
@@ -169,7 +170,7 @@ void NMS_SceneRenderer::CalculateFrameRate()
 
 void NMS_SceneRenderer::applyPhysics(btRigidBody *b)
 {
-btScalar matrix[16];
+	btScalar matrix[16];
 	btTransform trans;
 	b->getMotionState()->getWorldTransform(trans);
 	trans.getOpenGLMatrix(matrix);
