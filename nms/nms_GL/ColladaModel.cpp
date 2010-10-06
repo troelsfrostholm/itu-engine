@@ -98,7 +98,9 @@ void 	ColladaModel::RenderFrame()
 
 				unsigned vertexStride=(*positionSource).stride;
 				unsigned textureStride=(*textureSource).stride;
-
+				
+				int* dataPointer=dataRead[m].triangles[t].pTriangleData;
+				GLfloat* vertArray=(*positionSource).pfArray;
 				GLfloat* textArray=(*textureSource).pfArray;
 				bool   textEnabled=dataRead[m].triangles[t].bTextures;
 				glBegin(GL_TRIANGLES);
