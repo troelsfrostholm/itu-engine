@@ -94,9 +94,9 @@ int main(int argc, char* argv[])
 	
 	TransformationNode traNode3;
 	ColladaModel model3 = ColladaModel();
-	model3.LoadModel("models/Gundam/Gundam.dae");
+	//model3.LoadModel("models/Gundam/Gundam.dae");
 	//model3.LoadModel("models/FireSpocket/models/FireSpocket.dae");
-	//model3.LoadModel("models/Astroboy/Astroboy.dae");
+	model3.LoadModel("models/Astroboy/Astroboy.dae");
 	float mass;
 	btVector3 fallInertia;
 
@@ -151,7 +151,7 @@ int main(int argc, char* argv[])
 	cam.multiply(transl);
 	
 	Matrix tra3 = Matrix();
-	tra3.uScale(0.01);
+	tra3.uScale(1.0);
 
 	traNode3=TransformationNode(tra3);
 

@@ -29,8 +29,8 @@ using namespace irr;
 using namespace io;
 using namespace std;
 
-typedef GLfloat vec9_t[3][3];
-typedef GLfloat vec6_t[3][2];
+typedef GLfloat vec9_t[9];
+typedef GLfloat vec6_t[6];
 
 
 class COLLADAMODEL_D Source
@@ -122,9 +122,9 @@ class COLLADAMODEL_D RenderData
 
 	 //Triangles count
 	 unsigned iTriangleCount;
-	 vec9_t vVertices;
-	 vec6_t vTextures;
-	 vec9_t vNormals;
+	 GLfloat* vVertices;
+	 GLfloat* vTextures;
+	 GLfloat* vNormals;
 };
 
 
