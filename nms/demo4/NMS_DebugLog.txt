@@ -1,0 +1,2 @@
+NMS_TextureManager::Texture Manager Initialized!
+NMS_TextureManager::Freed the whole memory!

@@ -6,11 +6,24 @@ using namespace std;
 
 ColladaModel::ColladaModel()
 {
-	textureID=0;
 	bModelLoadedCorrectly   =false;
+	bXMLLoaded				=false;
+	iTriangleCount          =0;
+	iMeshCount				=0;
 };
 
 ColladaModel::~ColladaModel(){};
+
+
+
+
+RenderData::RenderData()
+{
+	 iTextID=0;
+
+	 //Triangles count
+	 iTriangleCount=0;
+}
 
 
 Triangle::Triangle()
@@ -35,15 +48,43 @@ ColMesh::ColMesh()
 	sVertPosition=NULL;
 }
 
+Material::Material()
+{	
+	 sID=NULL;
+	 sName=NULL;
+	 sUrl=NULL;
+};
+
+Effect::Effect()
+{	
+	sID=NULL;
+	sName=NULL;
+	sSurface=NULL;
+};
+
+Image::Image()
+{	
+	
+	sID=NULL;
+	sName=NULL;
+	sPath=NULL;
+};
+
+
 void ColladaModel::render(float time)
 {
-	if(bModelLoadedCorrectly)
+	if(bXMLLoaded)
 	{
-		glPushMatrix();
-			if(textureID==0)
-				LoadSkin((char*)textureFilepath.c_str());
-			RenderFrame();
-		glPopMatrix();
+		if(bModelLoadedCorrectly)
+		{
+			glPushMatrix();
+				RenderFrame();
+			glPopMatrix();
+		}
+		else
+		{
+			LoadData();
+		}
 	}
 	else
 	{
@@ -53,29 +94,57 @@ void ColladaModel::render(float time)
 
 int ColladaModel::LoadSkin(char *filename)
 {
-	textureID=NMS_ASSETMANAGER.LoadTexture(filename,filename);
-	return textureID;
+	return NMS_ASSETMANAGER.LoadTexture(filename,filename);
 }
 
-void 	ColladaModel::RenderFrame()
+void ColladaModel::RenderFrame()
 {
-	unsigned i=0;
-	unsigned t=0;
-	unsigned m=0;
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture( GL_TEXTURE_2D, textureID );
+	glEnable( GL_CULL_FACE );
+	glCullFace( GL_BACK );
+	for(unsigned i=0;i<iTriangleCount;i++)
+	{
+		glBegin(GL_TRIANGLES);
+				//glBindTexture( GL_TEXTURE_2D, vRenderData[i].iTextID );
+				glTexCoord2fv(vRenderData[i].vTextures[0]);
+				glNormal3fv(vRenderData[i].vNormals[0]);
+				glVertex3fv(vRenderData[i].vVertices[0]);
+				glTexCoord2fv(vRenderData[i].vTextures[1]);
+				glNormal3fv(vRenderData[i].vNormals[1]);
+				glVertex3fv(vRenderData[i].vVertices[1]);
+				glTexCoord2fv(vRenderData[i].vTextures[2]);
+				glNormal3fv(vRenderData[i].vNormals[2]);
+				glVertex3fv(vRenderData[i].vVertices[2]);
+		glEnd();
+	}
+	glDisable(GL_TEXTURE_2D);
+	glDisable( GL_CULL_FACE );
+	
+}
+
+void ColladaModel::LoadData()
+{
+	unsigned d=0;  //Misc count
+	unsigned i=0;  //Image count
+	unsigned t=0;  //Triangles count
+	unsigned m=0;  //Mesh count
+	iMeshCount=dataRead.size();
 	//FOR EACH MESH
 	for(m=0;m<dataRead.size();m++)
 	{
+		RenderData toBeRendered=RenderData();
 		vec9_t vertices;
+		vec9_t normals;
 		vec6_t textures;
 		
 		Source* positionSource;
 		Source* textureSource;
+		Source* normalSource;
 		//Find the right source for the positions inside the sources vector
 		unsigned firstOffset;
 		unsigned secondOffset;
 		unsigned thirdOffset;
+		toBeRendered.iTriangleCount=dataRead[m].triangles.size();
 		//For each triangle declaration
 		for(t=0;t<dataRead[m].triangles.size();t++)
 		{
@@ -91,62 +160,123 @@ void 	ColladaModel::RenderFrame()
 					{
 						textureSource=&dataRead[m].sources[i];
 					}
+					if(dataRead[m].sources[i].sID==dataRead[m].triangles[t].sNormSource)
+					{
+						normalSource=&dataRead[m].sources[i];
+					}
 				}
 				unsigned numberOfTriangles=dataRead[m].triangles[t].iTriangleCount;
+				iTriangleCount+=numberOfTriangles;
 				unsigned vertexOffset=dataRead[m].triangles[t].iVertOffset;
 				unsigned textureOffset=dataRead[m].triangles[t].iTextOffset;
+				unsigned normalOffset=dataRead[m].triangles[t].iNormOffset;
 
 				unsigned vertexStride=(*positionSource).stride;
 				unsigned textureStride=(*textureSource).stride;
+				unsigned normalStride=(*normalSource).stride;
 				
 				int* dataPointer=dataRead[m].triangles[t].pTriangleData;
 				GLfloat* vertArray=(*positionSource).pfArray;
 				GLfloat* textArray=(*textureSource).pfArray;
+				GLfloat* normArray=(*normalSource).pfArray;
 				bool   textEnabled=dataRead[m].triangles[t].bTextures;
-				glBegin(GL_TRIANGLES);
-				for(i=0;i<numberOfTriangles;i++)
-				{
-					if(textEnabled)
+					int iTextureID=0;
+					core::stringc temp=NULL;
+					//Retrieve the material for the model
+					for (d=0; d<vMaterials.size(); d++)
 					{
-						firstOffset=dataPointer[i*numberOfArrays*3+textureOffset];
-						firstOffset=firstOffset*textureStride;
-						textures[0][0]=textArray[firstOffset];
-						textures[0][1]=textArray[firstOffset+1];
-						secondOffset=dataPointer[i*numberOfArrays*3+textureOffset+numberOfArrays];
-						secondOffset=secondOffset*textureStride;
-						textures[1][0]=textArray[secondOffset];
-						textures[1][1]=textArray[secondOffset+1];
-						thirdOffset=dataPointer[i*numberOfArrays*3+textureOffset+numberOfArrays*2];
-						thirdOffset=thirdOffset*textureStride;
-						textures[2][0]=textArray[thirdOffset];
-						textures[2][1]=textArray[thirdOffset+1];
+						if(vMaterials[d].sName==dataRead[m].triangles[t].sTriangleMaterial)
+						{
+							//We have found the effect
+							temp=vMaterials[d].sUrl;
+							break;
+						}
 					}
-					firstOffset=dataPointer[i*numberOfArrays*3+vertOffset];
-					firstOffset=firstOffset*vertexStride;
-					vertices[0][0]=vertArray[firstOffset];
-					vertices[0][1]=vertArray[firstOffset+1];
-					vertices[0][2]=vertArray[firstOffset+2];
-					secondOffset=dataPointer[i*numberOfArrays*3+vertOffset+numberOfArrays];
-					secondOffset=secondOffset*vertexStride;
-					vertices[1][0]=vertArray[secondOffset];
-					vertices[1][1]=vertArray[secondOffset+1];
-					vertices[1][2]=vertArray[secondOffset+2];
-					thirdOffset=dataPointer[i*numberOfArrays*3+vertOffset+numberOfArrays*2];
-					thirdOffset=thirdOffset*vertexStride;
-					vertices[2][0]=vertArray[thirdOffset];
-					vertices[2][1]=vertArray[thirdOffset+1];
-					vertices[2][2]=vertArray[thirdOffset+2];
-					glTexCoord2fv(textures[0]);
-					glVertex3fv(vertices[0]);
-					glTexCoord2fv(textures[1]);
-					glVertex3fv(vertices[1]);
-					glTexCoord2fv(textures[2]);
-					glVertex3fv(vertices[2]);
-				}
-				glEnd();
-		glDisable(GL_TEXTURE_2D);
+
+					//Retrieve the effect
+					for (d=0; d<vEffects.size(); d++)
+					{
+						if(vEffects[d].sName==temp)
+						{
+							//We have found the effect
+							temp=vEffects[d].sSurface;
+							break;
+						}
+					}
+
+					//Retrieve the texture
+					for (d=0; d<vImages.size(); d++)
+					{
+						if(vImages[d].sName==temp)
+						{
+							core::stringc image=vImages[d].sPath;
+							int pos=image.findFirst('/');
+							image=image.subString(pos+1,image.size());
+							//We have found the texture, load it
+							iTextureID=LoadSkin((char*)image.c_str());
+							break;
+						}
+					}
+
+					for(i=0;i<numberOfTriangles;i++)
+					{
+						if(textEnabled)
+						{
+							firstOffset=dataPointer[i*numberOfArrays*3+textureOffset];
+							firstOffset=firstOffset*textureStride;
+							toBeRendered.vTextures[0][0]=textArray[firstOffset];
+							toBeRendered.vTextures[0][1]=textArray[firstOffset+1];
+							secondOffset=dataPointer[i*numberOfArrays*3+textureOffset+numberOfArrays];
+							secondOffset=secondOffset*textureStride;
+							toBeRendered.vTextures[1][0]=textArray[secondOffset];
+							toBeRendered.vTextures[1][1]=textArray[secondOffset+1];
+							thirdOffset=dataPointer[i*numberOfArrays*3+textureOffset+numberOfArrays*2];
+							thirdOffset=thirdOffset*textureStride;
+							toBeRendered.vTextures[2][0]=textArray[thirdOffset];
+							toBeRendered.vTextures[2][1]=textArray[thirdOffset+1];
+						}
+
+						//Normals loading
+						firstOffset=dataPointer[i*numberOfArrays*3+normalOffset];
+						firstOffset=firstOffset*normalStride;
+						toBeRendered.vNormals[0][0]=normArray[firstOffset];
+						toBeRendered.vNormals[0][1]=normArray[firstOffset+1];
+						toBeRendered.vNormals[0][2]=normArray[firstOffset+2];
+						secondOffset=dataPointer[i*numberOfArrays*3+normalOffset+numberOfArrays];
+						secondOffset=secondOffset*normalStride;
+						toBeRendered.vNormals[1][0]=normArray[secondOffset];
+						toBeRendered.vNormals[1][1]=normArray[secondOffset+1];
+						toBeRendered.vNormals[1][2]=normArray[secondOffset+2];
+						thirdOffset=dataPointer[i*numberOfArrays*3+normalOffset+numberOfArrays*2];
+						thirdOffset=thirdOffset*normalStride;
+						toBeRendered.vNormals[2][0]=normArray[thirdOffset];
+						toBeRendered.vNormals[2][1]=normArray[thirdOffset+1];
+						toBeRendered.vNormals[2][2]=normArray[thirdOffset+2];
+
+						//Vertices loading
+						firstOffset=dataPointer[i*numberOfArrays*3+vertOffset];
+						firstOffset=firstOffset*vertexStride;
+						toBeRendered.vVertices[0][0]=vertArray[firstOffset];
+						toBeRendered.vVertices[0][1]=vertArray[firstOffset+1];
+						toBeRendered.vVertices[0][2]=vertArray[firstOffset+2];
+						secondOffset=dataPointer[i*numberOfArrays*3+vertOffset+numberOfArrays];
+						secondOffset=secondOffset*vertexStride;
+						toBeRendered.vVertices[1][0]=vertArray[secondOffset];
+						toBeRendered.vVertices[1][1]=vertArray[secondOffset+1];
+						toBeRendered.vVertices[1][2]=vertArray[secondOffset+2];
+						thirdOffset=dataPointer[i*numberOfArrays*3+vertOffset+numberOfArrays*2];
+						thirdOffset=thirdOffset*vertexStride;
+						toBeRendered.vVertices[2][0]=vertArray[thirdOffset];
+						toBeRendered.vVertices[2][1]=vertArray[thirdOffset+1];
+						toBeRendered.vVertices[2][2]=vertArray[thirdOffset+2];
+
+						toBeRendered.iTextID=iTextureID;
+						//Store the loaded data in the main class
+						vRenderData.push_back(toBeRendered);
+					}
 		}
 	}
+	bModelLoadedCorrectly=true;
 }
 
 
@@ -177,7 +307,8 @@ int	ColladaModel::LoadModel(const char* fileName)
 		}
 		// delete the xml parser after usage
 		delete xml;
-		bModelLoadedCorrectly=true;
+		
+		bXMLLoaded=true;
 		return true;
 	}
 	else
@@ -196,7 +327,11 @@ void ColladaModel::readLibraryImages(IrrXMLReader* xml)
 			{
 				if (!strcmp("image", xml->getNodeName()))
 				{
-					while(xml->read())
+					Image cImage=Image(); 
+					cImage.sID=xml->getAttributeValue("id");
+					cImage.sName=xml->getAttributeValue("name");
+					bool imageEnd=false;
+					while(xml->read()&&!imageEnd)
 					{
 						switch(xml->getNodeType())
 						{
@@ -204,14 +339,139 @@ void ColladaModel::readLibraryImages(IrrXMLReader* xml)
 							{
 								if (!strcmp("init_from", xml->getNodeName()))
 								{
-									xml->read();//Read the filepath
-									textureFilepath = xml->getNodeData();
-									return;
+									xml->read();
+									cImage.sPath=xml->getNodeData();
 								}
-							}
+							}break;
+							case EXN_ELEMENT_END:
+							{
+								if (!strcmp("init_from", xml->getNodeName()))
+									imageEnd=true;
+							}break;
+						}
+					}
+					vImages.push_back(cImage);
+				}
+			}break;
+			case EXN_ELEMENT_END:
+			{
+				if (!strcmp("image", xml->getNodeName()))
+					return;
+			}break;
+		}
+	}
+}
+
+
+
+
+
+void ColladaModel::readLibraryMaterials(IrrXMLReader* xml)
+{
+	while(xml->read())
+	{
+		switch(xml->getNodeType())
+		{
+			case EXN_ELEMENT:
+			{
+				if (!strcmp("material", xml->getNodeName()))
+				{
+					Material cMaterial= Material();
+					cMaterial.sID=xml->getAttributeValue("id");
+					cMaterial.sName=xml->getAttributeValue("name");
+					bool instanceEnd=false;
+					while(xml->read()&&!instanceEnd)
+					{
+						switch(xml->getNodeType())
+						{
+							case EXN_ELEMENT:
+							{
+								if (!strcmp("instance_effect", xml->getNodeName()))
+								{
+									cMaterial.sUrl=xml->getAttributeValue("url");
+									cMaterial.sUrl.replace('#',' ');
+									cMaterial.sUrl.trim();
+								}
+							}break;
+							case EXN_ELEMENT_END:
+							{
+								if (!strcmp("material", xml->getNodeName()))
+									instanceEnd=true;
+							}break;
+						}
+					}
+					vMaterials.push_back(cMaterial);
+				}
+			}break;
+			case EXN_ELEMENT_END:
+			{
+				if (!strcmp("library_materials", xml->getNodeName()))
+					return;
+			}break;
+		}
+	}
+}
+
+void ColladaModel::readLibraryEffects(IrrXMLReader* xml)
+{
+	while(xml->read())
+	{
+		switch(xml->getNodeType())
+		{
+			case EXN_ELEMENT:
+			{
+				if (!strcmp("effect", xml->getNodeName()))
+				{
+					Effect cEffect= Effect();
+					cEffect.sID=xml->getAttributeValue("id");
+					cEffect.sName=xml->getAttributeValue("name");
+					bool effectEnded=false;
+					while(xml->read()&&!effectEnded)
+					{
+						switch(xml->getNodeType())
+						{
+							case EXN_ELEMENT:
+								{
+									if (!strcmp("surface", xml->getNodeName()))
+									{
+										bool surfaceFound=false;
+										while(xml->read()&&!surfaceFound)
+										{
+											switch(xml->getNodeType())
+											{
+												case EXN_ELEMENT:
+												{
+													if (!strcmp("init_from", xml->getNodeName()))
+													{
+														xml->read();
+														cEffect.sSurface=xml->getNodeData();
+													}
+												}break;
+												case EXN_ELEMENT_END:
+												{
+													if (!strcmp("surface", xml->getNodeName()))
+														surfaceFound=true;
+												}break;
+											}
+										}
+										vEffects.push_back(cEffect);
+									}
+								}break;
+							case EXN_ELEMENT_END:
+								{
+									if (!strcmp("profile_COMMON", xml->getNodeName()))
+									{
+										effectEnded=true;
+									}
+								}
 						}
 					}
 				}
+			}break;
+			case EXN_ELEMENT_END:
+			{
+				if (!strcmp("library_effects", xml->getNodeName()))
+					return;
 			}break;
 		}
 	}
@@ -365,20 +625,14 @@ void ColladaModel::readLibraryGeometries(IrrXMLReader* xml)
 					int maxVertices=dataRead.back().sources.back().nElements;
 					dataRead.back().sources.back().pfArray=new float[maxVertices];
 					GLfloat* tempArray=dataRead.back().sources.back().pfArray;
-					float fToBeConverted;
 					for (int i=0; i<maxVertices; i++)
-									tempArray[i]=(GLfloat)strtod(charArray,&charArray);
+						tempArray[i]=(GLfloat)strtod(charArray,&charArray);
 					nextIsArray = false;
 				}
 			}
 			break;
 		case EXN_ELEMENT_END:
 		{
-			if (!strcmp("geometry",xml->getNodeName()))
-			{
-				//We have finished to read data from the geometry section
-				return;
-			}
 		}
 		break;
 	} 
@@ -397,6 +651,7 @@ void ColladaModel::readMainSection(IrrXMLReader* xml)
 	// I ignore version information here. Keep on reading content:
 	while(xml->read())
 	{
+		const char* nodeName=xml->getNodeName();
 		switch(xml->getNodeType())
 		{
 			case EXN_ELEMENT:
@@ -405,6 +660,18 @@ void ColladaModel::readMainSection(IrrXMLReader* xml)
 				{
 					//Read image informations
 					readLibraryImages(xml);
+				}
+				else
+				if (!strcmp("library_materials", xml->getNodeName()))
+				{
+					//Read image informations
+					readLibraryMaterials(xml);
+				}
+				else
+				if (!strcmp("library_effects", xml->getNodeName()))
+				{
+					//Read image informations
+					readLibraryEffects(xml);
 				}
 				else
 				if (!strcmp("library_geometries", xml->getNodeName()))
@@ -419,15 +686,4 @@ void ColladaModel::readMainSection(IrrXMLReader* xml)
 			}
 		}
 	}
-}
-
-
-void ColladaModel::removeWhitespaces(char** start)
-{
-	char* p = *start;
-
-	while(*p && (*p==' ' || *p=='\n' || *p=='\r' || *p=='\t'))
-		++p;
-
-	*start = p;
 }

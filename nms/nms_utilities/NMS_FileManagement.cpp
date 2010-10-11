@@ -13,7 +13,8 @@ long nmsFileManagement::FileSize(FILE *fp)
 
 bool nmsFileManagement::FileExists(const char * filename)
 {
-    if (FILE * file = fopen(filename, "r"))
+	FILE * file;
+	if ( 0== fopen_s(&file,filename, "r"))
     {
         fclose(file);
         return true;

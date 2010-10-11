@@ -16,6 +16,7 @@
 
 TransformationNode traNode;
 TransformationNode traNode2;
+TransformationNode traNode3;
 TransformationNode rotNode;
 TransformationNode rotyNode;
 TransformationNode sateliteRNode;
@@ -118,15 +119,16 @@ int main(int argc, char* argv[])
 	MD2Model model = MD2Model();
 	ColladaModel model2 = ColladaModel();
 	model.LoadModel("models/drfreak/drfreak.md2","models/drfreak/drfreak.tga");
-	model2.LoadModel("models/Duck/Duck.dae");
+	model2.LoadModel("models/FireSpocket/models/FireSpocket.dae");
+	//model2.LoadModel("models/Duck/Duck.dae");
 	model.SetAnim(RUN);
 
 	//LIGHT DEFINITION
-	LightSource light0 = LightSource();
+	/*LightSource light0 = LightSource();
 	light0.setLightNumber(GL_LIGHT0);
 	light0.setLightValue(&Vector(1,1,1,0));
 	light0.setPosVector(&Vector(0,0,0,1));
-	light0.defineLight(light0);
+	light0.defineLight(light0);*/
 	AmbientLight light1 = AmbientLight();
 	light1.setGlobalAmbient(&Vector(1,1,1,0));
 	
@@ -137,7 +139,7 @@ int main(int argc, char* argv[])
 	GeometryNode GeoCube2 = GeometryNode(&cube2, fallRigidBody2);
 
 	geom = GeometryNode(&model2, fallRigidBody2);
-	GeometryNode light = GeometryNode(&light0,fallRigidBody);
+	GeometryNode light = GeometryNode(&light1,fallRigidBody);
 	SceneGraphNode* root = engine.getScene();
 	
 	Matrix tra = Matrix();
@@ -148,16 +150,21 @@ int main(int argc, char* argv[])
 	v = Vector(0.f, 18.f, 0.f);
 	tra2.translate(v);
 
+	Matrix tra3 = Matrix();
+	tra3.uScale(0.10);
+
 	traNode = TransformationNode(tra);
 	traNode2 = TransformationNode(tra2);
+	traNode3 = TransformationNode(tra3);
 
 
 	cam = NMSCameraFPS();
 
 	root->addChild(&traNode);
 	root->addChild(&traNode2);
+	root->addChild(&traNode3);
 	traNode.addChild(&cam);
-	root->addChild(&geom);
+	traNode3.addChild(&geom);
 	traNode2.addChild(&GeoCube);
 	root->addChild(&light);
 	

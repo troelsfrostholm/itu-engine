@@ -58,7 +58,7 @@ class COLLADAMODEL_D Triangle
 	  core::stringc sTextSource;
 
 	  //Mesh data definitions
-		core::stringc sTriangleMaterial;
+	  core::stringc sTriangleMaterial;
 
 	  unsigned iVertOffset;
 	  unsigned iNormOffset;
@@ -87,6 +87,47 @@ class COLLADAMODEL_D ColMesh
 	core::stringc sVertPosition;
 };
 
+class COLLADAMODEL_D Material
+{	
+  public:
+	Material();
+	core::stringc sID;
+	core::stringc sName;
+	core::stringc sUrl;
+};
+
+class COLLADAMODEL_D Effect
+{	
+  public:
+	Effect();
+	core::stringc sID;
+	core::stringc sName;
+	core::stringc sSurface;
+};
+
+class COLLADAMODEL_D Image
+{	
+  public:
+	Image();
+	core::stringc sID;
+	core::stringc sName;
+	core::stringc sPath;
+};
+
+class COLLADAMODEL_D RenderData
+{
+   public:
+	 RenderData();
+     unsigned iTextID;
+
+	 //Triangles count
+	 unsigned iTriangleCount;
+	 vec9_t vVertices;
+	 vec6_t vTextures;
+	 vec9_t vNormals;
+};
+
+
 class COLLADAMODEL_D ColladaModel : public NMS_Mesh
 {
 public:
@@ -101,18 +142,28 @@ private:
 
 	//Check to avoid crashes: the model has loaded in the right way
 	bool                bModelLoadedCorrectly;
+	bool				bXMLLoaded;
+	unsigned			iTriangleCount;
+	unsigned			iMeshCount;
+	
+	vector<ColMesh>     dataRead;
+	vector<Material>    vMaterials;
+	vector<Effect>	    vEffects;
+	vector<Image>       vImages;
+	vector<RenderData>  vRenderData;
+
+
 
 	
 	//XML DATA ACQUISITION
 	void readLibraryImages(IrrXMLReader* xml);
 	void readLibraryGeometries(IrrXMLReader* xml);
+	void readLibraryMaterials(IrrXMLReader* xml);
+	void readLibraryEffects(IrrXMLReader* xml);
 	void readMainSection(IrrXMLReader* xml);
-	void removeWhitespaces(char** start);
-	vector<ColMesh> dataRead;
-	string textureFilepath;
-	int textureID;
+	void RenderFrame();
 
 	//RENDERING THE MODEL
-	void    RenderFrame();
+	void    LoadData();
 };
 #endif
