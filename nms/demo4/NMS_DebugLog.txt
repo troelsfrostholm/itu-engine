@@ -1,0 +1,15 @@
+NMS_TextureManager::Texture Manager Initialized!
+NMS_TextureManager::Trying to load [Astroboy/boy_10.tga]
+NMS_TextureManager::Lump created correctly!
+NMS_TextureManager::Texture loaded from Lump!
+NMS_TextureManager::Loaded [Astroboy/boy_10.tga] without issues!
+NMS_TextureManager::Trying to load [Astroboy/boy_10.tga]
+NMS_TextureManager::Lump created correctly!
+NMS_TextureManager::Loaded [Astroboy/boy_10.tga] without issues!
+NMS_TextureManager::Trying to load [Astroboy/boy_10.tga]
+NMS_TextureManager::Lump created correctly!
+NMS_TextureManager::Loaded [Astroboy/boy_10.tga] without issues!
+NMS_TextureManager::Trying to load [Astroboy/boy_10.tga]
+NMS_TextureManager::Lump created correctly!
+NMS_TextureManager::Loaded [Astroboy/boy_10.tga] without issues!
+NMS_TextureManager::Freed the whole memory!
