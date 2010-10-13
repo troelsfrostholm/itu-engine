@@ -7,8 +7,9 @@
 #ifndef NMS_EVENT_H
 #define NMS_EVENT_H
 
-
 #pragma warning( disable: 4251 )  //Used to disable this useless warning: http://www.unknownroad.com/rtfm/VisualStudio/warningC4251.html
+
+
 //#include "callback.h"
 #include "SDL.h"
 #include <boost/function.hpp>
@@ -32,9 +33,6 @@ private:
 	boost::function1<void, SDLKey> keyPressedCallback;
 	boost::function1<void, SDLKey> keyReleasedCallback;
 	boost::function2<void, int, int> mouseMovedCallback;
-
-	
-
 	NMS_Event::NMS_Event();
 
 public:

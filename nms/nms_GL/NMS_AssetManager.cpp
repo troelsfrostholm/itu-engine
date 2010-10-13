@@ -33,7 +33,7 @@ void NMS_AssetManager::Destroy (void) {
 }
 
 
-char *NMS_AssetManager::GetErrorMessage (void) {
+char* NMS_AssetManager::GetErrorMessage (void) {
 	return m_Singleton->szErrorMessage;
 }
 

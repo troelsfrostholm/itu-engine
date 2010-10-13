@@ -7,6 +7,8 @@
 #ifndef __NMS_TEXTUREMANAGER
 #define __NMS_TEXTUREMANAGER
 
+#pragma warning( disable: 4251 )  //Used to disable this useless warning: http://www.unknownroad.com/rtfm/VisualStudio/warningC4251.html
+
 #include "NMS_sha1.h"
 #include "NMS_FileManagement.h"
 #include "NMS_LogFunctions.h"
@@ -16,15 +18,11 @@
 #include <string.h>
 #include <stdio.h>
 
-#include <Windows.h>
-#include <gl/gl.h>
-#include <gl/glu.h>
+#include "SDL_opengl.h"
 
 
 //Include Devil Libraries
 #include <IL/il.h>
-
-#pragma warning( disable: 4251 )  //Used to disable this useless warning: http://www.unknownroad.com/rtfm/VisualStudio/warningC4251.html
 
 
 #define NMS_TEXTUREMANAGER	NMS_TextureManager::GetSingleton()
@@ -42,13 +40,11 @@ class TEXTUREMANAGER_D NMS_TextureManager {
 public :
 	NMS_TextureManager (void);
 	~NMS_TextureManager (void);
-	static NMS_TextureManager &GetSingleton (void);
+	static NMS_TextureManager& GetSingleton (void);
 
 private :
 	static void Initialize (void);
 	textStruct checkForHash(shaMap hash,char* textureName);
-public :
-	static void Destroy (void);
 
 public :
 	//Load a texture. We are using devil so we can load any file format that Devil is able to load as a texture
@@ -57,10 +53,10 @@ public :
 	void FreeTexture (char* textureName);
 	//Release the memory occupied by all the textures
 	void FreeAll (void);
+	static void Destroy (void);
 
 private :
-	static NMS_TextureManager *m_Singleton;
-
+	static NMS_TextureManager* m_Singleton;
 	char m_sMessage[80];
 	static const size_t m_iMessageSize=80*sizeof(char);
 	std::map<char* ,textStruct> textureMap;

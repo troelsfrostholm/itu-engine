@@ -93,6 +93,7 @@ void NMS_SceneRenderer::down()
 		SDL_WaitThread(me, NULL);
 	sceneGraphRoot = NULL;
 	sceneGraphGuard = NULL;
+	inputGuard=NULL;
 }
 
 int NMS_SceneRenderer::run()

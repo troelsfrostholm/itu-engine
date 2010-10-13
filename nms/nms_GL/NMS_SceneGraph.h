@@ -1,3 +1,7 @@
+/****************************************************************************************
+DLL EXPORTING SAFE
+*****************************************************************************************/
+
 /*
 	Scene graph does not protect you against circular dependencies. If you make one, 
 	functions like traverse_df and backtrack_to_root will make infinite loops. 

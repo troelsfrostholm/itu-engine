@@ -10,6 +10,7 @@ ColladaModel::ColladaModel()
 	bXMLLoaded				=false;
 	iTriangleCount          =0;
 	iMeshCount				=0;
+	transformation          =Matrix();
 };
 
 ColladaModel::~ColladaModel(){};
@@ -53,6 +54,15 @@ Material::Material()
 	 sID=NULL;
 	 sName=NULL;
 	 sUrl=NULL;
+};
+
+Node::Node()
+{	
+	 sID=NULL;
+	 sName=NULL;
+	 sSID=NULL;
+	 sType=NULL;
+	 transformation=Matrix();
 };
 
 Effect::Effect()
@@ -131,9 +141,6 @@ void ColladaModel::LoadData()
 	for(m=0;m<dataRead.size();m++)
 	{
 		RenderData toBeRendered=RenderData();
-		vec9_t vertices;
-		vec9_t normals;
-		vec6_t textures;
 		
 		Source* positionSource;
 		Source* textureSource;
@@ -299,7 +306,7 @@ int	ColladaModel::LoadModel(const char* fileName)
 					else
 					{
 						//It's not a collada file, return 0
-						return 1;
+						return 0;
 					}
 				}
 				break;
@@ -639,8 +646,99 @@ void ColladaModel::readLibraryGeometries(IrrXMLReader* xml)
   }
 }
 
+Matrix ColladaModel::readMatrix(IrrXMLReader* xml)
+{
+	Matrix toBeReturned=Matrix();
+	if (xml->isEmptyElement())
+		return toBeReturned;
+	char* charArray=(char*)xml->getNodeData();
+	for (int i=0; i<4; i++)
+		for (int j=0; j<4; j++)
+			toBeReturned(i,j)=(float)strtod(charArray,&charArray);
+	return toBeReturned;
+}
+
+Matrix ColladaModel::readTranslation(IrrXMLReader* xml)
+{
+	xml->read();//Get the data
+	Matrix toBeReturned=Matrix();
+	if (xml->isEmptyElement())
+		return toBeReturned;
+	char* charArray=(char*)xml->getNodeData();
+	for (int i=0; i<3; i++)
+			toBeReturned(i,4)=(float)strtod(charArray,&charArray);
+	return toBeReturned;
+}
+
+Matrix ColladaModel::readRotation(IrrXMLReader* xml)
+{
+	Matrix toBeReturned=Matrix();
+	//Read the data now
+	xml->read();
+	if (xml->isEmptyElement())
+			return toBeReturned;
+	char* charArray=(char*)xml->getNodeData();
+	Vector v=Vector();
+	for (int i=0; i<3; i++)
+			v[i]=(float)strtod(charArray,&charArray);
+	toBeReturned.rotV(strtod(charArray,&charArray),v);
+	return toBeReturned;
+}
+
+Matrix ColladaModel::readScale(IrrXMLReader* xml)
+{
+	xml->read();//Get the data
+	Matrix toBeReturned=Matrix();
+	if (xml->isEmptyElement())
+		return toBeReturned;
+	char* charArray=(char*)xml->getNodeData();
+	for (int i=0; i<3; i++)
+			toBeReturned(i,i)=(float)strtod(charArray,&charArray);
+	return toBeReturned;
+}
+
+void ColladaModel::readNode(IrrXMLReader* xml)
+{}
 
 
+
+
+
+
+
+void ColladaModel::readLibraryVisualScene(IrrXMLReader* xml)
+{
+	while(xml->read())
+	{
+		switch(xml->getNodeType())
+		{
+			case EXN_ELEMENT:
+			{
+				if (!strcmp("node", xml->getNodeName()))
+				{
+				}
+				else if (!strcmp("matrix", xml->getNodeName()))
+				{
+				}
+				else if (!strcmp("translate", xml->getNodeName()))
+				{
+				}
+				else if (!strcmp("rotate", xml->getNodeName()))
+				{
+				}
+				else if (!strcmp("scale", xml->getNodeName()))
+				{
+				}
+			}
+			break;
+			case EXN_ELEMENT_END:
+			{
+				if (!strcmp("image", xml->getNodeName()))
+					return;
+			}break;
+		}
+	}
+}
 
 
 void ColladaModel::readMainSection(IrrXMLReader* xml)
@@ -677,6 +775,11 @@ void ColladaModel::readMainSection(IrrXMLReader* xml)
 				if (!strcmp("library_geometries", xml->getNodeName()))
 				{
 					readLibraryGeometries(xml);
+				}
+				else
+				if (!strcmp("library_visual_scenes", xml->getNodeName()))
+				{
+					readLibraryVisualScene(xml);
 				}
 				break;
 			}

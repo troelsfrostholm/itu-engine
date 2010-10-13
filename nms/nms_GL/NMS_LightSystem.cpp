@@ -113,8 +113,6 @@ void LightSource::defineLight(LightSource source)
 
 void LightSource::render(float time)
 {
-	if(bToBeUpdated)
-	{
 		    GLfloat* temp=new GLfloat[4];
 			temp[0]=(getPosVector())[1];
 			temp[1]=(getPosVector())[2];
@@ -133,5 +131,4 @@ void LightSource::render(float time)
 			glLightfv(getLightNumber(),GL_SPOT_DIRECTION,temp);
 			glEnable(getLightNumber());
 			bToBeUpdated=false;
-	}
 }
