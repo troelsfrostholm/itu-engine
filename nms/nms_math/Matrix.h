@@ -4,20 +4,25 @@
 #ifndef MATRIX_H__
 #define MATRIX_H__
 
+#define NOMINMAX
 #include <fstream>
 #include "Vector.h"
 #include "Trig.h"
 #include <cmath>
+#include <math.h>
+#include <float.h>
 #include <cstdio>
 #include <cstdlib>
 #include <string>
 #include <iostream>
 #include <stdexcept>
+#include "Quaternion.h"
+#include <algorithm>
 
 using namespace std;
 
 class MATRIX_D Matrix{
-  
+   friend class Quaternion;
    private:
 
 	 struct mat_struct
@@ -107,5 +112,7 @@ class MATRIX_D Matrix{
 
 	  //Copy operator
 	    const Matrix& operator = (const Matrix& m);
+
+		Quaternion Matrix::createQuaternion();
 };
 #endif;

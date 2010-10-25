@@ -456,3 +456,16 @@ void Matrix::debugPrint()
 	 fclose(fp);
 
 }
+
+Quaternion  Matrix::createQuaternion()
+{
+	Quaternion toBeReturned;
+	toBeReturned.w = sqrt( max( 0.f, 1.f + (*this)(1,1) + (*this)(2,2) +  (*this)(3,3) ) ) / 2;
+	toBeReturned.x = sqrt( max( 0.f, 1.f + (*this)(1,1) - (*this)(2,2)  - (*this)(3,3) ) ) / 2;
+	toBeReturned.y = sqrt( max( 0.f, 1.f - (*this)(1,1) + (*this)(2,2)  - (*this)(3,3) ) ) / 2;
+	toBeReturned.z = sqrt( max( 0.f, 1.f - (*this)(1,1) - (*this)(2,2)  + (*this)(3,3) ) ) / 2;
+	toBeReturned.x =(float) _copysign( toBeReturned.x, (*this)(3,2) - (*this)(2,3) );
+	toBeReturned.y =(float) _copysign( toBeReturned.y, (*this)(1,3) - (*this)(3,1) );
+	toBeReturned.z =(float) _copysign( toBeReturned.z, (*this)(2,1) - (*this)(1,2) );
+	return toBeReturned;
+}
