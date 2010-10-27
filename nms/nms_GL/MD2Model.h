@@ -7,6 +7,7 @@
 #ifndef __MD2LOADER_H__
 #define __MD2LOADER_H__
 
+#include <windows.h>
 #include <iostream>
 #include "SDL_opengl.h"
 #include <stdio.h>

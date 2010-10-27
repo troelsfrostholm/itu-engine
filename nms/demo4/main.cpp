@@ -98,9 +98,9 @@ int main(int argc, char* argv[])
 	
 	TransformationNode traNode3;
 	ColladaModel model3 = ColladaModel();
-	model3.LoadModel("models/Gundam/Gundam.dae");
+	//model3.LoadModel("models/Gundam/Gundam.dae");
 	//model3.LoadModel("models/FireSpocket/models/FireSpocket.dae");
-	//model3.LoadModel("models/Astroboy/Astroboy.dae");
+	model3.LoadModel("models/Astroboy/Astroboy.dae");
 	//model3.LoadModel("models/colladaDuck/duck_triangulate.dae");
 	float mass;
 	btVector3 fallInertia;

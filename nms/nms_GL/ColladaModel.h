@@ -35,22 +35,44 @@ using namespace std;
 typedef float vec9_t[9];
 typedef float vec6_t[6];
 
+class Accessor
+{	
+  public:
+	Accessor(){iCount=0;iOffset=0;iStride=0;sSource="";};
+	unsigned iCount;
+	unsigned iOffset;
+	unsigned iStride;
+	core::stringc sSource;
+};
 
 class Source
 {	
     public:
-	  Source(){};
+	  Source(){sName=NULL;
+			   sID=NULL;
+			   accessorReference=NULL;
+			   pIdRefArray=NULL;
+			   iFArraySize=0;
+			   iFArraySize=0;};
 	  core::stringc sName;
 	  core::stringc sID;
 
 	  GLfloat* pfArray;
+	  unsigned iFArraySize;
+	  core::stringc* pIdRefArray;
+	  unsigned iIdRefArraySize;
 	  unsigned nElements;
 
 	//Accessor variables
 	  unsigned count;
 	  unsigned offset;
 	  unsigned stride;
+
+
+	  vector<Accessor> vAccessor;
+	  core::stringc accessorReference;
 };
+
 
 class Triangle
 {	
@@ -99,6 +121,10 @@ class Material
 	core::stringc sUrl;
 };
 
+
+
+
+
 class Node
 {	
   public:
@@ -107,7 +133,7 @@ class Node
 	core::stringc sName;
 	core::stringc sSID;
 	core::stringc sType;
-	vector<Node> nodes;
+	std::map<core::stringc ,Node> nodes;
 	Matrix transformation;
 };
 
@@ -127,6 +153,14 @@ class Image
 	core::stringc sID;
 	core::stringc sName;
 	core::stringc sPath;
+};
+
+class Skin
+{
+public: 
+	Skin(){};
+	Matrix mBindShape;
+	vector<Source> vSources;
 };
 
 class RenderData
@@ -160,16 +194,21 @@ private:
 	bool				bXMLLoaded;
 	unsigned			iTriangleCount;
 	unsigned			iMeshCount;
+
+	Skin				skinningInformation;
 	
 	vector<ColMesh>     dataRead;
 	vector<Material>    vMaterials;
 	vector<Effect>	    vEffects;
 	vector<Image>       vImages;
 	vector<RenderData>  vRenderData;
+	std::map<core::stringc ,Node>   mNodes;
 
 	//Transformation for the scene
 	Matrix transformation;
 
+	core::stringc sSkeletonID;
+	Node* pSkeletonNode;
 
 
 	
@@ -180,6 +219,10 @@ private:
 	void readLibraryEffects(IrrXMLReader* xml);
 	void readMainSection(IrrXMLReader* xml);
 	void readLibraryVisualScene(IrrXMLReader* xml);
+	void readLibraryControllers(IrrXMLReader* xml);
+	void readController(IrrXMLReader* xml);
+	void readSkin(IrrXMLReader* xml);
+	void readSource(IrrXMLReader* xml);
 	void RenderFrame();
 
 	//XML TRANSFORMATION READING
@@ -187,9 +230,17 @@ private:
 	Matrix readTranslation(IrrXMLReader* xml);
 	Matrix readRotation(IrrXMLReader* xml);
 	Matrix readScale(IrrXMLReader* xml);
-	void readNode(IrrXMLReader* xml);
+
+	//DATA READING
+	void readFloatArray(IrrXMLReader* xml,float* arrayPointer);
+	void readIDREFArray(IrrXMLReader* xml,core::stringc* arrayPointer);
+
+	void   readNode(IrrXMLReader* xml,Node* parent);
+	void   readInstanceController(IrrXMLReader* xml);
 
 	//RENDERING THE MODEL
 	void    LoadData();
 };
 #endif
+
+

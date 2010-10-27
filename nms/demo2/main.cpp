@@ -119,7 +119,7 @@ int main(int argc, char* argv[])
 	MD2Model model = MD2Model();
 	ColladaModel model2 = ColladaModel();
 	model.LoadModel("models/drfreak/drfreak.md2","models/drfreak/drfreak.tga");
-	model2.LoadModel("models/FireSpocket/models/FireSpocket.dae");
+	//model2.LoadModel("models/FireSpocket/models/FireSpocket.dae");
 	//model2.LoadModel("models/Duck/Duck.dae");
 	model.SetAnim(RUN);
 
