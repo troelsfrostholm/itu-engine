@@ -15,6 +15,7 @@
 #include "NMS_FileManagement.h"
 #include "NMS_LogFunctions.h"
 #include "NMS_Mesh.h"
+#include "NMS_CustomTypes.h"
 
 #define MAGIC_NO	844121161  //It means IDP2
 
@@ -83,8 +84,8 @@ typedef struct
 //STRUCTURE OF A SINGLE VERTEX  vertex_t in the guide
 typedef struct
 {
-	char	vertex[3];
-	char	lightNormalIndex;
+	BYTE	vertex[3];
+	BYTE	lightNormalIndex;
 }TriangleVertex,*pTriangleVertex;
 
 //FRAME DEFINITION  frame_t in the guide
@@ -166,13 +167,13 @@ class MD2LOADER_D MD2Model : public NMS_Mesh
 
 		//MISC MEMORY AND FILE ROUTINES
 		int		ReadFile(const char* fileName);						    //Read the model file
-		int		ReadHeader(char *buffer,pHeader phead);			        //Load the header of the model as stored into the buffer
+		int		ReadHeader(BYTE* buffer,pHeader phead);			        //Load the header of the model as stored into the buffer
 		
 	private:
 		//Check to avoid crashes: the model has loaded in the right way
 		bool                bModelLoadedCorrectly;
 
-		char*				fileBuffer;	 //The buffer containing the whole file that has been read
+		BYTE*				fileBuffer;	 //The buffer containing the whole file that has been read
 		Header				md2Header;	 //Our MD2 header, useful to get the offset of the components
 
 
