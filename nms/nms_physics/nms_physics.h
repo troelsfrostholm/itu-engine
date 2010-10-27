@@ -12,6 +12,7 @@
 #include "BulletCollision\CollisionDispatch\btGhostObject.h"
 #include <vector>
 #include <boost/function.hpp>
+#include "nms_debugDrawer.h"
 
 #pragma warning( disable: 4251 )  //Used to disable this useless warning: http://www.unknownroad.com/rtfm/VisualStudio/warningC4251.html
 
@@ -30,17 +31,27 @@ class btGhostObject;
 class PHYSICS_D nms_physics
 {
 	private:
-		btDynamicsWorld* dynamicsWorld;
+
+		btDynamicsWorld *dynamicsWorld;
+
 		//Keep collision shapes, for deletion/cleanup
 		btAlignedObjectArray<btCollisionShape*>	collisionShapes;
-		btBroadphaseInterface*	broadphase;
+		
+		btBroadphaseInterface *broadphase;
 		btCollisionDispatcher*	dispatcher;
 		btConstraintSolver*	solver;
 		btDefaultCollisionConfiguration* collisionConfiguration;
+
 		btGhostPairCallback *m_ghostPairCallback;
+
 		btClock clock;
+
+		//triggers
 		std::vector<btPairCachingGhostObject*> triggers;
 		boost::function1<void, int> triggerCallback;
+
+		//debug drawer
+		nms_debugDrawer debugDrawer;
 
 	public:
 		nms_physics();
@@ -55,7 +66,7 @@ class PHYSICS_D nms_physics
 		void checkAllTriggers();
 		btDynamicsWorld* getDynamicsWorld();
 };
-/*
+
 class PHYSICS_D NMS_KinematicMotionState : public btMotionState 
 {
 	public:
@@ -92,5 +103,10 @@ class PHYSICS_D NMS_KinematicMotionState : public btMotionState
 		btTransform userPosition;
 		bool userSetPosition;
 };
-*/
+
+class PHYSICS_D NMS_RigidBody
+{
+
+};
+
 #endif

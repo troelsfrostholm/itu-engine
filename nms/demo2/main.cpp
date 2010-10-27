@@ -119,8 +119,8 @@ int main(int argc, char* argv[])
 	MD2Model model = MD2Model();
 	ColladaModel model2 = ColladaModel();
 	model.LoadModel("models/drfreak/drfreak.md2","models/drfreak/drfreak.tga");
-	model2.LoadModel("models/FireSpocket/models/FireSpocket.dae");
-	//model2.LoadModel("models/Duck/Duck.dae");
+	//model2.LoadModel("models/FireSpocket/models/FireSpocket.dae");
+	model2.LoadModel("models/Duck/Duck.dae");
 	model.SetAnim(RUN);
 
 	//LIGHT DEFINITION
@@ -151,7 +151,7 @@ int main(int argc, char* argv[])
 	tra2.translate(v);
 
 	Matrix tra3 = Matrix();
-	tra3.uScale(0.10);
+	tra3.uScale(1.00);
 
 	traNode = TransformationNode(tra);
 	traNode2 = TransformationNode(tra2);

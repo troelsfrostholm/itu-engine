@@ -18,9 +18,15 @@
     <ClCompile Include="nms_physics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="nms_debugDrawer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="nms_physics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="nms_debugDrawer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
