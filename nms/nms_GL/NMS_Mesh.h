@@ -7,6 +7,8 @@
 #ifndef __NMS_MESH_H__
 #define __NMS_MESH_H__
 
+#define NOMINMAX
+
 #include <windows.h>		// Header File For Windows
 #include <gl\gl.h>			// Header File For The OpenGL32 Library
 #include <gl\glu.h>			// Header File For The GLu32 Library 

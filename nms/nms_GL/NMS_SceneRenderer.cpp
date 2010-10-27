@@ -108,7 +108,6 @@ int NMS_SceneRenderer::renderingLoop()
 		currentTime+=0.0008f;
 		NMS_EVENT.pollEvents();
 		physics->simulatePhysics();
-		physics->checkAllTriggers();
 		render();
 		CalculateFrameRate();
 		//SDL_Delay(10);
@@ -140,12 +139,13 @@ void NMS_SceneRenderer::setCurrentCamera(CameraNode* camera)
 }
 
 //Render meshes as they are traversed in the scene graph
-void NMS_SceneRenderer::sg_before(Matrix transform, NMS_Mesh* model, btRigidBody *b)
+void NMS_SceneRenderer::sg_before(Matrix transform, NMS_Mesh* model, NxActor *actor)
 {
 	glLoadIdentity();
 	Matrix t_transposed = ~transform;
 	glMultMatrixf(t_transposed.returnPointer());
-	applyPhysics(b);
+	if(actor != NULL)
+		applyP(actor);
 	(*model).render(currentTime);
 }
 
@@ -168,11 +168,10 @@ void NMS_SceneRenderer::CalculateFrameRate()
 	}
 }
 
-void NMS_SceneRenderer::applyPhysics(btRigidBody *b)
+
+void NMS_SceneRenderer::applyP(NxActor *a)
 {
-	btScalar matrix[16];
-	btTransform trans;
-	b->getMotionState()->getWorldTransform(trans);
-	trans.getOpenGLMatrix(matrix);
-	glMultMatrixf(matrix);
+	float glmat[16]; //OpenGL matrix
+	a->getGlobalPose().getColumnMajor44(glmat);
+	glMultMatrixf(glmat);
 }

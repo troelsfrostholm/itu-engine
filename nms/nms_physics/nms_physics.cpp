@@ -1,129 +1,81 @@
 #include "nms_physics.h"
 #include <iostream>
 
-void nms_physics::initPhysics()
+void nms_physics::InitNx()
 {
-	broadphase = new btDbvtBroadphase();
+    // Create the physics SDK
+    	// Create the physics SDK
+    gPhysicsSDK = NxCreatePhysicsSDK(NX_PHYSICS_SDK_VERSION);
+    if (!gPhysicsSDK)  return;
 
-    collisionConfiguration = new btDefaultCollisionConfiguration();
-    dispatcher = new btCollisionDispatcher(collisionConfiguration);
+	// Set the physics parameters
+	gPhysicsSDK->setParameter(NX_SKIN_WIDTH, 0.01);
 
-    solver = new btSequentialImpulseConstraintSolver;
+	// Set the debug visualization parameters
+	gPhysicsSDK->setParameter(NX_VISUALIZATION_SCALE, 1);
+	gPhysicsSDK->setParameter(NX_VISUALIZE_COLLISION_SHAPES, 1);
+	gPhysicsSDK->setParameter(NX_VISUALIZE_ACTOR_AXES, 1);
 
-    dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher,broadphase,solver,collisionConfiguration);
+    // Create the scene
+    NxSceneDesc sceneDesc;
+ 	sceneDesc.simType = NX_SIMULATION_SW;
+	sceneDesc.gravity.set(0.0f, -9.8f, 0.0f);
+    gScene = gPhysicsSDK->createScene(sceneDesc);
 
-    dynamicsWorld->setGravity(btVector3(0,-10,0));
+	
+	// Create the default material
+	NxMaterial* defaultMaterial = gScene->getMaterialFromIndex(0); 
+	defaultMaterial->setRestitution(0.5);
+	defaultMaterial->setStaticFriction(0.5);
+	defaultMaterial->setDynamicFriction(0.5);
 
-	m_ghostPairCallback = new btGhostPairCallback();
-	dynamicsWorld->getBroadphase()->getOverlappingPairCache()->setInternalGhostPairCallback(m_ghostPairCallback);
+    // Initialize the physics loop
+    if (gScene) StartPhysics();
+}
 
-	triggers = std::vector<btPairCachingGhostObject*>();
+NxScene* nms_physics::getScene()
+{
+	return gScene;
+}
 
+void nms_physics::StartPhysics()
+{
+    // Update the time step
+    NxReal deltaTime = 1.0f/60.0f;
+
+    // Start collision and dynamics for delta time since the last frame
+    gScene->simulate(deltaTime);
+    gScene->flushStream();
+}
+
+void nms_physics::GetPhysicsResults()
+{
+	// Get results from gScene->simulate(gDeltaTime)
+	while (!gScene->fetchResults(NX_RIGID_BODY_FINISHED, false));
 }
 
 void nms_physics::exitPhysics()
 {
-	int i;
-	for (i=dynamicsWorld->getNumCollisionObjects()-1; i>=0 ;i--)
+	if (gScene)
 	{
-		btCollisionObject* obj = dynamicsWorld->getCollisionObjectArray()[i];
-		btRigidBody* body = btRigidBody::upcast(obj);
-		if (body && body->getMotionState())
-		{
-			delete body->getMotionState();
-		}
-		dynamicsWorld->removeCollisionObject( obj );
-		delete obj;
+		GetPhysicsResults();  // Make sure to fetchResults() before shutting down
+		gPhysicsSDK->releaseScene(*gScene);
 	}
-
-	//delete collision shapes
-	for (int j=0;j<collisionShapes.size();j++)
-	{
-		btCollisionShape* shape = collisionShapes[j];
-		delete shape;
-	}
-
-	delete dynamicsWorld;
-	
-	delete solver;
-	
-	delete broadphase;
-	
-	delete dispatcher;
-
-	delete collisionConfiguration;
+	if (gPhysicsSDK)  gPhysicsSDK->release();
 }
 
 void nms_physics::simulatePhysics()
 {
-	float s = getDeltaTimeSeconds();
-	dynamicsWorld->stepSimulation(s, 1);
-}
-
-void nms_physics::addRBody(btRigidBody* body)
-{
-	dynamicsWorld->addRigidBody(body);
-}
-
-btDynamicsWorld* nms_physics::getDynamicsWorld()
-{
-	return dynamicsWorld;
+	StartPhysics();
+	GetPhysicsResults();
 }
 
 nms_physics::nms_physics()
 {
-	initPhysics();
+	InitNx();
 }
 
 nms_physics::~nms_physics()
 {
 	exitPhysics();
-}
-
-/* This code is taken from the Bullet demo */
-btScalar nms_physics::getDeltaTimeSeconds()
-{
-	btScalar dt = (btScalar)clock.getTimeMicroseconds();
-	dt = dt /1000000.f; //Convert microseconds to seconds
-	clock.reset();
-	return dt;
-}
-
-void nms_physics::createTrigger(btCollisionShape *triggershape, btTransform &position, void (_callback)(int i))
-{
-	btPairCachingGhostObject *TriggerGhostObject = new btPairCachingGhostObject();
-	TriggerGhostObject->setCollisionShape(triggershape);
-	TriggerGhostObject->setWorldTransform(position);
-
-	TriggerGhostObject->setCollisionFlags(btCollisionObject::CF_NO_CONTACT_RESPONSE);
-
-	dynamicsWorld->addCollisionObject(TriggerGhostObject);
-
-	triggers.push_back(TriggerGhostObject);
-
-	triggerCallback = _callback;
-}
-
-void nms_physics::checkAllTriggers()
-{
-	for(unsigned int i=0; i < triggers.size(); i++) 
-	{
-		checkTrigger(triggers[i]);
-	}
-}
-
-int nms_physics::checkTrigger(btPairCachingGhostObject *ghostObject)
-{
-	int triggered = 0;
-	btAlignedObjectArray<btCollisionObject*>& overlappingObjects = ghostObject->getOverlappingPairs();	
-	const int numObjects = overlappingObjects.size();	
-	for(int i=0; i<numObjects; i++)
-	{
-		btCollisionObject*	colObject = overlappingObjects[i];
-		/// Do something with colObj
-		triggered = 1;
-		triggerCallback(triggered);
-		break;
-	}
-	return triggered;
 }

@@ -44,7 +44,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include\Boost 1.4.4;$(SolutionDir)\nms_utilities;$(SolutionDir)\include\Devil 1.7.8;$(SolutionDir)\nms_GL;$(SolutionDir)\include\SDL 1.2.14;$(SolutionDir)\nms_physics;$(SolutionDir)\nms_math;$(SolutionDir)\Bullet\src;$(SolutionDir)\include\irrXML 1.2;$(SolutionDir)\include\OpenAL 1.1;$(SolutionDir)\NMS_Sound;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\Boost 1.4.4;$(SolutionDir)\nms_utilities;$(SolutionDir)\include\Devil 1.7.8;$(SolutionDir)\nms_GL;$(SolutionDir)\include\SDL 1.2.14;$(SolutionDir)\nms_physics;$(SolutionDir)\nms_math;$(SolutionDir)\Bullet\src;$(SolutionDir)\include\irrXML 1.2;$(SolutionDir)\include\OpenAL 1.1;$(SolutionDir)\NMS_Sound;$(SolutionDir)\PhysX\SDKs\Physics\include;$(SolutionDir)\PhysX\SDKs\PhysXLoader\include;$(SolutionDir)\PhysX\SDKs\Foundation\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>

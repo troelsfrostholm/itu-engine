@@ -16,6 +16,8 @@
 #include <string.h>
 #include <stdio.h>
 
+#define NOMINMAX
+
 #include <Windows.h>
 #include <gl/gl.h>
 #include <gl/glu.h>

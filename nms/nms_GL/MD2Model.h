@@ -7,6 +7,8 @@
 #ifndef __MD2LOADER_H__
 #define __MD2LOADER_H__
 
+#define NOMINMAX
+
 #include <iostream>
 #include <windows.h>		// Header File For Windows
 #include <gl\gl.h>			// Header File For The OpenGL32 Library

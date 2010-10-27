@@ -5,7 +5,6 @@
 #include "ColladaModel.h"
 #include <cmath>
 #include "NMS_Mutex.h"
-#include "BulletCollision\CollisionDispatch\btGhostObject.h"
 #include "NMS_LightSystem.h"
 #include "NMS_Audio.h"
 #include "NMS_Camera.h"
@@ -22,9 +21,6 @@ TransformationNode rotyNode;
 TransformationNode sateliteRNode;
 TransformationNode sateliteTNode;
 TransformationNode camTNode;
-btRigidBody* fallRigidBody;
-btRigidBody* fallRigidBody2;
-btRigidBody* fallRigidBody3;
 GeometryNode geom;
 GeometryNode satelite;
 NMSCameraFPS cam;
@@ -95,32 +91,37 @@ int main(int argc, char* argv[])
 {
 	engine.NMSInit(WIDTH, HEIGHT, 16, "Demo 2", false);
 
-	btQuaternion q;
-	q.setEuler(0, 0.25, -0.05);
+	NxActor *a1;
+	NxActorDesc ad1;
 
-	btCollisionShape* fallShape = new btBoxShape(btVector3(100,100,100));
-	btDefaultMotionState* fallMotionState = new btDefaultMotionState(btTransform(q,btVector3(0,0,0)));
-    btScalar mass = 0.0f;
-    btVector3 fallInertia(0,0,0);
-    fallShape->calculateLocalInertia(mass,fallInertia);
-    btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI(mass,fallMotionState,fallShape,fallInertia);
-    fallRigidBody = new btRigidBody(fallRigidBodyCI);
-    engine.physics->addRBody(fallRigidBody);
+	NxBoxShapeDesc boxDesc;
+	boxDesc.dimensions = NxVec3( 2.0f,  3.0f, 4.0f );
 
-	btCollisionShape* fallShape2 = new btBoxShape(btVector3(8,8,8));
-	btDefaultMotionState* fallMotionState2 = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,200,0)));
-    mass = 1.0f;
-    btVector3 fallInertia2(0,0,0);
-    fallShape2->calculateLocalInertia(mass,fallInertia2);
-    btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI2(mass,fallMotionState2,fallShape2,fallInertia2);
-    fallRigidBody2 = new btRigidBody(fallRigidBodyCI2);
-    engine.physics->addRBody(fallRigidBody2);
+	ad1.shapes.pushBack(&boxDesc);
+	ad1.density = 0.0f;
+	ad1.globalPose.t = NxVec3( 10.0f , 10.0f, 10.0f );
+
+	a1 = engine.physics->getScene()->createActor(ad1);
+	a1->userData = NULL;
+
+	NxActor *a2;
+	NxActorDesc ad2;
+
+	NxBoxShapeDesc boxDesc2;
+	boxDesc2.dimensions = NxVec3( 2.0f,  3.0f, 4.0f );
+
+	ad2.shapes.pushBack(&boxDesc2);
+	ad2.density = 10.0f;
+	ad2.globalPose.t = NxVec3( 10.0f , 10.0f, 10.0f );
+
+	a2 = engine.physics->getScene()->createActor(ad2);
+	a2->userData = NULL;
 
 	MD2Model model = MD2Model();
 	ColladaModel model2 = ColladaModel();
-	model.LoadModel("models/drfreak/drfreak.md2","models/drfreak/drfreak.tga");
-	model2.LoadModel("models/FireSpocket/models/FireSpocket.dae");
-	//model2.LoadModel("models/Duck/Duck.dae");
+	//model.LoadModel("models/drfreak/drfreak.md2","models/drfreak/drfreak.tga");
+	//model2.LoadModel("models/FireSpocket/models/FireSpocket.dae");
+	model2.LoadModel("models/Duck/Duck.dae");
 	model.SetAnim(RUN);
 
 	//LIGHT DEFINITION
@@ -133,15 +134,17 @@ int main(int argc, char* argv[])
 	light1.setGlobalAmbient(&Vector(1,1,1,0));
 	
 	NMS_Cube cube = NMS_Cube();
-	GeometryNode GeoCube = GeometryNode(&cube, fallRigidBody);
+	GeometryNode GeoCube = GeometryNode(&cube);
+	GeoCube.setActor(a1);
 
 	NMS_Cube cube2 = NMS_Cube();
-	GeometryNode GeoCube2 = GeometryNode(&cube2, fallRigidBody2);
+	GeometryNode GeoCube2 = GeometryNode(&cube2);
 
-	geom = GeometryNode(&model2, fallRigidBody2);
-	GeometryNode light = GeometryNode(&light1,fallRigidBody);
+	geom = GeometryNode(&model2);
+	geom.setActor(a2);
+	GeometryNode light = GeometryNode(&light1);
 	SceneGraphNode* root = engine.getScene();
-	
+
 	Matrix tra = Matrix();
 	Vector v = Vector(0.f, 100.f, 300.f);
 	tra.translate(v);
@@ -151,12 +154,11 @@ int main(int argc, char* argv[])
 	tra2.translate(v);
 
 	Matrix tra3 = Matrix();
-	tra3.uScale(0.10);
+	tra3.uScale(1.00);
 
 	traNode = TransformationNode(tra);
 	traNode2 = TransformationNode(tra2);
 	traNode3 = TransformationNode(tra3);
-
 
 	cam = NMSCameraFPS();
 

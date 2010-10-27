@@ -36,10 +36,10 @@ public:
 	void render();
 	void setScene(SceneGraphNode* scene);
 	void setCurrentCamera(CameraNode* camera);
-	void sg_before(Matrix transform, NMS_Mesh* model, btRigidBody *b);
+	void sg_before(Matrix transform, NMS_Mesh* model, NxActor *actor);
 	void sg_after(Matrix transform, NMS_Mesh* model);
-	void applyPhysics(btRigidBody *b);
 	void CalculateFrameRate();
+	void applyP(NxActor *a);
 };
 
 #endif
