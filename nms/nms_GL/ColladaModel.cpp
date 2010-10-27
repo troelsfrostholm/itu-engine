@@ -11,6 +11,8 @@ ColladaModel::ColladaModel()
 	iTriangleCount          =0;
 	iMeshCount				=0;
 	transformation          =Matrix();
+	sSkeletonID				=NULL;
+	skinningInformation     =Skin();
 };
 
 ColladaModel::~ColladaModel(){};
@@ -79,6 +81,7 @@ Image::Image()
 	sName=NULL;
 	sPath=NULL;
 };
+
 
 
 void ColladaModel::render(float time)
@@ -490,7 +493,6 @@ void ColladaModel::readLibraryEffects(IrrXMLReader* xml)
 void ColladaModel::readLibraryGeometries(IrrXMLReader* xml)
 {
 	bool nextIsArray = false;
-
 	// read sources with arrays and accessor for each mesh
 
 	if (!xml->isEmptyElement())
@@ -506,11 +508,6 @@ void ColladaModel::readLibraryGeometries(IrrXMLReader* xml)
 						ColMesh mesh =  ColMesh();
 						dataRead.push_back(mesh);
 						break;
-					}
-					else
-					if (!strcmp("mesh",xml->getNodeName()))
-					{
-						//Skip it and do nothing, nothing to read, nothing important
 					}
 					else
 					if (!strcmp("source",xml->getNodeName()))
@@ -640,6 +637,8 @@ void ColladaModel::readLibraryGeometries(IrrXMLReader* xml)
 			break;
 		case EXN_ELEMENT_END:
 		{
+			if (!strcmp("library_geometries", xml->getNodeName()))
+				return;
 		}
 		break;
 	} 
@@ -652,8 +651,8 @@ Matrix ColladaModel::readMatrix(IrrXMLReader* xml)
 	if (xml->isEmptyElement())
 		return toBeReturned;
 	char* charArray=(char*)xml->getNodeData();
-	for (int i=0; i<4; i++)
-		for (int j=0; j<4; j++)
+	for (int i=1; i<=4; i++)
+		for (int j=1; j<=4; j++)
 			toBeReturned(i,j)=(float)strtod(charArray,&charArray);
 	return toBeReturned;
 }
@@ -665,7 +664,7 @@ Matrix ColladaModel::readTranslation(IrrXMLReader* xml)
 	if (xml->isEmptyElement())
 		return toBeReturned;
 	char* charArray=(char*)xml->getNodeData();
-	for (int i=0; i<3; i++)
+	for (int i=1; i<=3; i++)
 			toBeReturned(i,4)=(float)strtod(charArray,&charArray);
 	return toBeReturned;
 }
@@ -679,7 +678,7 @@ Matrix ColladaModel::readRotation(IrrXMLReader* xml)
 			return toBeReturned;
 	char* charArray=(char*)xml->getNodeData();
 	Vector v=Vector();
-	for (int i=0; i<3; i++)
+	for (int i=1; i<=3; i++)
 			v[i]=(float)strtod(charArray,&charArray);
 	toBeReturned.rotV(strtod(charArray,&charArray),v);
 	return toBeReturned;
@@ -692,13 +691,179 @@ Matrix ColladaModel::readScale(IrrXMLReader* xml)
 	if (xml->isEmptyElement())
 		return toBeReturned;
 	char* charArray=(char*)xml->getNodeData();
-	for (int i=0; i<3; i++)
+	for (int i=1; i<=3; i++)
 			toBeReturned(i,i)=(float)strtod(charArray,&charArray);
 	return toBeReturned;
 }
 
-void ColladaModel::readNode(IrrXMLReader* xml)
-{}
+void ColladaModel::readNode(IrrXMLReader* xml,Node* parent)
+{
+	Node current = Node();
+	current.sID=xml->getAttributeValue("id");
+	current.sName=xml->getAttributeValue("name");
+	current.sSID=xml->getAttributeValue("sid");
+	current.sType=xml->getAttributeValue("type");
+	while(xml->read())
+	{
+		switch(xml->getNodeType())
+		{
+			case EXN_ELEMENT:
+			{
+				if (!strcmp("matrix", xml->getNodeName()))
+				{
+					current.transformation*=readMatrix(xml);
+				}
+				else if (!strcmp("translate", xml->getNodeName()))
+				{
+					current.transformation*=readTranslation(xml);
+				}
+				else if (!strcmp("rotate", xml->getNodeName()))
+				{
+					current.transformation*=readRotation(xml);
+				}
+				else if (!strcmp("scale", xml->getNodeName()))
+				{
+					current.transformation*=readScale(xml);
+				}
+				else if (!strcmp("node", xml->getNodeName()))
+				{
+					readNode(xml,&current);
+				}
+				else if (!strcmp("instance_controller", xml->getNodeName()))
+				{
+					readInstanceController(xml);
+				}
+			}
+			break;
+			case EXN_ELEMENT_END:
+			{
+				if (!strcmp("node", xml->getNodeName()))
+				{
+					
+					if(parent==NULL)
+					{
+						//Add the node to the main node tree definition
+						mNodes[current.sID]=current;
+						return;
+					}
+					else
+					{
+						//Add the node to the list of nodes of its parent
+						parent->nodes[current.sID]=current;
+						return;
+					}
+				}
+			}break;
+		}
+	}
+}
+
+
+void ColladaModel::readInstanceController(IrrXMLReader* xml)
+{
+	while(xml->read())
+	{
+		switch(xml->getNodeType())
+		{
+			case EXN_ELEMENT:
+			{
+				if (!strcmp("skeleton", xml->getNodeName()))
+				{
+					xml->read();
+					sSkeletonID=xml->getNodeData();
+					sSkeletonID.replace('#',' ');
+					sSkeletonID.trim();
+				}
+			}
+			break;
+			case EXN_ELEMENT_END:
+			{
+				if (!strcmp("instance_controller", xml->getNodeName()))
+				{
+					return;
+				}
+			}break;
+		}
+	}
+}
+
+
+void ColladaModel::readLibraryControllers(IrrXMLReader* xml)
+{
+	while(xml->read())
+	{
+		switch(xml->getNodeType())
+		{
+			case EXN_ELEMENT:
+			{
+				if (!strcmp("controller", xml->getNodeName()))
+				{
+					readController(xml);
+				}
+			}
+			break;
+			case EXN_ELEMENT_END:
+			{
+				if (!strcmp("library_controllers", xml->getNodeName()))
+				{
+					return;
+				}
+			}break;
+		}
+	}
+}
+
+
+void ColladaModel::readController(IrrXMLReader* xml)
+{
+	while(xml->read())
+	{
+		switch(xml->getNodeType())
+		{
+			case EXN_ELEMENT:
+			{
+				if (!strcmp("skin", xml->getNodeName()))
+				{
+					readSkin(xml);
+				}
+			}
+			break;
+			case EXN_ELEMENT_END:
+			{
+				if (!strcmp("controller", xml->getNodeName()))
+				{
+					return;
+				}
+			}break;
+		}
+	}
+}
+
+void ColladaModel::readSkin(IrrXMLReader* xml)
+{
+	while(xml->read())
+	{
+		switch(xml->getNodeType())
+		{
+			case EXN_ELEMENT:
+			{
+				if (!strcmp("bind_shape_matrix", xml->getNodeName()))
+				{
+					skinningInformation.mBindShape=readMatrix(xml);
+				}
+			}
+			break;
+			case EXN_ELEMENT_END:
+			{
+				if (!strcmp("skin", xml->getNodeName()))
+				{
+					return;
+				}
+			}break;
+		}
+	}
+}
+
 
 
 
@@ -716,29 +881,19 @@ void ColladaModel::readLibraryVisualScene(IrrXMLReader* xml)
 			{
 				if (!strcmp("node", xml->getNodeName()))
 				{
-				}
-				else if (!strcmp("matrix", xml->getNodeName()))
-				{
-				}
-				else if (!strcmp("translate", xml->getNodeName()))
-				{
-				}
-				else if (!strcmp("rotate", xml->getNodeName()))
-				{
-				}
-				else if (!strcmp("scale", xml->getNodeName()))
-				{
+					readNode(xml,NULL);
 				}
 			}
 			break;
 			case EXN_ELEMENT_END:
 			{
-				if (!strcmp("image", xml->getNodeName()))
+				if (!strcmp("visual_scene", xml->getNodeName()))
 					return;
 			}break;
 		}
 	}
 }
+
 
 
 void ColladaModel::readMainSection(IrrXMLReader* xml)
@@ -787,6 +942,69 @@ void ColladaModel::readMainSection(IrrXMLReader* xml)
 			{
 				break; //End reading
 			}
+		}
+	}
+}
+
+void ColladaModel::readFloatArray(IrrXMLReader* xml,float* arrayPointer)
+{
+	int count=xml->getAttributeValueAsInt("count");
+	char* charArray=(char*)xml->getNodeData();
+	arrayPointer=new float[count];
+	for (int i=0; i<count; i++)
+		arrayPointer[i]=(float)strtod(charArray,&charArray);
+}
+
+void ColladaModel::readIDREFArray(IrrXMLReader* xml,core::stringc* arrayPointer)
+{
+	int count=xml->getAttributeValueAsInt("count");
+	char* charArray=(char*)xml->getNodeData();
+	arrayPointer=new core::stringc[count+1];
+	unsigned i=0;
+	while(i<=count)
+	{
+		while(charArray!=" ")
+		{
+			arrayPointer[i].append(charArray);
+			charArray+=sizeof(char);
+		}
+		charArray+=sizeof(char);
+		i++;
+	}
+}
+
+
+void ColladaModel::readSource(IrrXMLReader* xml)
+{
+	while(xml->read())
+	{
+		switch(xml->getNodeType())
+		{
+			case EXN_ELEMENT:
+			{
+				if (!strcmp("bind_shape_matrix", xml->getNodeName()))
+				{
+					skinningInformation.mBindShape=readMatrix(xml);
+				}
+				else if (!strcmp("IDREF_array", xml->getNodeName()))
+				{
+					//((Source)skinningInformation.vSources.back()).iIdRefArraySize=xml->getAttributeValueAsInt("count");
+					readIDREFArray(xml,((Source)skinningInformation.vSources.back()).pIdRefArray);
+				}
+				else if (!strcmp("float_array", xml->getNodeName()))
+				{
+					//((Source)skinningInformation.vSources.back()).iFArraySize=xml->getAttributeValueAsInt("count");
+					readFloatArray(xml,((Source)skinningInformation.vSources.back()).pfArray);
+				}
+			}
+			break;
+			case EXN_ELEMENT_END:
+			{
+				if (!strcmp("source", xml->getNodeName()))
+				{
+					return;
+				}
+			}break;
 		}
 	}
 }
