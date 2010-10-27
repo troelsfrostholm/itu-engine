@@ -44,8 +44,8 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)\PhysX\SDKs\PhysXLoader\include;$(SolutionDir)\include\Boost 1.4.4;$(SolutionDir)\PhysX\SDKs\Physics\include;$(SolutionDir)\PhysX\SDKs\Foundation\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>__EXP_NMS_PHYSICS;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Bullet\src;$(SolutionDir)\include\Boost 1.4.4;$(SolutionDir)\include\SDL 1.2.14;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>__EXP_NMS_PHYSICS;__EXP_NMS_DEBUGDRAWER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -53,8 +53,8 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>PhysXLoader.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)\PhysX\SDKs\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;SDL.lib;sdlmain.lib;opengl32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\Bullet\lib;$(SolutionDir)\lib\SDL 1.2.14;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <BaseAddress>0x60400000</BaseAddress>
       <TargetMachine>MachineX86</TargetMachine>
@@ -77,9 +77,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="nms_debugDrawer.cpp" />
     <ClCompile Include="nms_physics.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="nms_debugDrawer.h" />
     <ClInclude Include="nms_physics.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

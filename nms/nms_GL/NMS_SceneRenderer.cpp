@@ -93,6 +93,7 @@ void NMS_SceneRenderer::down()
 		SDL_WaitThread(me, NULL);
 	sceneGraphRoot = NULL;
 	sceneGraphGuard = NULL;
+	inputGuard=NULL;
 }
 
 int NMS_SceneRenderer::run()
@@ -110,7 +111,6 @@ int NMS_SceneRenderer::renderingLoop()
 		physics->simulatePhysics();
 		render();
 		CalculateFrameRate();
-		//SDL_Delay(10);
 	}
 	return 0;
 }
@@ -124,6 +124,10 @@ void NMS_SceneRenderer::render()
 	EmptySceneVisitor v = EmptySceneVisitor();
 	current_camera->backtrack_to_root(&v, &m);
 	sceneGraphRoot->traverse_df(this, &m);
+
+	//debug drawing
+	physics->getDynamicsWorld()->debugDrawWorld();
+
 	SDL_UnlockMutex(sceneGraphGuard);
 	SDL_GL_SwapBuffers();
 }

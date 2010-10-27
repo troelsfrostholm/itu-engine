@@ -9,12 +9,23 @@
 
 #include "NxPhysics.h"
 #include <boost/function.hpp>
+#include "nms_debugDrawer.h"
 
 class PHYSICS_D nms_physics
 {
 	private:
-		NxPhysicsSDK *gPhysicsSDK;
-		NxScene *gScene;
+
+		btDynamicsWorld* dynamicsWorld;
+
+		
+		btBroadphaseInterface*	broadphase;
+
+
+
+		//triggers
+
+		//debug drawer
+		nms_debugDrawer debugDrawer;
 
 	public:
 		nms_physics();
@@ -27,4 +38,11 @@ class PHYSICS_D nms_physics
 		void GetPhysicsResults();
 		void simulatePhysics();
 };
+
+
+class PHYSICS_D NMS_RigidBody
+{
+
+};
+
 #endif

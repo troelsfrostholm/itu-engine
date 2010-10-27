@@ -53,8 +53,8 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>odbc32.lib;odbccp32.lib;nms_utilities.lib;OpenAL32.lib;alut.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)\Debug;$(SolutionDir)\lib\OpenAL 1.1;$(SolutionDir)\lib;$(SolutionDir)\release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>nms_utilities.lib;OpenAL32.lib;alut.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\lib\OpenAL 1.1;$(SolutionDir)\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <BaseAddress>0x60500000</BaseAddress>
       <TargetMachine>MachineX86</TargetMachine>

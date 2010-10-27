@@ -1,0 +1,2 @@
+NMS_TextureManager::Trying to load [images/texture0.png]
+NMS_TextureManager::Loaded [images/texture0.png] without issues!

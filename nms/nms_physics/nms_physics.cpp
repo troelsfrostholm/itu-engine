@@ -29,8 +29,9 @@ void nms_physics::InitNx()
 	defaultMaterial->setStaticFriction(0.5);
 	defaultMaterial->setDynamicFriction(0.5);
 
-    // Initialize the physics loop
-    if (gScene) StartPhysics();
+	debugDrawer.setDebugMode(btIDebugDraw::DBG_DrawWireframe);
+	dynamicsWorld->setDebugDrawer(&debugDrawer);
+
 }
 
 NxScene* nms_physics::getScene()
@@ -79,3 +80,4 @@ nms_physics::~nms_physics()
 {
 	exitPhysics();
 }
+	dt = dt / 1000000.f; //Convert microseconds to seconds

@@ -4,9 +4,18 @@
 #    define COLLADAMODEL_D __declspec(dllimport)
 #endif
 
+
+
+
 #ifndef __COLLADAMODEL_H__
 #define __COLLADAMODEL_H__
 
+#include "NMS_FileManagement.h"
+#include "NMS_AssetManager.h"
+#include "NMS_Mesh.h"
+#include "Matrix.h"
+
+#include "SDL_opengl.h"
 #include <irrXML.h>
 #include <iostream>
 #include <stdio.h>
@@ -15,27 +24,21 @@
 #include <irrTypes.h>
 #include <irrString.h>
 #include <fast_atof.h>
-#include "NMS_FileManagement.h"
-#include "NMS_AssetManager.h"
-#include "NMS_Mesh.h"
-
 #define NOMINMAX
 
-#include <windows.h>		// Header File For Windows
-#include <gl\gl.h>			// Header File For The OpenGL32 Library
-#include <gl\glu.h>			// Header File For The GLu32 Library 
 
 #pragma warning( disable: 4251 )  //Used to disable this useless warning: http://www.unknownroad.com/rtfm/VisualStudio/warningC4251.html
+
 
 using namespace irr;
 using namespace io;
 using namespace std;
 
-typedef GLfloat vec9_t[9];
-typedef GLfloat vec6_t[6];
+typedef float vec9_t[9];
+typedef float vec6_t[6];
 
 
-class COLLADAMODEL_D Source
+class Source
 {	
     public:
 	  Source(){};
@@ -51,7 +54,7 @@ class COLLADAMODEL_D Source
 	  unsigned stride;
 };
 
-class COLLADAMODEL_D Triangle
+class Triangle
 {	
     public:
 	  Triangle();
@@ -80,7 +83,7 @@ class COLLADAMODEL_D Triangle
 	
 };
 
-class COLLADAMODEL_D ColMesh
+class ColMesh
 {	
   public:
 	ColMesh();
@@ -89,7 +92,7 @@ class COLLADAMODEL_D ColMesh
 	core::stringc sVertPosition;
 };
 
-class COLLADAMODEL_D Material
+class Material
 {	
   public:
 	Material();
@@ -98,7 +101,19 @@ class COLLADAMODEL_D Material
 	core::stringc sUrl;
 };
 
-class COLLADAMODEL_D Effect
+class Node
+{	
+  public:
+	Node();
+	core::stringc sID;
+	core::stringc sName;
+	core::stringc sSID;
+	core::stringc sType;
+	vector<Node> nodes;
+	Matrix transformation;
+};
+
+class Effect
 {	
   public:
 	Effect();
@@ -107,7 +122,7 @@ class COLLADAMODEL_D Effect
 	core::stringc sSurface;
 };
 
-class COLLADAMODEL_D Image
+class Image
 {	
   public:
 	Image();
@@ -116,7 +131,7 @@ class COLLADAMODEL_D Image
 	core::stringc sPath;
 };
 
-class COLLADAMODEL_D RenderData
+class RenderData
 {
    public:
 	 RenderData();
@@ -124,9 +139,9 @@ class COLLADAMODEL_D RenderData
 
 	 //Triangles count
 	 unsigned iTriangleCount;
-	 GLfloat* vVertices;
-	 GLfloat* vTextures;
-	 GLfloat* vNormals;
+	 float* vVertices;
+	 float* vTextures;
+	 float* vNormals;
 };
 
 
@@ -154,6 +169,9 @@ private:
 	vector<Image>       vImages;
 	vector<RenderData>  vRenderData;
 
+	//Transformation for the scene
+	Matrix transformation;
+
 
 
 	
@@ -163,7 +181,15 @@ private:
 	void readLibraryMaterials(IrrXMLReader* xml);
 	void readLibraryEffects(IrrXMLReader* xml);
 	void readMainSection(IrrXMLReader* xml);
+	void readLibraryVisualScene(IrrXMLReader* xml);
 	void RenderFrame();
+
+	//XML TRANSFORMATION READING
+	Matrix readMatrix(IrrXMLReader* xml);
+	Matrix readTranslation(IrrXMLReader* xml);
+	Matrix readRotation(IrrXMLReader* xml);
+	Matrix readScale(IrrXMLReader* xml);
+	void readNode(IrrXMLReader* xml);
 
 	//RENDERING THE MODEL
 	void    LoadData();
