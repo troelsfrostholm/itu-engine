@@ -24,7 +24,7 @@ protected:
 	SceneGraphNode* sceneGraphRoot;
 	CameraNode* current_camera;
 	nms_physics *physics;
-//	SDL_Thread *renderThread;
+	//SDL_Thread *renderThread;
 	bool rendering;
 	float currentTime;
 
@@ -39,10 +39,10 @@ public:
 	void render();
 	void setScene(SceneGraphNode* scene);
 	void setCurrentCamera(CameraNode* camera);
-	void sg_before(Matrix transform, NMS_Mesh* model, NxActor *actor);
+	void sg_before(Matrix transform, NMS_Mesh* model, btRigidBody *b);
 	void sg_after(Matrix transform, NMS_Mesh* model);
 	void CalculateFrameRate();
-	void applyP(NxActor *a);
+	void applyPhysics(btRigidBody *b);
 };
 
 #endif

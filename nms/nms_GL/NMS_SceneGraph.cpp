@@ -70,29 +70,26 @@ GeometryNode::GeometryNode() : TransformationNode()
 	model = NULL;
 }
 
-GeometryNode::GeometryNode(NMS_Mesh *m) : TransformationNode()
+GeometryNode::GeometryNode(NMS_Mesh *m, btRigidBody *b) : TransformationNode()
 {
 	model = m;
+	collisionBody = b;
 }
 
-GeometryNode::GeometryNode(NMS_Mesh *m, Matrix t) : TransformationNode(t) 
+GeometryNode::GeometryNode(NMS_Mesh *m, btRigidBody *b,  Matrix t) : TransformationNode(t) 
 { 
 	model = m;
+	collisionBody = b;
 }
 
 void GeometryNode::before(SceneGraphVisitor *v, Matrix *m)
 {
 	TransformationNode::before(v, m);
-	v->sg_before(*m, model, actor);
+	v->sg_before(*m, model, collisionBody);
 }
 
 void GeometryNode::after(SceneGraphVisitor *v, Matrix *m) 
 {
 	v->sg_after(*m, model);
 	TransformationNode::after(v, m);
-}
-
-void GeometryNode::setActor(NxActor *a)
-{
-	actor = a;
 }

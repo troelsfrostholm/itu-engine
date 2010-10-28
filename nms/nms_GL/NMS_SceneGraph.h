@@ -30,14 +30,14 @@ using namespace std;
 class  SCENEGRAPH_D SceneGraphVisitor
 {
 public:
-	virtual void sg_before(Matrix transform, NMS_Mesh* model, NxActor *actor) = 0;
+	virtual void sg_before(Matrix transform, NMS_Mesh* model, btRigidBody *b) = 0;
 	virtual void sg_after(Matrix transform, NMS_Mesh* model) = 0;
 };
 
 class  SCENEGRAPH_D EmptySceneVisitor : public SceneGraphVisitor
 {
 public:
-	void sg_before(Matrix transform, NMS_Mesh* model, NxActor *actor) {}
+	void sg_before(Matrix transform, NMS_Mesh* model, btRigidBody *b) {}
 	void sg_after(Matrix transform, NMS_Mesh* model) {}
 };
 
@@ -75,15 +75,14 @@ class SCENEGRAPH_D GeometryNode : public TransformationNode
 {
 protected:
 	NMS_Mesh *model;
-	NxActor *actor;
+	btRigidBody *collisionBody;
 	
 public:
 	GeometryNode::GeometryNode();
-	GeometryNode::GeometryNode(NMS_Mesh *m);
-	GeometryNode::GeometryNode(NMS_Mesh *m, Matrix t);
+	GeometryNode::GeometryNode(NMS_Mesh *m, btRigidBody *b);
+	GeometryNode::GeometryNode(NMS_Mesh *m, btRigidBody *b, Matrix t);
 	void GeometryNode::before(SceneGraphVisitor *v, Matrix *m);
 	void GeometryNode::after(SceneGraphVisitor *v, Matrix *m);
-	void setActor(NxActor *actor);
 };
 
 class SCENEGRAPH_D CameraNode : public TransformationNode
