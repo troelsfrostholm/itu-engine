@@ -24,6 +24,8 @@
 #include <irrTypes.h>
 #include <irrString.h>
 #include <fast_atof.h>
+#define NOMINMAX
+
 
 #pragma warning( disable: 4251 )  //Used to disable this useless warning: http://www.unknownroad.com/rtfm/VisualStudio/warningC4251.html
 

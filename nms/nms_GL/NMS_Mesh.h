@@ -10,6 +10,7 @@
 #include "SDL_opengl.h" 
 
 
+
 class NMSMESH_D NMS_Mesh
 {
 	public:

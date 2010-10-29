@@ -11,6 +11,7 @@ DLL EXPORTING SAFE
 #define NMS_LightSystem_H__
 
 #include "SDL_opengl.h"
+
 #include "NMS_3DObject.h"
 #include "Vector.h"
 #include "Matrix.h"

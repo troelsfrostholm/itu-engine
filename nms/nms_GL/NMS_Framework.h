@@ -7,7 +7,9 @@
 #ifndef NMS_Framework_H__
 #define NMS_Framework_H__
 
-#include "SDL.h" 
+#define NOMINMAX
+
+#include "SDL.h"
 #include "SDL_opengl.h" 
 #include "Matrix.h"
 #include "Trig.h"

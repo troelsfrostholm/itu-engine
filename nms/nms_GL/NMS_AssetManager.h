@@ -12,6 +12,8 @@ DLL EXPORTING SAFE
 #define __NMS_ASSETMANAGER
 
 
+#define NOMINMAX
+
 #include "NMS_TextureManager.h"
 
 

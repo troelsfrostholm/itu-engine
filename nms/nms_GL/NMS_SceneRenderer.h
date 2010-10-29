@@ -24,7 +24,7 @@ protected:
 	SceneGraphNode* sceneGraphRoot;
 	CameraNode* current_camera;
 	nms_physics *physics;
-//	SDL_Thread *renderThread;
+	//SDL_Thread *renderThread;
 	bool rendering;
 	float currentTime;
 	bool wireframe;
@@ -42,9 +42,9 @@ public:
 	void setCurrentCamera(CameraNode* camera);
 	void sg_before(Matrix transform, NMS_Mesh* model, btRigidBody *b);
 	void sg_after(Matrix transform, NMS_Mesh* model);
-	void applyPhysics(btRigidBody *b);
 	void CalculateFrameRate();
-	void setWireframe(bool mode);
+	void applyPhysics(btRigidBody *b);
+	void applyPhysics(btRigidBody *b);
 protected:
 	void enableWireframe(bool reply);
 };

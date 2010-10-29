@@ -109,10 +109,8 @@ int NMS_SceneRenderer::renderingLoop()
 		currentTime+=0.0008f;
 		NMS_EVENT.pollEvents();
 		physics->simulatePhysics();
-		physics->checkAllTriggers();
 		render();
 		CalculateFrameRate();
-		//SDL_Delay(10);
 	}
 	return 0;
 }
@@ -126,6 +124,10 @@ void NMS_SceneRenderer::render()
 	EmptySceneVisitor v = EmptySceneVisitor();
 	current_camera->backtrack_to_root(&v, &m);
 	sceneGraphRoot->traverse_df(this, &m);
+
+	//debug drawing
+	physics->getDynamicsWorld()->debugDrawWorld();
+
 	SDL_UnlockMutex(sceneGraphGuard);
 	SDL_GL_SwapBuffers();
 }
@@ -169,6 +171,7 @@ void NMS_SceneRenderer::CalculateFrameRate()
 		framesPerSecond = 0;
 	}
 }
+
 
 void NMS_SceneRenderer::applyPhysics(btRigidBody *b)
 {
