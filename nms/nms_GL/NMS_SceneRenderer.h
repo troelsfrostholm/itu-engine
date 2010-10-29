@@ -27,6 +27,7 @@ protected:
 //	SDL_Thread *renderThread;
 	bool rendering;
 	float currentTime;
+	bool wireframe;
 
 public:
 	NMS_SceneRenderer();
@@ -43,6 +44,9 @@ public:
 	void sg_after(Matrix transform, NMS_Mesh* model);
 	void applyPhysics(btRigidBody *b);
 	void CalculateFrameRate();
+	void setWireframe(bool mode);
+protected:
+	void enableWireframe(bool reply);
 };
 
 #endif

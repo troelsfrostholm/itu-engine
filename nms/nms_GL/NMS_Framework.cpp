@@ -77,10 +77,3 @@ NMS_SceneRenderer* NMS_Framework::getRenderer()
 	return &sceneRenderer;
 }
 
-void NMS_Framework::enableWireframe(bool reply)
-{
-	if(reply)
-		glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
-	else
-		glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
-}
