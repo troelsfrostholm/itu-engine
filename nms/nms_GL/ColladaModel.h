@@ -24,6 +24,8 @@
 #include <irrTypes.h>
 #include <irrString.h>
 #include <fast_atof.h>
+#include "NMS_DebugDraw.h"
+#include "NMS_Skeleton.h"
 #define NOMINMAX
 
 
@@ -198,6 +200,7 @@ public:
 	ColladaModel();
 	~ColladaModel();
 	int		LoadModel(const char* fileName);
+	void    LoadSkeleton();
 	int     LoadSkin(char* fileName);
 	int     LoadSkin();
 	void	render(float time);
@@ -210,6 +213,7 @@ private:
 	unsigned			iTriangleCount;
 	unsigned			iMeshCount;
 
+	Skeleton			ColladaSkeleton;
 	Skin				skinningInformation;
 	
 	vector<ColMesh>     dataRead;

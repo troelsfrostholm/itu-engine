@@ -19,9 +19,22 @@ void nms_physics::initPhysics()
 
 	triggers = std::vector<btPairCachingGhostObject*>();
 
-	debugDrawer.setDebugMode(btIDebugDraw::DBG_DrawWireframe);
+	debugDrawer.setDebugMode(btIDebugDraw::DBG_NoDebug);
 	dynamicsWorld->setDebugDrawer(&debugDrawer);
 
+}
+
+
+void nms_physics::setDebugMode(bool state)
+{
+	if(state)
+	{
+		debugDrawer.setDebugMode(btIDebugDraw::DBG_DrawWireframe);
+	}
+	else
+	{
+		debugDrawer.setDebugMode(btIDebugDraw::DBG_NoDebug);
+	}
 }
 
 void nms_physics::exitPhysics()

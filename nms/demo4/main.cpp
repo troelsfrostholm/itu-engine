@@ -173,7 +173,7 @@ int main(int argc, char* argv[])
 	root->addChild(&fpsCam);
 	renderer = engine.getRenderer();
 	renderer->setCurrentCamera(&fpsCam);
-	renderer->setWireframe(true);
+	renderer->setWireframeMode(true);
 
 
 	NMS_EVENT.onKeyPressed(&keyPressed);

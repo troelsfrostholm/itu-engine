@@ -30,6 +30,7 @@ using namespace std;
 class  SCENEGRAPH_D SceneGraphVisitor
 {
 public:
+	
 	virtual void sg_before(Matrix transform, NMS_Mesh* model, btRigidBody *b) = 0;
 	virtual void sg_after(Matrix transform, NMS_Mesh* model) = 0;
 };

@@ -290,6 +290,10 @@ void ColladaModel::LoadData()
 }
 
 
+void ColladaModel::LoadSkeleton()
+{
+}
+
 int	ColladaModel::LoadModel(const char* fileName)
 {
 	IrrXMLReader* xml = createIrrXMLReader(fileName);

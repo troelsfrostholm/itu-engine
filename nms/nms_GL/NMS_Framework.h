@@ -28,6 +28,7 @@ protected:
 	int flags;
 	NMS_SceneRenderer sceneRenderer;
 	SceneGraphNode* sceneGraphRoot;
+	bool bDebugEnable;
 	
 	
 public:
@@ -46,6 +47,7 @@ public:
 	void enableWireframe(bool reply);
 	static void NMSLoadTexture(char* fileName,int id);
 	void CalculateFrameRate();
+	void setDebugMode(bool mode);
 	void cleanup();
 	SceneGraphNode* getScene();
 	NMS_SceneRenderer* getRenderer();

@@ -44,9 +44,9 @@ public:
 	void sg_after(Matrix transform, NMS_Mesh* model);
 	void CalculateFrameRate();
 	void applyPhysics(btRigidBody *b);
-	void applyPhysics(btRigidBody *b);
+	void setWireframeMode(bool mode);
 protected:
-	void enableWireframe(bool reply);
+	void setWireframeModeGL(bool mode);
 };
 
 #endif

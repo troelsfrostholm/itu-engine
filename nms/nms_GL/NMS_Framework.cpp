@@ -77,3 +77,7 @@ NMS_SceneRenderer* NMS_Framework::getRenderer()
 	return &sceneRenderer;
 }
 
+void NMS_Framework::setDebugMode(bool mode)
+{
+	bDebugEnable=mode;
+}

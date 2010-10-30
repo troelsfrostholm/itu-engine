@@ -149,7 +149,7 @@ void NMS_SceneRenderer::sg_before(Matrix transform, NMS_Mesh* model, btRigidBody
 	Matrix t_transposed = ~transform;
 	glMultMatrixf(t_transposed.returnPointer());
 	applyPhysics(b);
-	enableWireframe(wireframe);
+	setWireframeModeGL(wireframe);
 	(*model).render(currentTime);
 }
 
@@ -182,15 +182,15 @@ void NMS_SceneRenderer::applyPhysics(btRigidBody *b)
 	glMultMatrixf(matrix);
 }
 
-void NMS_SceneRenderer::enableWireframe(bool reply)
+void NMS_SceneRenderer::setWireframeModeGL(bool state)
 {
-	if(reply)
+	if(state)
 		glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
 	else
 		glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
 }
 
-void NMS_SceneRenderer::setWireframe(bool mode)
+void NMS_SceneRenderer::setWireframeMode(bool mode)
 {
 	wireframe=mode;
 }

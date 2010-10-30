@@ -60,6 +60,7 @@ class PHYSICS_D nms_physics
 		void exitPhysics();
 		void simulatePhysics();
 		void addRBody(btRigidBody* body);
+		void setDebugMode(bool state);
 		btScalar getDeltaTimeSeconds();
 		void createTrigger(btCollisionShape *triggershape, btTransform &position, void (_callback)(int i));
 		int checkTrigger(btPairCachingGhostObject *ghostObject);
