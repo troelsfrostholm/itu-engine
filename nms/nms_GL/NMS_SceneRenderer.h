@@ -40,8 +40,8 @@ public:
 	void render();
 	void setScene(SceneGraphNode* scene);
 	void setCurrentCamera(CameraNode* camera);
-	void sg_before(Matrix transform, NMS_Mesh* model, btRigidBody *b);
-	void sg_after(Matrix transform, NMS_Mesh* model);
+	void sg_before(Matrix transform, SceneGraphNode * node);
+	void sg_after(Matrix transform, SceneGraphNode * node);
 	void CalculateFrameRate();
 	void applyPhysics(btRigidBody *b);
 	void setWireframeMode(bool mode);

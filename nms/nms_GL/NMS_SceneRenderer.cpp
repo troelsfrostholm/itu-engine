@@ -143,8 +143,12 @@ void NMS_SceneRenderer::setCurrentCamera(CameraNode* camera)
 }
 
 //Render meshes as they are traversed in the scene graph
-void NMS_SceneRenderer::sg_before(Matrix transform, NMS_Mesh* model, btRigidBody *b)
+void NMS_SceneRenderer::sg_before(Matrix transform, SceneGraphNode * node)
 {
+	GeometryNode * geomNode = (GeometryNode *) node;
+	NMS_Mesh* model = geomNode->getModel();
+	btRigidBody *b = geomNode->getCollisionBody();
+
 	glLoadIdentity();
 	Matrix t_transposed = ~transform;
 	glMultMatrixf(t_transposed.returnPointer());
@@ -153,7 +157,7 @@ void NMS_SceneRenderer::sg_before(Matrix transform, NMS_Mesh* model, btRigidBody
 	(*model).render(currentTime);
 }
 
-void NMS_SceneRenderer::sg_after(Matrix transform, NMS_Mesh* model) {}
+void NMS_SceneRenderer::sg_after(Matrix transform, SceneGraphNode * node) {}
 
 void NMS_SceneRenderer::CalculateFrameRate()
 {

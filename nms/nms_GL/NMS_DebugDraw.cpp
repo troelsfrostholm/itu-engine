@@ -82,7 +82,7 @@ void NMS_DebugDraw::drawTriangle(const Vector& a,const Vector& b,const Vector& c
 
 
 
-void NMS_DebugDraw::draw3dText(const Vector& location,char* textString)
+void NMS_DebugDraw::draw3dText(const Vector& location,const char* textString)
 {
    glPushAttrib(GL_LIGHTING_BIT | GL_CURRENT_BIT); // lighting and color mask
 	glDisable(GL_LIGHTING);     // need to disable lighting for proper text color
@@ -92,7 +92,7 @@ void NMS_DebugDraw::draw3dText(const Vector& location,char* textString)
 	pos[1] = location[NMS_Y];
 	pos[2] = location[NMS_Z];
 
-	char * tempName = textString;
+	const char * tempName = textString;
 	
 	int i = 0;
 	

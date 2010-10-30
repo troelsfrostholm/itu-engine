@@ -85,11 +85,21 @@ GeometryNode::GeometryNode(NMS_Mesh *m, btRigidBody *b,  Matrix t) : Transformat
 void GeometryNode::before(SceneGraphVisitor *v, Matrix *m)
 {
 	TransformationNode::before(v, m);
-	v->sg_before(*m, model, collisionBody);
+	v->sg_before(*m, this);
 }
 
 void GeometryNode::after(SceneGraphVisitor *v, Matrix *m) 
 {
-	v->sg_after(*m, model);
+	v->sg_after(*m, this);
 	TransformationNode::after(v, m);
+}
+
+NMS_Mesh * GeometryNode::getModel()
+{
+	return model;
+}
+
+btRigidBody * GeometryNode::getCollisionBody()
+{
+	return collisionBody;
 }

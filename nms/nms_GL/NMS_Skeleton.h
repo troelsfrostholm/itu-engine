@@ -17,6 +17,8 @@ DLL EXPORTING SAFE
 #define NMS_Skeleton_H__
 
 #include "NMS_SceneGraph.h"
+#include "NMS_DebugDraw.h"
+#include "Matrix.h"
 
 using namespace std;
 
@@ -32,28 +34,35 @@ protected:
 
 public:
 	JointNode();
-	JointNode(Matrix t);
+	JointNode(string sID, string sName, string sSID, string sType,Matrix t);
 	void JointNode::before(SceneGraphVisitor *v, Matrix *m);
 	void JointNode::after(SceneGraphVisitor *v, Matrix *m);
+
+	string getSSID();
 };
 
 class SKELETON_D Skeleton
 {
 protected:
 	JointNode root;
-	string sID;
-	string sName;
-	string sSID;
-	string sType;
 
 	std::map<string,JointNode> joints;
 
 public:
-	Skeleton();
+	Skeleton(){};
+	Skeleton(JointNode root)
+	{
+		this->root=root;
+	};
+
+	void addJoint(string sID,JointNode node);
+	JointNode getJoint(string sID);
 };
 
 class SKELETON_D SkeletonRenderer : public SceneGraphVisitor
 {
+	void sg_before(Matrix transform, JointNode * node);
+	void sg_after(Matrix transform, JointNode * node);
 };
 
 

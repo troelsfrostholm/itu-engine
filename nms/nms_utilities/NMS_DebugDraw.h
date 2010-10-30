@@ -19,7 +19,7 @@ static class DEBUGDRAW_D NMS_DebugDraw
 		static void drawSphere(const Vector& p, int radius, const Vector& color,int lats,int longs);
 		static void drawBox(const Vector& boxMin, const Vector& boxMax, const Vector& color, int alpha);
 		static void drawTriangle(const Vector& a,const Vector& b,const Vector& c,const Vector& color,int alpha);
-		static void draw3dText(const Vector& location,char* textString);
+		static void draw3dText(const Vector& location,const char* textString);
 		static void setDebugMode(int debugMode);
 		static int getDebugMode();
 };

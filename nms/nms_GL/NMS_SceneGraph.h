@@ -29,17 +29,21 @@ using namespace std;
 
 class  SCENEGRAPH_D SceneGraphVisitor
 {
+friend class SceneGraphNode;
 public:
 	
-	virtual void sg_before(Matrix transform, NMS_Mesh* model, btRigidBody *b) = 0;
-	virtual void sg_after(Matrix transform, NMS_Mesh* model) = 0;
+	virtual void sg_before(Matrix transform, SceneGraphNode * node) = 0;
+	virtual void sg_after(Matrix transform, SceneGraphNode * node) = 0;
+
+	//virtual void sg_before(Matrix transform, NMS_Mesh* model, btRigidBody *b) = 0;
+	//virtual void sg_after(Matrix transform, NMS_Mesh* model) = 0;
 };
 
 class  SCENEGRAPH_D EmptySceneVisitor : public SceneGraphVisitor
 {
 public:
-	void sg_before(Matrix transform, NMS_Mesh* model, btRigidBody *b) {}
-	void sg_after(Matrix transform, NMS_Mesh* model) {}
+	void sg_before(Matrix transform, SceneGraphNode * node) {}
+	void sg_after(Matrix transform, SceneGraphNode * node) {}
 };
 
 class SCENEGRAPH_D SceneGraphNode
@@ -84,6 +88,8 @@ public:
 	GeometryNode::GeometryNode(NMS_Mesh *m, btRigidBody *b, Matrix t);
 	void GeometryNode::before(SceneGraphVisitor *v, Matrix *m);
 	void GeometryNode::after(SceneGraphVisitor *v, Matrix *m);
+	NMS_Mesh * getModel();
+	btRigidBody * getCollisionBody();
 };
 
 class SCENEGRAPH_D CameraNode : public TransformationNode

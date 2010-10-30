@@ -200,7 +200,7 @@ public:
 	ColladaModel();
 	~ColladaModel();
 	int		LoadModel(const char* fileName);
-	void    LoadSkeleton();
+	
 	int     LoadSkin(char* fileName);
 	int     LoadSkin();
 	void	render(float time);
@@ -264,6 +264,8 @@ private:
 
 	//RENDERING THE MODEL
 	void    LoadData();
+	void    FindRoot(Node* nodeList);
+	void    LoadSkeleton();
 };
 #endif
 

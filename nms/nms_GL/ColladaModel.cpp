@@ -13,6 +13,7 @@ ColladaModel::ColladaModel()
 	transformation          =Matrix();
 	sSkeletonID				=NULL;
 	skinningInformation     =Skin();
+	sSkeletonID			="";
 };
 
 ColladaModel::~ColladaModel(){};
@@ -283,15 +284,38 @@ void ColladaModel::LoadData()
 		 toBeRendered.iTextID=iTextureID;
 		 vRenderData.push_back(toBeRendered);
 		}
-		
-
 	}
 	bModelLoadedCorrectly=true;
 }
 
+void ColladaModel::FindRoot(Node* nodeList)
+{
+	if((nodeList!=NULL)&&strcmp(nodeList->sID.c_str(),sSkeletonID.c_str()))
+	{
+		if(nodeList->nodes.count(sSkeletonID))
+		{
+			pSkeletonNode=&nodeList->nodes[sSkeletonID];
+			return;
+		}
+		else
+		{
+			std::map<core::stringc ,Node>::iterator it;
+			for ( it=nodeList->nodes.begin() ; it != nodeList->nodes.end(); it++ )
+			{
+				FindRoot(&(*it).second);
+			}
+		}
+	}
+}
 
 void ColladaModel::LoadSkeleton()
 {
+	if(pSkeletonNode!=NULL)
+	{
+		JointNode root = JointNode(pSkeletonNode->sID.c_str(),pSkeletonNode->sName.c_str(),pSkeletonNode->sSID.c_str(),pSkeletonNode->sType.c_str(),pSkeletonNode->transformation);
+		ColladaSkeleton=Skeleton(root);
+		ColladaSkeleton.addJoint(root.getSSID(),root);
+	}
 }
 
 int	ColladaModel::LoadModel(const char* fileName)
@@ -322,6 +346,17 @@ int	ColladaModel::LoadModel(const char* fileName)
 		// delete the xml parser after usage
 		delete xml;
 		
+
+		//Searching for the root node in all the nodes we have loaded
+		std::map<core::stringc ,Node>::iterator it;
+		for ( it=mNodes.begin() ; it != mNodes.end(); it++ )
+		{
+			if(strcmp("",sSkeletonID.c_str()))
+				FindRoot(&(*it).second);
+			else
+				break;
+		}
+
 		bXMLLoaded=true;
 		return true;
 	}
@@ -1141,7 +1176,7 @@ void ColladaModel::readVertexWeight(IrrXMLReader* xml)
 			}break;
 			case EXN_ELEMENT_END:
 			{
-				if (!strcmp("joints", xml->getNodeName()))
+				if (!strcmp("vertex_weights", xml->getNodeName()))
 				{
 					return;
 				}
