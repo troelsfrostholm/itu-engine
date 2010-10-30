@@ -102,6 +102,7 @@
     <ClCompile Include="NMS_Mutex.cpp" />
     <ClCompile Include="NMS_SceneGraph.cpp" />
     <ClCompile Include="NMS_SceneRenderer.cpp" />
+    <ClCompile Include="NMS_Skeleton.cpp" />
     <ClCompile Include="NMS_TextureManager.cpp" />
     <ClCompile Include="NMS_Thread.cpp" />
   </ItemGroup>
