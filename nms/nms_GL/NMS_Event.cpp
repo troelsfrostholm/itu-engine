@@ -1,4 +1,5 @@
 #include "NMS_Event.h"
+#include "NMS_StaticAllocator.h"
 
 NMS_Event *NMS_Event::singleton = 0;
 
@@ -19,7 +20,7 @@ NMS_Event::NMS_Event()
 NMS_Event &NMS_Event::getInstance()
 {
 	if(!singleton) {
-		singleton = new NMS_Event();
+		singleton = new(STATIC_ALLOC, 0) NMS_Event();
 	}
 	return *singleton;
 }

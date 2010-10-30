@@ -1,14 +1,20 @@
 #include "NMS_StaticAllocator.h"
-/*
+
+ int StaticAllocator::stack_alloc_size;
+ StaticAllocator *StaticAllocator::instance;
+
 StaticAllocator::StaticAllocator()
 {
-	stack_alloc_size = 10;
-	allocators.push_back(StackBasedAllocator(stack_alloc_size));
+	stack_alloc_size = 10000;
+//	allocators.push_back(new StackBasedAllocator(stack_alloc_size));
 }
 
 StaticAllocator::~StaticAllocator()
 {
-	delete instance;
+	for(int i=0; i<allocators.size(); i++) {
+		delete allocators.at(i);
+		allocators.at(i) = NULL;
+	}
 	instance = NULL;
 }
 
@@ -21,17 +27,20 @@ StaticAllocator * StaticAllocator::getInstance()
 
 void * StaticAllocator::allocMem(size_t size)
 {
+	if(allocators.size()<=0) {
+		allocators.push_back(new StackBasedAllocator(stack_alloc_size));
+	}
 	if(size > stack_alloc_size) {
-		allocators.push_back(StackBasedAllocator(size));
-		return allocators.back().allocMem(size);
+		allocators.push_back(new StackBasedAllocator(size));
+		return allocators.back()->allocMem(size);
 	}
 
 	try {
-		return allocators.back().allocMem(size);
+		return allocators.back()->allocMem(size);
 	}
 	catch(char* msg) {
-		allocators.push_back(StackBasedAllocator(stack_alloc_size));
-		return allocators.back().allocMem(size);
+		allocators.push_back(new StackBasedAllocator(stack_alloc_size));
+		return allocators.back()->allocMem(size);
 	}
 }
 
@@ -42,4 +51,9 @@ void StaticAllocator::freeMem(void * pointer)
 U32 StaticAllocator::currentMemoryUsage(int category)
 {
 	return 0;
-}*/
+}
+
+void StaticAllocator::setStackAllocSize(int size)
+{
+	stack_alloc_size = size;
+}

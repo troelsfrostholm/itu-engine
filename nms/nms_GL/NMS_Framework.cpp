@@ -59,6 +59,7 @@ void NMS_Framework::cleanup()
 	delete(sceneGraphRoot);
 	SDL_DestroyMutex(sceneGraphGuard);
 	sceneGraphRoot = NULL;
+	delete STATIC_ALLOC;
 	SDL_Quit();
 }
 

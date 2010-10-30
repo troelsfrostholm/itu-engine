@@ -1,8 +1,5 @@
-#ifdef __EXP_NMS_UTILITIES
-#    define CUSTOMTYPES_D __declspec(dllexport)
-#else
-#    define CUSTOMTYPES_D __declspec(dllimport)
-#endif
+#define CUSTOMTYPES_D __declspec(dllexport)
+
 
 #ifndef NMS_CUSTOMTYPES
 #define NMS_CUSTOMTYPES

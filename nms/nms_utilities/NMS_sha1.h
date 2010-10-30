@@ -25,11 +25,8 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifdef __EXP_NMS_UTILITIES
-#    define SHA1_D __declspec(dllexport)
-#else
-#    define SHA1_D __declspec(dllimport)
-#endif
+#define SHA1_D __declspec(dllexport)
+
 
 #ifndef SHA1_DEFINED
 #define SHA1_DEFINED

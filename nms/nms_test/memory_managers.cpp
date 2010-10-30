@@ -1,5 +1,5 @@
 #include "NMS_StackBasedAllocator.h"
-#include "NMS_StaticAllocator.cpp"
+#include "NMS_StaticAllocator.h"
 #include <boost/test/unit_test.hpp>
 #include <iostream>
 
@@ -113,7 +113,37 @@ BOOST_AUTO_TEST_SUITE( static_allocator );
 
 BOOST_AUTO_TEST_CASE( allocating_into_several_stack_based_allocators )
 {
-	//int * i = new(STATIC_ALLOC, 0) int(1);
+	STATIC_ALLOC->setStackAllocSize(9);
+
+	//First two allocations fills the first stack allocator
+	//So they are allocated in continuous memory
+	int * i = new(STATIC_ALLOC, 0) int(1);
+	BOOST_CHECK_EQUAL(*i, 1);
+	int * j = new(STATIC_ALLOC, 0) int(1);
+	BOOST_CHECK_EQUAL(*j, 1);
+	BOOST_CHECK_EQUAL((U32)j - (U32)i, 4);
+
+	//The thrid overflows the first stack allocator
+	//So a new one should be instantiated, and the next integer
+	//is allocated further away
+	int* k = new(STATIC_ALLOC, 0) int(2);
+	BOOST_CHECK_EQUAL(*k, 2);
+	BOOST_CHECK((U32) k - (U32) j > 4);
+
+	//The fourth allocation is made with an object that is larger 
+	//than the default size of the stack allocator.
+	//A new allocator of the required size should be created
+
+	int* l = new(STATIC_ALLOC, 0) int[3];
+	l[0] = 1;
+	l[1] = 2;
+	l[2] = 3;
+	for(int index=0; index<3; index++) {
+		BOOST_CHECK_EQUAL(l[index], index+1);
+	}
+	BOOST_CHECK((U32) l - (U32) k > 4);
+
+	delete STATIC_ALLOC;
 }
 
 BOOST_AUTO_TEST_SUITE_END();

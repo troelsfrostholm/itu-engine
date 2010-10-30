@@ -21,6 +21,7 @@
 #include "SDL_MemberThread.h"
 #include "NMS_Mutex.h"
 #include "nms_physics.h"
+#include "NMS_StaticAllocator.h"
 
 class FRAMEWORK_D NMS_Framework
 {

@@ -1,8 +1,4 @@
-#ifdef __EXP_NMS_UTILITIES
-#    define STACK_ALLOCATOR_D __declspec(dllexport)
-#else
-#    define STACK_ALLOCATOR_D __declspec(dllimport)
-#endif
+#define STACK_ALLOCATOR_D __declspec(dllexport)
 
 #ifndef NMS_STACK_ALLOCATOR
 #define NMS_STACK_ALLOCATOR

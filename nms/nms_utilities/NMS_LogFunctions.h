@@ -1,8 +1,4 @@
-#ifdef __EXP_NMS_UTILITIES
-#    define LOG_FUNCTIONS_D __declspec(dllexport)
-#else
-#    define LOG_FUNCTIONS_D __declspec(dllimport)
-#endif
+#define LOG_FUNCTIONS_D __declspec(dllexport)
 
 #ifndef NMS_LOGFUNCTIONS
 	#define NMS_LOGFUNCTIONS
