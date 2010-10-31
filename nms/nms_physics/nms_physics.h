@@ -13,6 +13,7 @@
 #include <vector>
 #include <boost/function.hpp>
 #include "nms_debugDrawer.h"
+#include "NMS_StaticAllocator.h"
 
 #pragma warning( disable: 4251 )  //Used to disable this useless warning: http://www.unknownroad.com/rtfm/VisualStudio/warningC4251.html
 
