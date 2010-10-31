@@ -15,6 +15,7 @@ DLL EXPORTING SAFE
 #define NOMINMAX
 
 #include "NMS_TextureManager.h"
+#include "NMS_StaticAllocator.h"
 
 
 #define NMS_ASSETMANAGER	    NMS_AssetManager::GetSingleton()
@@ -23,17 +24,7 @@ DLL EXPORTING SAFE
 
 class ASSETMANAGER_D NMS_AssetManager{
 public :
-	NMS_AssetManager (void);
-	~NMS_AssetManager (void);
 	static NMS_AssetManager& GetSingleton (void);
-
-
-private :	
-	//Initialization function, called automatically when the Singletone Assetmanager is called
-	static void Initialize (void);
-	
-
-public :	
 	int  LoadTexture   (const char* p_Filename,char* textureName);
 	int  LoadSound     (const char* p_fileName,int iSoundID=-1);
 	int  LoadMD2Model  (const char* p_fileName,int iModelID=-1);
@@ -48,5 +39,10 @@ private :
 	static NMS_AssetManager* m_Singleton;
 	char szErrorMessage [80];
 	static const size_t szErrorMessageSize = 80*sizeof(char);
+
+	//Initialization function, called automatically when the Singletone Assetmanager is called
+	static void Initialize (void);
+	NMS_AssetManager (void);
+	~NMS_AssetManager (void);
 };
 #endif

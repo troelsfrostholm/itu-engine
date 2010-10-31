@@ -12,6 +12,12 @@
 #include "NMS_CustomTypes.h"
 #include "NMS_MemoryTracker.h"
 
+typedef enum {
+	MEM_SINGLETON,
+	MEM_LEVEL,
+	MEM_VERTEX,
+	MEM_TEMPORARY } memCategories;
+
 class MEMORY_ALLOCATION_D MemoryAllocator
 {
 public:
@@ -24,5 +30,6 @@ public:
 };
 
 MEMORY_ALLOCATION_D void * operator new (size_t size, MemoryAllocator * allocator, int categoryFlag);
+MEMORY_ALLOCATION_D void operator delete(void* pMem,  MemoryAllocator * allocator, int categoryFlag);
 
 #endif

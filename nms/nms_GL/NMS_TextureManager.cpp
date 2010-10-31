@@ -8,7 +8,7 @@ NMS_TextureManager::~NMS_TextureManager (void) {}
 
 NMS_TextureManager& NMS_TextureManager::GetSingleton (void) {
 	if (!m_Singleton) {
-		m_Singleton = new NMS_TextureManager;
+		m_Singleton = new(STATIC_ALLOC, MEM_SINGLETON) NMS_TextureManager;
 		Initialize ();
 	}
 	return *m_Singleton;

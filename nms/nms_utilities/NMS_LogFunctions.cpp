@@ -11,7 +11,7 @@ NMS_LogFunctions::~NMS_LogFunctions (void) {
 
 NMS_LogFunctions& NMS_LogFunctions::GetSingleton (void) {
 	if (!m_Singleton) {
-		m_Singleton = new NMS_LogFunctions;
+		m_Singleton = new(STATIC_ALLOC, MEM_SINGLETON) NMS_LogFunctions;
 		Initialize ();
 	}
 

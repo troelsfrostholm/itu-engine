@@ -20,7 +20,7 @@ NMS_Event::NMS_Event()
 NMS_Event &NMS_Event::getInstance()
 {
 	if(!singleton) {
-		singleton = new(STATIC_ALLOC, 0) NMS_Event();
+		singleton = new(STATIC_ALLOC, MEM_SINGLETON) NMS_Event();
 	}
 	return *singleton;
 }

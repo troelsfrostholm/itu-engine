@@ -8,7 +8,7 @@ NMS_SoundManager::~NMS_SoundManager (void) {}
 
 NMS_SoundManager& NMS_SoundManager::GetSingleton (void) {
 	if (!m_Singleton) {
-		m_Singleton = new NMS_SoundManager;
+		m_Singleton = new(STATIC_ALLOC, MEM_SINGLETON) NMS_SoundManager;
 		Initialize ();
 	}
 	return *m_Singleton;

@@ -15,6 +15,7 @@
 #include "NMS_FileManagement.h"
 #include "NMS_LogFunctions.h"
 #include "NMS_CustomTypes.h"
+#include "NMS_StaticAllocator.h"
 
 #include <conio.h>
 #include <time.h>
@@ -46,11 +47,11 @@ typedef struct
 
 class SOUND_MANAGER_D NMS_SoundManager {
 public :
-	NMS_SoundManager (void);
-	~NMS_SoundManager (void);
 	static NMS_SoundManager &GetSingleton (void);
 
 private :
+	NMS_SoundManager (void);
+	~NMS_SoundManager (void);
 	static void Initialize (void);
 	soundStruct checkForHash(shaMap hash,char* textureName);
 public :

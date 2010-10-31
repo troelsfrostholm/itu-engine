@@ -11,6 +11,7 @@
 
 
 #include "NMS_CustomTypes.h"
+#include "NMS_StaticAllocator.h"
 
 #include <stdio.h>
 #include <iostream>
@@ -26,11 +27,11 @@ typedef enum
 class LOG_FUNCTIONS_D NMS_LogFunctions
 {
 	public :
-		 NMS_LogFunctions (void);
-		 ~NMS_LogFunctions (void);
 		 static NMS_LogFunctions& GetSingleton (void);
 
 	private :
+		NMS_LogFunctions (void);
+		 ~NMS_LogFunctions (void);
 		 static void Initialize (void);
 
 	public :
