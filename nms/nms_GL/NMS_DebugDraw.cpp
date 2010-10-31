@@ -18,8 +18,6 @@ void NMS_DebugDraw::drawLine(const Vector& from,const Vector& to,const Vector& c
 
 void NMS_DebugDraw::drawSphere(const Vector& p, float radius, const Vector& color,int lats,int longs)
 {
-	int i;
-	int j;
 	glPushMatrix ();
 	glColor4f (color[NMS_X], color[NMS_Y], color[NMS_Z], 1.0f);
 	glTranslatef (p[NMS_X], p[NMS_Y], p[NMS_Z]);

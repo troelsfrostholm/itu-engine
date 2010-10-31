@@ -1104,14 +1104,14 @@ void ColladaModel::readIDREFArray(IrrXMLReader* xml,core::stringc* arrayPointer)
 	arrayPointer=new core::stringc[count+1];
 	unsigned i=0;
 	unsigned h=0;
-	while(i<=count)
+	while(i<count)
 	{
-		while(strncmp(charArray," ",1))
+		while(strncmp(charArray," ",1)&&strncmp(charArray,"",1))
 		{
 			arrayPointer[i].append(charArray[0]);
-			charArray+=sizeof(unsigned char);
+			charArray+=sizeof(char);
 		}
-		charArray+=sizeof(unsigned char);
+		charArray+=sizeof(char);
 		i++;
 	}
 }
