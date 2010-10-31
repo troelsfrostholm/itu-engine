@@ -1,4 +1,10 @@
-#define STATIC_ALLOCATOR_D __declspec(dllexport)
+//#define STATIC_ALLOCATOR_D __declspec(dllexport)
+
+#ifdef __EXP_NMS_UTILITIES
+#    define STATIC_ALLOCATOR_D __declspec(dllexport)
+#else
+#    define STATIC_ALLOCATOR_D __declspec(dllimport)
+#endif
 
 #ifndef NMS_STATIC_ALLOCATOR
 #define NMS_STATIC_ALLOCATOR

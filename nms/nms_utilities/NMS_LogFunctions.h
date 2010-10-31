@@ -1,7 +1,13 @@
-#define LOG_FUNCTIONS_D __declspec(dllexport)
+//#    define LOG_FUNCTIONS_D __declspec(dllexport)
+
+#ifdef __EXP_NMS_UTILITIES
+#    define LOG_FUNCTIONS_D __declspec(dllexport)
+#else
+#    define LOG_FUNCTIONS_D __declspec(dllimport)
+#endif
 
 #ifndef NMS_LOGFUNCTIONS
-	#define NMS_LOGFUNCTIONS
+#define NMS_LOGFUNCTIONS
 
 
 #include "NMS_CustomTypes.h"

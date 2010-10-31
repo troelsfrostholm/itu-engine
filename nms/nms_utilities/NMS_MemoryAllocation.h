@@ -1,4 +1,10 @@
-#define MEMORY_ALLOCATION_D __declspec(dllexport)
+//#define MEMORY_ALLOCATION_D __declspec(dllexport)
+
+#ifdef __EXP_NMS_UTILITIES
+#    define MEMORY_ALLOCATION_D __declspec(dllexport)
+#else
+#    define MEMORY_ALLOCATION_D __declspec(dllimport)
+#endif
 
 #ifndef NMS_MEMORY_ALLOCATION
 #define NMS_MEMORY_ALLOCATION

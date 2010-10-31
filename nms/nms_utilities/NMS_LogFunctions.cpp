@@ -23,6 +23,8 @@ void NMS_LogFunctions::Initialize (void) {
 	err=fopen_s (&m_Singleton->m_FErrorLog,"NMS_ErrorLog.txt","w+");
     if (err!=0)
     {
+		//throw "Error when trying to load access NMS_ErrorLog.txt!\n";
+		//Destroy();
 		printf( "Error when trying to load access NMS_ErrorLog.txt!\n" );
 		Destroy();
 		return;
