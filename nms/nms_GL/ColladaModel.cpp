@@ -13,6 +13,7 @@ ColladaModel::ColladaModel()
 	transformation          =Matrix();
 	sSkeletonID				=NULL;
 	skinningInformation     =Skin();
+	sSkeletonID			="";
 };
 
 ColladaModel::~ColladaModel(){};
@@ -92,6 +93,7 @@ void ColladaModel::render(float time)
 		{
 			glPushMatrix();
 				RenderFrame();
+				DrawSkeleton();
 			glPopMatrix();
 		}
 		else
@@ -130,7 +132,6 @@ void ColladaModel::RenderFrame()
 	glDisableClientState(GL_NORMAL_ARRAY);
 	glDisable(GL_TEXTURE_2D);
 	glDisable( GL_CULL_FACE );
-	
 }
 
 void ColladaModel::LoadData()
@@ -283,12 +284,63 @@ void ColladaModel::LoadData()
 		 toBeRendered.iTextID=iTextureID;
 		 vRenderData.push_back(toBeRendered);
 		}
-		
-
+		LoadSkeleton();
 	}
 	bModelLoadedCorrectly=true;
 }
 
+void ColladaModel::FindRoot(Node* nodeList)
+{
+	if((nodeList!=NULL)&&strcmp(nodeList->sID.c_str(),sSkeletonID.c_str()))
+	{
+		if(nodeList->nodes.count(sSkeletonID))
+		{
+			pSkeletonNode=&nodeList->nodes[sSkeletonID];
+			return;
+		}
+		else
+		{
+			std::map<core::stringc ,Node>::iterator it;
+			for ( it=nodeList->nodes.begin() ; it != nodeList->nodes.end(); it++ )
+			{
+				FindRoot(&(*it).second);
+			}
+		}
+	}
+}
+
+void ColladaModel::LoadSkeleton()
+{
+	if(pSkeletonNode!=NULL&&strcmp(sSkeletonID.c_str(),""))
+	{
+		JointNode root = JointNode(pSkeletonNode->sID.c_str(),pSkeletonNode->sName.c_str(),pSkeletonNode->sSID.c_str(),pSkeletonNode->sType.c_str(),pSkeletonNode->transformation);
+		ColladaSkeleton=Skeleton(root);
+		ColladaSkeleton.addJoint(root.getSSID(),root);
+		LoadJointRec(ColladaSkeleton.getJoint(root.getSSID()),pSkeletonNode);
+	}
+}
+
+void ColladaModel::LoadJointRec(JointNode* jParent,Node* nParent)
+{
+	std::map<core::stringc ,Node>::iterator it;
+		for ( it=nParent->nodes.begin() ; it != nParent->nodes.end(); it++ )
+		{
+			JointNode current = JointNode((*it).second.sID.c_str(),(*it).second.sName.c_str(),(*it).second.sSID.c_str(),(*it).second.sType.c_str(),(*it).second.transformation);
+			ColladaSkeleton.addJoint(current.getSSID(),current);
+			LoadJointRec(ColladaSkeleton.getJoint(current.getSSID()),&it->second);
+			jParent->addChild(ColladaSkeleton.getJoint(current.getSSID()));
+		}
+}
+
+void ColladaModel::DrawSkeleton()
+{
+	if(strcmp(sSkeletonID.c_str(),""))
+	{
+		SkeletonRenderer skelRend = SkeletonRenderer();
+		JointNode toBeTraversed =*ColladaSkeleton.getJoint(sSkeletonID.c_str());
+		toBeTraversed.traverse_df(&skelRend);
+	}
+}
 
 int	ColladaModel::LoadModel(const char* fileName)
 {
@@ -318,6 +370,17 @@ int	ColladaModel::LoadModel(const char* fileName)
 		// delete the xml parser after usage
 		delete xml;
 		
+
+		//Searching for the root node in all the nodes we have loaded
+		std::map<core::stringc ,Node>::iterator it;
+		for ( it=mNodes.begin() ; it != mNodes.end(); it++ )
+		{
+			if(strcmp("",sSkeletonID.c_str()))
+				FindRoot(&(*it).second);
+			else
+				break;
+		}
+
 		bXMLLoaded=true;
 		return true;
 	}
@@ -851,11 +914,57 @@ void ColladaModel::readSkin(IrrXMLReader* xml)
 				{
 					skinningInformation.mBindShape=readMatrix(xml);
 				}
+				else if (!strcmp("source", xml->getNodeName()))
+				{
+					skinningInformation.vSources.push_back(readSource(xml));
+				}
+				else if (!strcmp("joints", xml->getNodeName()))
+				{
+					readJoint(xml);
+				}
+				else if (!strcmp("vertex_weights", xml->getNodeName()))
+				{
+					readVertexWeight(xml);
+				}
 			}
 			break;
 			case EXN_ELEMENT_END:
 			{
 				if (!strcmp("skin", xml->getNodeName()))
+				{
+					return;
+				}
+			}break;
+		}
+	}
+}
+
+
+void ColladaModel::readJoint(IrrXMLReader* xml)
+{
+	while(xml->read())
+	{
+		switch(xml->getNodeType())
+		{
+			case EXN_ELEMENT:
+			{
+				if ((!strcmp("input", xml->getNodeName()))&&(!strcmp(xml->getAttributeValue("semantic"),"JOINT")))
+				{
+					skinningInformation.jointSource=xml->getAttributeValue("source");
+					skinningInformation.jointSource.replace('#',' ');
+					skinningInformation.jointSource.trim();
+				}
+				else if ((!strcmp("input", xml->getNodeName()))&&(!strcmp(xml->getAttributeValue("semantic"),"INV_BIND_MATRIX")))
+				{
+					skinningInformation.bindSource=xml->getAttributeValue("source");
+					skinningInformation.bindSource.replace('#',' ');
+					skinningInformation.bindSource.trim();
+				}
+			}
+			break;
+			case EXN_ELEMENT_END:
+			{
+				if (!strcmp("joints", xml->getNodeName()))
 				{
 					return;
 				}
@@ -936,8 +1045,11 @@ void ColladaModel::readMainSection(IrrXMLReader* xml)
 				{
 					readLibraryVisualScene(xml);
 				}
-				break;
-			}
+				else if (!strcmp("library_controllers", xml->getNodeName()))
+				{
+					readLibraryControllers(xml);
+				}
+			}break;
 			case EXN_ELEMENT_END:
 			{
 				break; //End reading
@@ -949,23 +1061,54 @@ void ColladaModel::readMainSection(IrrXMLReader* xml)
 void ColladaModel::readFloatArray(IrrXMLReader* xml,float* arrayPointer)
 {
 	int count=xml->getAttributeValueAsInt("count");
+	xml->read();
 	char* charArray=(char*)xml->getNodeData();
 	arrayPointer=new float[count];
 	for (int i=0; i<count; i++)
-		arrayPointer[i]=(float)strtod(charArray,&charArray);
+	{
+		arrayPointer[i]=strtod(charArray,&charArray);
+	}
+}
+
+void ColladaModel::readVCountArray(IrrXMLReader* xml,unsigned* arrayPointer)
+{
+	int count=skinningInformation.iWeightCount;
+	skinningInformation.iVCount=0;
+	xml->read();
+	char* charArray=(char*)xml->getNodeData();
+	arrayPointer=new unsigned[count];
+	for (int i=0; i<count; i++)
+	{
+		arrayPointer[i]=strtod(charArray,&charArray);
+		skinningInformation.iVCount+=arrayPointer[i];
+	}
+}
+
+void ColladaModel::readVArray(IrrXMLReader* xml,unsigned* arrayPointer)
+{
+	int count=skinningInformation.iVCount*2;
+	xml->read();
+	char* charArray=(char*)xml->getNodeData();
+	arrayPointer=new unsigned[count];
+	for (int i=0; i<count; i++)
+	{
+		arrayPointer[i]=strtod(charArray,&charArray);
+	}
 }
 
 void ColladaModel::readIDREFArray(IrrXMLReader* xml,core::stringc* arrayPointer)
 {
 	int count=xml->getAttributeValueAsInt("count");
+	xml->read();
 	char* charArray=(char*)xml->getNodeData();
 	arrayPointer=new core::stringc[count+1];
 	unsigned i=0;
-	while(i<=count)
+	unsigned h=0;
+	while(i<count)
 	{
-		while(charArray!=" ")
+		while(strncmp(charArray," ",1)&&strncmp(charArray,"",1))
 		{
-			arrayPointer[i].append(charArray);
+			arrayPointer[i].append(charArray[0]);
 			charArray+=sizeof(char);
 		}
 		charArray+=sizeof(char);
@@ -974,33 +1117,78 @@ void ColladaModel::readIDREFArray(IrrXMLReader* xml,core::stringc* arrayPointer)
 }
 
 
-void ColladaModel::readSource(IrrXMLReader* xml)
+Source ColladaModel::readSource(IrrXMLReader* xml)
 {
+	Source toBeReturned = Source();
 	while(xml->read())
 	{
 		switch(xml->getNodeType())
 		{
 			case EXN_ELEMENT:
 			{
-				if (!strcmp("bind_shape_matrix", xml->getNodeName()))
+				if (!strcmp("IDREF_array", xml->getNodeName()))
 				{
-					skinningInformation.mBindShape=readMatrix(xml);
-				}
-				else if (!strcmp("IDREF_array", xml->getNodeName()))
-				{
-					//((Source)skinningInformation.vSources.back()).iIdRefArraySize=xml->getAttributeValueAsInt("count");
-					readIDREFArray(xml,((Source)skinningInformation.vSources.back()).pIdRefArray);
+					toBeReturned.iIdRefArraySize=xml->getAttributeValueAsInt("count");
+					readIDREFArray(xml,toBeReturned.pIdRefArray);
 				}
 				else if (!strcmp("float_array", xml->getNodeName()))
 				{
-					//((Source)skinningInformation.vSources.back()).iFArraySize=xml->getAttributeValueAsInt("count");
-					readFloatArray(xml,((Source)skinningInformation.vSources.back()).pfArray);
+					toBeReturned.iFArraySize=xml->getAttributeValueAsInt("count");
+					readFloatArray(xml,toBeReturned.pfArray);
+				}
+				else if (!strcmp("accessor", xml->getNodeName()))
+				{
+					toBeReturned.count  = xml->getAttributeValueAsInt("count");
+					toBeReturned.offset = xml->getAttributeValueAsInt("offset");
+					toBeReturned.stride = xml->getAttributeValueAsInt("stride");
+						if (toBeReturned.stride == 0)
+							toBeReturned.stride = 1;   //Fix a bug in some models
+					xml->read(); //Skip to the parameter section
+					toBeReturned.sParameterType=xml->getAttributeValue("name");
 				}
 			}
 			break;
 			case EXN_ELEMENT_END:
 			{
 				if (!strcmp("source", xml->getNodeName()))
+				{
+					return toBeReturned;
+				}
+			}break;
+		}
+	}
+}
+
+
+void ColladaModel::readVertexWeight(IrrXMLReader* xml)
+{
+	skinningInformation.iWeightCount=xml->getAttributeValueAsInt("count");
+	while(xml->read())
+	{
+		switch(xml->getNodeType())
+		{
+			case EXN_ELEMENT:
+			{
+				if ((!strcmp("input", xml->getNodeName()))&&(!strcmp(xml->getAttributeValue("semantic"),"JOINT")))
+				{
+					skinningInformation.iJointOffset=xml->getAttributeValueAsInt("offset");
+				}
+				else if ((!strcmp("input", xml->getNodeName()))&&(!strcmp(xml->getAttributeValue("semantic"),"WEIGHT")))
+				{
+					skinningInformation.iWeightOffset=xml->getAttributeValueAsInt("offset");
+				}
+				else if (!strcmp("vcount", xml->getNodeName()))
+				{
+					readVCountArray(xml,skinningInformation.pVCount);
+				}
+				else if (!strcmp("v", xml->getNodeName()))
+				{
+					readVArray(xml,skinningInformation.pV);
+				}
+			}break;
+			case EXN_ELEMENT_END:
+			{
+				if (!strcmp("vertex_weights", xml->getNodeName()))
 				{
 					return;
 				}

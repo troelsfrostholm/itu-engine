@@ -45,7 +45,7 @@
     <ClCompile>
       <AdditionalOptions>/DEXP_STL %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\glut 3.7.6</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>__EXP_NMS_UTILITIES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>

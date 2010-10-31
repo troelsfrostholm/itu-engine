@@ -25,6 +25,8 @@
 #include <irrTypes.h>
 #include <irrString.h>
 #include <fast_atof.h>
+#include "NMS_DebugDraw.h"
+#include "NMS_Skeleton.h"
 #define NOMINMAX
 
 
@@ -38,15 +40,15 @@ using namespace std;
 typedef float vec9_t[9];
 typedef float vec6_t[6];
 
-class Accessor
-{	
-  public:
-	Accessor(){iCount=0;iOffset=0;iStride=0;sSource="";};
-	unsigned iCount;
-	unsigned iOffset;
-	unsigned iStride;
-	core::stringc sSource;
-};
+//class Accessor
+//{	
+//  public:
+//	Accessor(){iCount=0;iOffset=0;iStride=0;sSource="";};
+//	unsigned iCount;
+//	unsigned iOffset;
+//	unsigned iStride;
+//	core::stringc sSource;
+//};
 
 class Source
 {	
@@ -56,11 +58,14 @@ class Source
 			   accessorReference=NULL;
 			   pIdRefArray=NULL;
 			   iFArraySize=0;
-			   iFArraySize=0;};
+			   iFArraySize=0;
+			   sParameterType="";};
 	  core::stringc sName;
 	  core::stringc sID;
 
-	  GLfloat* pfArray;
+	  core::stringc sParameterType;
+
+	  float* pfArray;
 	  unsigned iFArraySize;
 	  core::stringc* pIdRefArray;
 	  unsigned iIdRefArraySize;
@@ -72,7 +77,7 @@ class Source
 	  unsigned stride;
 
 
-	  vector<Accessor> vAccessor;
+	  /*vector<Accessor> vAccessor;*/
 	  core::stringc accessorReference;
 };
 
@@ -161,9 +166,19 @@ class Image
 class Skin
 {
 public: 
-	Skin(){};
+	Skin(){iWeightCount=0;};
 	Matrix mBindShape;
 	vector<Source> vSources;
+
+	core::stringc jointSource;
+	core::stringc bindSource;
+
+	unsigned iWeightCount;
+	unsigned iVCount;
+	unsigned iJointOffset;
+	unsigned iWeightOffset;
+	unsigned* pVCount;
+	unsigned* pV;
 };
 
 class RenderData
@@ -186,6 +201,7 @@ public:
 	ColladaModel();
 	~ColladaModel();
 	int		LoadModel(const char* fileName);
+	
 	int     LoadSkin(char* fileName);
 	int     LoadSkin();
 	void	render(float time);
@@ -198,6 +214,7 @@ private:
 	unsigned			iTriangleCount;
 	unsigned			iMeshCount;
 
+	Skeleton			ColladaSkeleton;
 	Skin				skinningInformation;
 	
 	vector<ColMesh>     dataRead;
@@ -225,7 +242,10 @@ private:
 	void readLibraryControllers(IrrXMLReader* xml);
 	void readController(IrrXMLReader* xml);
 	void readSkin(IrrXMLReader* xml);
-	void readSource(IrrXMLReader* xml);
+	void readJoint(IrrXMLReader* xml);
+	void readVertexWeight(IrrXMLReader* xml);
+	
+	Source readSource(IrrXMLReader* xml);
 	void RenderFrame();
 
 	//XML TRANSFORMATION READING
@@ -237,12 +257,21 @@ private:
 	//DATA READING
 	void readFloatArray(IrrXMLReader* xml,float* arrayPointer);
 	void readIDREFArray(IrrXMLReader* xml,core::stringc* arrayPointer);
+	void readVCountArray(IrrXMLReader* xml,unsigned* arrayPointer);
+	void readVArray(IrrXMLReader* xml,unsigned* arrayPointer);
 
 	void   readNode(IrrXMLReader* xml,Node* parent);
 	void   readInstanceController(IrrXMLReader* xml);
 
+	void    LoadJointRec(JointNode* jParent,Node* nParent);
+
+
 	//RENDERING THE MODEL
 	void    LoadData();
+	void    FindRoot(Node* nodeList);
+	void    LoadSkeleton();
+	void    DrawSkeleton();
+	
 };
 #endif
 

@@ -57,6 +57,9 @@
     <ClCompile Include="NMS_EventManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="NMS_Skeleton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ColladaModel.h">
@@ -104,7 +107,10 @@
     <ClInclude Include="NMS_Thread.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NMS_EventManager.h">
+    <ClInclude Include="..\nms_utilities\NMS_DebugDraw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NMS_Skeleton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

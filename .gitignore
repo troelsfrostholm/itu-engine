@@ -36,3 +36,4 @@ nms/nms_GL/gl_map
 MatrixDebug.txt
 #Ignore backups
 *.orig
+nms/nms_GL.opensdf

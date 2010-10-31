@@ -156,7 +156,7 @@ int main(int argc, char* argv[])
 	cam.multiply(transl);
 	
 	Matrix tra3 = Matrix();
-	tra3.uScale(1.0);
+	tra3.uScale(1.0f);
 
 	traNode3=TransformationNode(tra3);
 
@@ -173,6 +173,7 @@ int main(int argc, char* argv[])
 	root->addChild(&fpsCam);
 	renderer = engine.getRenderer();
 	renderer->setCurrentCamera(&fpsCam);
+	renderer->setWireframeMode(true);
 
 
 	NMS_EVENT_MANAGER.onKeyPressed(&keyPressed);

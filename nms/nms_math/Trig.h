@@ -7,7 +7,6 @@
 #include <cmath>
 #define _USE_MATH_DEFINES
 
-#define PI 3.14159265f;
 
 class TRIG_D nmsTrig
 {

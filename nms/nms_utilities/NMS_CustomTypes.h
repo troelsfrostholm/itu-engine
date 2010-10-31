@@ -6,7 +6,6 @@
 #    define CUSTOMTYPES_D __declspec(dllimport)
 #endif
 
-
 #ifndef NMS_CUSTOMTYPES
 #define NMS_CUSTOMTYPES
 

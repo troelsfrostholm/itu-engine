@@ -78,6 +78,7 @@ class MATRIX_D Matrix{
 	     unsigned Matrix::getRowL() const;
 	     unsigned Matrix::getColL() const;
 		 void Matrix::swapRows(unsigned i, unsigned j);
+		 Matrix Matrix::getRotation();
 
 	  //Transposition
 	     friend Matrix  operator~(const Matrix &m);
