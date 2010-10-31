@@ -107,7 +107,7 @@ int NMS_SceneRenderer::renderingLoop()
 {
 	while(rendering) {
 		currentTime+=0.0008f;
-		NMS_EVENT.pollEvents();
+		NMS_EVENT_MANAGER.pollEvents();
 		physics->simulatePhysics();
 		render();
 		CalculateFrameRate();

@@ -13,6 +13,7 @@
 #include "NMS_FileManagement.h"
 #include "NMS_LogFunctions.h"
 #include "NMS_CustomTypes.h"
+#include "NMS_StaticAllocator.h"
 
 #include <map>
 #include <string.h>
@@ -39,11 +40,12 @@ typedef struct
 
 class TEXTUREMANAGER_D NMS_TextureManager {
 public :
-	NMS_TextureManager (void);
-	~NMS_TextureManager (void);
+
 	static NMS_TextureManager& GetSingleton (void);
 
 private :
+	NMS_TextureManager (void);
+	~NMS_TextureManager (void);
 	static void Initialize (void);
 	textStruct checkForHash(shaMap hash,char* textureName);
 

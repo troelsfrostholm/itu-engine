@@ -176,10 +176,10 @@ int main(int argc, char* argv[])
 	renderer->setWireframeMode(true);
 
 
-	NMS_EVENT.onKeyPressed(&keyPressed);
-	NMS_EVENT.onKeyReleased(&keyReleased);
-	NMS_EVENT.onMouseMoved(&mouseMoved);
-	NMS_EVENT.onIdle(&idle);
+	NMS_EVENT_MANAGER.onKeyPressed(&keyPressed);
+	NMS_EVENT_MANAGER.onKeyReleased(&keyReleased);
+	NMS_EVENT_MANAGER.onMouseMoved(&mouseMoved);
+	NMS_EVENT_MANAGER.onIdle(&idle);
 	engine.run();
 	return 0;
 }

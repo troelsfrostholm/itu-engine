@@ -33,9 +33,6 @@
     <ClCompile Include="NMS_Engine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NMS_Event.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="NMS_Framework.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -57,7 +54,7 @@
     <ClCompile Include="NMS_Thread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NMS_DebugDraw.cpp">
+    <ClCompile Include="NMS_EventManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="NMS_Skeleton.cpp">
@@ -84,9 +81,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NMS_Engine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="NMS_Event.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NMS_Framework.h">

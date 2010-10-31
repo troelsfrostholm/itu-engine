@@ -80,6 +80,7 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="math.cpp" />
+    <ClCompile Include="memory_managers.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\nms_GL\nms_GL.vcxproj">
