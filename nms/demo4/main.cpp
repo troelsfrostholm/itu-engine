@@ -156,7 +156,7 @@ int main(int argc, char* argv[])
 	cam.multiply(transl);
 	
 	Matrix tra3 = Matrix();
-	tra3.uScale(10.0);
+	tra3.uScale(1.0f);
 
 	traNode3=TransformationNode(tra3);
 

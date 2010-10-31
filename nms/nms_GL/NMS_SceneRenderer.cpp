@@ -56,12 +56,12 @@ bool NMS_SceneRenderer::initRendering()
 	glEnable(GL_DEPTH_TEST);							// Enables Depth Testing
 	glDepthFunc(GL_LEQUAL);								// The Type Of Depth Testing To Do
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
-	/*glFrustum(    -0.5f,
+	glFrustum(    -0.5f,
                 0.5f,
                 -0.5f*(float)(height/width),
                 0.5f*(float)(height/width),
                 1.0f,
-                500.0f);*/
+                500.0f);
 		
 	gluPerspective(60.0, (float)width/(float)height, 1.0, width);
 	glMatrixMode(GL_MODELVIEW);

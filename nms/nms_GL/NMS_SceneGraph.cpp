@@ -12,10 +12,53 @@ void SceneGraphNode::addChild(SceneGraphNode* child)
 	child->setParent(this);
 }
 
+bool SceneGraphNode::isRoot()
+{
+	if(this->parent==NULL)
+		return true;
+	return false;
+}
+
+bool SceneGraphNode::isLeaf()
+{
+	return children.size() <= 0;
+}
+
+Vector TransformationNode::getWorldPosition(void)
+{
+	TransformationNode * nodePointer = this;
+	Vector worldPosition;
+	Vector temp;
+
+	while(true)
+	{
+		
+		temp = nodePointer->transform.getCol(4);
+
+		if((!nodePointer->isRoot())&&(nodePointer->parent->isRoot()))
+		{
+			worldPosition = worldPosition + temp;
+			break;
+		}
+		else if (!nodePointer->isRoot())
+		{
+			nodePointer = (TransformationNode*) nodePointer->parent;
+			worldPosition = worldPosition + temp;
+			worldPosition = worldPosition*(nodePointer->transform.getRotation());
+		}
+		else
+			break;
+	}
+
+	return worldPosition;
+}
+
 void SceneGraphNode::setParent(SceneGraphNode* _parent)
 {
 	parent = _parent;
 }
+
+
 
 void SceneGraphNode::traverse_df(SceneGraphVisitor *v)
 {

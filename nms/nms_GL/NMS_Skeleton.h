@@ -23,10 +23,9 @@ DLL EXPORTING SAFE
 using namespace std;
 
 
-class SKELETON_D JointNode : public SceneGraphNode
+class SKELETON_D JointNode : public TransformationNode
 {
 protected:
-	Matrix transform;
 	string sID;
 	string sName;
 	string sSID;
@@ -37,7 +36,8 @@ public:
 	JointNode(string sID, string sName, string sSID, string sType,Matrix t);
 	void JointNode::before(SceneGraphVisitor *v, Matrix *m);
 	void JointNode::after(SceneGraphVisitor *v, Matrix *m);
-
+	JointNode* getParent();
+	Matrix getTransform();
 	string getSSID();
 };
 
@@ -56,13 +56,18 @@ public:
 	};
 
 	void addJoint(string sID,JointNode node);
-	JointNode getJoint(string sID);
+	JointNode* getJoint(string sID);
 };
 
 class SKELETON_D SkeletonRenderer : public SceneGraphVisitor
 {
-	void sg_before(Matrix transform, JointNode * node);
-	void sg_after(Matrix transform, JointNode * node);
+	Vector startingPoint;
+	void sg_before(Matrix transform, SceneGraphNode * node);
+	void sg_after(Matrix transform, SceneGraphNode * node);
+public:
+	SkeletonRenderer();
+	void renderJoint(Matrix transform, SceneGraphNode * node);
+	
 };
 
 

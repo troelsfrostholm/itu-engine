@@ -93,6 +93,7 @@ void ColladaModel::render(float time)
 		{
 			glPushMatrix();
 				RenderFrame();
+				DrawSkeleton();
 			glPopMatrix();
 		}
 		else
@@ -131,7 +132,6 @@ void ColladaModel::RenderFrame()
 	glDisableClientState(GL_NORMAL_ARRAY);
 	glDisable(GL_TEXTURE_2D);
 	glDisable( GL_CULL_FACE );
-	
 }
 
 void ColladaModel::LoadData()
@@ -284,6 +284,7 @@ void ColladaModel::LoadData()
 		 toBeRendered.iTextID=iTextureID;
 		 vRenderData.push_back(toBeRendered);
 		}
+		LoadSkeleton();
 	}
 	bModelLoadedCorrectly=true;
 }
@@ -310,11 +311,34 @@ void ColladaModel::FindRoot(Node* nodeList)
 
 void ColladaModel::LoadSkeleton()
 {
-	if(pSkeletonNode!=NULL)
+	if(pSkeletonNode!=NULL&&strcmp(sSkeletonID.c_str(),""))
 	{
 		JointNode root = JointNode(pSkeletonNode->sID.c_str(),pSkeletonNode->sName.c_str(),pSkeletonNode->sSID.c_str(),pSkeletonNode->sType.c_str(),pSkeletonNode->transformation);
 		ColladaSkeleton=Skeleton(root);
 		ColladaSkeleton.addJoint(root.getSSID(),root);
+		LoadJointRec(ColladaSkeleton.getJoint(root.getSSID()),pSkeletonNode);
+	}
+}
+
+void ColladaModel::LoadJointRec(JointNode* jParent,Node* nParent)
+{
+	std::map<core::stringc ,Node>::iterator it;
+		for ( it=nParent->nodes.begin() ; it != nParent->nodes.end(); it++ )
+		{
+			JointNode current = JointNode((*it).second.sID.c_str(),(*it).second.sName.c_str(),(*it).second.sSID.c_str(),(*it).second.sType.c_str(),(*it).second.transformation);
+			ColladaSkeleton.addJoint(current.getSSID(),current);
+			LoadJointRec(ColladaSkeleton.getJoint(current.getSSID()),&it->second);
+			jParent->addChild(ColladaSkeleton.getJoint(current.getSSID()));
+		}
+}
+
+void ColladaModel::DrawSkeleton()
+{
+	if(strcmp(sSkeletonID.c_str(),""))
+	{
+		SkeletonRenderer skelRend = SkeletonRenderer();
+		JointNode toBeTraversed =*ColladaSkeleton.getJoint(sSkeletonID.c_str());
+		toBeTraversed.traverse_df(&skelRend);
 	}
 }
 
@@ -1040,13 +1064,9 @@ void ColladaModel::readFloatArray(IrrXMLReader* xml,float* arrayPointer)
 	xml->read();
 	char* charArray=(char*)xml->getNodeData();
 	arrayPointer=new float[count];
-	LOG.write("readFloatArray\n",LOG_DEBUG);
 	for (int i=0; i<count; i++)
 	{
 		arrayPointer[i]=strtod(charArray,&charArray);
-		char* toBePrinted=new char[30];
-		sprintf(toBePrinted,"%f ",arrayPointer[i]);
-		LOG.write(toBePrinted,LOG_DEBUG);
 	}
 }
 
@@ -1057,14 +1077,10 @@ void ColladaModel::readVCountArray(IrrXMLReader* xml,unsigned* arrayPointer)
 	xml->read();
 	char* charArray=(char*)xml->getNodeData();
 	arrayPointer=new unsigned[count];
-	LOG.write("readVCountArray\n",LOG_DEBUG);
 	for (int i=0; i<count; i++)
 	{
 		arrayPointer[i]=strtod(charArray,&charArray);
 		skinningInformation.iVCount+=arrayPointer[i];
-		char* toBePrinted=new char[30];
-		sprintf(toBePrinted,"%d ",arrayPointer[i]);;
-		LOG.write(toBePrinted,LOG_DEBUG);
 	}
 }
 
@@ -1074,13 +1090,9 @@ void ColladaModel::readVArray(IrrXMLReader* xml,unsigned* arrayPointer)
 	xml->read();
 	char* charArray=(char*)xml->getNodeData();
 	arrayPointer=new unsigned[count];
-	LOG.write("readVArray\n",LOG_DEBUG);
 	for (int i=0; i<count; i++)
 	{
 		arrayPointer[i]=strtod(charArray,&charArray);
-		char* toBePrinted=new char[30];
-		sprintf(toBePrinted,"%d ",arrayPointer[i]);
-		LOG.write(toBePrinted,LOG_DEBUG);
 	}
 }
 

@@ -262,10 +262,15 @@ private:
 	void   readNode(IrrXMLReader* xml,Node* parent);
 	void   readInstanceController(IrrXMLReader* xml);
 
+	void    LoadJointRec(JointNode* jParent,Node* nParent);
+
+
 	//RENDERING THE MODEL
 	void    LoadData();
 	void    FindRoot(Node* nodeList);
 	void    LoadSkeleton();
+	void    DrawSkeleton();
+	
 };
 #endif
 
