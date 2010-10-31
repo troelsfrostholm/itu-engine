@@ -14,7 +14,7 @@ DLL EXPORTING SAFE
 #include "NMS_Mutex.h"
 #include "NMS_Thread.h"
 #include "NMS_SceneGraph.h"
-#include "NMS_Event.h"
+#include "NMS_EventManager.h"
 #include "NMS_Mesh.h"
 #include "nms_physics.h"
 

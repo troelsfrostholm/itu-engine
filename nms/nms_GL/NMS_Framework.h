@@ -14,7 +14,7 @@
 #include "Matrix.h"
 #include "Trig.h"
 #include "NMS_AssetManager.h"
-#include "NMS_Event.h"
+#include "NMS_EventManager.h"
 #include "NMS_Camera.h"
 #include "NMS_SceneRenderer.h"
 #include "NMS_LightSystem.h"

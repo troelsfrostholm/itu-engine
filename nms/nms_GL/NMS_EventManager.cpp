@@ -1,13 +1,13 @@
-#include "NMS_Event.h"
+#include "NMS_EventManager.h"
 #include "NMS_StaticAllocator.h"
 
-NMS_Event *NMS_Event::singleton = 0;
+NMS_EventManager *NMS_EventManager::singleton = 0;
 
 void NoMouseEvent(int x, int y) { };
 void NoKeyEvent(SDLKey key) { };
 void NoIdleEvent(int i) { };
 
-NMS_Event::NMS_Event()
+NMS_EventManager::NMS_EventManager()
 {
 	singleton = NULL;
 	eventQueueGuard = SDL_CreateMutex();
@@ -17,22 +17,22 @@ NMS_Event::NMS_Event()
 	idleCallback = &NoIdleEvent;
 }
 
-NMS_Event &NMS_Event::getInstance()
+NMS_EventManager &NMS_EventManager::getInstance()
 {
 	if(!singleton) {
-		singleton = new(STATIC_ALLOC, MEM_SINGLETON) NMS_Event();
+		singleton = new(STATIC_ALLOC, MEM_SINGLETON) NMS_EventManager();
 	}
 	return *singleton;
 }
 
-void NMS_Event::destroy (void) {
+void NMS_EventManager::destroy (void) {
 	if (singleton) {
 		delete singleton;
 		singleton = 0;
 	}
 }
 
-void NMS_Event::pollEvents()
+void NMS_EventManager::pollEvents()
 {
 	SDL_Event event;
 	SDL_LockMutex(eventQueueGuard);
@@ -42,7 +42,7 @@ void NMS_Event::pollEvents()
 	SDL_UnlockMutex(eventQueueGuard);
 }
 
-void NMS_Event::processEvents()
+void NMS_EventManager::processEvents()
 {
 	SDL_LockMutex(eventQueueGuard);
 	while( eventQueue.size() > 0 )  {
@@ -53,7 +53,7 @@ void NMS_Event::processEvents()
 	idleCallback( 0 );
 }
 
-void NMS_Event::handleEvent(SDL_Event event)
+void NMS_EventManager::handleEvent(SDL_Event event)
 {
 	switch( event.type ) {
 	// A key has been pressed

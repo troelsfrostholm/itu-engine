@@ -18,7 +18,7 @@ bool NMS_Framework::NMSInit(int width,int height,int bpp,char* windowTitle,bool 
 	sceneRenderer.setCurrentCamera((CameraNode*)sceneGraphRoot);
 
 	//set callback for quitting
-	NMS_EVENT.onQuit(this, &NMS_Framework::NMSQuit);
+	NMS_EVENT_MANAGER.onQuit(this, &NMS_Framework::NMSQuit);
 
 	camera=NMSCameraFPS::NMSCameraFPS();
 	camera.setPos(Vector(0,0,-5.0f));
@@ -45,7 +45,7 @@ void NMS_Framework::run()
 	while(running)
 	{
 		SDL_LockMutex(sceneGraphGuard);
-		NMS_EVENT.processEvents();
+		NMS_EVENT_MANAGER.processEvents();
 		SDL_UnlockMutex(sceneGraphGuard);	
 	}
 	sceneRenderer.down();

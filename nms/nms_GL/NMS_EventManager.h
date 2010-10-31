@@ -1,11 +1,11 @@
 #ifdef __EXP_NMS_GL
-#    define EVENT_D __declspec(dllexport)
+#    define EVENT_MANAGER_D __declspec(dllexport)
 #else
-#    define EVENT_D __declspec(dllimport)
+#    define EVENT_MANAGER_D __declspec(dllimport)
 #endif
 
-#ifndef NMS_EVENT_H
-#define NMS_EVENT_H
+#ifndef NMS_EVENT_MANAGER_H
+#define NMS_EVENT_MANAGER_H
 
 #pragma warning( disable: 4251 )  //Used to disable this useless warning: http://www.unknownroad.com/rtfm/VisualStudio/warningC4251.html
 
@@ -17,13 +17,13 @@
 
 using namespace std;
 
-#define NMS_EVENT	NMS_Event::getInstance()
-#define DESTROY_EVENT	NMS_Event::destroy()
+#define NMS_EVENT_MANAGER	NMS_EventManager::getInstance()
+#define NMS_DESTROY_EVENT_MANAGER	NMS_EventManager::destroy()
 
-class  EVENT_D NMS_Event
+class  EVENT_MANAGER_D NMS_EventManager
 {
 private:
-	static NMS_Event *singleton;
+	static NMS_EventManager *singleton;
 	list<SDL_Event> eventQueue;
 	int maxQueueSize;
 	SDL_mutex* eventQueueGuard;
@@ -33,14 +33,14 @@ private:
 	boost::function1<void, SDLKey> keyPressedCallback;
 	boost::function1<void, SDLKey> keyReleasedCallback;
 	boost::function2<void, int, int> mouseMovedCallback;
-	NMS_Event::NMS_Event();
+	NMS_EventManager::NMS_EventManager();
 
 public:
-	static NMS_Event& NMS_Event::getInstance();
+	static NMS_EventManager& NMS_EventManager::getInstance();
 	static void destroy (void);
-	void NMS_Event::pollEvents();
-	void NMS_Event::processEvents();
-	void NMS_Event::handleEvent(SDL_Event event);
+	void NMS_EventManager::pollEvents();
+	void NMS_EventManager::processEvents();
+	void NMS_EventManager::handleEvent(SDL_Event event);
 
 	template <class T> 
 	void onQuit(T* instance, void (T::*_callback)(int i))
