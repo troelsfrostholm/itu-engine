@@ -67,7 +67,7 @@ int NMS_TextureManager::LoadTexture (const char* sFilename,char* textureName) {
 	 
 
 	  //Convert the file read to a Lump file to be used by DevIL
-	  Lump = (ILubyte*)malloc(fileSize);
+	  Lump = (ILubyte*)LEVEL_ALLOC->allocMem(fileSize);
 	  fseek(fp, 0, SEEK_SET);
 	  fread(Lump, 1, fileSize, fp);
 	  fclose(fp);
@@ -107,7 +107,7 @@ int NMS_TextureManager::LoadTexture (const char* sFilename,char* textureName) {
 				  ilGenImages(1, &texid); /* Generation of one image name */
 				  ilBindImage(texid); /* Binding of image name */
 				  success = ilLoadL(IL_TYPE_UNKNOWN,Lump,fileSize); /* Loading of image "image.jpg" */  //USA iLoadImageF
-				  free(Lump);
+				  //free(Lump);
 				  
 
 				  if (success) /* If no error occured: */

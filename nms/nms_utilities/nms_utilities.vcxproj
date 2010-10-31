@@ -78,6 +78,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="NMS_FileManagement.cpp" />
+    <ClCompile Include="NMS_LevelAllocator.cpp" />
     <ClCompile Include="NMS_LogFunctions.cpp" />
     <ClCompile Include="NMS_MemoryAllocation.cpp" />
     <ClCompile Include="NMS_MemoryTracker.cpp" />
@@ -88,6 +89,7 @@
   <ItemGroup>
     <ClInclude Include="NMS_CustomTypes.h" />
     <ClInclude Include="NMS_FileManagement.h" />
+    <ClInclude Include="NMS_LevelAllocator.h" />
     <ClInclude Include="NMS_LogFunctions.h" />
     <ClInclude Include="NMS_MemoryAllocation.h" />
     <ClInclude Include="NMS_MemoryTracker.h" />

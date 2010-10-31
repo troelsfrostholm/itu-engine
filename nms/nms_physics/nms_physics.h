@@ -14,6 +14,7 @@
 #include <boost/function.hpp>
 #include "nms_debugDrawer.h"
 #include "NMS_StaticAllocator.h"
+#include "NMS_LevelAllocator.h"
 
 #pragma warning( disable: 4251 )  //Used to disable this useless warning: http://www.unknownroad.com/rtfm/VisualStudio/warningC4251.html
 

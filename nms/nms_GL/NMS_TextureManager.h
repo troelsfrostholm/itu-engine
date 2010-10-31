@@ -14,6 +14,7 @@
 #include "NMS_LogFunctions.h"
 #include "NMS_CustomTypes.h"
 #include "NMS_StaticAllocator.h"
+#include "NMS_LevelAllocator.h"
 
 #include <map>
 #include <string.h>

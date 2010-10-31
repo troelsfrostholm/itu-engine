@@ -1,5 +1,6 @@
 #include "NMS_StackBasedAllocator.h"
 #include "NMS_StaticAllocator.h"
+#include "NMS_LevelAllocator.h"
 #include <boost/test/unit_test.hpp>
 #include <iostream>
 
@@ -101,9 +102,9 @@ BOOST_AUTO_TEST_CASE( memory_tracking )
 	int * j = new(s, 1) int(2);
 	BOOST_CHECK_EQUAL(s->currentMemoryUsage(0), 4);
 	BOOST_CHECK_EQUAL(s->currentMemoryUsage(1), 4);
-	for(int k = 2; k < MemoryAllocator::NUM_CATEGORIES; k++) {
+	/*for(int k = 2; k < MemoryAllocator::NUM_CATEGORIES; k++) {
 		BOOST_CHECK_EQUAL(s->currentMemoryUsage(k), 0);
-	}
+	}*/
 	delete s;
 }
 
@@ -144,6 +145,44 @@ BOOST_AUTO_TEST_CASE( allocating_into_several_stack_based_allocators )
 	BOOST_CHECK((U32) l - (U32) k > 4);
 
 	delete STATIC_ALLOC;
+}
+
+BOOST_AUTO_TEST_SUITE_END();
+
+BOOST_AUTO_TEST_SUITE( level_allocator );
+
+BOOST_AUTO_TEST_CASE( load_it )
+{
+	LEVEL_ALLOC->setStackAllocSize(9);
+	
+	//First two allocations fills the first stack allocator
+	//So they are allocated in continuous memory
+	int * i = new(LEVEL_ALLOC, 0) int(1);
+	BOOST_CHECK_EQUAL(*i, 1);
+	int * j = new(LEVEL_ALLOC, 0) int(1);
+	BOOST_CHECK_EQUAL(*j, 1);
+	BOOST_CHECK_EQUAL((U32)j - (U32)i, 4);
+
+	//The third shuld overflow the allocator, and throw an exception
+	bool exception_thrown = false;
+	bool with_correct_message = false;
+	try {
+		int * k = new(LEVEL_ALLOC, 0) int(1);
+	}
+	catch(char* msg) {
+		exception_thrown = true;
+		if(strcmp(msg, "Allocator size exceeded")==0)
+			with_correct_message = true;
+	}
+	BOOST_CHECK(exception_thrown);
+	BOOST_CHECK(with_correct_message);
+
+	//It can be cleared, and we can start over allocating
+	LEVEL_ALLOC->clearLevel();
+	int * l = new(LEVEL_ALLOC, 0) int(1);
+	BOOST_CHECK_EQUAL(*l, 1);
+
+	delete LEVEL_ALLOC;
 }
 
 BOOST_AUTO_TEST_SUITE_END();
