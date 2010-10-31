@@ -119,8 +119,8 @@ int main(int argc, char* argv[])
 	MD2Model model = MD2Model();
 	ColladaModel model2 = ColladaModel();
 	model.LoadModel("models/drfreak/drfreak.md2","models/drfreak/drfreak.tga");
-	model2.LoadModel("models/FireSpocket/models/FireSpocket.dae");
-	//model2.LoadModel("models/Duck/Duck.dae");
+	//model2.LoadModel("models/FireSpocket/models/FireSpocket.dae");
+	model2.LoadModel("models/Duck/Duck.dae");
 	model.SetAnim(RUN);
 
 	//LIGHT DEFINITION
@@ -131,7 +131,7 @@ int main(int argc, char* argv[])
 	light0.defineLight(light0);*/
 	AmbientLight light1 = AmbientLight();
 	light1.setGlobalAmbient(&Vector(1,1,1,0));
-	
+
 	NMS_Cube cube = NMS_Cube();
 	GeometryNode GeoCube = GeometryNode(&cube, fallRigidBody);
 
@@ -141,7 +141,7 @@ int main(int argc, char* argv[])
 	geom = GeometryNode(&model2, fallRigidBody2);
 	GeometryNode light = GeometryNode(&light1,fallRigidBody);
 	SceneGraphNode* root = engine.getScene();
-	
+
 	Matrix tra = Matrix();
 	Vector v = Vector(0.f, 100.f, 300.f);
 	tra.translate(v);
@@ -151,7 +151,7 @@ int main(int argc, char* argv[])
 	tra2.translate(v);
 
 	Matrix tra3 = Matrix();
-	tra3.uScale(0.10);
+	tra3.uScale(1.0);
 
 	traNode = TransformationNode(tra);
 	traNode2 = TransformationNode(tra2);
@@ -167,7 +167,7 @@ int main(int argc, char* argv[])
 	traNode3.addChild(&geom);
 	traNode2.addChild(&GeoCube);
 	root->addChild(&light);
-	
+
 	NMS_EVENT.onKeyPressed(&keyPressed);
 	NMS_EVENT.onKeyReleased(&keyReleased);
 	NMS_EVENT.onMouseMoved(&mouseMoved);
@@ -175,7 +175,7 @@ int main(int argc, char* argv[])
 
 	NMS_SceneRenderer* renderer = engine.getRenderer();
 	renderer->setCurrentCamera(&cam);
-	
+
 	engine.run();
 	return 0;
 }

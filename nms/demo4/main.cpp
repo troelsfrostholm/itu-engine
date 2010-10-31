@@ -28,6 +28,7 @@ void mouseMoved(int MouseX, int MouseY)
 
 void keyReleased(SDLKey key)
 {
+	SDL_LockMutex(inputGuard);
 	switch( key ) {
 		case SDLK_a:
 			 fpsCam.setSlideSpeed(0);
@@ -45,11 +46,13 @@ void keyReleased(SDLKey key)
 			//((NMS_KinematicMotionState*) fallRigidBody->getMotionState())->setKinematicPos( btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0)) );
 			break;
 	}
+	SDL_UnlockMutex(inputGuard);
 }
 
 
 void keyPressed(SDLKey key)
 {
+	SDL_LockMutex(inputGuard);
 	switch( key ) {
 		case SDLK_UP:
 			//Matrix m = Matrix();
@@ -79,6 +82,7 @@ void keyPressed(SDLKey key)
 			 break;
 
 	}
+	SDL_UnlockMutex(inputGuard);
 }
 
 void idle( int i )
@@ -97,6 +101,7 @@ int main(int argc, char* argv[])
 	//model3.LoadModel("models/Gundam/Gundam.dae");
 	//model3.LoadModel("models/FireSpocket/models/FireSpocket.dae");
 	model3.LoadModel("models/Astroboy/Astroboy.dae");
+	//model3.LoadModel("models/colladaDuck/duck_triangulate.dae");
 	float mass;
 	btVector3 fallInertia;
 

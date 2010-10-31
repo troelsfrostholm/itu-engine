@@ -7,15 +7,15 @@
 #ifndef __MD2LOADER_H__
 #define __MD2LOADER_H__
 
+
 #include <iostream>
-#include <windows.h>		// Header File For Windows
-#include <gl\gl.h>			// Header File For The OpenGL32 Library
-#include <gl\glu.h>			// Header File For The GLu32 Library 
+#include "SDL_opengl.h"
 #include <stdio.h>
 #include "NMS_AssetManager.h"
 #include "NMS_FileManagement.h"
 #include "NMS_LogFunctions.h"
 #include "NMS_Mesh.h"
+#include "NMS_CustomTypes.h"
 
 #define MAGIC_NO	844121161  //It means IDP2
 
@@ -84,8 +84,8 @@ typedef struct
 //STRUCTURE OF A SINGLE VERTEX  vertex_t in the guide
 typedef struct
 {
-	byte	vertex[3];
-	byte	lightNormalIndex;
+	BYTE	vertex[3];
+	BYTE	lightNormalIndex;
 }TriangleVertex,*pTriangleVertex;
 
 //FRAME DEFINITION  frame_t in the guide
@@ -167,13 +167,13 @@ class MD2LOADER_D MD2Model : public NMS_Mesh
 
 		//MISC MEMORY AND FILE ROUTINES
 		int		ReadFile(const char* fileName);						    //Read the model file
-		int		ReadHeader(byte *buffer,pHeader phead);			        //Load the header of the model as stored into the buffer
+		int		ReadHeader(BYTE* buffer,pHeader phead);			        //Load the header of the model as stored into the buffer
 		
 	private:
 		//Check to avoid crashes: the model has loaded in the right way
 		bool                bModelLoadedCorrectly;
 
-		byte*				fileBuffer;	 //The buffer containing the whole file that has been read
+		BYTE*				fileBuffer;	 //The buffer containing the whole file that has been read
 		Header				md2Header;	 //Our MD2 header, useful to get the offset of the components
 
 
@@ -193,7 +193,7 @@ class MD2LOADER_D MD2Model : public NMS_Mesh
 		float               scaleFactor;				// Scale value for the model
 		pFrame				p_frameData;				//Pointer to the frames array
 
-		static vec3_t   anorms[ 162 ];					//Vectors of precalculated normals for the model
+		static vec3_t       anorms[ 162 ];					//Vectors of precalculated normals for the model
 
 };
 

@@ -2,6 +2,11 @@
 #include <cmath>
 #include "Trig.h"
 
+template<class T>
+int nmsTrig::signum (T v) {
+return (v > 0) - (v < 0)
+}
+
 double nmsTrig::degToRad (double d) {
 return d * M_PI / 180;
 }

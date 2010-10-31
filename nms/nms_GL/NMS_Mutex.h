@@ -10,6 +10,7 @@
 #include "SDL.h"
 
 extern MUTEX_D SDL_mutex* sceneGraphGuard;
+extern MUTEX_D SDL_mutex* inputGuard;
 
 extern MUTEX_D void initMutexes();
 

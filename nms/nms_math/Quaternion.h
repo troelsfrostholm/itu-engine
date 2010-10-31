@@ -11,7 +11,8 @@
 
 using namespace std;
 
-//Three space vector class
+//Definitions and helpful conversion functions taken from here: http://web.archive.org/web/20041029003853/http:/www.j3d.org/matrix_faq/matrfaq_latest.html#Q49
+
 class QUATERNION_D Quaternion : public Vector{
 public:
 	Quaternion(void);
@@ -20,8 +21,15 @@ public:
 	Matrix getMatrix();
 
 	void createFromAngles(float fPitch, float fYaw, float fRoll);
+	void createFromVector(Vector v,float angle);
 
-	Quaternion operator * (const Quaternion &q)const;
-	void operator *= (const Quaternion &q);
+	Quaternion operator *  (const Quaternion &q)const;
+	Vector     operator *  (const Vector &v    )const;
+	void operator       *= (const Quaternion &q);
+
+	Quaternion          conjugate()const;
+	Quaternion          normal();
+	float               lenght();
+	
 };
 #endif

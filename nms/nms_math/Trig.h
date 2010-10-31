@@ -12,11 +12,13 @@
 class TRIG_D nmsTrig
 {
 public:
+	template<class T>
+	static int    signum(T v);
 	static double degToRad (double d);
 	static double radToDeg (double r);
-	static float degToRad (float d);
-	static float radToDeg (float r);
-	static float cos (double x );
-	static float sin (double x );
+	static float  degToRad (float d);
+	static float  radToDeg (float r);
+	static float  cos (double x );
+	static float  sin (double x );
 };
 #endif

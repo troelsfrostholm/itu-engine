@@ -1,3 +1,6 @@
+/****************************************************************************************
+DLL EXPORTING SAFE
+*****************************************************************************************/
 #ifdef __EXP_NMS_GL
 #    define LIGHTSYSTEM_D __declspec(dllexport)
 #else
@@ -7,11 +10,11 @@
 #ifndef NMS_LightSystem_H__
 #define NMS_LightSystem_H__
 
-#include <windows.h>		// Header File For Windows
-#include <gl\gl.h>			// Header File For The OpenGL32 Library
-#include <gl\glu.h>			// Header File For The GLu32 Library 
+#include "SDL_opengl.h"
+
 #include "NMS_3DObject.h"
 #include "Vector.h"
+#include "Matrix.h"
 
 
 
@@ -60,6 +63,5 @@ public:
 	NMS_LightSystem();
 	void Enable(int bShading);
 	void Disable();
-	//It will initialize all the parameters that are not set to NULL
 };
 #endif

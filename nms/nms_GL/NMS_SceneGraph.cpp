@@ -67,7 +67,7 @@ void TransformationNode::after(SceneGraphVisitor *v, Matrix *m)
 
 GeometryNode::GeometryNode() : TransformationNode()
 { 
-	model = NULL; 
+	model = NULL;
 }
 
 GeometryNode::GeometryNode(NMS_Mesh *m, btRigidBody *b) : TransformationNode()
@@ -76,7 +76,7 @@ GeometryNode::GeometryNode(NMS_Mesh *m, btRigidBody *b) : TransformationNode()
 	collisionBody = b;
 }
 
-GeometryNode::GeometryNode(NMS_Mesh *m, btRigidBody *b, Matrix t) : TransformationNode(t) 
+GeometryNode::GeometryNode(NMS_Mesh *m, btRigidBody *b,  Matrix t) : TransformationNode(t) 
 { 
 	model = m;
 	collisionBody = b;

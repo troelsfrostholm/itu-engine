@@ -19,6 +19,9 @@ void nms_physics::initPhysics()
 
 	triggers = std::vector<btPairCachingGhostObject*>();
 
+	debugDrawer.setDebugMode(btIDebugDraw::DBG_DrawWireframe);
+	dynamicsWorld->setDebugDrawer(&debugDrawer);
+
 }
 
 void nms_physics::exitPhysics()
@@ -84,7 +87,7 @@ nms_physics::~nms_physics()
 btScalar nms_physics::getDeltaTimeSeconds()
 {
 	btScalar dt = (btScalar)clock.getTimeMicroseconds();
-	dt = dt /1000000.f; //Convert microseconds to seconds
+	dt = dt / 1000000.f; //Convert microseconds to seconds
 	clock.reset();
 	return dt;
 }

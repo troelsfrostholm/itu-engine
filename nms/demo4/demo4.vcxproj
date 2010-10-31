@@ -53,7 +53,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>sdl.lib;sdlmain.lib;opengl32.lib;glu32.lib;odbc32.lib;odbccp32.lib;kernel32.lib;user32.lib;gdi32.lib;advapi32.lib;nms_math.lib;Devil.lib;nms_GL.lib;nms_physics.lib;BulletDynamics.lib;BulletCollision.lib;LinearMath.lib;NMS_Sound.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)\Debug;$(SolutionDir)\lib;$(SolutionDir)\lib\SDL 1.2.14;$(SolutionDir)\lib\Devil 1.7.8;$(SolutionDir)\release;$(SolutionDir)\nms_physics;$(SolutionDir)\Bullet\lib;$(SolutionDir)\lib\irrXML 1.2;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\Debug;$(SolutionDir)\lib\SDL 1.2.14;$(SolutionDir)\lib;$(SolutionDir)\lib\Devil 1.7.8;$(SolutionDir)\release;$(SolutionDir)\nms_physics;$(SolutionDir)\Bullet\lib;$(SolutionDir)\lib\irrXML 1.2;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>

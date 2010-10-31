@@ -119,7 +119,7 @@ int MD2Model::ReadFile(const char* fileName)
 		return 1;
 
 	//Allocate the space needed to keep the file into the buffer
-	fileBuffer=(byte*)nmsFileManagement::Malloc(fileSize);
+	fileBuffer=(BYTE*)nmsFileManagement::Malloc(fileSize);
 	if (!fileBuffer)
 		return 1;
 
@@ -134,7 +134,7 @@ int MD2Model::ReadFile(const char* fileName)
 
 
 //Load the header of the model as stored into the buffer
-int MD2Model::ReadHeader(byte *buffer,pHeader phead)
+int MD2Model::ReadHeader(BYTE *buffer,pHeader phead)
 {
 	//Copy into the header the header as read from the buffer
 	memcpy(phead,buffer,sizeof(*phead));
@@ -193,7 +193,7 @@ void MD2Model::LoadFrames()
 	int index=0;
 
 	//Point to the frame section in the file we have read
-	byte	*buf_t		= fileBuffer+ md2Header.offsetFrames;
+	BYTE* buf_t		= fileBuffer+ md2Header.offsetFrames;
 
 	//The total space to allocate for the frame data
 	long	frameHeaderSize	= md2Header.numFrames * sizeof(Frame);
@@ -228,9 +228,9 @@ void MD2Model::LoadGLCommands()
 	int index=0;
 
 	//Point to the glCommands section in the file we have read
-	byte	*buf_t		= fileBuffer+ md2Header.offsetGlCommands;
+	BYTE*   buf_t		= fileBuffer+ md2Header.offsetGlCommands;
 	//Copy from memory the command from the buffer to our pointer
-	memcpy((char *)p_openGlCommands,buf_t, numGlCommands * sizeof( int ));
+	memcpy((BYTE *)p_openGlCommands,buf_t, numGlCommands * sizeof( int ));
 }
 
 

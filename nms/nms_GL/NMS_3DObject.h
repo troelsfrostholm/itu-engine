@@ -1,3 +1,6 @@
+/****************************************************************************************
+DLL EXPORTING SAFE
+*****************************************************************************************/
 #ifdef __EXP_NMS_GL
 #    define OBJECT_D __declspec(dllexport)
 #else
@@ -9,22 +12,8 @@
 
 
 
-#include <fstream>
 #include "Vector.h"
-#include "Trig.h"
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <string>
-#include <iostream>
-#include <stdexcept>
 #include "NMS_Mesh.h"
-
-
-
-#include <windows.h>		// Header File For Windows
-#include <gl\gl.h>			// Header File For The OpenGL32 Library
-#include <gl\glu.h>			// Header File For The GLu32 Library 
 
 
 class OBJECT_D NMS_3DObject : public NMS_Mesh

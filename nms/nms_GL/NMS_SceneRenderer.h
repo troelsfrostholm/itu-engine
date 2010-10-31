@@ -1,3 +1,6 @@
+/****************************************************************************************
+DLL EXPORTING SAFE
+*****************************************************************************************/
 #ifdef __EXP_NMS_GL
 #    define SCENE_RENDERER_D __declspec(dllexport)
 #else
@@ -21,7 +24,7 @@ protected:
 	SceneGraphNode* sceneGraphRoot;
 	CameraNode* current_camera;
 	nms_physics *physics;
-//	SDL_Thread *renderThread;
+	//SDL_Thread *renderThread;
 	bool rendering;
 	float currentTime;
 
@@ -38,8 +41,8 @@ public:
 	void setCurrentCamera(CameraNode* camera);
 	void sg_before(Matrix transform, NMS_Mesh* model, btRigidBody *b);
 	void sg_after(Matrix transform, NMS_Mesh* model);
-	void applyPhysics(btRigidBody *b);
 	void CalculateFrameRate();
+	void applyPhysics(btRigidBody *b);
 };
 
 #endif
