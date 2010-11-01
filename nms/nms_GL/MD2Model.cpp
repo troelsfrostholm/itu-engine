@@ -178,7 +178,7 @@ void MD2Model::InitData()
 	p_nextFrameVertices = (vec3_t*) nmsFileManagement::Malloc(md2Header.numVertices*sizeof(vec3_t));
 	p_lightnormals      = (vec3_t*) nmsFileManagement::Malloc(sizeof(vec3_t)*md2Header.numVertices);
 	p_nextLightNormals  = (vec3_t*) nmsFileManagement::Malloc(sizeof(vec3_t)*md2Header.numVertices);
-	p_openGlCommands    =  new int[ numGlCommands ];
+	p_openGlCommands    =  new(LEVEL_ALLOC, MEM_LEVEL) int[ numGlCommands ];
 }
 
 

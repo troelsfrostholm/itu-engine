@@ -9,6 +9,7 @@ void NMSCameraFPS::init()
 	vUp=Vector(0,1,0);
 	vDir=Vector(0,0,1);
 	vVel=Vector(0,0,0);
+	qRotation=Quaternion();
 
 	fRotX=0;
 	fRotY=0;
@@ -110,16 +111,13 @@ void NMSCameraFPS::recalcAxes()
     else if (fRotX<-90.0f)
         fRotX = -90.0f;
 
-	//rotate around Y
-	m.rotV(fRotY,vUp);
+	qRotation=qRotation.createFromVector(vUp,fRotY);
+	qRotation=qRotation.createFromVector(vRight,fRotX)*qRotation;
+	m=qRotation.getMatrix();
+
+	vUp*=m;
 	vRight*=m;
 	vDir*=m;
-
-	//rotate around X 
-	m.rotV(fRotX,vRight);
-	vUp*=m;
-	vDir*=m;
-
 
 	//Correct rounding errors
 	vDir=vDir.normal();

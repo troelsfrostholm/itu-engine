@@ -14,13 +14,14 @@
 #include "Matrix.h"
 #include "Trig.h"
 #include "NMS_AssetManager.h"
-#include "NMS_Event.h"
+#include "NMS_EventManager.h"
 #include "NMS_Camera.h"
 #include "NMS_SceneRenderer.h"
 #include "NMS_LightSystem.h"
 #include "SDL_MemberThread.h"
 #include "NMS_Mutex.h"
 #include "nms_physics.h"
+#include "NMS_StaticAllocator.h"
 
 class FRAMEWORK_D NMS_Framework
 {
@@ -28,6 +29,7 @@ protected:
 	int flags;
 	NMS_SceneRenderer sceneRenderer;
 	SceneGraphNode* sceneGraphRoot;
+	bool bDebugEnable;
 	
 	
 public:
@@ -46,6 +48,7 @@ public:
 	void enableWireframe(bool reply);
 	static void NMSLoadTexture(char* fileName,int id);
 	void CalculateFrameRate();
+	void setDebugMode(bool mode);
 	void cleanup();
 	SceneGraphNode* getScene();
 	NMS_SceneRenderer* getRenderer();

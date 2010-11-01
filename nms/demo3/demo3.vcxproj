@@ -44,7 +44,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include\Boost 1.4.4;$(SolutionDir)\nms_utilities;$(SolutionDir)\include\Devil 1.7.8;$(SolutionDir)\nms_GL;$(SolutionDir)\include\SDL 1.2.14;$(SolutionDir)\nms_physics;$(SolutionDir)\nms_math;$(SolutionDir)\Bullet\src;$(SolutionDir)\include\irrXML 1.2;$(SolutionDir)\include\OpenAL 1.1;$(SolutionDir)\NMS_Sound;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\Boost 1.4.4;$(SolutionDir)\nms_utilities;$(SolutionDir)\include\glut 3.7.6;$(SolutionDir)\include\Devil 1.7.8;$(SolutionDir)\nms_GL;$(SolutionDir)\include\SDL 1.2.14;$(SolutionDir)\nms_physics;$(SolutionDir)\nms_math;$(SolutionDir)\Bullet\src;$(SolutionDir)\include\irrXML 1.2;$(SolutionDir)\include\OpenAL 1.1;$(SolutionDir)\NMS_Sound;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -52,8 +52,8 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>sdl.lib;sdlmain.lib;opengl32.lib;glu32.lib;odbc32.lib;odbccp32.lib;kernel32.lib;user32.lib;gdi32.lib;advapi32.lib;nms_math.lib;Devil.lib;nms_GL.lib;nms_physics.lib;BulletDynamics.lib;BulletCollision.lib;LinearMath.lib;NMS_Sound.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)\Debug;$(SolutionDir)\lib;$(SolutionDir)\lib\SDL 1.2.14;$(SolutionDir)\lib\Devil 1.7.8;$(SolutionDir)\release;$(SolutionDir)\nms_physics;$(SolutionDir)\Bullet\lib;$(SolutionDir)\lib\irrXML 1.2;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sdl.lib;sdlmain.lib;opengl32.lib;glu32.lib;odbc32.lib;odbccp32.lib;kernel32.lib;user32.lib;gdi32.lib;advapi32.lib;nms_math.lib;Devil.lib;nms_GL.lib;nms_physics.lib;BulletDynamics.lib;BulletCollision.lib;LinearMath.lib;NMS_Sound.lib;glut32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\lib\glut 3.7.6;$(SolutionDir)\Debug;$(SolutionDir)\lib;$(SolutionDir)\lib\SDL 1.2.14;$(SolutionDir)\lib\Devil 1.7.8;$(SolutionDir)\release;$(SolutionDir)\nms_physics;$(SolutionDir)\Bullet\lib;$(SolutionDir)\lib\irrXML 1.2;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>

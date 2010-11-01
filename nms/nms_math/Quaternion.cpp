@@ -65,21 +65,24 @@ Quaternion Quaternion::conjugate()const
 }
 
 
-void Quaternion::createFromVector(Vector v,float angle)
+Quaternion Quaternion::createFromVector(Vector v,float angle)
 {
+	Quaternion toBeReturned=Quaternion();
 	v=v.normal();
-	angle=angle/2;
+	angle=angle*0.5;
 	float sinAngle=nmsTrig::sin(angle);
-	x = v[NMS_X] * sinAngle;
-	y = v[NMS_Y] * sinAngle;
-	z = v[NMS_Z] * sinAngle;
-	w = nmsTrig::cos(angle);
+	toBeReturned.x = v[NMS_X] * sinAngle;
+	toBeReturned.y = v[NMS_Y] * sinAngle;
+	toBeReturned.z = v[NMS_Z] * sinAngle;
+	toBeReturned.w = nmsTrig::cos(angle);
+	return toBeReturned;
 }
 
-void Quaternion::createFromAngles(float fPitch, float fYaw, float fRoll)
+Quaternion Quaternion::createFromAngles(float fPitch, float fYaw, float fRoll)
 {
+	Quaternion toBeReturned=Quaternion();
 	float cX,cY,cZ,sX,sY,sZ,cYcZ,sYsZ,cYsZ,sYcZ;
-	//Conversion from degree to radians
+	////Conversion from degree to radians
 	fPitch= nmsTrig::degToRad(fPitch);
 	fYaw=nmsTrig::degToRad(fYaw);
 	fRoll=nmsTrig::degToRad(fRoll);
@@ -102,10 +105,11 @@ void Quaternion::createFromAngles(float fPitch, float fYaw, float fRoll)
 	cYsZ=cY*sZ;
 	sYcZ=sY*cZ;
 
-	w=cX*cYcZ+sX*sYsZ;
-	x=sX*cYcZ-cX*sYsZ;
-	y=cX*sYcZ+sX*cYsZ;
-	z=cX*cYsZ-sX*sYcZ;
+	toBeReturned.w=cX*cYcZ+sX*sYsZ;
+	toBeReturned.x=sX*cYcZ-cX*sYsZ;
+	toBeReturned.y=cX*sYcZ+sX*cYsZ;
+	toBeReturned.z=cX*cYsZ-sX*sYcZ;
+	return toBeReturned;
 }
 
 Matrix Quaternion::getMatrix()

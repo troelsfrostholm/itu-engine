@@ -1,9 +1,9 @@
 NMS_TextureManager::Texture Manager Initialized!
-NMS_TextureManager::Trying to load [models/hang2/hang2.bmp]
+NMS_TextureManager::Trying to load [models/Duck/duckCM.tga]
 NMS_TextureManager::Lump created correctly!
 NMS_TextureManager::Texture loaded from Lump!
-NMS_TextureManager::Trying to load [models/hang3/hang3.bmp]
-NMS_TextureManager::Lump created correctly!
+NMS_TextureManager::Loaded [models/Duck/duckCM.tga] without issues!
+NMS_TextureManager::Freed the whole memory!
 NMS_TextureManager::Texture loaded from Lump!
 NMS_TextureManager::Trying to load [models/pumpkin/orange1noCulling.JPG]
 NMS_TextureManager::Lump created correctly!

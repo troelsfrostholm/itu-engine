@@ -7,18 +7,18 @@ bool NMS_Framework::NMSInit(int width,int height,int bpp,char* windowTitle,bool 
 	//Initialize mutexes
 	initMutexes();
 
-	physics = new nms_physics();
+	physics = new(STATIC_ALLOC, MEM_PERSISTENT) nms_physics();
 
 	//Instantiate sub-systems
 	sceneRenderer = NMS_SceneRenderer(physics);
 	
 	//Create scene-graph
-	sceneGraphRoot = new CameraNode();
+	sceneGraphRoot = new(STATIC_ALLOC, MEM_PERSISTENT) CameraNode();
 	sceneRenderer.setScene(sceneGraphRoot);
 	sceneRenderer.setCurrentCamera((CameraNode*)sceneGraphRoot);
 
 	//set callback for quitting
-	NMS_EVENT.onQuit(this, &NMS_Framework::NMSQuit);
+	NMS_EVENT_MANAGER.onQuit(this, &NMS_Framework::NMSQuit);
 
 	camera=NMSCameraFPS::NMSCameraFPS();
 	camera.setPos(Vector(0,0,-5.0f));
@@ -45,7 +45,7 @@ void NMS_Framework::run()
 	while(running)
 	{
 		SDL_LockMutex(sceneGraphGuard);
-		NMS_EVENT.processEvents();
+		NMS_EVENT_MANAGER.processEvents();
 		SDL_UnlockMutex(sceneGraphGuard);	
 	}
 	sceneRenderer.down();
@@ -56,9 +56,9 @@ void NMS_Framework::cleanup()
 {
 	//Be sure to remove all the assets we have loaded!
 	NMS_ASSETMANAGER.FreeAll();
-	delete(sceneGraphRoot);
 	SDL_DestroyMutex(sceneGraphGuard);
 	sceneGraphRoot = NULL;
+	delete STATIC_ALLOC;
 	SDL_Quit();
 }
 
@@ -77,10 +77,7 @@ NMS_SceneRenderer* NMS_Framework::getRenderer()
 	return &sceneRenderer;
 }
 
-void NMS_Framework::enableWireframe(bool reply)
+void NMS_Framework::setDebugMode(bool mode)
 {
-	if(reply)
-		glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
-	else
-		glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+	bDebugEnable=mode;
 }

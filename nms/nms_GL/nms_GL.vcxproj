@@ -44,7 +44,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)\nms_math;$(SolutionDir)\nms_utilities;$(SolutionDir)\include\Boost 1.4.4;$(SolutionDir)\include;$(SolutionDir)\include\Devil 1.7.8;$(SolutionDir)\include\SDL 1.2.14;$(SolutionDir)\include\irrXML 1.2;$(SolutionDir)\Bullet\src;$(SolutionDir)\nms_physics;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\nms_math;$(SolutionDir)\nms_utilities;$(SolutionDir)\include\Boost 1.4.4;$(SolutionDir)\include;$(SolutionDir)\include\Devil 1.7.8;$(SolutionDir)\include\SDL 1.2.14;$(SolutionDir)\include\glut 3.7.6;$(SolutionDir)\include\irrXML 1.2;$(SolutionDir)\Bullet\src;$(SolutionDir)\nms_physics;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>__EXP_NMS_GL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -54,8 +54,8 @@
       <CallingConvention>Cdecl</CallingConvention>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>sdl.lib;sdlmain.lib;opengl32.lib;glu32.lib;odbc32.lib;odbccp32.lib;kernel32.lib;user32.lib;gdi32.lib;advapi32.lib;Devil.lib;nms_math.lib;nms_utilities.lib;irrXML.lib;nms_physics.lib;BulletDynamics.lib;BulletCollision.lib;LinearMath.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)\Debug;$(SolutionDir)\lib;$(SolutionDir)\lib\SDL 1.2.14;$(SolutionDir)\lib\irrXML 1.2;$(SolutionDir)\lib\Devil 1.7.8;$(SolutionDir)\release;$(SolutionDir)\Bullet\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sdl.lib;sdlmain.lib;opengl32.lib;glu32.lib;odbc32.lib;odbccp32.lib;kernel32.lib;user32.lib;gdi32.lib;advapi32.lib;Devil.lib;nms_math.lib;nms_utilities.lib;irrXML.lib;nms_physics.lib;BulletDynamics.lib;BulletCollision.lib;LinearMath.lib;glut32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\Debug;$(SolutionDir)\lib;$(SolutionDir)\lib\SDL 1.2.14;$(SolutionDir)\lib\irrXML 1.2;$(SolutionDir)\lib\Devil 1.7.8;$(SolutionDir)\release;$(SolutionDir)\Bullet\lib;$(SolutionDir)\lib\glut 3.7.6;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AssemblyDebug>true</AssemblyDebug>
       <GenerateMapFile>false</GenerateMapFile>
@@ -94,17 +94,20 @@
     <ClCompile Include="NMS_3DObject.cpp" />
     <ClCompile Include="NMS_AssetManager.cpp" />
     <ClCompile Include="NMS_Camera.cpp" />
+    <ClCompile Include="NMS_DebugDraw.cpp" />
     <ClCompile Include="NMS_Engine.cpp" />
-    <ClCompile Include="NMS_Event.cpp" />
+    <ClCompile Include="NMS_EventManager.cpp" />
     <ClCompile Include="NMS_Framework.cpp" />
     <ClCompile Include="NMS_LightSystem.cpp" />
     <ClCompile Include="NMS_Mutex.cpp" />
     <ClCompile Include="NMS_SceneGraph.cpp" />
     <ClCompile Include="NMS_SceneRenderer.cpp" />
+    <ClCompile Include="NMS_Skeleton.cpp" />
     <ClCompile Include="NMS_TextureManager.cpp" />
     <ClCompile Include="NMS_Thread.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\nms_utilities\NMS_DebugDraw.h" />
     <ClInclude Include="ColladaModel.h" />
     <ClInclude Include="MD2Model.h" />
     <ClInclude Include="NMS_3DObject.h" />
@@ -112,13 +115,14 @@
     <ClInclude Include="NMS_AssetManager.h" />
     <ClInclude Include="NMS_Camera.h" />
     <ClInclude Include="NMS_Engine.h" />
-    <ClInclude Include="NMS_Event.h" />
+    <ClInclude Include="NMS_EventManager.h" />
     <ClInclude Include="NMS_Framework.h" />
     <ClInclude Include="NMS_LightSystem.h" />
     <ClInclude Include="NMS_Mesh.h" />
     <ClInclude Include="NMS_Mutex.h" />
     <ClInclude Include="NMS_SceneGraph.h" />
     <ClInclude Include="NMS_SceneRenderer.h" />
+    <ClInclude Include="NMS_Skeleton.h" />
     <ClInclude Include="NMS_TextureManager.h" />
     <ClInclude Include="NMS_Thread.h" />
   </ItemGroup>

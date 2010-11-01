@@ -156,7 +156,7 @@ int main(int argc, char* argv[])
 	cam.multiply(transl);
 	
 	Matrix tra3 = Matrix();
-	tra3.uScale(1.0);
+	tra3.uScale(1.0f);
 
 	traNode3=TransformationNode(tra3);
 
@@ -173,12 +173,13 @@ int main(int argc, char* argv[])
 	root->addChild(&fpsCam);
 	renderer = engine.getRenderer();
 	renderer->setCurrentCamera(&fpsCam);
+	renderer->setWireframeMode(true);
 
 
-	NMS_EVENT.onKeyPressed(&keyPressed);
-	NMS_EVENT.onKeyReleased(&keyReleased);
-	NMS_EVENT.onMouseMoved(&mouseMoved);
-	NMS_EVENT.onIdle(&idle);
+	NMS_EVENT_MANAGER.onKeyPressed(&keyPressed);
+	NMS_EVENT_MANAGER.onKeyReleased(&keyReleased);
+	NMS_EVENT_MANAGER.onMouseMoved(&mouseMoved);
+	NMS_EVENT_MANAGER.onIdle(&idle);
 	engine.run();
 	return 0;
 }

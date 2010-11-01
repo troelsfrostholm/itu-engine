@@ -12,10 +12,53 @@ void SceneGraphNode::addChild(SceneGraphNode* child)
 	child->setParent(this);
 }
 
+bool SceneGraphNode::isRoot()
+{
+	if(this->parent==NULL)
+		return true;
+	return false;
+}
+
+bool SceneGraphNode::isLeaf()
+{
+	return children.size() <= 0;
+}
+
+Vector TransformationNode::getWorldPosition(void)
+{
+	TransformationNode * nodePointer = this;
+	Vector worldPosition;
+	Vector temp;
+
+	while(true)
+	{
+		
+		temp = nodePointer->transform.getCol(4);
+
+		if((!nodePointer->isRoot())&&(nodePointer->parent->isRoot()))
+		{
+			worldPosition = worldPosition + temp;
+			break;
+		}
+		else if (!nodePointer->isRoot())
+		{
+			nodePointer = (TransformationNode*) nodePointer->parent;
+			worldPosition = worldPosition + temp;
+			worldPosition = worldPosition*(nodePointer->transform.getRotation());
+		}
+		else
+			break;
+	}
+
+	return worldPosition;
+}
+
 void SceneGraphNode::setParent(SceneGraphNode* _parent)
 {
 	parent = _parent;
 }
+
+
 
 void SceneGraphNode::traverse_df(SceneGraphVisitor *v)
 {
@@ -85,11 +128,21 @@ GeometryNode::GeometryNode(NMS_Mesh *m, btRigidBody *b,  Matrix t) : Transformat
 void GeometryNode::before(SceneGraphVisitor *v, Matrix *m)
 {
 	TransformationNode::before(v, m);
-	v->sg_before(*m, model, collisionBody);
+	v->sg_before(*m, this);
 }
 
 void GeometryNode::after(SceneGraphVisitor *v, Matrix *m) 
 {
-	v->sg_after(*m, model);
+	v->sg_after(*m, this);
 	TransformationNode::after(v, m);
+}
+
+NMS_Mesh * GeometryNode::getModel()
+{
+	return model;
+}
+
+btRigidBody * GeometryNode::getCollisionBody()
+{
+	return collisionBody;
 }

@@ -38,6 +38,15 @@ Matrix::Matrix(const Matrix& m)
 
 }
 
+ Matrix Matrix::getRotation()
+ {
+	 Matrix toBeReturned= Matrix();
+	 toBeReturned=(*this);
+	 toBeReturned.setCol(4,Vector(0,0,0));
+	 toBeReturned.setRow(4,Vector(0,0,0));
+	 return toBeReturned;
+ }
+
 const Matrix& Matrix::operator = (const Matrix& m)
 {
 	if (this != &m) {

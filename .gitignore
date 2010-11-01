@@ -24,6 +24,9 @@ Thumbs.db
 [Bb]in
 [Dd]ebug*/
 *.sbr
+*.ipch
+*.sdf
+*.opensdf
 obj/
 [Rr]elease*/
 _ReSharper*/
@@ -33,3 +36,4 @@ nms/nms_GL/gl_map
 MatrixDebug.txt
 #Ignore backups
 *.orig
+nms/nms_GL.opensdf

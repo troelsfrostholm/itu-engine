@@ -25,7 +25,7 @@ void StartEngine()
 	engine.running = true;
 	while(engine.running)   {
 		//gameloop
-		//NMS_EVENT.processEvents();
+		//NMS_EVENT_MANAGER.processEvents();
 		//Render();
 	}
 	engine.cleanup();

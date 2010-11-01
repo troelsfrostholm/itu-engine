@@ -160,10 +160,10 @@ int main(int argc, char* argv[])
 	//traNode2.addChild(&GeoCube);
 	root->addChild(&light);
 
-	NMS_EVENT.onKeyPressed(&keyPressed);
-	NMS_EVENT.onKeyReleased(&keyReleased);
-	NMS_EVENT.onMouseMoved(&mouseMoved);
-	NMS_EVENT.onIdle(&idle);
+	NMS_EVENT_MANAGER.onKeyPressed(&keyPressed);
+	NMS_EVENT_MANAGER.onKeyReleased(&keyReleased);
+	NMS_EVENT_MANAGER.onMouseMoved(&mouseMoved);
+	NMS_EVENT_MANAGER.onIdle(&idle);
 
 	NMS_SceneRenderer* renderer = engine.getRenderer();
 	renderer->setCurrentCamera(&cam);

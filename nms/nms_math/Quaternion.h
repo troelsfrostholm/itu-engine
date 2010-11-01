@@ -20,8 +20,8 @@ public:
 
 	Matrix getMatrix();
 
-	void createFromAngles(float fPitch, float fYaw, float fRoll);
-	void createFromVector(Vector v,float angle);
+	Quaternion createFromAngles(float fPitch, float fYaw, float fRoll);
+	Quaternion createFromVector(Vector v,float angle);
 
 	Quaternion operator *  (const Quaternion &q)const;
 	Vector     operator *  (const Vector &v    )const;

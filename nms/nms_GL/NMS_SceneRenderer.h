@@ -14,7 +14,7 @@ DLL EXPORTING SAFE
 #include "NMS_Mutex.h"
 #include "NMS_Thread.h"
 #include "NMS_SceneGraph.h"
-#include "NMS_Event.h"
+#include "NMS_EventManager.h"
 #include "NMS_Mesh.h"
 #include "nms_physics.h"
 
@@ -27,6 +27,7 @@ protected:
 	//SDL_Thread *renderThread;
 	bool rendering;
 	float currentTime;
+	bool wireframe;
 
 public:
 	NMS_SceneRenderer();
@@ -39,10 +40,13 @@ public:
 	void render();
 	void setScene(SceneGraphNode* scene);
 	void setCurrentCamera(CameraNode* camera);
-	void sg_before(Matrix transform, NMS_Mesh* model, btRigidBody *b);
-	void sg_after(Matrix transform, NMS_Mesh* model);
+	void sg_before(Matrix transform, SceneGraphNode * node);
+	void sg_after(Matrix transform, SceneGraphNode * node);
 	void CalculateFrameRate();
 	void applyPhysics(btRigidBody *b);
+	void setWireframeMode(bool mode);
+protected:
+	void setWireframeModeGL(bool mode);
 };
 
 #endif

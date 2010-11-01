@@ -56,12 +56,12 @@ bool NMS_SceneRenderer::initRendering()
 	glEnable(GL_DEPTH_TEST);							// Enables Depth Testing
 	glDepthFunc(GL_LEQUAL);								// The Type Of Depth Testing To Do
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
-	/*glFrustum(    -0.5f,
+	glFrustum(    -0.5f,
                 0.5f,
                 -0.5f*(float)(height/width),
                 0.5f*(float)(height/width),
                 1.0f,
-                500.0f);*/
+                500.0f);
 		
 	gluPerspective(60.0, (float)width/(float)height, 1.0, width);
 	glMatrixMode(GL_MODELVIEW);
@@ -107,7 +107,7 @@ int NMS_SceneRenderer::renderingLoop()
 {
 	while(rendering) {
 		currentTime+=0.0008f;
-		NMS_EVENT.pollEvents();
+		NMS_EVENT_MANAGER.pollEvents();
 		physics->simulatePhysics();
 		render();
 		CalculateFrameRate();
@@ -143,16 +143,21 @@ void NMS_SceneRenderer::setCurrentCamera(CameraNode* camera)
 }
 
 //Render meshes as they are traversed in the scene graph
-void NMS_SceneRenderer::sg_before(Matrix transform, NMS_Mesh* model, btRigidBody *b)
+void NMS_SceneRenderer::sg_before(Matrix transform, SceneGraphNode * node)
 {
+	GeometryNode * geomNode = (GeometryNode *) node;
+	NMS_Mesh* model = geomNode->getModel();
+	btRigidBody *b = geomNode->getCollisionBody();
+
 	glLoadIdentity();
 	Matrix t_transposed = ~transform;
 	glMultMatrixf(t_transposed.returnPointer());
 	applyPhysics(b);
+	setWireframeModeGL(wireframe);
 	(*model).render(currentTime);
 }
 
-void NMS_SceneRenderer::sg_after(Matrix transform, NMS_Mesh* model) {}
+void NMS_SceneRenderer::sg_after(Matrix transform, SceneGraphNode * node) {}
 
 void NMS_SceneRenderer::CalculateFrameRate()
 {
@@ -179,4 +184,17 @@ void NMS_SceneRenderer::applyPhysics(btRigidBody *b)
 	b->getMotionState()->getWorldTransform(trans);
 	trans.getOpenGLMatrix(matrix);
 	glMultMatrixf(matrix);
+}
+
+void NMS_SceneRenderer::setWireframeModeGL(bool state)
+{
+	if(state)
+		glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
+	else
+		glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+}
+
+void NMS_SceneRenderer::setWireframeMode(bool mode)
+{
+	wireframe=mode;
 }

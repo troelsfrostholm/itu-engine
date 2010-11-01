@@ -1,3 +1,5 @@
+//#    define LOG_FUNCTIONS_D __declspec(dllexport)
+
 #ifdef __EXP_NMS_UTILITIES
 #    define LOG_FUNCTIONS_D __declspec(dllexport)
 #else
@@ -5,10 +7,11 @@
 #endif
 
 #ifndef NMS_LOGFUNCTIONS
-	#define NMS_LOGFUNCTIONS
+#define NMS_LOGFUNCTIONS
 
 
 #include "NMS_CustomTypes.h"
+#include "NMS_StaticAllocator.h"
 
 #include <stdio.h>
 #include <iostream>
@@ -24,11 +27,11 @@ typedef enum
 class LOG_FUNCTIONS_D NMS_LogFunctions
 {
 	public :
-		 NMS_LogFunctions (void);
-		 ~NMS_LogFunctions (void);
 		 static NMS_LogFunctions& GetSingleton (void);
 
 	private :
+		NMS_LogFunctions (void);
+		 ~NMS_LogFunctions (void);
 		 static void Initialize (void);
 
 	public :

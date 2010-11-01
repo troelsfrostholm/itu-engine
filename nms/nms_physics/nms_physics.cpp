@@ -3,25 +3,38 @@
 
 void nms_physics::initPhysics()
 {
-	broadphase = new btDbvtBroadphase();
+	broadphase = new(STATIC_ALLOC, MEM_PERSISTENT) btDbvtBroadphase();
 
-    collisionConfiguration = new btDefaultCollisionConfiguration();
-    dispatcher = new btCollisionDispatcher(collisionConfiguration);
+    collisionConfiguration = new(STATIC_ALLOC, MEM_PERSISTENT) btDefaultCollisionConfiguration();
+    dispatcher = new(STATIC_ALLOC, MEM_PERSISTENT) btCollisionDispatcher(collisionConfiguration);
 
-    solver = new btSequentialImpulseConstraintSolver;
+    solver = new(STATIC_ALLOC, MEM_PERSISTENT) btSequentialImpulseConstraintSolver;
 
-    dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher,broadphase,solver,collisionConfiguration);
+    dynamicsWorld = new(STATIC_ALLOC, MEM_PERSISTENT) btDiscreteDynamicsWorld(dispatcher,broadphase,solver,collisionConfiguration);
 
     dynamicsWorld->setGravity(btVector3(0,-10,0));
 
-	m_ghostPairCallback = new btGhostPairCallback();
+	m_ghostPairCallback = new(STATIC_ALLOC, MEM_PERSISTENT) btGhostPairCallback();
 	dynamicsWorld->getBroadphase()->getOverlappingPairCache()->setInternalGhostPairCallback(m_ghostPairCallback);
 
 	triggers = std::vector<btPairCachingGhostObject*>();
 
-	debugDrawer.setDebugMode(btIDebugDraw::DBG_DrawWireframe);
+	debugDrawer.setDebugMode(btIDebugDraw::DBG_NoDebug);
 	dynamicsWorld->setDebugDrawer(&debugDrawer);
 
+}
+
+
+void nms_physics::setDebugMode(bool state)
+{
+	if(state)
+	{
+		debugDrawer.setDebugMode(btIDebugDraw::DBG_DrawWireframe);
+	}
+	else
+	{
+		debugDrawer.setDebugMode(btIDebugDraw::DBG_NoDebug);
+	}
 }
 
 void nms_physics::exitPhysics()
@@ -46,15 +59,15 @@ void nms_physics::exitPhysics()
 		delete shape;
 	}
 
-	delete dynamicsWorld;
+	//delete dynamicsWorld;
 	
-	delete solver;
+	//delete solver;
 	
-	delete broadphase;
+	//delete broadphase;
 	
-	delete dispatcher;
+	//delete dispatcher;
 
-	delete collisionConfiguration;
+	//delete collisionConfiguration;
 }
 
 void nms_physics::simulatePhysics()

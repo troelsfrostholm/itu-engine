@@ -13,6 +13,8 @@
 #include <vector>
 #include <boost/function.hpp>
 #include "nms_debugDrawer.h"
+#include "NMS_StaticAllocator.h"
+#include "NMS_LevelAllocator.h"
 
 #pragma warning( disable: 4251 )  //Used to disable this useless warning: http://www.unknownroad.com/rtfm/VisualStudio/warningC4251.html
 
@@ -60,6 +62,7 @@ class PHYSICS_D nms_physics
 		void exitPhysics();
 		void simulatePhysics();
 		void addRBody(btRigidBody* body);
+		void setDebugMode(bool state);
 		btScalar getDeltaTimeSeconds();
 		void createTrigger(btCollisionShape *triggershape, btTransform &position, void (_callback)(int i));
 		int checkTrigger(btPairCachingGhostObject *ghostObject);

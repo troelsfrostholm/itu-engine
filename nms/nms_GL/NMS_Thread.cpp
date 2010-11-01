@@ -38,9 +38,9 @@ int threadProxy( void *pointer )
 		std::cerr << e.what() << std::endl;
 		return 1;
 	}
-	catch( ... )
+	/*catch( ... )
 	{
 		std::cerr << "Unknown object thrown\n";
 		return 2;
-	}
+	}*/
 }
