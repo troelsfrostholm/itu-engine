@@ -18,6 +18,7 @@
 #include <stdexcept>
 #include "Quaternion.h"
 #include <algorithm>
+#include "NMS_StubAllocator.h"
 
 using namespace std;
 

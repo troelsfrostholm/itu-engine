@@ -113,7 +113,7 @@ void LightSource::defineLight(LightSource source)
 
 void LightSource::render(float time)
 {
-		    GLfloat* temp=new GLfloat[4];
+		    GLfloat* temp=new(STUB_ALLOC, MEM_TEMP) GLfloat[4];
 			temp[0]=(getPosVector())[1];
 			temp[1]=(getPosVector())[2];
 			temp[2]=(getPosVector())[3];
@@ -124,7 +124,7 @@ void LightSource::render(float time)
 			temp[2]=(getLightValue())[3];
 			temp[3]=(getLightValue())[4];
 			glLightfv(getLightNumber(),GL_AMBIENT_AND_DIFFUSE,temp);
-			temp=new GLfloat[3];
+			temp=new(STUB_ALLOC, MEM_TEMP) GLfloat[3];
 			temp[0]=(getDirVector())[1];
 			temp[1]=(getDirVector())[2];
 			temp[2]=(getDirVector())[3];

@@ -58,6 +58,7 @@ void NMS_Framework::cleanup()
 	NMS_ASSETMANAGER.FreeAll();
 	SDL_DestroyMutex(sceneGraphGuard);
 	sceneGraphRoot = NULL;
+	delete LEVEL_ALLOC;
 	delete STATIC_ALLOC;
 	SDL_Quit();
 }

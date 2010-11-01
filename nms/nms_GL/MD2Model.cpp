@@ -54,7 +54,7 @@ MD2Model::~MD2Model()
 	nmsFileManagement::Free((void**)&p_modelVertices);
 	nmsFileManagement::Free((void**)&p_nextFrameVertices);
 	for (int index=0;index<md2Header.numFrames;index++)
-		nmsFileManagement::Free((void**)&p_frameData[index].pvertices);
+//		nmsFileManagement::Free((void**)&p_frameData[index].pvertices);
 	nmsFileManagement::Free((void**)&p_frameData);
 	nmsFileManagement::Free((void**)&p_lightnormals);
 	nmsFileManagement::Free((void**)&p_nextLightNormals);

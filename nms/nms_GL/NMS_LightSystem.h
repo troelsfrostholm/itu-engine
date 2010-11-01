@@ -15,7 +15,7 @@ DLL EXPORTING SAFE
 #include "NMS_3DObject.h"
 #include "Vector.h"
 #include "Matrix.h"
-
+#include "NMS_StubAllocator.h"
 
 
 class LIGHTSYSTEM_D AmbientLight: public NMS_3DObject

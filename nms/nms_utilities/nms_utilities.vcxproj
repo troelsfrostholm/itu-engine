@@ -85,6 +85,7 @@
     <ClCompile Include="NMS_sha1.cpp" />
     <ClCompile Include="NMS_StackBasedAllocator.cpp" />
     <ClCompile Include="NMS_StaticAllocator.cpp" />
+    <ClCompile Include="NMS_StubAllocator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NMS_CustomTypes.h" />
@@ -96,6 +97,7 @@
     <ClInclude Include="NMS_sha1.h" />
     <ClInclude Include="NMS_StackBasedAllocator.h" />
     <ClInclude Include="NMS_StaticAllocator.h" />
+    <ClInclude Include="NMS_StubAllocator.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -15,8 +15,8 @@
 typedef enum {
 	MEM_PERSISTENT,
 	MEM_LEVEL,
-	MEM_VERTEX,
-	MEM_TEMPORARY } memCategories;
+	MEM_TEMP,
+	MEM_MATRIX } memCategories;
 
 class MEMORY_ALLOCATION_D MemoryAllocator
 {
