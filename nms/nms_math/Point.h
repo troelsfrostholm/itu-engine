@@ -11,7 +11,7 @@ using namespace std;
 #define NMS_X 1
 #define NMS_Y 2
 #define NMS_Z 3
-#define W 4
+#define NMS_W 4
 
 class POINT_D Point
 {
