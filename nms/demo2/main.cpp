@@ -63,6 +63,7 @@ void keyReleased(SDLKey key)
 
 void keyPressed(SDLKey key)
 {
+	btVector3 vec;
 	switch( key ) {
 		 case SDLK_a:
 			 cam.setSlideSpeed(+0.01f);
@@ -78,8 +79,34 @@ void keyPressed(SDLKey key)
 				   break;
 		 case SDLK_UP:
 			 fallRigidBody2->activate();
-			 fallRigidBody2->setWorldTransform(btTransform(btQuaternion(0,0,0,1),btVector3(0,200,40)));
+			 vec = fallRigidBody2->getWorldTransform().getOrigin();
+			 fallRigidBody2->getWorldTransform().setOrigin(btVector3(vec.getX()+1,vec.getY(),vec.getZ()));
 				   break;
+		 case SDLK_DOWN:
+			 fallRigidBody2->activate();
+			 vec = fallRigidBody2->getWorldTransform().getOrigin();
+			 fallRigidBody2->getWorldTransform().setOrigin(btVector3(vec.getX()-1,vec.getY(),vec.getZ()));
+				   break;
+		 case SDLK_RIGHT:
+			 fallRigidBody2->activate();
+			 vec = fallRigidBody2->getWorldTransform().getOrigin();
+			 fallRigidBody2->getWorldTransform().setOrigin(btVector3(vec.getX(),vec.getY(),vec.getZ()+1));
+				   break;
+		 case SDLK_LEFT:
+			 fallRigidBody2->activate();
+			 vec = fallRigidBody2->getWorldTransform().getOrigin();
+			 fallRigidBody2->getWorldTransform().setOrigin(btVector3(vec.getX(),vec.getY(),vec.getZ()-1));
+				   break;
+		 case SDLK_q:
+			 if(engine.physics->debugDrawer.getDebugMode() == 0)
+			 {
+				 engine.physics->debugDrawer.setDebugMode(btIDebugDraw::DBG_DrawWireframe);
+			 }
+			 else
+			 {
+				 engine.physics->debugDrawer.setDebugMode(btIDebugDraw::DBG_NoDebug);
+			 }
+			 break;
 	}
 }
 
@@ -101,13 +128,16 @@ int main(int argc, char* argv[])
 	fallRigidBody4 = engine.physics->createBox(8,12,8,0,200,60, 1.0f);
 
 	MD2Model model = MD2Model();
-	ColladaModel model2 = ColladaModel();
+	//ColladaModel model2 = ColladaModel();
+	MD2Model model2 = MD2Model();
 	MD2Model model3 = MD2Model();
-	//model.LoadModel("models/drfreak/drfreak.md2","models/drfreak/drfreak.tga");
-	model.LoadModel("models/hang2/HANG2.md2","models/hang2/hang2.bmp");
+	model.LoadModel("models/drfreak/drfreak.md2","models/drfreak/drfreak.tga");
+	model2.LoadModel("models/hang4/HANG4.md2","models/hang4/hang4.bmp");
 	model3.LoadModel("models/hang3/HANG3.md2","models/hang3/hang3.bmp");
 	//model2.LoadModel("models/pumpkin/pumpkin.dae");
 	model.SetAnim(RUN);
+
+	engine.getRenderer()->setWireframeMode(false);
 
 	//LIGHT DEFINITION
 	/*LightSource light0 = LightSource();
@@ -120,9 +150,6 @@ int main(int argc, char* argv[])
 
 	NMS_Cube cube = NMS_Cube();
 	GeometryNode GeoCube = GeometryNode(&cube, fallRigidBody);
-
-	NMS_Cube cube2 = NMS_Cube();
-	GeometryNode GeoCube2 = GeometryNode(&cube2, fallRigidBody2);
 
 	GeometryNode geom2 = GeometryNode(&model3, fallRigidBody3);
 

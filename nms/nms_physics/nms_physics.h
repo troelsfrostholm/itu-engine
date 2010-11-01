@@ -52,9 +52,6 @@ class PHYSICS_D nms_physics
 		std::vector<btPairCachingGhostObject*> triggers;
 		boost::function1<void, int> triggerCallback;
 
-		//debug drawer
-		nms_debugDrawer debugDrawer;
-
 	public:
 		nms_physics();
 		~nms_physics();
@@ -69,6 +66,9 @@ class PHYSICS_D nms_physics
 		void checkAllTriggers();
 		btDynamicsWorld* getDynamicsWorld();
 		btRigidBody* createBox(int sizeX, int sizeY, int sizeZ, int positionX, int positionY, int positionZ, float mass);
+
+		//debug drawer
+		nms_debugDrawer debugDrawer;
 };
 
 class PHYSICS_D NMS_KinematicMotionState : public btMotionState 
