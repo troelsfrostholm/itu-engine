@@ -13,7 +13,7 @@ float& Point::operator[](int pos)
 			   break;
 		case NMS_Z:return this->z;
 			   break;
-	    case W:return this->w;
+	    case NMS_W:return this->w;
 			   break;
 		default:
 			//Need to fix it
@@ -30,7 +30,7 @@ float const&  Point::operator[](int pos) const
 			   break;
 		case NMS_Z:return this->z;
 			   break;
-	    case W:return this->w;
+	    case NMS_W:return this->w;
 			   break;
 		default:
 			//Need to fix it
@@ -106,5 +106,5 @@ Point operator * (Point& p,const Matrix &m)
 }
 
 ostream& operator<<(ostream& output, const Point& p) {
-		return output<<p[NMS_X]<<' '<<p[NMS_Y]<<' '<<p[NMS_Z]<<' '<<p[W]<<' '<<'\n';
+		return output<<p[NMS_X]<<' '<<p[NMS_Y]<<' '<<p[NMS_Z]<<' '<<p[NMS_W]<<' '<<'\n';
 }

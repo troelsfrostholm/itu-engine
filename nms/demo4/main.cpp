@@ -8,6 +8,7 @@
 #include "NMS_LightSystem.h"
 #include "NMS_Audio.h"
 #include "NMS_Camera.h"
+#include "Quaternion.h"
 
 #define WIDTH 600
 #define HEIGHT 400
@@ -95,7 +96,6 @@ int main(int argc, char* argv[])
 {
 	engine.NMSInit(WIDTH, HEIGHT, 16, "Demo 2", false);
 
-	
 	TransformationNode traNode3;
 	ColladaModel model3 = ColladaModel();
 	//model3.LoadModel("models/Gundam/Gundam.dae");
@@ -173,7 +173,7 @@ int main(int argc, char* argv[])
 	root->addChild(&fpsCam);
 	renderer = engine.getRenderer();
 	renderer->setCurrentCamera(&fpsCam);
-	renderer->setWireframeMode(true);
+	renderer->setWireframeMode(false);
 
 
 	NMS_EVENT_MANAGER.onKeyPressed(&keyPressed);

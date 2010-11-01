@@ -2,6 +2,7 @@
 #include "Vector.h"
 #include "Matrix.h"
 #include "approx.h"
+#include "Quaternion.h"
 
 #include <boost/test/unit_test.hpp>
 #include <iostream>
@@ -241,3 +242,115 @@ BOOST_AUTO_TEST_CASE( matrix_copy )
 }
 */
 BOOST_AUTO_TEST_SUITE_END();
+
+
+
+
+
+
+
+BOOST_AUTO_TEST_SUITE( quaternions );
+
+BOOST_AUTO_TEST_CASE( multiplication )
+{
+	Quaternion first = Quaternion(1,2,3,4);
+	Quaternion second = Quaternion(5,6,7,8);
+	first=first*second;
+	BOOST_CHECK_EQUAL(first[NMS_X], 24);
+	BOOST_CHECK_EQUAL(first[NMS_Y], 48);
+	BOOST_CHECK_EQUAL(first[NMS_Z], 48);
+	BOOST_CHECK_EQUAL(first[NMS_W], -6);
+}
+
+BOOST_AUTO_TEST_CASE( normalization )
+{
+	Quaternion first = Quaternion(1,0,1,0);
+	first=first.normal();
+
+	BOOST_CHECK_EQUAL(first[NMS_X], 0.70710676900000002f);
+	BOOST_CHECK_EQUAL(first[NMS_Y], 0);
+	BOOST_CHECK_EQUAL(first[NMS_Z], 0.70710676900000002f);
+	BOOST_CHECK_EQUAL(first[NMS_W], 0);
+}
+
+BOOST_AUTO_TEST_CASE( lenght )
+{
+	Quaternion first = Quaternion(1,0,0,0);
+	BOOST_CHECK_EQUAL(first.lenght(), 1);
+}
+
+BOOST_AUTO_TEST_CASE( createFromVector )
+{
+	Quaternion first;
+	first=first.createFromVector(Vector(1,0,0),90.0f);
+	BOOST_CHECK_EQUAL(first[NMS_X], 0.70710676900000002f);
+	BOOST_CHECK_EQUAL(first[NMS_Y], 0);
+	BOOST_CHECK_EQUAL(first[NMS_Z], 0);
+	BOOST_CHECK_EQUAL(first[NMS_W], 0.70710676900000002f);
+}
+
+
+BOOST_AUTO_TEST_CASE( vectorMultiply )
+{
+	Quaternion first = Quaternion(1,2,3,4);
+	Vector second= Vector(5,6,7);
+	second=first*second;
+	BOOST_CHECK_EQUAL(second[NMS_X], 54);
+	BOOST_CHECK_EQUAL(second[NMS_Y], 228);
+	BOOST_CHECK_EQUAL(second[NMS_Z], 210);
+	BOOST_CHECK_EQUAL(second[NMS_W], 0);
+}
+
+
+BOOST_AUTO_TEST_CASE( quatToMatrix )
+{
+	Quaternion first = Quaternion(0.2886751345948129f,0,0,0.8660254037844386f);
+	Matrix result=first.getMatrix();
+	BOOST_CHECK_EQUAL(result(1,1), 1);
+	BOOST_CHECK_EQUAL(result(1,2), 0);
+	BOOST_CHECK_EQUAL(result(1,3), 0);
+	BOOST_CHECK_EQUAL(result(1,4), 0);
+	BOOST_CHECK_EQUAL(result(2,1), 0);
+	BOOST_CHECK_EQUAL(result(2,2), 0.83333336999999996f);
+	BOOST_CHECK_EQUAL(result(2,3), -0.49999997f);
+	BOOST_CHECK_EQUAL(result(2,4), 0);
+	BOOST_CHECK_EQUAL(result(3,1), 0);
+	BOOST_CHECK_EQUAL(result(3,2), 0.49999997f);
+	BOOST_CHECK_EQUAL(result(3,3), 0.83333336999999996f);
+	BOOST_CHECK_EQUAL(result(3,4), 0);
+	BOOST_CHECK_EQUAL(result(4,1), 0);
+	BOOST_CHECK_EQUAL(result(4,2), 0);
+	BOOST_CHECK_EQUAL(result(4,3), 0);
+	BOOST_CHECK_EQUAL(result(4,4), 1);
+}
+
+
+BOOST_AUTO_TEST_CASE( matrixToQuat )
+{
+	Matrix first= Matrix();
+	first(1,1)= 1;
+	first(1,2)= 0;
+	first(1,3)= 0;
+	first(1,4)= 0;
+	first(2,1)= 0;
+	first(2,2)= 0.83333337;
+	first(2,3)= -0.5;
+	first(2,4)= 0;
+	first(3,1)= 0;
+	first(3,2)= 0.5;
+	first(3,3)= 0.83333337;
+	first(3,4)= 0;
+	first(4,1)= 0;
+	first(4,2)= 0;
+	first(4,3)= 0;
+	first(4,4)= 1;
+	Quaternion second = first.createQuaternion();
+	BOOST_CHECK_EQUAL(second[NMS_X], 0.28867510f);
+	BOOST_CHECK_EQUAL(second[NMS_Y], 0);
+	BOOST_CHECK_EQUAL(second[NMS_Z], 0);
+	BOOST_CHECK_EQUAL(second[NMS_W], 0.95742714f);
+}
+
+BOOST_AUTO_TEST_SUITE_END();
+
+
