@@ -13,7 +13,7 @@
 #include "NMS_MemoryTracker.h"
 
 typedef enum {
-	MEM_SINGLETON,
+	MEM_PERSISTENT,
 	MEM_LEVEL,
 	MEM_VERTEX,
 	MEM_TEMPORARY } memCategories;
@@ -21,8 +21,6 @@ typedef enum {
 class MEMORY_ALLOCATION_D MemoryAllocator
 {
 public:
-	static const int NUM_CATEGORIES = 2;
-
 	virtual void * allocMem(size_t size) = 0;
 	virtual void freeMem(void * pointer) = 0;
 

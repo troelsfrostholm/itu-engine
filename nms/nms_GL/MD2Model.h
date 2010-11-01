@@ -16,6 +16,7 @@
 #include "NMS_LogFunctions.h"
 #include "NMS_Mesh.h"
 #include "NMS_CustomTypes.h"
+#include "NMS_LevelAllocator.h"
 
 #define MAGIC_NO	844121161  //It means IDP2
 

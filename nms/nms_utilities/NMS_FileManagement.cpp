@@ -25,7 +25,7 @@ bool nmsFileManagement::FileExists(const char * filename)
 //Allocate the memory space with regard to the type to be used. Return a pointer to the memory allocation
 void* nmsFileManagement::Malloc(size_t size)
 {
-	void* p=malloc(size);
+	void* p=LEVEL_ALLOC->allocMem(size);
 	if (p==NULL)
 		return p;
 	memset(p,0,size);
@@ -37,7 +37,7 @@ void nmsFileManagement::Free(void** p)
 {
 	if (*p!=NULL)
 	{
-		free(*p);
+		//free(*p);
 		*p=NULL;
 	}
 }

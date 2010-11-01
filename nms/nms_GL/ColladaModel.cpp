@@ -225,9 +225,9 @@ void ColladaModel::LoadData()
 							break;
 						}
 					}
-					toBeRendered.vTextures=new GLfloat[numberOfTriangles*6];
-					toBeRendered.vNormals=new GLfloat[numberOfTriangles*9];
-					toBeRendered.vVertices=new GLfloat[numberOfTriangles*9];
+					toBeRendered.vTextures=new(LEVEL_ALLOC, MEM_LEVEL) GLfloat[numberOfTriangles*6];
+					toBeRendered.vNormals=new(LEVEL_ALLOC, MEM_LEVEL) GLfloat[numberOfTriangles*9];
+					toBeRendered.vVertices=new(LEVEL_ALLOC, MEM_LEVEL) GLfloat[numberOfTriangles*9];
 					for(i=0;i<numberOfTriangles;i++)
 					{
 						if(textEnabled)

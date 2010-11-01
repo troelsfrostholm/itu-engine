@@ -13,6 +13,7 @@
 
 #include <stdio.h>
 #include <iostream>
+#include "NMS_LevelAllocator.h"
 
 class FILE_MANAGEMENT_D nmsFileManagement
 {

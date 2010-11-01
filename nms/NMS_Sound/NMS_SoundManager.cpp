@@ -8,7 +8,7 @@ NMS_SoundManager::~NMS_SoundManager (void) {}
 
 NMS_SoundManager& NMS_SoundManager::GetSingleton (void) {
 	if (!m_Singleton) {
-		m_Singleton = new(STATIC_ALLOC, MEM_SINGLETON) NMS_SoundManager;
+		m_Singleton = new(STATIC_ALLOC, MEM_PERSISTENT) NMS_SoundManager;
 		Initialize ();
 	}
 	return *m_Singleton;
@@ -61,7 +61,7 @@ ALuint NMS_SoundManager::LoadWav (const char* sFileName,char* sSoundName)
 	  }
 
 	   //Convert the file read to a Lump file to be used by DevIL
-	  soundMemory = (ALbyte*)malloc(fileSize);
+	  soundMemory = (ALbyte*)LEVEL_ALLOC->allocMem(fileSize);
 	  fseek(fp, 0, SEEK_SET);
 	  fread(soundMemory, 1, fileSize, fp);
 	  fclose(fp);
@@ -114,7 +114,7 @@ ALuint NMS_SoundManager::LoadWav (const char* sFileName,char* sSoundName)
 				  //file twice!
 				   alutLoadWAVFile((ALbyte*)sFileName, &format, &data, &size, &freq, &loop);
 				   //Free the allocated space in memory
-				   free(soundMemory);
+				   //free(soundMemory);
 
 				   if ((result = alGetError()) != AL_NO_ERROR)
 						throw 0;//GetALErrorString(result);
