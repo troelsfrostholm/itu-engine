@@ -59,7 +59,7 @@ void NMS_DebugDraw::drawTriangle(const Vector& a,const Vector& b,const Vector& c
 
 void NMS_DebugDraw::draw3dText(const Vector& location,const char* textString)
 {
-   glPushAttrib(GL_LIGHTING_BIT | GL_CURRENT_BIT); // lighting and color mask
+    glPushAttrib(GL_LIGHTING_BIT | GL_CURRENT_BIT); // lighting and color mask
 	glDisable(GL_LIGHTING);     // need to disable lighting for proper text color
 
     glColor4f(0.1f, 1.0f, 0.1f, 0.2f);  // set text color
