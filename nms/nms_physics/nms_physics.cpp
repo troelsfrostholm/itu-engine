@@ -130,3 +130,16 @@ int nms_physics::checkTrigger(btPairCachingGhostObject *ghostObject)
 	}
 	return triggered;
 }
+
+btRigidBody* nms_physics::createBox(int sizeX, int sizeY, int sizeZ, int positionX, int positionY, int positionZ, float mass)
+{
+	btRigidBody *box;
+	btCollisionShape* boxShape = new btBoxShape(btVector3(sizeX, sizeY, sizeZ));
+	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(positionX, positionY, positionZ)));
+    btVector3 inertia(0,0,0);
+    boxShape->calculateLocalInertia(mass,inertia);
+    btRigidBody::btRigidBodyConstructionInfo boxInfo(mass,motionState,boxShape,inertia);
+    box = new btRigidBody(boxInfo);
+    addRBody(box);
+	return box;
+}

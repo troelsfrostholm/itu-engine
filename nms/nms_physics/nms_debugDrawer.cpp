@@ -8,12 +8,16 @@ nms_debugDrawer::nms_debugDrawer() : m_debugMode(0)
 
 void nms_debugDrawer::drawLine(const btVector3& from,const btVector3& to,const btVector3& fromColor, const btVector3& toColor)
 {
+	glPushAttrib(GL_LIGHTING_BIT | GL_CURRENT_BIT);
+	glDisable(GL_LIGHTING);
  	glBegin(GL_LINES);
 		glColor3f(fromColor.getX(), fromColor.getY(), fromColor.getZ());
 		glVertex3d(from.getX(), from.getY(), from.getZ());
 		glColor3f(toColor.getX(), toColor.getY(), toColor.getZ());
 		glVertex3d(to.getX(), to.getY(), to.getZ());
 	glEnd();
+	glEnable(GL_LIGHTING);
+	glPopAttrib();
 }
 
 void nms_debugDrawer::drawLine(const btVector3& from,const btVector3& to,const btVector3& color)
@@ -59,6 +63,7 @@ void nms_debugDrawer::drawSphere(const btVector3& p, btScalar radius, const btVe
 
 void nms_debugDrawer::drawBox(const btVector3& boxMin, const btVector3& boxMax, const btVector3& color, btScalar alpha)
 {
+	/*
 	btVector3 halfExtent = (boxMax - boxMin) * btScalar(0.5f);
 	btVector3 center = (boxMax + boxMin) * btScalar(0.5f);
 	//glEnable(GL_BLEND); // Turn blending On
@@ -70,6 +75,7 @@ void nms_debugDrawer::drawBox(const btVector3& boxMin, const btVector3& boxMax, 
 	//glutSolidCube(1.0);
 	glPopMatrix ();
 	//glDisable(GL_BLEND);
+	*/
 }
 
 void nms_debugDrawer::drawTriangle(const btVector3& a,const btVector3& b,const btVector3& c,const btVector3& color,btScalar alpha)
@@ -112,6 +118,7 @@ void nms_debugDrawer::reportErrorWarning(const char* warningString)
 void nms_debugDrawer::drawContactPoint(const btVector3& pointOnB,const btVector3& normalOnB,btScalar distance,int lifeTime,const btVector3& color)
 {
    {
+	   /*
 		btVector3 to=pointOnB+normalOnB*distance;
 		const btVector3&from = pointOnB;
 		glColor4f(color.getX(), color.getY(), color.getZ(),1.f);
@@ -126,5 +133,6 @@ void nms_debugDrawer::drawContactPoint(const btVector3& pointOnB,const btVector3
 		char buf[12];
 		sprintf(buf," %d",lifeTime);
 		//BMF_DrawString(BMF_GetFont(BMF_kHelvetica10),buf);
+		*/
    }
 }
