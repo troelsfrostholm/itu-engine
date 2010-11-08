@@ -1,0 +1,5 @@
+Memory usage at end of program : 
+    Persistent       : 0
+    Level            : 0
+    Matrix           : 0
+    Temporary vars   : 0

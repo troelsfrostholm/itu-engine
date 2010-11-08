@@ -11,12 +11,16 @@
 
 #include "NMS_CustomTypes.h"
 #include "NMS_MemoryTracker.h"
+#include "NMS_LogFunctions.h"
 
 typedef enum {
 	MEM_PERSISTENT,
 	MEM_LEVEL,
 	MEM_TEMP,
-	MEM_MATRIX } memCategories;
+	MEM_MATRIX,
+	MEM_NUM_CATEGORIES } memCategories;
+
+static int CurrentMemoryUsage[MEM_NUM_CATEGORIES];
 
 class MEMORY_ALLOCATION_D MemoryAllocator
 {

@@ -22,6 +22,7 @@
 #include "NMS_Mutex.h"
 #include "nms_physics.h"
 #include "NMS_StaticAllocator.h"
+#include "NMS_LogFunctions.h"
 
 class FRAMEWORK_D NMS_Framework
 {
@@ -52,6 +53,7 @@ public:
 	void cleanup();
 	SceneGraphNode* getScene();
 	NMS_SceneRenderer* getRenderer();
+	static void logMemoryUsage();
 };
 #endif;
 
