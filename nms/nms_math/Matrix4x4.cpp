@@ -2,40 +2,13 @@
 
 Matrix4x4::Matrix4x4()
 {
-	structPointer = new mat_struct(4,4);
 	for(unsigned i=0;i<16;i++)
 	{
 		if((0==i)||(5==i)||(10==i)||(15==i))
-			structPointer->elements[i]=1;
+			elements[i]=1;
 		else
-			structPointer->elements[i]=0;
+			elements[i]=0;
 	}
-}
-
-Matrix4x4::~Matrix4x4()
- {
-	delete structPointer;
-	structPointer=NULL;
- }
-
-Matrix4x4::Matrix4x4(unsigned rows, unsigned cols)
- {
-   if (rows == 0 || cols == 0)
-     throw 0;
-   structPointer = new mat_struct(rows,cols);
-   for(unsigned i=0;i<rows*cols;i++)
-			structPointer->elements[i]=0;
- }
-
-Matrix4x4::Matrix4x4(const Matrix4x4& m)
-{
-	structPointer = new mat_struct(m.getRowL(),m.getColL());
-	for(unsigned i=0; i<m.getRowL();i++){
-		for(unsigned j=0; j<m.getColL();j++){
-			structPointer->elements[i*m.getColL()+j] = m(i+1,j+1);
-		}
-	}
-
 }
 
  Matrix4x4 Matrix4x4::getRotation()
@@ -47,50 +20,26 @@ Matrix4x4::Matrix4x4(const Matrix4x4& m)
 	 return toBeReturned;
  }
 
-const Matrix4x4& Matrix4x4::operator = (const Matrix4x4& m)
-{
-	if (this != &m) {
-		delete structPointer;
-		structPointer = new mat_struct(m.getRowL(),m.getColL());
-		for(unsigned i=0; i<m.getRowL();i++){
-			for(unsigned j=0; j<m.getColL();j++){
-				structPointer->elements[i*m.getColL()+j] = m(i+1,j+1);
-			}
-		}
-	}
-	return *this;
-}
-
 float& Matrix4x4::operator() (unsigned row, unsigned col)
  {
-   if (row > structPointer->o_rows || col > structPointer->o_cols)
-     throw 0;
-   return structPointer->elements[structPointer->o_cols*(row-1) + (col-1)];
+   if (row > 4 || col > 4)
+     throw "Matrix4x4 error: Index out of range";
+   return elements[4*(row-1) + (col-1)];
  }
  
  const float Matrix4x4::operator() (unsigned row, unsigned col) const
  {
-	 if (row > structPointer->o_rows || col > structPointer->o_cols)
-       throw 0;
-     return structPointer->elements[structPointer->o_cols*(row-1) + (col-1)];
+   if (row > 4 || col > 4)
+     throw "Matrix4x4 error: Index out of range";
+   return elements[4*(row-1) + (col-1)];
  } 
- 
- unsigned Matrix4x4::getRowL() const
- {
-	 return structPointer->o_rows;
- }
-
- unsigned Matrix4x4::getColL() const
- {
-	return this->structPointer->o_cols;
- }
  
 ostream& operator<<(ostream& output, const Matrix4x4& m) {
 	unsigned i;
 	unsigned j;
-	for(i=1;i<=m.getRowL();i++)
+	for(i=1;i<=4;i++)
 	{
-		for(j=1;j<=m.getColL();j++)
+		for(j=1;j<=4;j++)
 		{
 			output<<m(i,j)<<' ';
 		}
@@ -101,10 +50,9 @@ ostream& operator<<(ostream& output, const Matrix4x4& m) {
 
 Vector Matrix4x4::getRow(unsigned i)
 {
-	if((*this).getRowL()!=4&&(*this).getColL()!=4)
+	if(1 > i || i > 4)
 	{
-		cout<<"Implementation valid only for 4x4 Matrix4x4!"<<'\n';
-		throw 0;
+		throw "Matrix4x4 error: Index out of range. ";
 	}
 	else
 	{
@@ -114,10 +62,9 @@ Vector Matrix4x4::getRow(unsigned i)
 
 Vector Matrix4x4::getCol(unsigned i)
 {
-	if((*this).getRowL()!=4&&(*this).getColL()!=4)
+	if(1 > i || i > 4)
 	{
-		cout<<"Implementation valid only for 4x4 Matrix4x4!"<<'\n';
-		throw 0;
+		throw "Matrix4x4 error: Index out of range. ";
 	}
 	else
 	{
@@ -127,10 +74,9 @@ Vector Matrix4x4::getCol(unsigned i)
 
 void Matrix4x4::setRow(unsigned i,const Vector& v)
 {
-	if((*this).getRowL()!=4&&(*this).getColL()!=4)
+	if(1 > i || i > 4)
 	{
-		cout<<"Implementation valid only for 4x4 Matrix4x4!"<<'\n';
-		throw 0;
+		throw "Matrix4x4 error: Index out of range. ";
 	}
 	else
 	{
@@ -142,10 +88,9 @@ void Matrix4x4::setRow(unsigned i,const Vector& v)
 }
 void Matrix4x4::setCol(unsigned i,const Vector& v)
 {
-	if((*this).getRowL()!=4&&(*this).getColL()!=4)
+	if(1 > i || i > 4)
 	{
-		cout<<"Implementation valid only for 4x4 Matrix4x4!"<<'\n';
-		throw 0;
+		throw "Matrix4x4 error: Index out of range. ";
 	}
 	else
 	{
@@ -158,9 +103,9 @@ void Matrix4x4::setCol(unsigned i,const Vector& v)
 
  Matrix4x4 operator~(const Matrix4x4 &m)
  {
-	 Matrix4x4 temp(m.getColL(),m.getRowL());
-	 for(unsigned i=1;i<=temp.getRowL();i++)
- 		 for(unsigned j=1;j<=temp.getColL();j++)
+	 Matrix4x4 temp;
+	 for(unsigned i=1;i<=4;i++)
+ 		 for(unsigned j=1;j<=4;j++)
 		 {
 			 (temp)(j,i)=m(i,j);;
 		 }
@@ -170,7 +115,7 @@ void Matrix4x4::setCol(unsigned i,const Vector& v)
  void Matrix4x4::swapRows(unsigned i, unsigned j)
  {
 	 float temp;
-	 for(unsigned k=1; k <= (*this).getColL(); k++)
+	 for(unsigned k=1; k <= 4; k++)
 	 {
 		 temp = (*this)(i,k);
 		 (*this)(i,k) = (*this)(j,k);
@@ -184,59 +129,52 @@ void Matrix4x4::setCol(unsigned i,const Vector& v)
 	Matrix4x4 tmp = m;
 	int i = 1;
 	int j = 1;
-	int M = tmp.getRowL()+1;
-	int N = tmp.getColL()+1;
-	if(M != N)
+	int M = 4+1;
+	int N = 4+1;
+		
+	while (i < M && j < N)
 	{
-		 //To be Fixed
-		 throw 0;
-	}
-	else
-	{
-		while (i < M && j < N)
+		//find the biggest element
+		int maxi = i;
+		for(int k = i+1; k<M; k++)
 		{
-			//find the biggest element
-			int maxi = i;
-			for(int k = i+1; k<M; k++)
+			if(abs(tmp(k,j)) > abs(tmp(maxi,j)))
 			{
-				if(abs(tmp(k,j)) > abs(tmp(maxi,j)))
-				{
-					maxi = k;
-				}
+				maxi = k;
 			}
+		}
 			
-			//use gaussian elemination
-			if(tmp(maxi,j) != 0)
+		//use gaussian elemination
+		if(tmp(maxi,j) != 0)
+		{
+			//if row not in the right place - swap
+			if(i != maxi){
+				tmp.swapRows(i, maxi);
+				U.swapRows(i,maxi);
+			}
+
+			float divisor = tmp(i,j);
+			for(int k=1; k<N; k++)
 			{
-				//if row not in the right place - swap
-				if(i != maxi){
-					tmp.swapRows(i, maxi);
-					U.swapRows(i,maxi);
-				}
+				U(i,k) = U(i,k)/divisor;
+				tmp(i,k) = tmp(i,k)/divisor;
+			}
 
-				float divisor = tmp(i,j);
-				for(int k=1; k<N; k++)
+			for(int k=1; k<M; k++)
+			{
+				if(k != i)
 				{
-					U(i,k) = U(i,k)/divisor;
-					tmp(i,k) = tmp(i,k)/divisor;
-				}
-
-				for(int k=1; k<M; k++)
-				{
-					if(k != i)
+					float multiplier = tmp(k,j);
+					for(int l=1; l<N; l++)
 					{
-						float multiplier = tmp(k,j);
-						for(int l=1; l<N; l++)
-						{
-							U(k,l) = U(k,l) - U(i,l)*multiplier;
-							tmp(k,l) = tmp(k,l) - tmp(i,l)*multiplier;
-						}
+						U(k,l) = U(k,l) - U(i,l)*multiplier;
+						tmp(k,l) = tmp(k,l) - tmp(i,l)*multiplier;
 					}
 				}
-				i++;
 			}
-			j++;
+			i++;
 		}
+		j++;
 	}
 	return U;
  }
@@ -286,97 +224,20 @@ void Matrix4x4::setCol(unsigned i,const Vector& v)
 	 (*this)=rot;
  }
 
-//IMPORTANT! TRY TO USE MEMCPY FOR FASTER IMPLEMENTATION!
-//Reallocation of memory for Matrix4x4: it takes the number of rows and columns for the final Matrix4x4
-//and the starting position from which begin the copy
-void Matrix4x4::memoryRealloc (unsigned row, unsigned col,unsigned startRow,unsigned startCol)
-{
-	if (structPointer->o_rows == row && structPointer->o_cols == col && 1==startRow && 1==startCol)
-    {
-      return;
-    }
-
-   Matrix4x4 temp=Matrix4x4(row,col);
-   unsigned minCol=min(structPointer->o_cols,col);
-   unsigned maxCol=max(structPointer->o_cols,col);
-   size_t colSpace=maxCol*sizeof(float);
-   unsigned minRow=min(structPointer->o_rows,row);
-   
-
-   //fill blank spaces
-   for(unsigned i=0;i<minRow;i++)
-	   for(unsigned j=0;j<minCol;j++)
-		   temp.structPointer->elements[i]=0;
-
-    for(unsigned i=1;i<=minRow;i++)
-	   for(unsigned j=1;j<=minCol;j++)
-		   temp(i,j)=(*this)(i+(startRow-1),j+(startCol-1));
-
-   (*this)=temp;
-
-   return;
-}
-
-//Public method to resize Matrix4x4es
-void Matrix4x4::resize (unsigned row, unsigned col,unsigned startRow,unsigned startCol)
-{
-   //counters
-   unsigned i,j;
-
-   unsigned tempRow = (*this).getRowL();
-   unsigned tempCol = (*this).getColL();
-
-   if (row != tempRow || col != tempCol)
-      memoryRealloc( row, col,startRow,startCol);
-
-   for (i=tempRow; i < row; i++)
-   {
-      for (j=0; j < col; j++)
-	  {
-	    (*this)(i,j) = 0;
-	  }
-   }
-
-   for (i=0; i < row; i++)  
-   {
-      for (j=tempCol; j < col; j++)
-	  {
-		(*this)(i,j) = 0;
-	  }
-   }
-   return;
-}
-
 bool operator == (const Matrix4x4 &a, const Matrix4x4 &b)
 {
-	if( a.getColL() != b.getColL() || 
-		a.getRowL() != b.getRowL() )
-		return false;
-
-	for(unsigned i=1; i<=a.getRowL(); i++) {
-		for(unsigned j=1; j<=a.getColL(); j++) {
-			if( a(i, j)!=b(i, j) ) return false;
-		}
-	}
-	return true;
+	return ( memcmp(a.getElements(), b.getElements(), 16*sizeof(float)) == 0);
 }
 
 Matrix4x4& Matrix4x4::operator *= (const Matrix4x4& m)
 {
-   if ((*this).getColL() != m.getRowL())
-   {
-	   cerr<<"The dimensions of the Matrix4x4 do not match for the * operator!\n";
-	   //TO BE FIXED
-      throw 0;
-   }
+   Matrix4x4 temp;
 
-   Matrix4x4 temp((*this).getRowL(),m.getColL());
-
-   for (unsigned i=1; i <= (*this).getRowL(); i++)
-      for (unsigned j=1; j <= m.getColL(); j++)
+   for (unsigned i=1; i <= 4; i++)
+      for (unsigned j=1; j <= 4; j++)
       {
 		 temp(i,j) = 0;
-         for (unsigned k=1; k <= (*this).getColL(); k++)
+         for (unsigned k=1; k <= 4; k++)
             temp(i,j) += (*this)(i,k) * m(k,j);
       }
    *this = temp;
@@ -387,9 +248,8 @@ Matrix4x4& Matrix4x4::operator *= (const Matrix4x4& m)
 
 Matrix4x4& Matrix4x4::operator *= (const float& f) 
 {
-   // if (_m->Refcnt > 1) clone();
-	for (unsigned i=1; i < (*this).getRowL(); i++)
-		for (size_t j=1; j < (*this).getColL(); j++)
+	for (unsigned i=1; i < 4; i++)
+		for (size_t j=1; j < 4; j++)
 			(*this)(i,j) *= f;
     return *this;
 }
@@ -416,7 +276,7 @@ Matrix4x4 operator * (const Matrix4x4& m1, const Matrix4x4& m2)
 void Matrix4x4::uScale(const float& f)
 {
 	(*this)=Matrix4x4();
-	for(unsigned i=1;i<(*this).getRowL();i++)
+	for(unsigned i=1;i<4;i++)
 		(*this)(i,i)=f;
 }
 
@@ -432,17 +292,15 @@ void Matrix4x4::shear(const float& n,const unsigned& i,const unsigned& j)
 {
 	if (i==j)
     {
-	   cerr<<"Cannot give the same index to obtain a shear Matrix4x4!\n";
-	   //TO BE FIXED
-       throw 0;
+	   throw "Matrix4x4 error: Cannot give the same index to obtain a shear Matrix4x4!\n";
     }
 	(*this)=Matrix4x4();
 	(*this)(i,j)=n;
 }
 
-float* Matrix4x4::returnPointer()
+const float* Matrix4x4::getElements() const
 {
-	return (*this).structPointer->elements;
+	return elements;
 }
 
 void Matrix4x4::debugPrint()
@@ -453,9 +311,9 @@ void Matrix4x4::debugPrint()
 	 fopen_s(&fp, "Matrix4x4Debug.txt","a");
 	 if (!fp)
 		return;
-	 for(unsigned i=1;i<=(*this).getRowL();i++)
+	 for(unsigned i=1;i<=4; i++)
 	 {
-		for(unsigned j=1;j<=(*this).getColL();j++)
+		for(unsigned j=1;j<=4;j++)
 		{
 			sprintf_s(buffer, buffer_size, "%f ", (*this)(i,j));fwrite(buffer,strlen(buffer),1,fp);
 		}

@@ -18,47 +18,19 @@
 #include <stdexcept>
 #include "Quaternion.h"
 #include <algorithm>
-#include "NMS_StubAllocator.h"
 
 using namespace std;
 
 class Matrix4x4_D Matrix4x4{
-   private:
-
-	 struct mat_struct
-		{
-		float *elements;
-		unsigned o_rows, o_cols;
-
-		mat_struct (unsigned row, unsigned col)
-		{
-			o_rows=row;
-			o_cols=col;
-
-			elements = new float [o_rows*o_cols];
-		}
-		~mat_struct ()
-		{
-			delete [] elements;
-			elements = NULL;
-		}
-	 };
-
-	 mat_struct* structPointer;
-
-	 //Used to allocate and resize a Matrix4x4
-	 void Matrix4x4::memoryRealloc (unsigned row, unsigned col,unsigned startRow,unsigned startCol);
+private:
+	   float elements[16];
 
   public:
-	  //CONSTRUCTORS
-	     Matrix4x4::Matrix4x4();		   //Create a default 4x4 Identity Matrix4x4
-	     Matrix4x4::Matrix4x4(unsigned rows,unsigned cols);
-	     Matrix4x4::Matrix4x4(unsigned rows,unsigned cols,float* toBeCopied);
-	  //copy constructor
-	     Matrix4x4::Matrix4x4(const Matrix4x4& m);
-	     Matrix4x4::~Matrix4x4();
+	  //CONSTRUCTORS & destructor
+	     Matrix4x4::Matrix4x4();		           //Creates identity matrix
+	     Matrix4x4::Matrix4x4(float* _elements);
 
-		 float* Matrix4x4::returnPointer();
+		 const float* Matrix4x4::getElements() const;             //return matrix elements as float array
 
 	  //Access to the Matrix4x4 values, starting from 1 NOT 0
 	     float& Matrix4x4::operator()(unsigned row,unsigned col);		//Subscript access to the Matrix4x4, non const
@@ -75,8 +47,6 @@ class Matrix4x4_D Matrix4x4{
 	     Vector Matrix4x4::getCol(unsigned i);
 	     void Matrix4x4::setRow(unsigned i,const Vector& v);
 	     void Matrix4x4::setCol(unsigned i,const Vector& v);
-	     unsigned Matrix4x4::getRowL() const;
-	     unsigned Matrix4x4::getColL() const;
 		 void Matrix4x4::swapRows(unsigned i, unsigned j);
 		 Matrix4x4 Matrix4x4::getRotation();
 
@@ -104,15 +74,9 @@ class Matrix4x4_D Matrix4x4{
          friend Matrix4x4  operator * (const Matrix4x4 &m,const float& f);	
 	     friend Matrix4x4  operator * (const float& f,const Matrix4x4 &m);
 	     friend Matrix4x4  operator * (const Matrix4x4 &m1,const Matrix4x4 &m2);
-	
-	     void Matrix4x4::resize (unsigned row, unsigned col,unsigned startRow,unsigned startCol);
 
 	 //Equality tests
 		 friend bool operator == (const Matrix4x4 &a, const Matrix4x4 &b);
-	  
-
-	  //Copy operator
-	    const Matrix4x4& operator = (const Matrix4x4& m);
 
 		Quaternion Matrix4x4::createQuaternion();
 };
