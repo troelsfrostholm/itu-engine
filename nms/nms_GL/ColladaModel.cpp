@@ -193,7 +193,7 @@ void ColladaModel::LoadData()
 					//Retrieve the material for the model
 					for (d=0; d<vMaterials.size(); d++)
 					{
-						if(vMaterials[d].sName==dataRead[m].triangles[t].sTriangleMaterial)
+						if(vMaterials[d].sID==dataRead[m].triangles[t].sTriangleMaterial||vMaterials[d].sName==dataRead[m].triangles[t].sTriangleMaterial)
 						{
 							//We have found the effect
 							temp=vMaterials[d].sUrl;
@@ -204,7 +204,7 @@ void ColladaModel::LoadData()
 					//Retrieve the effect
 					for (d=0; d<vEffects.size(); d++)
 					{
-						if(vEffects[d].sName==temp)
+						if(vEffects[d].sID==temp||vEffects[d].sName==temp)
 						{
 							//We have found the effect
 							temp=vEffects[d].sSurface;
@@ -215,7 +215,7 @@ void ColladaModel::LoadData()
 					//Retrieve the texture
 					for (d=0; d<vImages.size(); d++)
 					{
-						if(vImages[d].sName==temp)
+						if(vImages[d].sID==temp||vImages[d].sName==temp)
 						{
 							core::stringc image=vImages[d].sPath;
 							int pos=image.findFirst('/');

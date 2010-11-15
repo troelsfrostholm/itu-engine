@@ -1,6 +1,11 @@
 #include "nms_debugDrawer.h"
 #include <stdio.h>
 
+
+/*
+Debug functions taken from Bullet demos.
+*/
+
 nms_debugDrawer::nms_debugDrawer() : m_debugMode(0)
 {
 
@@ -8,12 +13,16 @@ nms_debugDrawer::nms_debugDrawer() : m_debugMode(0)
 
 void nms_debugDrawer::drawLine(const btVector3& from,const btVector3& to,const btVector3& fromColor, const btVector3& toColor)
 {
+	glPushAttrib(GL_LIGHTING_BIT | GL_CURRENT_BIT);
+	glDisable(GL_LIGHTING);
  	glBegin(GL_LINES);
 		glColor3f(fromColor.getX(), fromColor.getY(), fromColor.getZ());
 		glVertex3d(from.getX(), from.getY(), from.getZ());
 		glColor3f(toColor.getX(), toColor.getY(), toColor.getZ());
 		glVertex3d(to.getX(), to.getY(), to.getZ());
 	glEnd();
+	glEnable(GL_LIGHTING);
+	glPopAttrib();
 }
 
 void nms_debugDrawer::drawLine(const btVector3& from,const btVector3& to,const btVector3& color)

@@ -70,6 +70,8 @@ class  CAMERA_D NMSCameraController : public CameraNode
 		float fSpeed;
 		float fSlide;
 
+		Quaternion qRotation;
+
 		//Protected methods
 		virtual void recalcAxes()=0;
 		virtual void init()=0;

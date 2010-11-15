@@ -8,6 +8,7 @@
 #include "NMS_LightSystem.h"
 #include "NMS_Audio.h"
 #include "NMS_Camera.h"
+#include "Quaternion.h"
 
 #define WIDTH 600
 #define HEIGHT 400
@@ -95,13 +96,12 @@ int main(int argc, char* argv[])
 {
 	engine.NMSInit(WIDTH, HEIGHT, 16, "Demo 2", false);
 
-	
 	TransformationNode traNode3;
 	ColladaModel model3 = ColladaModel();
 	//model3.LoadModel("models/Gundam/Gundam.dae");
 	//model3.LoadModel("models/FireSpocket/models/FireSpocket.dae");
-	model3.LoadModel("models/Astroboy/Astroboy.dae");
-	//model3.LoadModel("models/colladaDuck/duck_triangulate.dae");
+	model3.LoadModel("models/Astroboy/astroBoy_walk_Max.DAE");
+	//model3.LoadModel("models/Duck/Duck.dae");
 	float mass;
 	btVector3 fallInertia;
 

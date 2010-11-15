@@ -25,6 +25,7 @@ TransformationNode camTNode;
 btRigidBody* fallRigidBody;
 btRigidBody* fallRigidBody2;
 btRigidBody* fallRigidBody3;
+btRigidBody* fallRigidBody4;
 GeometryNode geom;
 GeometryNode satelite;
 NMSCameraFPS cam;
@@ -62,15 +63,8 @@ void keyReleased(SDLKey key)
 
 void keyPressed(SDLKey key)
 {
+	btVector3 vec;
 	switch( key ) {
-		case SDLK_UP:
-			//Matrix m = Matrix();
-			//m.rotY(0.1f);
-			//SDL_LockMutex(sceneGraphGuard);
-			//rotNode.multiply(m);
-			//SDL_UnlockMutex(sceneGraphGuard);
-			break;
-
 		 case SDLK_a:
 			 cam.setSlideSpeed(+0.01f);
 				   break;
@@ -83,6 +77,36 @@ void keyPressed(SDLKey key)
 		 case SDLK_s:
 			 cam.setSpeed(-0.01f);
 				   break;
+		 case SDLK_UP:
+			 fallRigidBody2->activate();
+			 vec = fallRigidBody2->getWorldTransform().getOrigin();
+			 fallRigidBody2->getWorldTransform().setOrigin(btVector3(vec.getX()+1,vec.getY(),vec.getZ()));
+				   break;
+		 case SDLK_DOWN:
+			 fallRigidBody2->activate();
+			 vec = fallRigidBody2->getWorldTransform().getOrigin();
+			 fallRigidBody2->getWorldTransform().setOrigin(btVector3(vec.getX()-1,vec.getY(),vec.getZ()));
+				   break;
+		 case SDLK_RIGHT:
+			 fallRigidBody2->activate();
+			 vec = fallRigidBody2->getWorldTransform().getOrigin();
+			 fallRigidBody2->getWorldTransform().setOrigin(btVector3(vec.getX(),vec.getY(),vec.getZ()+1));
+				   break;
+		 case SDLK_LEFT:
+			 fallRigidBody2->activate();
+			 vec = fallRigidBody2->getWorldTransform().getOrigin();
+			 fallRigidBody2->getWorldTransform().setOrigin(btVector3(vec.getX(),vec.getY(),vec.getZ()-1));
+				   break;
+		 case SDLK_q:
+			 if(engine.physics->debugDrawer.getDebugMode() == 0)
+			 {
+				 engine.physics->debugDrawer.setDebugMode(btIDebugDraw::DBG_DrawWireframe);
+			 }
+			 else
+			 {
+				 engine.physics->debugDrawer.setDebugMode(btIDebugDraw::DBG_NoDebug);
+			 }
+			 break;
 	}
 }
 
@@ -95,33 +119,25 @@ int main(int argc, char* argv[])
 {
 	engine.NMSInit(WIDTH, HEIGHT, 16, "Demo 2", false);
 
-	btQuaternion q;
-	q.setEuler(0, 0.25, -0.05);
+	fallRigidBody = engine.physics->createBox(100,100,100,0,0,0,0);
 
-	btCollisionShape* fallShape = new btBoxShape(btVector3(100,100,100));
-	btDefaultMotionState* fallMotionState = new btDefaultMotionState(btTransform(q,btVector3(0,0,0)));
-    btScalar mass = 0.0f;
-    btVector3 fallInertia(0,0,0);
-    fallShape->calculateLocalInertia(mass,fallInertia);
-    btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI(mass,fallMotionState,fallShape,fallInertia);
-    fallRigidBody = new btRigidBody(fallRigidBodyCI);
-    engine.physics->addRBody(fallRigidBody);
+	fallRigidBody2 = engine.physics->createBox(8,12,8,0,200,0, 1.0f);
 
-	btCollisionShape* fallShape2 = new btBoxShape(btVector3(8,8,8));
-	btDefaultMotionState* fallMotionState2 = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,200,0)));
-    mass = 1.0f;
-    btVector3 fallInertia2(0,0,0);
-    fallShape2->calculateLocalInertia(mass,fallInertia2);
-    btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI2(mass,fallMotionState2,fallShape2,fallInertia2);
-    fallRigidBody2 = new btRigidBody(fallRigidBodyCI2);
-    engine.physics->addRBody(fallRigidBody2);
+	fallRigidBody3 = engine.physics->createBox(8,12,8,0,200,20, 1.0f);
+
+	fallRigidBody4 = engine.physics->createBox(8,12,8,0,200,60, 1.0f);
 
 	MD2Model model = MD2Model();
-	ColladaModel model2 = ColladaModel();
+	//ColladaModel model2 = ColladaModel();
+	MD2Model model2 = MD2Model();
+	MD2Model model3 = MD2Model();
 	model.LoadModel("models/drfreak/drfreak.md2","models/drfreak/drfreak.tga");
-	//model2.LoadModel("models/FireSpocket/models/FireSpocket.dae");
-	model2.LoadModel("models/Duck/Duck.dae");
+	model2.LoadModel("models/hang4/HANG4.md2","models/hang4/hang4.bmp");
+	model3.LoadModel("models/hang3/HANG3.md2","models/hang3/hang3.bmp");
+	//model2.LoadModel("models/pumpkin/pumpkin.dae");
 	model.SetAnim(RUN);
+
+	engine.getRenderer()->setWireframeMode(false);
 
 	//LIGHT DEFINITION
 	/*LightSource light0 = LightSource();
@@ -135,15 +151,16 @@ int main(int argc, char* argv[])
 	NMS_Cube cube = NMS_Cube();
 	GeometryNode GeoCube = GeometryNode(&cube, fallRigidBody);
 
-	NMS_Cube cube2 = NMS_Cube();
-	GeometryNode GeoCube2 = GeometryNode(&cube2, fallRigidBody2);
+	GeometryNode geom2 = GeometryNode(&model3, fallRigidBody3);
 
-	geom = GeometryNode(&model2, fallRigidBody2);
+	GeometryNode geom3 = GeometryNode(&model2, fallRigidBody4);
+
+	geom = GeometryNode(&model, fallRigidBody2);
 	GeometryNode light = GeometryNode(&light1,fallRigidBody);
 	SceneGraphNode* root = engine.getScene();
 
 	Matrix tra = Matrix();
-	Vector v = Vector(0.f, 100.f, 300.f);
+	Vector v = Vector(0.f, 150.f, 150.f);
 	tra.translate(v);
 
 	Matrix tra2 = Matrix();
@@ -165,7 +182,9 @@ int main(int argc, char* argv[])
 	root->addChild(&traNode3);
 	traNode.addChild(&cam);
 	traNode3.addChild(&geom);
-	traNode2.addChild(&GeoCube);
+	traNode3.addChild(&geom2);
+	traNode3.addChild(&geom3);
+	//traNode2.addChild(&GeoCube);
 	root->addChild(&light);
 
 	NMS_EVENT_MANAGER.onKeyPressed(&keyPressed);
