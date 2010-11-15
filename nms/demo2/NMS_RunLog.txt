@@ -1,5 +1,0 @@
-Memory usage at end of program : 
-    Persistent       : 6564
-    Level            : 487560
-    Matrix           : 2439240
-    Temporary vars   : 0

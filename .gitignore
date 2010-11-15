@@ -34,6 +34,7 @@ _ReSharper*/
 nms/nms_GL/gl_map
 #Ignore debug logs
 MatrixDebug.txt
+*Log.txt
 #Ignore backups
 *.orig
 nms/nms_GL.opensdf
