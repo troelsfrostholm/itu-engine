@@ -1,4 +1,4 @@
-#include "Matrix4x4.h"
+#include "Matrix.h"
 #include "approx.h"
 #include "Quaternion.h"
 
@@ -9,11 +9,11 @@
 using namespace std;
 using namespace nms::math;
 
-BOOST_AUTO_TEST_SUITE( matrix4x4 );
+BOOST_AUTO_TEST_SUITE( Matrix );
 
-Matrix4x4 factoryfunc()
+Matrix factoryfunc()
 {
-	Matrix4x4 mat = Matrix4x4();
+	Matrix mat = Matrix();
 	return mat;
 }
 
@@ -24,7 +24,7 @@ bool elmsEqual(const float * elm1, const float * elm2)
 
 BOOST_AUTO_TEST_CASE( construction )
 {
-	Matrix4x4 mat;
+	Matrix mat;
 	const float * elms = mat.getElements();
 	float expected[16] = { 1, 0, 0, 0,
 	                       0, 1, 0, 0,
@@ -35,14 +35,14 @@ BOOST_AUTO_TEST_CASE( construction )
 	BOOST_CHECK( elmsEqual(elms, expected) );
 
 	float createWith[16] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
-	mat = Matrix4x4(createWith);
+	mat = Matrix(createWith);
 	elms = mat.getElements();
 	BOOST_CHECK( elmsEqual(elms, createWith) );
 }
 
 BOOST_AUTO_TEST_CASE( lookup_write )
 {
-	Matrix4x4 mat;
+	Matrix mat;
 	float expected[4][4] = 	{ 1, 0, 0, 0,
 	                          0, 1, 0, 0,
 	                          0, 0, 1, 0,

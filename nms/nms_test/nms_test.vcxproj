@@ -80,7 +80,6 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="math.cpp" />
-    <ClCompile Include="matrix4x4.cpp" />
     <ClCompile Include="memory_managers.cpp" />
   </ItemGroup>
   <ItemGroup>

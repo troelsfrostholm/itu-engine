@@ -151,7 +151,7 @@ void NMS_SceneRenderer::sg_before(Matrix transform, SceneGraphNode * node)
 
 	glLoadIdentity();
 	Matrix t_transposed = ~transform;
-	glMultMatrixf(t_transposed.returnPointer());
+	glMultMatrixf(t_transposed.getElements());
 	applyPhysics(b);
 	setWireframeModeGL(wireframe);
 	(*model).render(currentTime);
