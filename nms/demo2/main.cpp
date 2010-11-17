@@ -128,13 +128,13 @@ int main(int argc, char* argv[])
 	fallRigidBody4 = engine.physics->createBox(8,12,8,0,200,60, 1.0f);
 
 	MD2Model model = MD2Model();
-	//ColladaModel model2 = ColladaModel();
-	MD2Model model2 = MD2Model();
+	ColladaModel model2 = ColladaModel();
+	//MD2Model model2 = MD2Model();
 	MD2Model model3 = MD2Model();
 	model.LoadModel("models/drfreak/drfreak.md2","models/drfreak/drfreak.tga");
-	model2.LoadModel("models/hang4/HANG4.md2","models/hang4/hang4.bmp");
+	//model2.LoadModel("models/hang4/HANG4.md2","models/hang4/hang4.bmp");
 	model3.LoadModel("models/hang3/HANG3.md2","models/hang3/hang3.bmp");
-	//model2.LoadModel("models/pumpkin/pumpkin.dae");
+	model2.LoadModel("models/pumpkin/pumpkin.dae");
 	model.SetAnim(RUN);
 
 	engine.getRenderer()->setWireframeMode(false);

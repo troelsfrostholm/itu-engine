@@ -157,8 +157,8 @@ int NMS_TextureManager::LoadTexture (const char* sFilename,char* textureName) {
 	  fclose(fp);
 	  if(_DEBUG)
 	  {
-		  sprintf_s (m_Singleton->m_sMessage, m_Singleton->m_iMessageSize, "NMS_TextureManager::Loaded [%s] without issues!\n", sFilename);
-		  LOG.write(m_sMessage,LOG_DEBUG);
+		 sprintf_s (m_Singleton->m_sMessage, m_Singleton->m_iMessageSize, "NMS_TextureManager::Loaded [%s] without issues!\n", sFilename);
+		 LOG.write(m_sMessage,LOG_DEBUG);
 	  }
 	  return textureMap[textureName].textID;
 }

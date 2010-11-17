@@ -39,6 +39,7 @@ public:
 	JointNode* getParent();
 	Matrix getTransform();
 	string getSSID();
+	string getSID();
 };
 
 class SKELETON_D Skeleton

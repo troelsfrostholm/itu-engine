@@ -19,7 +19,9 @@ ColladaModel::ColladaModel()
 ColladaModel::~ColladaModel(){};
 
 
-
+Vertex::Vertex()
+{
+}
 
 RenderData::RenderData()
 {
@@ -47,7 +49,7 @@ Triangle::Triangle()
 	  bNormals=false;
 	  uNumberOfData=0;
 }
-ColMesh::ColMesh()
+Mesh::Mesh()
 {
 	sVertPosition=NULL;
 }
@@ -123,8 +125,8 @@ void ColladaModel::RenderFrame()
 		glEnableClientState( GL_TEXTURE_COORD_ARRAY ); // Enable Texture Coord Arrays
 		glEnableClientState	(GL_NORMAL_ARRAY);
 		glTexCoordPointer( 2, GL_FLOAT, 0, vRenderData[i].vTextures ); // Set The Vertex Pointer To TexCoord Data
-		glNormalPointer(GL_FLOAT,0,vRenderData[i].vNormals);
-		glVertexPointer( 3, GL_FLOAT, 0, vRenderData[i].vVertices ); // Set The Vertex Pointer To Vertex Data
+		glNormalPointer(GL_FLOAT,0, vRenderData[i].vNormals);
+		glVertexPointer( 3, GL_FLOAT, 0, vRenderData[i].vVertices); // Set The Vertex Pointer To Vertex Data
 		glDrawArrays( GL_TRIANGLES, 0, vRenderData[i].iTriangleCount*3 ); //Draw the vertices
 	}
 	glDisableClientState(GL_VERTEX_ARRAY); // Enable Vertex Arrays
@@ -136,156 +138,154 @@ void ColladaModel::RenderFrame()
 
 void ColladaModel::LoadData()
 {
-	unsigned d=0;  //Misc count
-	unsigned i=0;  //Image count
-	unsigned t=0;  //Triangles count
-	unsigned m=0;  //Mesh count
-	iMeshCount=dataRead.size();
-	//FOR EACH MESH
-	for(m=0;m<dataRead.size();m++)
-	{
-		RenderData toBeRendered=RenderData();
-		
-		Source* positionSource;
-		Source* textureSource;
-		Source* normalSource;
-		//Find the right source for the positions inside the sources vector
-		unsigned firstOffset;
-		unsigned secondOffset;
-		unsigned thirdOffset;
-		//For each triangle declaration
-		for(t=0;t<dataRead[m].triangles.size();t++)
-		{
-			   unsigned numberOfArrays=dataRead[m].triangles[t].uNumberOfData;
-			   for (i=0; i<dataRead[m].sources.size(); i++) {
-					if(dataRead[m].sources[i].sID==dataRead[m].sVertPosition)
-					{
-						positionSource=&dataRead[m].sources[i];
-					}
-					else
-					if(dataRead[m].sources[i].sID==dataRead[m].triangles[t].sTextSource)
-					{
-						textureSource=&dataRead[m].sources[i];
-					}
-					if(dataRead[m].sources[i].sID==dataRead[m].triangles[t].sNormSource)
-					{
-						normalSource=&dataRead[m].sources[i];
-					}
-				}
-				unsigned numberOfTriangles=dataRead[m].triangles[t].iTriangleCount;
-				toBeRendered.iTriangleCount=numberOfTriangles;
-				iTriangleCount+=numberOfTriangles;
-				unsigned vertexOffset=dataRead[m].triangles[t].iVertOffset;
-				unsigned textureOffset=dataRead[m].triangles[t].iTextOffset;
-				unsigned normalOffset=dataRead[m].triangles[t].iNormOffset;
+unsigned d=0; //Misc count
+unsigned i=0; //Image count
+unsigned t=0; //Triangles count
+unsigned m=0; //Mesh count
+iMeshCount=dataRead.size();
+//FOR EACH MESH
+for(m=0;m<dataRead.size();m++)
+{
+				RenderData toBeRendered=RenderData();
 
-				unsigned vertexStride=(*positionSource).stride;
-				unsigned textureStride=(*textureSource).stride;
-				unsigned normalStride=(*normalSource).stride;
-				
-				int* dataPointer=dataRead[m].triangles[t].pTriangleData;
-				GLfloat* vertArray=(*positionSource).pfArray;
-				GLfloat* textArray=(*textureSource).pfArray;
-				GLfloat* normArray=(*normalSource).pfArray;
-				bool   textEnabled=dataRead[m].triangles[t].bTextures;
-					int iTextureID=0;
-					core::stringc temp=NULL;
-					//Retrieve the material for the model
-					for (d=0; d<vMaterials.size(); d++)
-					{
-						if(vMaterials[d].sID==dataRead[m].triangles[t].sTriangleMaterial||vMaterials[d].sName==dataRead[m].triangles[t].sTriangleMaterial)
-						{
-							//We have found the effect
-							temp=vMaterials[d].sUrl;
-							break;
-						}
-					}
+				Source* positionSource;
+				Source* textureSource;
+				Source* normalSource;
+				//Find the right source for the positions inside the sources vector
+				unsigned firstOffset;
+				unsigned secondOffset;
+				unsigned thirdOffset;
 
-					//Retrieve the effect
-					for (d=0; d<vEffects.size(); d++)
-					{
-						if(vEffects[d].sID==temp||vEffects[d].sName==temp)
-						{
-							//We have found the effect
-							temp=vEffects[d].sSurface;
-							break;
-						}
-					}
+				//For each triangle declaration
+				for(t=0;t<dataRead[m].triangles.size();t++)
+				{
+							unsigned numberOfArrays=dataRead[m].triangles[t].uNumberOfData;
+							positionSource=&dataRead[m].sources[dataRead[m].sVertPosition];
+							textureSource=&dataRead[m].sources[dataRead[m].triangles[t].sTextSource];
+							normalSource=&dataRead[m].sources[dataRead[m].triangles[t].sNormSource];
+							unsigned numberOfTriangles=dataRead[m].triangles[t].iTriangleCount;
+							toBeRendered.iTriangleCount=numberOfTriangles;
+							iTriangleCount+=numberOfTriangles;
+							unsigned vertexOffset=dataRead[m].triangles[t].iVertOffset;
+							unsigned textureOffset=dataRead[m].triangles[t].iTextOffset;
+							unsigned normalOffset=dataRead[m].triangles[t].iNormOffset;
 
-					//Retrieve the texture
-					for (d=0; d<vImages.size(); d++)
-					{
-						if(vImages[d].sID==temp||vImages[d].sName==temp)
-						{
-							core::stringc image=vImages[d].sPath;
-							int pos=image.findFirst('/');
-							image=image.subString(pos+1,image.size());
-							//We have found the texture, load it
-							iTextureID=LoadSkin((char*)image.c_str());
-							break;
-						}
-					}
-					toBeRendered.vTextures=new(LEVEL_ALLOC, MEM_LEVEL) GLfloat[numberOfTriangles*6];
-					toBeRendered.vNormals=new(LEVEL_ALLOC, MEM_LEVEL) GLfloat[numberOfTriangles*9];
-					toBeRendered.vVertices=new(LEVEL_ALLOC, MEM_LEVEL) GLfloat[numberOfTriangles*9];
-					for(i=0;i<numberOfTriangles;i++)
-					{
-						if(textEnabled)
-						{
-							firstOffset=dataPointer[i*numberOfArrays*3+textureOffset];
-							firstOffset=firstOffset*textureStride;
-							toBeRendered.vTextures[0+i*6]=textArray[firstOffset];
-							toBeRendered.vTextures[1+i*6]=textArray[firstOffset+1];
-							secondOffset=dataPointer[i*numberOfArrays*3+textureOffset+numberOfArrays];
-							secondOffset=secondOffset*textureStride;
-							toBeRendered.vTextures[2+i*6]=textArray[secondOffset];
-							toBeRendered.vTextures[3+i*6]=textArray[secondOffset+1];
-							thirdOffset=dataPointer[i*numberOfArrays*3+textureOffset+numberOfArrays*2];
-							thirdOffset=thirdOffset*textureStride;
-							toBeRendered.vTextures[4+i*6]=textArray[thirdOffset];
-							toBeRendered.vTextures[5+i*6]=textArray[thirdOffset+1];
-						}
+							unsigned vertexStride=(*positionSource).stride;
+							unsigned textureStride=(*textureSource).stride;
+							unsigned normalStride=(*normalSource).stride;
 
-						//Normals loading
-						firstOffset=dataPointer[i*numberOfArrays*3+normalOffset];
-						firstOffset=firstOffset*normalStride;
-						toBeRendered.vNormals[0+i*9]=normArray[firstOffset];
-						toBeRendered.vNormals[1+i*9]=normArray[firstOffset+1];
-						toBeRendered.vNormals[2+i*9]=normArray[firstOffset+2];
-						secondOffset=dataPointer[i*numberOfArrays*3+normalOffset+numberOfArrays];
-						secondOffset=secondOffset*normalStride;
-						toBeRendered.vNormals[3+i*9]=normArray[secondOffset];
-						toBeRendered.vNormals[4+i*9]=normArray[secondOffset+1];
-						toBeRendered.vNormals[5+i*9]=normArray[secondOffset+2];
-						thirdOffset=dataPointer[i*numberOfArrays*3+normalOffset+numberOfArrays*2];
-						thirdOffset=thirdOffset*normalStride;
-						toBeRendered.vNormals[6+i*9]=normArray[thirdOffset];
-						toBeRendered.vNormals[7+i*9]=normArray[thirdOffset+1];
-						toBeRendered.vNormals[8+i*9]=normArray[thirdOffset+2];
+							int* dataPointer=dataRead[m].triangles[t].pTriangleData;
+							float* vertArray=positionSource->pfArray;
+							float* textArray=textureSource->pfArray;
+							float* normArray=normalSource->pfArray;
 
-						//Vertices loading
-						firstOffset=dataPointer[i*numberOfArrays*3+vertexOffset];
-						firstOffset=firstOffset*vertexStride;
-						toBeRendered.vVertices[0+i*9]=vertArray[firstOffset];
-						toBeRendered.vVertices[1+i*9]=vertArray[firstOffset+1];
-						toBeRendered.vVertices[2+i*9]=vertArray[firstOffset+2];
-						secondOffset=dataPointer[i*numberOfArrays*3+vertexOffset+numberOfArrays];
-						secondOffset=secondOffset*vertexStride;
-						toBeRendered.vVertices[3+i*9]=vertArray[secondOffset];
-						toBeRendered.vVertices[4+i*9]=vertArray[secondOffset+1];
-						toBeRendered.vVertices[5+i*9]=vertArray[secondOffset+2];
-						thirdOffset=dataPointer[i*numberOfArrays*3+vertexOffset+numberOfArrays*2];
-						thirdOffset=thirdOffset*vertexStride;
-						toBeRendered.vVertices[6+i*9]=vertArray[thirdOffset];
-						toBeRendered.vVertices[7+i*9]=vertArray[thirdOffset+1];
-						toBeRendered.vVertices[8+i*9]=vertArray[thirdOffset+2];
-						//Store the loaded data in the main class
-					}
-		 toBeRendered.iTextID=iTextureID;
-		 vRenderData.push_back(toBeRendered);
-		}
-		LoadSkeleton();
+							bool textEnabled=dataRead[m].triangles[t].bTextures;
+							unsigned iTextureID=0;
+							core::stringc temp=NULL;
+
+							//Retrieve the material for the model
+							for (d=0; d<vMaterials.size(); d++)
+							{
+								if(vMaterials[d].sID==dataRead[m].triangles[t].sTriangleMaterial||vMaterials[d].sName==dataRead[m].triangles[t].sTriangleMaterial)
+								{
+									//We have found the material
+									temp=vMaterials[d].sUrl;
+									break;
+								}
+							}
+
+							//Retrieve the effect
+							for (d=0; d<vEffects.size(); d++)
+							{
+								if(vEffects[d].sID==temp||vEffects[d].sName==temp)
+								{
+									//We have found the effect
+									temp=vEffects[d].sSurface;
+									break;
+								}
+							}
+
+							//Retrieve the texture
+							for (d=0; d<vImages.size(); d++)
+							{
+								if(vImages[d].sID==temp||vImages[d].sName==temp)
+								{
+									core::stringc image=vImages[d].sPath;
+									int pos=image.findFirst('/');
+									image=image.subString(pos+1,image.size());
+									//We have found the texture, load it
+									iTextureID=LoadSkin((char*)image.c_str());
+									break;
+								}
+							}
+
+							/*toBeRendered.vTextures=new(LEVEL_ALLOC, MEM_LEVEL) GLfloat[numberOfTriangles*6];
+							toBeRendered.vNormals=new(LEVEL_ALLOC, MEM_LEVEL) GLfloat[numberOfTriangles*9];
+							toBeRendered.vVertices=new(LEVEL_ALLOC, MEM_LEVEL) GLfloat[numberOfTriangles*9];*/
+
+							toBeRendered.vTextures=new(LEVEL_ALLOC, MEM_LEVEL) GLfloat*;
+							toBeRendered.vNormals=new(LEVEL_ALLOC, MEM_LEVEL) GLfloat*;
+							toBeRendered.vVertices=new(LEVEL_ALLOC, MEM_LEVEL) GLfloat*;
+
+							for(i=0;i<numberOfTriangles;i++)
+							{
+								//If we have a texture, load the data for it
+								if(textEnabled)
+								{
+									firstOffset=dataPointer[i*numberOfArrays*3+textureOffset];
+									firstOffset=firstOffset*textureStride;
+									toBeRendered.vTextures[0+i*6]=&(textArray[firstOffset]);
+									toBeRendered.vTextures[1+i*6]=&textArray[firstOffset+1];
+									secondOffset=dataPointer[i*numberOfArrays*3+textureOffset+numberOfArrays];
+									secondOffset=secondOffset*textureStride;
+									toBeRendered.vTextures[2+i*6]=&textArray[secondOffset];
+									toBeRendered.vTextures[3+i*6]=&textArray[secondOffset+1];
+									thirdOffset=dataPointer[i*numberOfArrays*3+textureOffset+numberOfArrays*2];
+									thirdOffset=thirdOffset*textureStride;
+									toBeRendered.vTextures[4+i*6]=&textArray[thirdOffset];
+									toBeRendered.vTextures[5+i*6]=&textArray[thirdOffset+1];
+								}
+
+							//Normals loading
+							firstOffset=dataPointer[i*numberOfArrays*3+normalOffset];
+							firstOffset=firstOffset*normalStride;
+							toBeRendered.vNormals[0+i*9]=&normArray[firstOffset];
+							toBeRendered.vNormals[1+i*9]=&normArray[firstOffset+1];
+							toBeRendered.vNormals[2+i*9]=&normArray[firstOffset+2];
+							secondOffset=dataPointer[i*numberOfArrays*3+normalOffset+numberOfArrays];
+							secondOffset=secondOffset*normalStride;
+							toBeRendered.vNormals[3+i*9]=&normArray[secondOffset];
+							toBeRendered.vNormals[4+i*9]=&normArray[secondOffset+1];
+							toBeRendered.vNormals[5+i*9]=&normArray[secondOffset+2];
+							thirdOffset=dataPointer[i*numberOfArrays*3+normalOffset+numberOfArrays*2];
+							thirdOffset=thirdOffset*normalStride;
+							toBeRendered.vNormals[6+i*9]=&normArray[thirdOffset];
+							toBeRendered.vNormals[7+i*9]=&normArray[thirdOffset+1];
+							toBeRendered.vNormals[8+i*9]=&normArray[thirdOffset+2];
+
+							//Vertices loading
+							firstOffset=dataPointer[i*numberOfArrays*3+vertexOffset];
+							firstOffset=firstOffset*vertexStride;
+							toBeRendered.vVertices[0+i*9]=&vertArray[firstOffset];
+							toBeRendered.vVertices[1+i*9]=&vertArray[firstOffset+1];
+							toBeRendered.vVertices[2+i*9]=&vertArray[firstOffset+2];
+							secondOffset=dataPointer[i*numberOfArrays*3+vertexOffset+numberOfArrays];
+							secondOffset=secondOffset*vertexStride;
+							toBeRendered.vVertices[3+i*9]=&vertArray[secondOffset];
+							toBeRendered.vVertices[4+i*9]=&vertArray[secondOffset+1];
+							toBeRendered.vVertices[5+i*9]=&vertArray[secondOffset+2];
+							thirdOffset=dataPointer[i*numberOfArrays*3+vertexOffset+numberOfArrays*2];
+							thirdOffset=thirdOffset*vertexStride;
+							toBeRendered.vVertices[6+i*9]=&vertArray[thirdOffset];
+							toBeRendered.vVertices[7+i*9]=&vertArray[thirdOffset+1];
+							toBeRendered.vVertices[8+i*9]=&vertArray[thirdOffset+2];
+							//Store the loaded data in the main class
+							}
+							toBeRendered.iTextID=iTextureID;
+							vRenderData.push_back(toBeRendered);
+				}		
 	}
+	LoadSkeleton();
 	bModelLoadedCorrectly=true;
 }
 
@@ -315,8 +315,8 @@ void ColladaModel::LoadSkeleton()
 	{
 		JointNode root = JointNode(pSkeletonNode->sID.c_str(),pSkeletonNode->sName.c_str(),pSkeletonNode->sSID.c_str(),pSkeletonNode->sType.c_str(),pSkeletonNode->transformation);
 		ColladaSkeleton=Skeleton(root);
-		ColladaSkeleton.addJoint(root.getSSID(),root);
-		LoadJointRec(ColladaSkeleton.getJoint(root.getSSID()),pSkeletonNode);
+		ColladaSkeleton.addJoint(root.getSID(),root);
+		LoadJointRec(ColladaSkeleton.getJoint(root.getSID()),pSkeletonNode);
 	}
 }
 
@@ -326,10 +326,32 @@ void ColladaModel::LoadJointRec(JointNode* jParent,Node* nParent)
 		for ( it=nParent->nodes.begin() ; it != nParent->nodes.end(); it++ )
 		{
 			JointNode current = JointNode((*it).second.sID.c_str(),(*it).second.sName.c_str(),(*it).second.sSID.c_str(),(*it).second.sType.c_str(),(*it).second.transformation);
-			ColladaSkeleton.addJoint(current.getSSID(),current);
-			LoadJointRec(ColladaSkeleton.getJoint(current.getSSID()),&it->second);
-			jParent->addChild(ColladaSkeleton.getJoint(current.getSSID()));
+			ColladaSkeleton.addJoint(current.getSID(),current);
+			LoadJointRec(ColladaSkeleton.getJoint(current.getSID()),&it->second);
+			jParent->addChild(ColladaSkeleton.getJoint(current.getSID()));
 		}
+}
+
+void ColladaModel::LoadWeights()
+{
+	Vector output = Vector();
+	Source JointSource=skinningInformation.mSources[skinningInformation.jointSource];
+	Source BindSource=skinningInformation.mSources[skinningInformation.bindSource];
+	unsigned readOffset=0;
+	core::stringc currentJoint;
+	//For each vertex
+	for(unsigned i=0;i<skinningInformation.iWeightCount;i++)
+	{
+		Vector vertex = Vector();
+
+		//Load the influence for each vertex as defined in VCount; VCount defines the number of joints that influence this vertex
+		//so you have to iterate through all of them
+		for(unsigned k=0;k<skinningInformation.pVCount[i];k++)
+		{
+			currentJoint=JointSource.pNameArray[k+readOffset+skinningInformation.iJointOffset];
+		}
+	}
+	
 }
 
 void ColladaModel::DrawSkeleton()
@@ -557,7 +579,7 @@ void ColladaModel::readLibraryGeometries(IrrXMLReader* xml)
 {
 	bool nextIsArray = false;
 	// read sources with arrays and accessor for each mesh
-
+	core::stringc sMeshName;
 	if (!xml->isEmptyElement())
 	while(xml->read())
 	{
@@ -568,35 +590,17 @@ void ColladaModel::readLibraryGeometries(IrrXMLReader* xml)
 				{
 					if (!strcmp("geometry",xml->getNodeName()))
 					{
-						ColMesh mesh =  ColMesh();
+						sMeshName=xml->getAttributeValue("id");
+						Mesh mesh =  Mesh();
+						mesh.sID=sMeshName;
 						dataRead.push_back(mesh);
 						break;
 					}
 					else
 					if (!strcmp("source",xml->getNodeName()))
 					{
-						Source source =  Source();
-						source.sName = xml->getAttributeValue("name");
-						source.sID = xml->getAttributeValue("id");
-						dataRead.back().sources.push_back(source);
-						break;
-					}
-					else
-					if (!strcmp("float_array",xml->getNodeName()))
-					{
-							dataRead.back().sources.back().nElements=xml->getAttributeValueAsInt("count");
-							nextIsArray=true;
-							break;
-					}
-					else
-					if (!strcmp("accessor",xml->getNodeName()))
-					{
-						
-						dataRead.back().sources.back().count  = xml->getAttributeValueAsInt("count");
-						dataRead.back().sources.back().offset = xml->getAttributeValueAsInt("offset");
-						dataRead.back().sources.back().stride = xml->getAttributeValueAsInt("stride");
-						if (dataRead.back().sources.back().stride == 0)
-							dataRead.back().sources.back().stride = 1;   //Fix a bug in some models
+						Source result=readSource(xml);
+						dataRead.back().sources[result.sID]=result;
 						break;
 					}
 					else
@@ -684,24 +688,25 @@ void ColladaModel::readLibraryGeometries(IrrXMLReader* xml)
 					}
 				} 
 				break;
-		case EXN_TEXT:
-			{
-				if (nextIsArray)
-				{
-					char* charArray=(char*)xml->getNodeData();
-					int maxVertices=dataRead.back().sources.back().nElements;
-					dataRead.back().sources.back().pfArray=new float[maxVertices];
-					GLfloat* tempArray=dataRead.back().sources.back().pfArray;
-					for (int i=0; i<maxVertices; i++)
-						tempArray[i]=(GLfloat)strtod(charArray,&charArray);
-					nextIsArray = false;
-				}
-			}
-			break;
 		case EXN_ELEMENT_END:
 		{
 			if (!strcmp("library_geometries", xml->getNodeName()))
+			{
+				//Take the number of vertexes from the position vector
+				int maxVertices=dataRead.back().sources[dataRead.back().sVertPosition].iFArraySize/3;
+				pVertArray = new Vertex[maxVertices];
+				
+				for (int i=0; i<maxVertices; i++)
+				{
+					pVertArray[i].vPosition=new float*[3];
+					pVertArray[i].vPosition[0]=&dataRead.back().sources[dataRead.back().sVertPosition].pfArray[i*3];
+					pVertArray[i].vPosition[1]=&dataRead.back().sources[dataRead.back().sVertPosition].pfArray[i*3+1];
+					pVertArray[i].vPosition[2]=&dataRead.back().sources[dataRead.back().sVertPosition].pfArray[i*3+2];
+				}
+				//Now it's time to fill up the class of Vertex array
 				return;
+			}
+				
 		}
 		break;
 	} 
@@ -711,6 +716,7 @@ void ColladaModel::readLibraryGeometries(IrrXMLReader* xml)
 Matrix ColladaModel::readMatrix(IrrXMLReader* xml)
 {
 	Matrix toBeReturned=Matrix();
+	xml->read();
 	if (xml->isEmptyElement())
 		return toBeReturned;
 	char* charArray=(char*)xml->getNodeData();
@@ -774,7 +780,9 @@ void ColladaModel::readNode(IrrXMLReader* xml,Node* parent)
 			{
 				if (!strcmp("matrix", xml->getNodeName()))
 				{
-					current.transformation*=readMatrix(xml);
+					Matrix debug=readMatrix(xml);
+					debug.debugPrint();
+					current.transformation*=debug;
 				}
 				else if (!strcmp("translate", xml->getNodeName()))
 				{
@@ -830,7 +838,7 @@ void ColladaModel::readInstanceController(IrrXMLReader* xml)
 		{
 			case EXN_ELEMENT:
 			{
-				if (!strcmp("skeleton", xml->getNodeName()))
+				if (!strcmp("skeleton", xml->getNodeName())&&!strcmp(sSkeletonID.c_str(), ""))
 				{
 					xml->read();
 					sSkeletonID=xml->getNodeData();
@@ -916,7 +924,8 @@ void ColladaModel::readSkin(IrrXMLReader* xml)
 				}
 				else if (!strcmp("source", xml->getNodeName()))
 				{
-					skinningInformation.vSources.push_back(readSource(xml));
+					Source result=readSource(xml);
+					skinningInformation.mSources[result.sID]=result;
 				}
 				else if (!strcmp("joints", xml->getNodeName()))
 				{
@@ -1063,7 +1072,6 @@ void ColladaModel::readFloatArray(IrrXMLReader* xml,float* arrayPointer)
 	int count=xml->getAttributeValueAsInt("count");
 	xml->read();
 	char* charArray=(char*)xml->getNodeData();
-	arrayPointer=new float[count];
 	for (int i=0; i<count; i++)
 	{
 		arrayPointer[i]=strtod(charArray,&charArray);
@@ -1096,12 +1104,11 @@ void ColladaModel::readVArray(IrrXMLReader* xml,unsigned* arrayPointer)
 	}
 }
 
-void ColladaModel::readIDREFArray(IrrXMLReader* xml,core::stringc* arrayPointer)
+void ColladaModel::readStringArray(IrrXMLReader* xml,core::stringc* arrayPointer)
 {
 	int count=xml->getAttributeValueAsInt("count");
 	xml->read();
 	char* charArray=(char*)xml->getNodeData();
-	arrayPointer=new core::stringc[count+1];
 	unsigned i=0;
 	unsigned h=0;
 	while(i<count)
@@ -1120,6 +1127,8 @@ void ColladaModel::readIDREFArray(IrrXMLReader* xml,core::stringc* arrayPointer)
 Source ColladaModel::readSource(IrrXMLReader* xml)
 {
 	Source toBeReturned = Source();
+	toBeReturned.sID=xml->getAttributeValue("id");
+	toBeReturned.sName=xml->getAttributeValue("name");
 	while(xml->read())
 	{
 		switch(xml->getNodeType())
@@ -1129,11 +1138,19 @@ Source ColladaModel::readSource(IrrXMLReader* xml)
 				if (!strcmp("IDREF_array", xml->getNodeName()))
 				{
 					toBeReturned.iIdRefArraySize=xml->getAttributeValueAsInt("count");
-					readIDREFArray(xml,toBeReturned.pIdRefArray);
+					toBeReturned.pIdRefArray=new core::stringc[toBeReturned.iIdRefArraySize];
+					readStringArray(xml,toBeReturned.pIdRefArray);
+				}
+				else if (!strcmp("Name_array",xml->getNodeName()))
+				{
+					toBeReturned.iNameArray=xml->getAttributeValueAsInt("count");
+					toBeReturned.pNameArray=new core::stringc[toBeReturned.iNameArray];
+					readStringArray(xml,toBeReturned.pNameArray);
 				}
 				else if (!strcmp("float_array", xml->getNodeName()))
 				{
 					toBeReturned.iFArraySize=xml->getAttributeValueAsInt("count");
+					toBeReturned.pfArray=new float[toBeReturned.iFArraySize];
 					readFloatArray(xml,toBeReturned.pfArray);
 				}
 				else if (!strcmp("accessor", xml->getNodeName()))

@@ -15,13 +15,19 @@ JointNode::JointNode(string sID, string sName, string sSID, string sType,Matrix 
 
 JointNode* Skeleton::getJoint(string sID)
 {
-	return &joints[sID];
+	JointNode* toBeReturned=&joints[sID];
+	return toBeReturned;
 }
 
 
 string JointNode::getSSID()
 {
 	return sSID;
+}
+
+string JointNode::getSID()
+{
+	return sID;
 }
 
 Matrix JointNode::getTransform()
@@ -73,8 +79,8 @@ void SkeletonRenderer::renderJoint(Matrix transform, SceneGraphNode * node)
 	{
 		NMS_DebugDraw().drawLine(startingPoint,endPoint,Vector(0,255,0,0));
 	}
-	NMS_DebugDraw().drawSphere(endPoint,0.1f,Vector(255,0,0),40,40);
-	NMS_DebugDraw().draw3dText(endPoint,converted->getSSID().c_str());
+	NMS_DebugDraw().drawSphere(endPoint,0.05f,Vector(255,0,0),5,5);
+	//NMS_DebugDraw().draw3dText(endPoint,converted->getSID().c_str());
 	startingPoint = endPoint;
 }
 

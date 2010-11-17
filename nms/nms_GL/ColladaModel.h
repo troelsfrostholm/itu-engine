@@ -39,6 +39,10 @@ using namespace std;
 
 typedef float vec9_t[9];
 typedef float vec6_t[6];
+typedef float vec4_t[4];
+typedef float vec3_t[3];
+typedef float vec2_t[3];
+
 
 //class Accessor
 //{	
@@ -67,8 +71,13 @@ class Source
 
 	  float* pfArray;
 	  unsigned iFArraySize;
+
 	  core::stringc* pIdRefArray;
 	  unsigned iIdRefArraySize;
+
+	  core::stringc* pNameArray;
+	  unsigned iNameArray;
+
 	  unsigned nElements;
 
 	//Accessor variables
@@ -99,7 +108,7 @@ class Triangle
 
 	  //Triangles count
 	  unsigned iTriangleCount;
-	  int* pTriangleData;
+	  int*	   pTriangleData;
 
 	  unsigned iTriangleOffset;
 
@@ -111,13 +120,16 @@ class Triangle
 	
 };
 
-class ColMesh
+class Mesh
 {	
   public:
-	ColMesh();
-	vector<Source> sources;
-	vector<Triangle> triangles;
+	Mesh();
+	core::stringc sID;
+	std::map<core::stringc ,Source>     sources;
+	std::vector<Triangle>   triangles;
 	core::stringc sVertPosition;
+	core::stringc sTexturePosition;
+	core::stringc sNormalPosition;
 };
 
 class Material
@@ -168,7 +180,7 @@ class Skin
 public: 
 	Skin(){iWeightCount=0;};
 	Matrix mBindShape;
-	vector<Source> vSources;
+	std::map<core::stringc ,Source> mSources;
 
 	core::stringc jointSource;
 	core::stringc bindSource;
@@ -181,6 +193,9 @@ public:
 	unsigned* pV;
 };
 
+//In the render data we are using just pointers so we can easily modify the abstract data structures while keeping
+//our old style of fast drawing the vertices
+
 class RenderData
 {
    public:
@@ -189,10 +204,41 @@ class RenderData
 
 	 //Triangles count
 	 unsigned iTriangleCount;
-	 float* vVertices;
-	 float* vTextures;
-	 float* vNormals;
+	 float** vVertices;
+	 float** vTextures;
+	 float** vNormals;
+	 float* Vertices;
+	 float* Textures;
+	 float* Normals;
 };
+
+class Joint
+{
+};
+
+class Vertex
+{
+   public:
+    Vertex();
+
+	//Position of the vertex
+	float** vPosition;
+	vec3_t vNormals;
+	vec3_t vUV;
+	vec2_t vTextures;
+
+
+	//Number of the joints affecting this vertex
+	unsigned iNJointsAffecting;
+	//Number of weights affecting this vertex
+	unsigned iNWeightsAffecting;
+	
+	//Pointer to an array of joints affecting this vertex
+	Joint* pJoints;
+	vec4_t vWeights;
+};
+
+
 
 
 class COLLADAMODEL_D ColladaModel : public NMS_Mesh
@@ -217,13 +263,16 @@ private:
 	Skeleton			ColladaSkeleton;
 	Skin				skinningInformation;
 	
-	vector<ColMesh>     dataRead;
+	vector<Mesh>        dataRead;
 	vector<Material>    vMaterials;
 	vector<Effect>	    vEffects;
 	vector<Image>       vImages;
 	vector<RenderData>  vRenderData;
 	std::map<core::stringc ,Node>   mNodes;
 
+
+	//Data to be kept
+	Vertex* pVertArray;
 	//Transformation for the scene
 	Matrix transformation;
 
@@ -256,7 +305,7 @@ private:
 
 	//DATA READING
 	void readFloatArray(IrrXMLReader* xml,float* arrayPointer);
-	void readIDREFArray(IrrXMLReader* xml,core::stringc* arrayPointer);
+	void readStringArray(IrrXMLReader* xml,core::stringc* arrayPointer);
 	void readVCountArray(IrrXMLReader* xml,unsigned* arrayPointer);
 	void readVArray(IrrXMLReader* xml,unsigned* arrayPointer);
 
@@ -265,11 +314,12 @@ private:
 
 	void    LoadJointRec(JointNode* jParent,Node* nParent);
 
+	void    LoadSkeleton();
+	void    LoadWeights();
 
 	//RENDERING THE MODEL
 	void    LoadData();
 	void    FindRoot(Node* nodeList);
-	void    LoadSkeleton();
 	void    DrawSkeleton();
 	
 };
