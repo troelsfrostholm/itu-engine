@@ -38,3 +38,7 @@ MatrixDebug.txt
 #Ignore backups
 *.orig
 nms/nms_GL.opensdf
+nms/nms_test/Matrix4x4Debug.txt
+nms/nms_test/NMS_DebugLog.txt
+nms/nms_test/NMS_DebugLog.txt
+nms/nms_test/NMS_ErrorLog.txt

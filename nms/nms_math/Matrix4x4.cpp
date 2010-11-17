@@ -11,6 +11,15 @@ Matrix4x4::Matrix4x4()
 	}
 }
 
+/*
+	Construct matrix from float array.
+	_elements must be of length 16
+*/
+Matrix4x4::Matrix4x4(float * _elements)
+{
+	memcpy(elements, _elements, 16*sizeof(float));
+}
+
  Matrix4x4 Matrix4x4::getRotation()
  {
 	 Matrix4x4 toBeReturned= Matrix4x4();
