@@ -101,19 +101,4 @@ void NMS_Framework::logMemoryUsage()
 	LOG.write(output, LOG_RUN);
 	sprintf(output, "\r\n    Temporary vars   : %d", CurrentMemoryUsage[MEM_TEMP]);
 	LOG.write(output, LOG_RUN);
-	
-	//logMemUsage();
-
-/*
-	LOG.write(CurrentMemoryUsage[MEM_PERSISTENT], LOG_RUN);
-
-	LOG.write("   Level            : ",LOG_RUN);
-	LOG.write(CurrentMemoryUsage[MEM_LEVEL], LOG_RUN);
-
-	LOG.write("   Matrix           : ", LOG_RUN);
-	LOG.write(CurrentMemoryUsage[MEM_MATRIX], LOG_RUN);
-
-	LOG.write("   Temporary vars   : ", LOG_RUN);
-	LOG.write(CurrentMemoryUsage[MEM_TEMP], LOG_RUN);*/
-
 }
