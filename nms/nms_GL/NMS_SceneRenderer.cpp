@@ -1,5 +1,6 @@
 #include "NMS_SceneRenderer.h"
 
+
 NMS_SceneRenderer::NMS_SceneRenderer() 
 {
 	this->physics = NULL;
@@ -66,7 +67,6 @@ bool NMS_SceneRenderer::initRendering()
 	gluPerspective(60.0, (float)width/(float)height, 1.0, width);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	
 
 	//Enable Light
 	glEnable(GL_DEPTH_TEST);
@@ -99,6 +99,8 @@ void NMS_SceneRenderer::down()
 int NMS_SceneRenderer::run()
 {
 	initRendering();
+	NMS_SHADER_MANAGER->up();
+	NMS_SHADER_MANAGER->loadShaders("shaders\\toon.vertex", "shaders\\toon.fragment");
 	renderingLoop();
 	return 0;
 }

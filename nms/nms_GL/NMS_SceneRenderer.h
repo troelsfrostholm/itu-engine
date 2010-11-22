@@ -10,7 +10,9 @@ DLL EXPORTING SAFE
 #ifndef NMS_SCENE_RENDERER
 #define NMS_SCENE_RENDERER
 
+#include "NMS_ShaderManager.h"
 #include "SDL.h"
+#include "SDL_opengl.h" 
 #include "NMS_Mutex.h"
 #include "NMS_Thread.h"
 #include "NMS_SceneGraph.h"

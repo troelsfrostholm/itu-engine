@@ -1,5 +1,6 @@
 #include "NMS_ShaderManager.h"
 #include "NMS_StaticAllocator.h"
+#include "NMS_LogFunctions.h"
 
 using namespace std;
 
@@ -13,18 +14,35 @@ NMS_ShaderManager * NMS_ShaderManager::getInstance()
 	return singleton;
 }
 
+void NMS_ShaderManager::up()
+{
+	GLenum err = glewInit();
+	if (GLEW_OK != err)
+	{
+	  /* Problem: glewInit failed, something is seriously wrong. */
+		/*LOG.write("Error: \n", LOG_ERROR);
+		LOG.write((char *) glewGetErrorString(err), LOG_ERROR);*/
+		fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
+
+	}
+}
+
 void NMS_ShaderManager::loadShaders(char * vertexShaderFilename, char * fragmentShaderFilename)
 {
-	const char *vs,*fs;
-	
 	vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);	
 	
-	vs = readFile(vertexShaderFilename);
-	fs = readFile(fragmentShaderFilename);
-	
-	glShaderSource(vertexShader, 1, &vs, NULL);
-	glShaderSource(fragmentShader, 1, &fs, NULL);
+	char vs[10000];
+	char fs[10000];
+
+	readFile(vertexShaderFilename, vs);
+	readFile(fragmentShaderFilename, fs);
+
+	const char * vsc = vs;
+	const char * fsc = fs;
+
+	glShaderSource(vertexShader, 1, &vsc, NULL);
+	glShaderSource(fragmentShader, 1, &fsc, NULL);
 	
 	compileShader(vertexShader);
 	compileShader(fragmentShader);
@@ -34,7 +52,7 @@ void NMS_ShaderManager::loadShaders(char * vertexShaderFilename, char * fragment
 	glAttachShader(program,vertexShader);
 	glAttachShader(program,fragmentShader);
 	
-	glLinkProgram(program);
+	linkProgram(program);
 	glUseProgram(program);
 }
 
@@ -45,6 +63,15 @@ void NMS_ShaderManager::compileShader(GLuint shader)
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
 	if(success != GL_TRUE)
 		printShaderInfoLog(shader);
+}
+
+void NMS_ShaderManager::linkProgram(GLuint program)
+{
+	int success;
+	glLinkProgram(program);
+	glGetProgramiv(program, GL_LINK_STATUS, &success);
+	if(success != GL_TRUE)
+		printProgramInfoLog(program);
 }
 
 void NMS_ShaderManager::printShaderInfoLog(GLuint obj)
@@ -81,17 +108,20 @@ void NMS_ShaderManager::printProgramInfoLog(GLuint obj)
 	}
 }
 
-const char * NMS_ShaderManager::readFile(char * filename)
+void NMS_ShaderManager::readFile(char * filename, char * dest)
 {
 	string line;
 	string contents = "";
 	fstream file(filename);
+	if(file.bad()) {
+			throw "Error opening file";
+	}
 	while(file.good()) {
 		getline(file, line);
 		contents += line;
 	}
-	if(!file.eof())
-		throw "File read error ";
-
-	return (contents.c_str());
+	const char * ct = contents.c_str();
+	memcpy(dest, ct, contents.size());
+	dest[contents.size()] = '\0';
+	//contents.copy(dest, contents.size());
 }
