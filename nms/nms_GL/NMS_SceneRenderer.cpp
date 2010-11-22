@@ -80,9 +80,6 @@ void NMS_SceneRenderer::up()
 {
 	rendering=true;
 	start();
-	//renderThread = SDL_CreateMemberThread(this, &NMS_SceneRenderer::renderingLoop);
-	//std::bind1st(std::mem_fun(&NMS_SceneRenderer::renderingLoop), this)
-	//renderThread = SDL_CreateThread(, NULL);
 }
 
 void NMS_SceneRenderer::down()

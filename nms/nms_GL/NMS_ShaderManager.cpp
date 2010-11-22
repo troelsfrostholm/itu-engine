@@ -62,7 +62,8 @@ void NMS_ShaderManager::compileShader(GLuint shader)
 	glCompileShader(shader);
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
 	if(success != GL_TRUE)
-		printShaderInfoLog(shader);
+		cerr << "Error compiling shader" << endl;
+	printShaderInfoLog(shader);
 }
 
 void NMS_ShaderManager::linkProgram(GLuint program)
