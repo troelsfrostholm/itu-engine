@@ -124,5 +124,4 @@ void NMS_ShaderManager::readFile(char * filename, char * dest)
 	const char * ct = contents.c_str();
 	memcpy(dest, ct, contents.size());
 	dest[contents.size()] = '\0';
-	//contents.copy(dest, contents.size());
 }

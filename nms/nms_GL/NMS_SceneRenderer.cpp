@@ -97,7 +97,7 @@ int NMS_SceneRenderer::run()
 {
 	initRendering();
 	NMS_SHADER_MANAGER->up();
-	NMS_SHADER_MANAGER->loadShaders("shaders\\toon.vertex", "shaders\\toon.fragment");
+	NMS_SHADER_MANAGER->loadShaders("shaders\\fixedfunction.vertex", "shaders\\fixedfunction.fragment");
 	renderingLoop();
 	return 0;
 }
