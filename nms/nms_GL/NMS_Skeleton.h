@@ -26,20 +26,28 @@ using namespace std;
 class SKELETON_D JointNode : public TransformationNode
 {
 protected:
+	//Remember, the Joint Matrix for the node is saved inside "transformation" but it's just the local
+	//transformation for the node.
 	string sID;
 	string sName;
 	string sSID;
 	string sType;
-
+    Matrix     mInverseBind;  // The Inverse Bind Pose Matrix
+    Matrix     mWorldMatrix;        // The World Matrix
+    Matrix     mSkinningMatrix;      // The Matrix Used for calculations
+	
 public:
 	JointNode();
 	JointNode(string sID, string sName, string sSID, string sType,Matrix t);
 	void JointNode::before(SceneGraphVisitor *v, Matrix *m);
 	void JointNode::after(SceneGraphVisitor *v, Matrix *m);
 	JointNode* getParent();
-	Matrix getTransform();
+	Matrix getBindShape();
+	Matrix getWorldMatrix();
+	Matrix getSkinningMatrix();
 	string getSSID();
 	string getSID();
+	void setInverseBind(Matrix m);
 };
 
 class SKELETON_D Skeleton
@@ -58,6 +66,7 @@ public:
 
 	void addJoint(string sID,JointNode node);
 	JointNode* getJoint(string sID);
+	JointNode* getJointsSID(string sSID);
 };
 
 class SKELETON_D SkeletonRenderer : public SceneGraphVisitor

@@ -3,6 +3,10 @@
 
 JointNode::JointNode() : TransformationNode() 
 {
+	mInverseBind = Matrix();
+	mWorldMatrix = Matrix();
+	mSkinningMatrix = Matrix();
+	 
 }
 
 JointNode::JointNode(string sID, string sName, string sSID, string sType,Matrix t) : TransformationNode(t) 
@@ -11,11 +15,32 @@ JointNode::JointNode(string sID, string sName, string sSID, string sType,Matrix 
 	this->sName=sName;
 	this->sSID=sSID;
 	this->sType=sType;
+
+	mInverseBind = Matrix();
+	mWorldMatrix = Matrix();
+	mSkinningMatrix = Matrix();
+}
+
+void JointNode::setInverseBind(Matrix m)
+{
+	mInverseBind=~m;
 }
 
 JointNode* Skeleton::getJoint(string sID)
 {
 	JointNode* toBeReturned=&joints[sID];
+	return toBeReturned;
+}
+
+JointNode* Skeleton::getJointsSID(string sSID)
+{
+	JointNode* toBeReturned;
+	std::map<string,JointNode>::iterator p;
+	for(p = joints.begin(); p != joints.end(); p++) 
+	{
+		if(p->second.getSSID()==sSID)
+			toBeReturned=&p->second;
+	}
 	return toBeReturned;
 }
 
@@ -30,9 +55,19 @@ string JointNode::getSID()
 	return sID;
 }
 
-Matrix JointNode::getTransform()
+Matrix JointNode::getBindShape()
 {
 	return transform;
+}
+
+Matrix JointNode::getWorldMatrix()
+{
+	return mWorldMatrix;
+}
+
+Matrix JointNode::getSkinningMatrix()
+{
+	return mSkinningMatrix;
 }
 
 
@@ -43,7 +78,11 @@ JointNode* JointNode::getParent()
 
 void JointNode::before(SceneGraphVisitor *v, Matrix *m)
 {
+	
 	TransformationNode::before(v, m);
+	mWorldMatrix=~*m;
+	//Save the world matrix for the current node and precalculate the skinning matrix used in the skinning
+	mSkinningMatrix=mInverseBind*mWorldMatrix;
 	v->sg_before(*m, this);
 }
 

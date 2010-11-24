@@ -27,6 +27,7 @@
 #include <fast_atof.h>
 #include "NMS_DebugDraw.h"
 #include "NMS_Skeleton.h"
+#include <assert.h>
 #define NOMINMAX
 
 
@@ -184,6 +185,7 @@ public:
 
 	core::stringc jointSource;
 	core::stringc bindSource;
+	core::stringc weightSource;
 
 	unsigned iWeightCount;
 	unsigned iVCount;
@@ -204,17 +206,12 @@ class RenderData
 
 	 //Triangles count
 	 unsigned iTriangleCount;
+	 //The list of vertexes for a single mesh triangle as specified in the collada xml, under mesh
 	 float** vVertices;
 	 float** vTextures;
 	 float** vNormals;
-	 float* Vertices;
-	 float* Textures;
-	 float* Normals;
 };
 
-class Joint
-{
-};
 
 class Vertex
 {
@@ -223,9 +220,9 @@ class Vertex
 
 	//Position of the vertex
 	float** vPosition;
-	vec3_t vNormals;
-	vec3_t vUV;
-	vec2_t vTextures;
+	float** vNormals;
+	//vec3_t vUV;
+	float** vTextures;
 
 
 	//Number of the joints affecting this vertex
@@ -234,7 +231,8 @@ class Vertex
 	unsigned iNWeightsAffecting;
 	
 	//Pointer to an array of joints affecting this vertex
-	Joint* pJoints;
+	JointNode** pJoints;
+	//As per specification, each vertex can be influenced by a max number of 4 joints and so we need just 4 weights
 	vec4_t vWeights;
 };
 
@@ -308,6 +306,7 @@ private:
 	void readStringArray(IrrXMLReader* xml,core::stringc* arrayPointer);
 	void readVCountArray(IrrXMLReader* xml,unsigned* arrayPointer);
 	void readVArray(IrrXMLReader* xml,unsigned* arrayPointer);
+	Matrix readInvMatrix(float** pFArray,unsigned boneIndex);
 
 	void   readNode(IrrXMLReader* xml,Node* parent);
 	void   readInstanceController(IrrXMLReader* xml);
@@ -321,6 +320,7 @@ private:
 	void    LoadData();
 	void    FindRoot(Node* nodeList);
 	void    DrawSkeleton();
+	void    SetupBindPose();
 	
 };
 #endif
