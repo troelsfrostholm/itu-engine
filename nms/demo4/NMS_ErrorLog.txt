@@ -1,0 +1,4 @@
+NMS_TextureManager::Cannot open the texture file!
+NMS_TextureManager::Cannot open the texture file!
+NMS_TextureManager::Cannot open the texture file!
+NMS_TextureManager::Cannot open the texture file!

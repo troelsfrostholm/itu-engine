@@ -98,7 +98,7 @@ void ColladaModel::render(float time)
 		{
 			glPushMatrix();
 				RenderFrame();
-				//DrawSkeleton();
+				DrawSkeleton();
 			glPopMatrix();
 		}
 		else
@@ -152,6 +152,9 @@ void ColladaModel::RenderFrame()
 		glNormalPointer(GL_FLOAT,0, vNormals);
 		glVertexPointer( 3, GL_FLOAT, 0, vVertices); // Set The Vertex Pointer To Vertex Data
 		glDrawArrays( GL_TRIANGLES, 0, vRenderData[i].iTriangleCount*3); //Draw the vertices
+		//delete(vTextures);
+		//delete(vNormals);
+		//delete(vVertices);
 	}
 	glDisableClientState(GL_VERTEX_ARRAY); // Enable Vertex Arrays
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY); // Enable Texture Coord Arrays
@@ -404,7 +407,7 @@ for(m=0;m<dataRead.size();m++)
 	LoadSkeleton();
 	LoadWeights();
 	DrawSkeleton();
-    SetupBindPose();
+    //SetupBindPose();
 	bModelLoadedCorrectly=true;
 }
 
@@ -415,6 +418,7 @@ void ColladaModel::FindRoot(Node* nodeList)
 		if(nodeList->nodes.count(sSkeletonID))
 		{
 			pSkeletonNode=&nodeList->nodes[sSkeletonID];
+			pSkeletonNode->transformation=nodeList->transformation*pSkeletonNode->transformation;
 			return;
 		}
 		else
@@ -423,6 +427,7 @@ void ColladaModel::FindRoot(Node* nodeList)
 			for ( it=nodeList->nodes.begin() ; it != nodeList->nodes.end(); it++ )
 			{
 				FindRoot(&(*it).second);
+
 			}
 		}
 	}
@@ -469,9 +474,9 @@ void ColladaModel::LoadWeights()
 		{
 			unsigned uJointIndex=skinningInformation.pV[k*2+readOffset+skinningInformation.iJointOffset];
 			//Setting the joint that influence the vertex
-			pVertArray[i].pJoints[k]=ColladaSkeleton.getJointsSID(JointSource.pNameArray[uJointIndex-1].c_str());
+			pVertArray[i].pJoints[k]=ColladaSkeleton.getJointsSID(JointSource.pNameArray[uJointIndex].c_str());
 			//Setting the inverse bind pose matrix for the joint
-			Matrix inverse=readInvMatrix(&BindSource.pfArray,uJointIndex-1);
+			Matrix inverse=readInvMatrix(&BindSource.pfArray,uJointIndex);
 			pVertArray[i].pJoints[k]->setInverseBind(inverse);
 			//Setting the proper weights for the vertex
 			pVertArray[i].vWeights[k]=WeightSource.pfArray[skinningInformation.pV[k*2+readOffset+skinningInformation.iWeightOffset]];	
@@ -505,15 +510,15 @@ void ColladaModel::SetupBindPose()
 		//Vertex and normals are loaded correctly
 		Vector Vertex = Vector((*pVertArray[i].vPosition)[0],(*pVertArray[i].vPosition)[1],(*pVertArray[i].vPosition)[2],1);
 		Vector Normal = Vector((*pVertArray[i].vNormals)[0],(*pVertArray[i].vNormals)[1],(*pVertArray[i].vNormals)[2],1);
-		Vector tempVertex = Vector();
-		Vector calculated=Vector();
+		Vector tempVertex = Vector(0,0,0,1);
+		//Vector calculated=Vector();
 		Vector tempNormal = Vector();
 		float TotalJointsWeight = 0;
 		float NormalizedWeight = 0;
 		//For each joint affecting the vertex
 		for(unsigned j=0;j<pVertArray[i].iNJointsAffecting;j++)
 		{
-			tempVertex+=(((Vertex*skinningInformation.mBindShape)*pVertArray[i].pJoints[j]->getSkinningMatrix())*pVertArray[i].vWeights[j]);
+			tempVertex+=((Vertex)*(pVertArray[i].pJoints[j]->getSkinningMatrix())*pVertArray[i].vWeights[j]);
 			//tempNormal    +=(((Normal*pVertArray[i].pJoints[j]->getBindShape())*pVertArray[i].pJoints[j]->getSkinningMatrix())*pVertArray[i].vWeights[j]);
 			TotalJointsWeight +=pVertArray[i].vWeights[j];
 		}

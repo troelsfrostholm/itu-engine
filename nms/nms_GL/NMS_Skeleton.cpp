@@ -23,7 +23,7 @@ JointNode::JointNode(string sID, string sName, string sSID, string sType,Matrix 
 
 void JointNode::setInverseBind(Matrix m)
 {
-	mInverseBind=~m;
+	mInverseBind=m;
 }
 
 JointNode* Skeleton::getJoint(string sID)
@@ -80,9 +80,9 @@ void JointNode::before(SceneGraphVisitor *v, Matrix *m)
 {
 	
 	TransformationNode::before(v, m);
-	mWorldMatrix=~*m;
+	mWorldMatrix=*m;
 	//Save the world matrix for the current node and precalculate the skinning matrix used in the skinning
-	mSkinningMatrix=mInverseBind*mWorldMatrix;
+	mSkinningMatrix=~(mWorldMatrix*mInverseBind);
 	v->sg_before(*m, this);
 }
 
