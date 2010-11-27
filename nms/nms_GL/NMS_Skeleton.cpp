@@ -34,7 +34,7 @@ JointNode* Skeleton::getJoint(string sID)
 
 JointNode* Skeleton::getJointsSID(string sSID)
 {
-	JointNode* toBeReturned;
+	JointNode* toBeReturned=NULL;
 	std::map<string,JointNode>::iterator p;
 	for(p = joints.begin(); p != joints.end(); p++) 
 	{

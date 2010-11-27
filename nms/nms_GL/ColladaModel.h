@@ -45,28 +45,18 @@ typedef float vec3_t[3];
 typedef float vec2_t[3];
 
 
-//class Accessor
-//{	
-//  public:
-//	Accessor(){iCount=0;iOffset=0;iStride=0;sSource="";};
-//	unsigned iCount;
-//	unsigned iOffset;
-//	unsigned iStride;
-//	core::stringc sSource;
-//};
-
 class Source
 {	
     public:
 	  Source(){sName=NULL;
 			   sID=NULL;
-			   accessorReference=NULL;
 			   pIdRefArray=NULL;
 			   iFArraySize=0;
 			   iFArraySize=0;
 			   sParameterType="";};
 	  core::stringc sName;
 	  core::stringc sID;
+	  core::stringc sType;
 
 	  core::stringc sParameterType;
 
@@ -85,10 +75,6 @@ class Source
 	  unsigned count;
 	  unsigned offset;
 	  unsigned stride;
-
-
-	  /*vector<Accessor> vAccessor;*/
-	  core::stringc accessorReference;
 };
 
 
@@ -195,6 +181,48 @@ public:
 	unsigned* pV;
 };
 
+class Input
+{
+public:
+	Input(){sSemantic=NULL;
+			sSource=NULL;};
+	core::stringc sSemantic;
+	core::stringc sSource;
+};
+
+class Channel
+{
+public:
+	Channel(){sSource=NULL;
+			  sTarget=NULL;};
+	core::stringc       sSource;
+	core::stringc       sTarget;
+};
+
+class Sample
+{
+public:
+	Sample(){sID=NULL;};
+	core::stringc       sID;
+	std::map<core::stringc ,Input>   mInput;
+};
+
+
+
+
+class Animation
+{
+public:
+    core::stringc       sID;
+    vector<Source>      vSources;
+    vector<Sample>      vSamples;
+    vector<Channel>     vChannels;
+	Animation(){sID=NULL;};
+};
+
+
+
+
 //In the render data we are using just pointers so we can easily modify the abstract data structures while keeping
 //our old style of fast drawing the vertices
 
@@ -210,6 +238,10 @@ class RenderData
 	 float** vVertices;
 	 float** vTextures;
 	 float** vNormals;
+
+	 unsigned vertexStride;
+	 unsigned textureStride;
+	 unsigned normalStride;
 };
 
 
@@ -266,6 +298,7 @@ private:
 	vector<Effect>	    vEffects;
 	vector<Image>       vImages;
 	vector<RenderData>  vRenderData;
+	vector<Animation>   vAnimation;
 	std::map<core::stringc ,Node>   mNodes;
 
 
@@ -280,6 +313,7 @@ private:
 
 	
 	//XML DATA ACQUISITION
+	void readLibraryAnimations(IrrXMLReader* xml);
 	void readLibraryImages(IrrXMLReader* xml);
 	void readLibraryGeometries(IrrXMLReader* xml);
 	void readLibraryMaterials(IrrXMLReader* xml);
@@ -291,6 +325,11 @@ private:
 	void readSkin(IrrXMLReader* xml);
 	void readJoint(IrrXMLReader* xml);
 	void readVertexWeight(IrrXMLReader* xml);
+	Sample  readSample(IrrXMLReader* xml);
+	Channel readChannel(IrrXMLReader* xml);
+	Input readInput(IrrXMLReader* xml);
+	void readAnimation(IrrXMLReader* xml);
+	
 	
 	Source readSource(IrrXMLReader* xml);
 	void RenderFrame();
