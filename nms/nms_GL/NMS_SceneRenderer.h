@@ -19,12 +19,13 @@ DLL EXPORTING SAFE
 #include "NMS_EventManager.h"
 #include "NMS_Mesh.h"
 #include "nms_physics.h"
+#include "NMS_Camera.h"
 
 class SCENE_RENDERER_D NMS_SceneRenderer : public SceneGraphVisitor, public Thread
 {
 protected:
 	SceneGraphNode* sceneGraphRoot;
-	CameraNode* current_camera;
+	NMSCameraController* current_camera;
 	nms_physics *physics;
 	//SDL_Thread *renderThread;
 	bool rendering;
@@ -46,7 +47,7 @@ public:
 	int renderingLoop();
 	void render();
 	void setScene(SceneGraphNode* scene);
-	void setCurrentCamera(CameraNode* camera);
+	void setCurrentCamera(NMSCameraController* camera);
 	void setShaders(char * _vertexShaderFile, char * _fragmentShaderFile);
 	void sg_before(Matrix transform, SceneGraphNode * node);
 	void sg_after(Matrix transform, SceneGraphNode * node);

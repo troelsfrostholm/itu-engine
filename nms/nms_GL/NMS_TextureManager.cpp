@@ -167,8 +167,6 @@ int NMS_TextureManager::LoadTexture (const char* sFilename,char* textureName) {
 	  return textureMap[textureName].textID;
 }
 
-
-
 void NMS_TextureManager::FreeTexture (char* textureName) {
 	    std::map<char* ,textStruct>::iterator iter = textureMap.find(textureName);
 		if( iter != textureMap.end() ) {
@@ -180,7 +178,6 @@ void NMS_TextureManager::FreeTexture (char* textureName) {
 				 LOG.write(m_sMessage,LOG_DEBUG);
 			}
 		}
-		  
 }
 
 void NMS_TextureManager::FreeAll (void) {

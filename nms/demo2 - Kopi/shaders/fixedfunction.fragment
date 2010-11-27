@@ -6,6 +6,7 @@ varying vec4 ambient;
 varying vec4 ambientGlobal;
 uniform sampler2D tex;
 uniform int textureEnabled; 
+uniform int lightingEnabled;
 
 void main()
 {
@@ -33,6 +34,11 @@ void main()
 	litColor = attinuation*(intensity*diffuse+ambient+specular) + ambientGlobal;
 	//litColor = (intensity*diffuse+ambient+ambientGlobal + specular);
 	//litColor = ambient;
+
+	if(lightingEnabled == 0) {
+		litColor = vec4(1, 1, 1, 1);
+	}
+
 	vec3 litRgb, texRgb;
 	float litAlpha, texAlpha;
 	litRgb = litColor.rgb;

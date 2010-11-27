@@ -123,7 +123,7 @@ public:
 	void render(float time)
 	{
 		NMS_SHADER_MANAGER->disableTextures();
-		glutSolidSphere(100, 10, 10);
+		glutSolidSphere(100, 30, 30);
 	}
 };
 

@@ -14,7 +14,7 @@ DLL EXPORTING SAFE
 #include "Matrix.h"
 #include "NMS_Scenegraph.h"
 
-class  CAMERA_D NMSCameraController : public CameraNode
+class  CAMERA_D NMSCameraController : public TransformationNode
 {
 	public:
 		 void UpdateCamera(float fElapsedTime);

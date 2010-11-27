@@ -24,8 +24,8 @@ Matrix::Matrix(float * _elements)
  {
 	 Matrix toBeReturned= Matrix();
 	 toBeReturned=(*this);
-	 toBeReturned.setCol(4,Vector(0,0,0));
-	 toBeReturned.setRow(4,Vector(0,0,0));
+	 toBeReturned.setCol(4,Vector(0,0,0,1));
+	 toBeReturned.setRow(4,Vector(0,0,0,1));
 	 return toBeReturned;
  }
 

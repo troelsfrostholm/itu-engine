@@ -20,7 +20,7 @@ bool NMS_Framework::NMSInit(int width,int height,int bpp,char* windowTitle,bool 
 	//Create scene-graph
 	sceneGraphRoot = new(STATIC_ALLOC, MEM_PERSISTENT) CameraNode();
 	sceneRenderer.setScene(sceneGraphRoot);
-	sceneRenderer.setCurrentCamera((CameraNode*)sceneGraphRoot);
+	sceneRenderer.setCurrentCamera((NMSCameraController*)sceneGraphRoot);
 
 	//set callback for quitting
 	NMS_EVENT_MANAGER.onQuit(this, &NMS_Framework::NMSQuit);

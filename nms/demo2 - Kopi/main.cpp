@@ -114,7 +114,7 @@ int main(int argc, char* argv[])
 
 	MD2Model model = MD2Model();
 	//"models/drfreak/drfreak.tga"
-	model.LoadModel("models/drfreak/drfreak.md2","textures/world.tga");
+	model.LoadModel("models/drfreak/drfreak.md2","textures/wikimap_sphere.tga");
 	model.material.ambient = Vector(0.2, 0.2, 0.2, 0.2);
 	model.material.diffuse = Vector(0.5, 0.5, 0.5, 0.5);
 	model.material.specular = Vector(1, 1, 1, 1);
@@ -160,9 +160,7 @@ int main(int argc, char* argv[])
 	renderer->setCurrentCamera(&cam);
 	renderer->enableSkyBox("textures/world.tga");
 	//renderer->setShaders("shaders\\fixedfunction.vertex", "shaders\\fixedfunction.fragment");
-	//renderer->setShaders("shaders\\phong1Point.vert", "shaders\\phong1Point.frag");
-	//renderer->setShaders("shaders\\cubemapping.vert", "shaders\\cubemapping.frag");
-	//renderer->setShaders("shaders\\spheremap.vert", "shaders\\spheremap.frag");
+	renderer->setShaders("shaders\\spheremap.vert", "shaders\\spheremap.frag");
 
 	engine.run();
 	return 0;

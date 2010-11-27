@@ -9,6 +9,7 @@ NMS_SceneRenderer::NMS_SceneRenderer()
 	vertexShaderFile = NULL;
 	fragmentShaderFile = NULL;
 	skybox = false;
+	skyboxTexture = 0;
 }
 
 NMS_SceneRenderer::NMS_SceneRenderer(nms_physics *physics)
@@ -16,6 +17,7 @@ NMS_SceneRenderer::NMS_SceneRenderer(nms_physics *physics)
 	this->physics = physics;
 	rendering = false;
 	skybox = false;
+	skyboxTexture = 0;
 	sceneGraphRoot = NULL;
 	current_camera = NULL;
 	vertexShaderFile = NULL;
@@ -155,7 +157,7 @@ void NMS_SceneRenderer::setScene(SceneGraphNode* scene)
 	sceneGraphRoot = scene;
 }
 
-void NMS_SceneRenderer::setCurrentCamera(CameraNode* camera)
+void NMS_SceneRenderer::setCurrentCamera(NMSCameraController* camera)
 {
 	current_camera = camera;
 }
@@ -226,58 +228,76 @@ void NMS_SceneRenderer::setWireframeMode(bool mode)
 
 void NMS_SceneRenderer::renderSkyBox()
 {
-	glEnable(GL_TEXTURE);
+	glEnable(GL_TEXTURE_2D);
 	glDisable(GL_LIGHTING);
 	glDisable(GL_DEPTH_TEST);
 
 	//glColor3f(0, 0, 1);
-	Matrix transform = !current_camera->getTransformation();
-	glPushMatrix();
+	Matrix transform = !current_camera->returnViewMatrix();
+	transform = transform.getRotation();
+	glLoadIdentity();
 	glMultMatrixf(transform.getElements());
-	
+	if(skyboxTexture == 0)
+		skyboxTexture = NMS_ASSETMANAGER.LoadTexture("textures/wikimap.tga", "map");
 	glBindTexture(GL_TEXTURE_2D, skyboxTexture);
+	NMS_SHADER_MANAGER->setShaderAttribute("environmentmap", 0);
+	NMS_SHADER_MANAGER->setShaderAttribute("lightingEnabled", 0);
+	NMS_SHADER_MANAGER->enableTextures();
+
 	float size = 100;
+	float c = 0.00f; //correction inset for tex coords, so we are sure we are inside the tile
 	glBegin(GL_QUADS);
 		// Front Face
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-size, -size,  size);	// Bottom Left Of The Texture and Quad
-		glTexCoord2f(1.0f, 0.0f); glVertex3f( size, -size,  size);	// Bottom Right Of The Texture and Quad
-		glTexCoord2f(1.0f, 1.0f); glVertex3f( size,  size,  size);	// Top Right Of The Texture and Quad
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(-size,  size,  size);	// Top Left Of The Texture and Quad
+		//glColor3f(1, 0, 0);
+		glTexCoord2f(0.25f, 0.333f); glVertex3f(-size, -size,  size);	// Bottom Left Of The Texture and Quad
+		glTexCoord2f(0.5f, 0.333f); glVertex3f( size, -size,  size);	// Bottom Right Of The Texture and Quad
+		glTexCoord2f(0.5f, 0.666f); glVertex3f( size,  size,  size);	// Top Right Of The Texture and Quad
+		glTexCoord2f(0.25f, 0.666f); glVertex3f(-size,  size,  size);	// Top Left Of The Texture and Quad
+
 		// Back Face
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(-size, -size, -size);	// Bottom Right Of The Texture and Quad
-		glTexCoord2f(1.0f, 1.0f); glVertex3f(size,  size, -size);	// Top Right Of The Texture and Quad
-		glTexCoord2f(0.0f, 1.0f); glVertex3f( size,  size, -size);	// Top Left Of The Texture and Quad
-		glTexCoord2f(0.0f, 0.0f); glVertex3f( size, -size, -size);	// Bottom Left Of The Texture and Quad
+		//glColor3f(0, 1, 0);
+		glTexCoord2f(1.0f, 0.333f); glVertex3f(-size, -size, -size);	// Bottom Right Of The Texture and Quad
+		glTexCoord2f(1.0f, 0.666f); glVertex3f(-size,  size, -size);	// Top Right Of The Texture and Quad
+		glTexCoord2f(0.75f, 0.666f); glVertex3f( size,  size, -size);	// Top Left Of The Texture and Quad
+		glTexCoord2f(0.75f, 0.333f); glVertex3f( size, -size, -size);	// Bottom Left Of The Texture and Quad
+
 		// Top Face
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(-size,  size, -size);	// Top Left Of The Texture and Quad
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-size,  size,  size);	// Bottom Left Of The Texture and Quad
-		glTexCoord2f(1.0f, 0.0f); glVertex3f( size,  size,  size);	// Bottom Right Of The Texture and Quad
-		glTexCoord2f(1.0f, 1.0f); glVertex3f( size,  size, -size);	// Top Right Of The Texture and Quad
+		//glColor3f(0, 0, 1);
+		glTexCoord2f(0.25f+c, 1.0f); glVertex3f(-size,  size, -size);	// Top Left Of The Texture and Quad
+		glTexCoord2f(0.25f+c, 0.666f); glVertex3f(-size,  size,  size);	// Bottom Left Of The Texture and Quad
+		glTexCoord2f(0.5f, 0.666f); glVertex3f( size,  size,  size);	// Bottom Right Of The Texture and Quad
+		glTexCoord2f(0.5f, 1.0f); glVertex3f( size,  size, -size);	// Top Right Of The Texture and Quad
+
 		// Bottom Face
-		glTexCoord2f(1.0f, 1.0f); glVertex3f(-size, -size, -size);	// Top Right Of The Texture and Quad
-		glTexCoord2f(0.0f, 1.0f); glVertex3f( size, -size, -size);	// Top Left Of The Texture and Quad
-		glTexCoord2f(0.0f, 0.0f); glVertex3f( size, -size,  size);	// Bottom Left Of The Texture and Quad
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(-size, -size,  size);	// Bottom Right Of The Texture and Quad
+		//glColor3f(1, 1, 0);
+		glTexCoord2f(0.5f, 0.333f); glVertex3f(-size, -size, -size);	// Top Right Of The Texture and Quad
+		glTexCoord2f(0.25f, 0.333f); glVertex3f( size, -size, -size);	// Top Left Of The Texture and Quad
+		glTexCoord2f(0.25f, 0.0f); glVertex3f( size, -size,  size);	// Bottom Left Of The Texture and Quad
+		glTexCoord2f(0.5f, 0.0f); glVertex3f(-size, -size,  size);	// Bottom Right Of The Texture and Quad
+
 		// Right face
-		glTexCoord2f(1.0f, 0.0f); glVertex3f( size, -size, -size);	// Bottom Right Of The Texture and Quad
-		glTexCoord2f(1.0f, 1.0f); glVertex3f( size,  size, -size);	// Top Right Of The Texture and Quad
-		glTexCoord2f(0.0f, 1.0f); glVertex3f( size,  size,  size);	// Top Left Of The Texture and Quad
-		glTexCoord2f(0.0f, 0.0f); glVertex3f( size, -size,  size);	// Bottom Left Of The Texture and Quad
+		//glColor3f(0, 1, 1);
+		glTexCoord2f(0.75f, 0.333f); glVertex3f( size, -size, -size);	// Bottom Right Of The Texture and Quad
+		glTexCoord2f(0.75f, 0.666f); glVertex3f( size,  size, -size);	// Top Right Of The Texture and Quad
+		glTexCoord2f(0.5f, 0.666f); glVertex3f( size,  size,  size);	// Top Left Of The Texture and Quad
+		glTexCoord2f(0.5f, 0.333f); glVertex3f( size, -size,  size);	// Bottom Left Of The Texture and Quad
+
 		// Left Face
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-size, -size, -size);	// Bottom Left Of The Texture and Quad
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(-size, -size,  size);	// Bottom Right Of The Texture and Quad
-		glTexCoord2f(1.0f, 1.0f); glVertex3f(-size,  size,  size);	// Top Right Of The Texture and Quad
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(-size,  size, -size);	// Top Left Of The Texture and Quad
+		//glColor3f(1, 0, 1);
+		glTexCoord2f(0.0f, 0.333f); glVertex3f(-size, -size, -size);	// Bottom Left Of The Texture and Quad
+		glTexCoord2f(0.25f, 0.333f); glVertex3f(-size, -size,  size);	// Bottom Right Of The Texture and Quad
+		glTexCoord2f(0.25f, 0.666f-c); glVertex3f(-size,  size,  size);	// Top Right Of The Texture and Quad
+		glTexCoord2f(0.0f, 0.666f-c); glVertex3f(-size,  size, -size);	// Top Left Of The Texture and Quad
 	glEnd();
 
-	glPopMatrix();
+	NMS_SHADER_MANAGER->setShaderAttribute("environmentmap", 1);
+	NMS_SHADER_MANAGER->setShaderAttribute("lightingEnabled", 1);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_LIGHTING);
 }
 
 void NMS_SceneRenderer::enableSkyBox(char * texture)
 {
-	skyboxTexture = NMS_ASSETMANAGER.LoadTexture(texture, "skybox");
 	skybox = true;
 }
 
