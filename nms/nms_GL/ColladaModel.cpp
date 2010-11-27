@@ -15,6 +15,8 @@ ColladaModel::ColladaModel()
 	skinningInformation     =Skin();
 	sSkeletonID				="";
 	pSkeletonNode           =NULL;
+	iCurrentFrame			=0;
+	fAnimationTime			=0.05f;
 };
 
 ColladaModel::~ColladaModel(){};
@@ -106,8 +108,9 @@ void ColladaModel::render(float time)
 		if(bModelLoadedCorrectly)
 		{
 			glPushMatrix();
-				RenderFrame();
-				DrawSkeleton();
+				DrawSkeleton(time);
+				//SetupBindPose();
+				//RenderFrame();
 			glPopMatrix();
 		}
 		else
@@ -449,8 +452,7 @@ for(m=0;m<dataRead.size();m++)
 	}
 	LoadSkeleton();
 	LoadWeights();
-	DrawSkeleton();
-    SetupBindPose();
+    //SetupBindPose();
 	LoadAnimationData();
 	bModelLoadedCorrectly=true;
 }
@@ -512,15 +514,19 @@ void ColladaModel::LoadAnimationData()
 				{
 					unsigned row = (int) (s % 4)+1;
 					unsigned col = (int) (s / 4)+1;
-					//We have less values, that means the values are constants through the period of time, just take the first one
-					if(frameMatrix(row,col)=vAnimation[i].vSources[s*3+1].count<(target->getNKeyFrames()))
-						frameMatrix(row,col)=vAnimation[i].vSources[s*3+1].pfArray[0];
-					else
-						frameMatrix(row,col)=vAnimation[i].vSources[s*3+1].pfArray[j];
-					//Fix a bug, the last element of the matrix should be 1, just be sure it is!
-					if(s==15)
+					//Skip bugged animation
+					if(!(vAnimation[i].vSources.size()<16*3))
 					{
-						frameMatrix(row,col)=1;
+						//We have less values, that means the values are constants through the period of time, just take the first one
+						if(frameMatrix(row,col)=vAnimation[i].vSources[s*3+1].count<(target->getNKeyFrames()))
+							frameMatrix(row,col)=vAnimation[i].vSources[s*3+1].pfArray[0];
+						else
+							frameMatrix(row,col)=vAnimation[i].vSources[s*3+1].pfArray[j];
+						//Fix a bug, the last element of the matrix should be 1, just be sure it is!
+						if(s==15)
+						{
+							frameMatrix(row,col)=1;
+						}
 					}
 				}
 				currentFrame.setTransform(&frameMatrix);
@@ -582,11 +588,12 @@ void ColladaModel::LoadWeights()
 	
 }
 
-void ColladaModel::DrawSkeleton()
+void ColladaModel::DrawSkeleton(float time)
 {
 	if(strcmp(sSkeletonID.c_str(),""))
 	{
 		SkeletonRenderer skelRend = SkeletonRenderer();
+		skelRend.setAnimationTime(time);
 		JointNode toBeTraversed =*ColladaSkeleton.getJoint(sSkeletonID.c_str());
 		toBeTraversed.traverse_df(&skelRend);
 	}

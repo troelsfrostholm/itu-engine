@@ -301,6 +301,9 @@ private:
 	vector<Animation>   vAnimation;
 	std::map<core::stringc ,Node>   mNodes;
 
+	unsigned iCurrentFrame;
+	float    fAnimationTime;
+
 
 	//Data to be kept
 	Vertex* pVertArray;
@@ -359,7 +362,7 @@ private:
 	void    LoadAnimationData();
 	void    LoadData();
 	void    FindRoot(Node* nodeList);
-	void    DrawSkeleton();
+	void    DrawSkeleton(float time);
 	void    SetupBindPose();
 	
 };

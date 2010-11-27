@@ -52,7 +52,12 @@ protected:
     Matrix     mSkinningMatrix;			   // The Matrix Used for calculations
 	unsigned   iNKeyFrames;			   // Number of Keyframes used by this joint
     KeyFrame   *pAnimationFrames;         // All Key frames for this Bone’s animation
+	float      fCurrentTime;
+	unsigned   iCurrentFrame;
+	unsigned   iFps;
 	
+	void Animate(float time,Matrix *m);
+
 public:
 	JointNode();
 	JointNode(string sID, string sName, string sSID, string sType,Matrix t);
@@ -91,12 +96,14 @@ public:
 class SKELETON_D SkeletonRenderer : public SceneGraphVisitor
 {
 	Vector startingPoint;
+	float  fAnimationTime;
 	void sg_before(Matrix transform, SceneGraphNode * node);
 	void sg_after(Matrix transform, SceneGraphNode * node);
 public:
 	SkeletonRenderer();
 	void renderJoint(Matrix transform, SceneGraphNode * node);
-	
+	void setAnimationTime(float time);
+	float getAnimationTime();
 };
 
 #endif

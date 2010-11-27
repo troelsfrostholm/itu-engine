@@ -6,7 +6,10 @@ JointNode::JointNode() : TransformationNode()
 	mInverseBind = Matrix();
 	mWorldMatrix = Matrix();
 	mSkinningMatrix = Matrix();
-	 
+	fCurrentTime=0.0f;
+	iFps=60;
+	iNKeyFrames=0;
+    pAnimationFrames=NULL;
 }
 
 JointNode::JointNode(string sID, string sName, string sSID, string sType,Matrix t) : TransformationNode(t) 
@@ -19,6 +22,10 @@ JointNode::JointNode(string sID, string sName, string sSID, string sType,Matrix 
 	mInverseBind = Matrix();
 	mWorldMatrix = Matrix();
 	mSkinningMatrix = Matrix();
+	fCurrentTime=0.0f;
+	iFps=60;
+	iNKeyFrames=0;
+    pAnimationFrames=NULL;
 }
 
 void JointNode::setInverseBind(Matrix m)
@@ -71,19 +78,47 @@ JointNode* JointNode::getParent()
 	return (JointNode*)parent;
 }
 
-void JointNode::before(SceneGraphVisitor *v, Matrix *m)
+
+//Calculates the current frame for the animation and sets the matrixes used for the skinning
+void JointNode::Animate(float time,Matrix *m)
 {
-	
-	TransformationNode::before(v, m);
-	mWorldMatrix=*m;
+	float fOldTime=fCurrentTime;
+    fCurrentTime = time;
+
+	//For now, just save the world matrix as the joint matrix
+	mWorldMatrix=transform;
+
+	//If we have animation data for this joint, then calculate the proper matrix for the skeleton
+	if(iNKeyFrames>0)
+	{
+		// calculate current and next frames
+		/*if( fCurrentTime - fOldTime > (1.0 /iFps) )
+		{*/
+			iCurrentFrame++;
+
+			if( iCurrentFrame >= iNKeyFrames )
+				iCurrentFrame = 0;
+		//}
+		mWorldMatrix=*pAnimationFrames[iCurrentFrame].getTransform();
+	}
+	mWorldMatrix=(*m)*mWorldMatrix;
 	//Save the world matrix for the current node and precalculate the skinning matrix used in the skinning
 	mSkinningMatrix=~(mWorldMatrix*mInverseBind);
-	v->sg_before(*m, this);
+}
+
+
+void JointNode::before(SceneGraphVisitor *v, Matrix *m)
+{
+	SkeletonRenderer* renderer=(SkeletonRenderer*)v;
+	Animate(renderer->getAnimationTime(),m);
+	//TransformationNode::before(v, m);
+	v->sg_before(mWorldMatrix, this);
+	*m=mWorldMatrix;
 }
 
 void JointNode::after(SceneGraphVisitor *v, Matrix *m) 
 {
-	v->sg_after(*m, this);
+	v->sg_after(mWorldMatrix, this);
 	TransformationNode::after(v, m);
 }
 
@@ -158,4 +193,14 @@ void JointNode::setKeyFrame(KeyFrame k,unsigned position)
 unsigned JointNode::getNKeyFrames()
 {
 	return iNKeyFrames;
+}
+
+void SkeletonRenderer::setAnimationTime(float time)
+{
+	this->fAnimationTime=time;
+}
+
+float SkeletonRenderer::getAnimationTime()
+{
+	return fAnimationTime;
 }
