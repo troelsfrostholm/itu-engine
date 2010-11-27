@@ -122,3 +122,23 @@ void Skeleton::addJoint(string sID,JointNode node)
 {
 	joints[sID]=node;
 }
+
+void KeyFrame::setTime(float time)
+{
+	fTime=time;
+}
+
+void KeyFrame::setTransform(Matrix *m)
+{
+	mTransform=m;
+}
+
+float KeyFrame::getTime()
+{
+	return fTime;
+}
+
+Matrix* KeyFrame::getTransform()
+{
+	return mTransform;
+}

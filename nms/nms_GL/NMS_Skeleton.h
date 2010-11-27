@@ -27,14 +27,17 @@ class SKELETON_D JointNode : public TransformationNode
 {
 protected:
 	//Remember, the Joint Matrix for the node is saved inside "transformation" but it's just the local
-	//transformation for the node.
+	//transformation for the node. To get the world matrix you have to get it inside the scenegraph of 
+	//the skeleton, in which is calculated while traversing it
 	string sID;
 	string sName;
 	string sSID;
 	string sType;
-    Matrix     mInverseBind;  // The Inverse Bind Pose Matrix
-    Matrix     mWorldMatrix;        // The World Matrix
-    Matrix     mSkinningMatrix;      // The Matrix Used for calculations
+    Matrix     mInverseBind;			   // The Inverse Bind Pose Matrix
+    Matrix     mWorldMatrix;			   // The World Matrix
+    Matrix     mSkinningMatrix;			   // The Matrix Used for calculations
+	unsigned int  iNKeyFrames;			   // Number of Keyframes used by this joint
+    KeyFrame   **pAnimationFrames;         // All Key frames for this Bone’s animation
 	
 public:
 	JointNode();
@@ -77,6 +80,22 @@ public:
 	SkeletonRenderer();
 	void renderJoint(Matrix transform, SceneGraphNode * node);
 	
+};
+
+
+
+class KeyFrame
+{
+public:
+	 KeyFrame();
+     ~KeyFrame();
+	 void setTime(float time);
+	 void setTransform(Matrix *m);
+	 float getTime();
+	 Matrix* getTransform();
+private:
+     float          fTime;                // Time of this key frame
+     Matrix         *mTransform;          // Transformation of this Key frame
 };
 
 
