@@ -29,7 +29,7 @@ bool NMS_Framework::NMSInit(int width,int height,int bpp,char* windowTitle,bool 
 	camera.setPos(Vector(0,0,-5.0f));
 	camera.setSpeed(0);
 	camera.setSlideSpeed(0);
-	light=NMS_LightSystem::NMS_LightSystem();
+
 	running=true;
 	return true;
 }
@@ -51,7 +51,8 @@ void NMS_Framework::run()
 	{
 		SDL_LockMutex(sceneGraphGuard);
 		NMS_EVENT_MANAGER.processEvents();
-		SDL_UnlockMutex(sceneGraphGuard);	
+		SDL_UnlockMutex(sceneGraphGuard);
+		SDL_Delay(10);
 	}
 	sceneRenderer.down();
 	NMS_Framework::logMemoryUsage();

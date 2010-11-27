@@ -30,11 +30,16 @@ protected:
 	bool rendering;
 	float currentTime;
 	bool wireframe;
+	char * vertexShaderFile;
+	char * fragmentShaderFile;
+	bool skybox;
+	int skyboxTexture;
 
 public:
 	NMS_SceneRenderer();
 	NMS_SceneRenderer(nms_physics *physics);
 	bool initRendering();
+	void initShaders();
 	void up();
 	void down();
 	int run();
@@ -42,11 +47,16 @@ public:
 	void render();
 	void setScene(SceneGraphNode* scene);
 	void setCurrentCamera(CameraNode* camera);
+	void setShaders(char * _vertexShaderFile, char * _fragmentShaderFile);
 	void sg_before(Matrix transform, SceneGraphNode * node);
 	void sg_after(Matrix transform, SceneGraphNode * node);
 	void CalculateFrameRate();
 	void applyPhysics(btRigidBody *b);
 	void setWireframeMode(bool mode);
+	void renderSkyBox();
+	void enableSkyBox(char * texture);
+	void disableSkyBox();
+
 protected:
 	void setWireframeModeGL(bool mode);
 };

@@ -134,3 +134,11 @@ Vector  Vector::normal()
 			// 1/|v|*v
 			return (*this)*(1/m);
 }
+
+void Vector::floatArray(float * dest)
+{
+	dest[0]=x;
+	dest[1]=y;
+	dest[2]=z;
+	dest[3]=w;
+}

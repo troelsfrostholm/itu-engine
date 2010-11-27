@@ -93,6 +93,11 @@ TransformationNode::TransformationNode(Matrix t)
 	transform = t;
 }
 
+Matrix TransformationNode::getTransformation()
+{
+	return transform;
+}
+
 void TransformationNode::multiply(Matrix m)
 {
 	transform = transform * m;

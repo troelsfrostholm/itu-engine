@@ -36,7 +36,6 @@ public:
 	bool running;
 	bool rendering;
 	NMSCameraFPS camera;
-	NMS_LightSystem light;
 	NMS_Framework();
 	bool NMSInit(int width,int height,int bpp,char* windowTitle,bool fullscreen);
 	void NMSQuit(int i);

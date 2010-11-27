@@ -1,6 +1,45 @@
 #include "NMS_LightSystem.h"
 
+/***************NMS_PointLight methods********************************************/
 
+NMS_PointLight::NMS_PointLight(int openglLightNumber)
+{
+	lightNumber = openglLightNumber;
+}
+
+void NMS_PointLight::setAmbient(float r, float g, float b, float a)
+{
+	ambient = Vector(r, g, b, a);
+}
+
+void NMS_PointLight::setDiffuse(float r, float g, float b, float a)
+{
+	diffuse = Vector(r, g, b, a);
+}
+
+void NMS_PointLight::setSpecular(float r, float g, float b, float a)
+{
+	specular = Vector(r, g, b, a);
+}
+
+void NMS_PointLight::render(float time)
+{
+	float O[] = {300.0f, 300.0f, 0.0f, 1.0f};
+	glLightfv(lightNumber,GL_POSITION,O);
+	float color[4];
+
+	ambient.floatArray(color);
+	glLightfv(lightNumber,GL_AMBIENT,color);
+	diffuse.floatArray(color);
+	glLightfv(lightNumber,GL_DIFFUSE,color);
+	specular.floatArray(color);
+	glLightfv(lightNumber,GL_SPECULAR,color);
+
+	//glLightfv(lightNumber,GL_DIFFUSE,diffuse.floatArray());
+	//float * diff = diffuse.floatArray();
+	//glLightfv(lightNumber,GL_SPECULAR,specular.floatArray());
+	glEnable(lightNumber);
+}
 
 /***************LIGHTSOURCE CLASS DEFINITION**************************************/
 LightSource::LightSource()

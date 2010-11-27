@@ -310,6 +310,7 @@ void MD2Model::RenderFrame( void )
 	Interpolate( p_modelVertices,p_lightnormals );
     // Bind the model texture to our model
 	glEnable(GL_TEXTURE_2D);
+	NMS_SHADER_MANAGER->enableTextures();
     glBindTexture( GL_TEXTURE_2D, textureID );
 	
 

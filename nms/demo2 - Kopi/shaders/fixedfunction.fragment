@@ -1,0 +1,49 @@
+varying vec3 normal;
+varying vec3 lightDir;
+varying vec3 halfvec;
+varying float lightDist;
+varying vec4 ambient;
+varying vec4 ambientGlobal;
+uniform sampler2D tex;
+uniform int textureEnabled; 
+
+void main()
+{
+	vec4 litColor;
+	vec4 diffuse;
+	vec4 specular;
+	vec4 texel = texture2D(tex,gl_TexCoord[0].st);
+
+	float intensity = dot(normalize(lightDir), normalize(normal));
+	diffuse = gl_FrontMaterial.diffuse;
+
+	if(intensity>0.0) {
+		float NdotHV = max(dot(normalize(normal),normalize(halfvec)),0.0);
+		specular = gl_FrontMaterial.specular * gl_LightSource[0].specular * pow(NdotHV, gl_FrontMaterial.shininess);
+	}
+	else {
+		specular = vec4(0,0,0,0);
+	}
+
+	float attinuation;
+	attinuation = 1.0 / (gl_LightSource[0].constantAttenuation +
+			gl_LightSource[0].linearAttenuation * lightDist +
+			gl_LightSource[0].quadraticAttenuation * lightDist * lightDist);
+
+	litColor = attinuation*(intensity*diffuse+ambient+specular) + ambientGlobal;
+	//litColor = (intensity*diffuse+ambient+ambientGlobal + specular);
+	//litColor = ambient;
+	vec3 litRgb, texRgb;
+	float litAlpha, texAlpha;
+	litRgb = litColor.rgb;
+	litAlpha = litColor.a;
+	texRgb = texel.rgb;
+	texAlpha = texel.a;
+	
+	if(textureEnabled == 0) {
+		gl_FragColor = litColor;
+	}
+	else {
+		gl_FragColor = vec4(litRgb * texRgb, litAlpha*texAlpha);
+	}
+}

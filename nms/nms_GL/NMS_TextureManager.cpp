@@ -125,15 +125,15 @@ int NMS_TextureManager::LoadTexture (const char* sFilename,char* textureName) {
 
 					//Create the new image
 					glGenTextures(1, &image); /* Texture name generation */
-					glBindTexture(GL_TEXTURE_2D, image);
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
-					  /* We will use linear interpolation for magnification filter */
-					  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
-					  /* We will use linear interpolation for minifying filter */
-					  glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_BPP), ilGetInteger(IL_IMAGE_WIDTH),
-							 ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE,
-							 ilGetData()); /* Texture specification */
-
+					
+					 glBindTexture(GL_TEXTURE_2D, image);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
+			/* We will use linear interpolation for magnification filter */
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
+			/* We will use linear interpolation for minifying filter */
+			glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_BPP), ilGetInteger(IL_IMAGE_WIDTH),
+					ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE,
+					ilGetData()); /* Texture specification */
 
 
 					if(_DEBUG)
@@ -149,19 +149,25 @@ int NMS_TextureManager::LoadTexture (const char* sFilename,char* textureName) {
 			  }
 	  }
 	  //Pick the image that has been created to be used in our context
-	  glBindTexture(GL_TEXTURE_2D, image); /* Binding of texture name */
 	  textureMap[textureName].textID=image;
 	  textureMap[textureName].hash=hash;
-	  ilDeleteImages(1, &texid);
-	  //Close the file we are done with it
-	  fclose(fp);
+
 	  if(_DEBUG)
 	  {
 		  sprintf_s (m_Singleton->m_sMessage, m_Singleton->m_iMessageSize, "NMS_TextureManager::Loaded [%s] without issues!\n", sFilename);
 		  LOG.write(m_sMessage,LOG_DEBUG);
 	  }
+	 
+
+	  //glBindTexture(GL_TEXTURE_2D, image); /* Binding of texture name */
+      ilDeleteImages(1, &texid);
+	  //Close the file we are done with it
+	  fclose(fp);
+	  cerr << "Texture id" << textureMap[textureName].textID;
 	  return textureMap[textureName].textID;
 }
+
+
 
 void NMS_TextureManager::FreeTexture (char* textureName) {
 	    std::map<char* ,textStruct>::iterator iter = textureMap.find(textureName);

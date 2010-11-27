@@ -53,6 +53,7 @@ private :
 public :
 	//Load a texture. We are using devil so we can load any file format that Devil is able to load as a texture
 	int LoadTexture (const char *szFilename,char* textureName);
+	int LoadTextureNoBind (const char *szFilename,char* textureName);
 	//Release the memory space occupied by a specific texture
 	void FreeTexture (char* textureName);
 	//Release the memory occupied by all the textures

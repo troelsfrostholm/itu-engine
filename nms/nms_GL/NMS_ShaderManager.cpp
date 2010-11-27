@@ -30,22 +30,16 @@ void NMS_ShaderManager::up()
 void NMS_ShaderManager::loadShaders(char * vertexShaderFilename, char * fragmentShaderFilename)
 {
 	vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);	
-	
-	char vs[10000];
-	char fs[10000];
+	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
-	readFile(vertexShaderFilename, vs);
-	readFile(fragmentShaderFilename, fs);
-
-	const char * vsc = vs;
-	const char * fsc = fs;
+	const char * vsc = readFile(vertexShaderFilename);
+	const char * fsc = readFile(fragmentShaderFilename);
 
 	glShaderSource(vertexShader, 1, &vsc, NULL);
 	glShaderSource(fragmentShader, 1, &fsc, NULL);
 	
-	compileShader(vertexShader);
-	compileShader(fragmentShader);
+	compileShader(vertexShader, vertexShaderFilename);
+	compileShader(fragmentShader, fragmentShaderFilename);
 	
 	program = glCreateProgram();
 		
@@ -56,13 +50,30 @@ void NMS_ShaderManager::loadShaders(char * vertexShaderFilename, char * fragment
 	glUseProgram(program);
 }
 
-void NMS_ShaderManager::compileShader(GLuint shader)
+void NMS_ShaderManager::enableTextures()
+{
+	NMS_SHADER_MANAGER->setShaderAttribute("textureEnabled", 1);
+}
+
+void NMS_ShaderManager::disableTextures()
+{
+	NMS_SHADER_MANAGER->setShaderAttribute("textureEnabled", 0);
+}
+
+void NMS_ShaderManager::setShaderAttribute(char * attribute, int value)
+{
+	GLint loc;
+	loc = glGetUniformLocation(program,attribute);
+	glUniform1i(loc,value);
+}
+
+void NMS_ShaderManager::compileShader(GLuint shader, char * file)
 {
 	int success;
 	glCompileShader(shader);
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
 	if(success != GL_TRUE)
-		cerr << "Error compiling shader" << endl;
+		cerr << "Error compiling shader: " << file << endl;
 	printShaderInfoLog(shader);
 }
 
@@ -71,8 +82,10 @@ void NMS_ShaderManager::linkProgram(GLuint program)
 	int success;
 	glLinkProgram(program);
 	glGetProgramiv(program, GL_LINK_STATUS, &success);
-	if(success != GL_TRUE)
+	if(success != GL_TRUE) {
+		cerr << "Error linking program" << endl;
 		printProgramInfoLog(program);
+	}
 }
 
 void NMS_ShaderManager::printShaderInfoLog(GLuint obj)
@@ -87,7 +100,7 @@ void NMS_ShaderManager::printShaderInfoLog(GLuint obj)
 	{
 	    infoLog = (char *)malloc(infologLength);
 	    glGetShaderInfoLog(obj, infologLength, &charsWritten, infoLog);
-		printf("%s\n",infoLog);
+		cerr << infoLog << endl;
 	    free(infoLog);
 	}
 }
@@ -104,24 +117,34 @@ void NMS_ShaderManager::printProgramInfoLog(GLuint obj)
 	{
 	    infoLog = (char *)malloc(infologLength);
 	    glGetProgramInfoLog(obj, infologLength, &charsWritten, infoLog);
-		printf("%s\n",infoLog);
+		cerr << infoLog << endl;
 	    free(infoLog);
 	}
 }
 
-void NMS_ShaderManager::readFile(char * filename, char * dest)
+char * NMS_ShaderManager::readFile(char * filename)
 {
-	string line;
-	string contents = "";
-	fstream file(filename);
-	if(file.bad()) {
-			throw "Error opening file";
+	FILE *fp;
+	char *content = NULL;
+
+	int count=0;
+
+	if (filename != NULL) {
+		fp = fopen(filename,"rt");
+
+		if (fp != NULL) {
+      
+      fseek(fp, 0, SEEK_END);
+      count = ftell(fp);
+      rewind(fp);
+
+			if (count > 0) {
+				content = (char *)malloc(sizeof(char) * (count+1));
+				count = fread(content,sizeof(char),count,fp);
+				content[count] = '\0';
+			}
+			fclose(fp);
+		}
 	}
-	while(file.good()) {
-		getline(file, line);
-		contents += line;
-	}
-	const char * ct = contents.c_str();
-	memcpy(dest, ct, contents.size());
-	dest[contents.size()] = '\0';
+	return content;
 }

@@ -19,8 +19,6 @@ class  VECTOR_D Vector : public Point{
 	    Vector(float x,float y,float z);
 	    Vector(float x,float y,float z,float w);
 
-
-
 	  //OPERATORS
 	    Vector&  Vector::operator+=(Vector const &v);
 	    Vector&  Vector::operator-=(Vector const &v);
@@ -44,5 +42,6 @@ class  VECTOR_D Vector : public Point{
 	    Vector  Vector::normal();
 	    float   Vector::magnitude();
 	    float   Vector::sqmagnitude();
+		void Vector::floatArray(float * dest);
 };
 #endif
