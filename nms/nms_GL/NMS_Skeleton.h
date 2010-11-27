@@ -42,7 +42,6 @@ public:
 	void JointNode::before(SceneGraphVisitor *v, Matrix *m);
 	void JointNode::after(SceneGraphVisitor *v, Matrix *m);
 	JointNode* getParent();
-	Matrix getBindShape();
 	Matrix getWorldMatrix();
 	Matrix getSkinningMatrix();
 	string getSSID();

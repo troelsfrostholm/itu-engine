@@ -544,8 +544,6 @@ void ColladaModel::DrawSkeleton()
 	}
 }
 
-
-//189 is the first vertex to be modified
 void ColladaModel::SetupBindPose()
 {
 	//The skinning calculation for each vertex v in a bind shape is
@@ -558,15 +556,16 @@ void ColladaModel::SetupBindPose()
 		//Vertex and normals are loaded correctly
 		Vector Vertex = Vector((*pVertArray[i].vPosition)[0],(*pVertArray[i].vPosition)[1],(*pVertArray[i].vPosition)[2],1);
 		Vector Normal = Vector((*pVertArray[i].vNormals)[0],(*pVertArray[i].vNormals)[1],(*pVertArray[i].vNormals)[2],1);
-		Vector tempVertex = Vector();
+		Vector tempVertex = Vector(0,0,0,1);
+		//Vector calculated=Vector();
 		Vector tempNormal = Vector();
 		float TotalJointsWeight = 0;
 		float NormalizedWeight = 0;
 		//For each joint affecting the vertex
 		for(unsigned j=0;j<pVertArray[i].iNJointsAffecting;j++)
 		{
-			tempVertex+=((Vertex*pVertArray[i].pJoints[j]->getBindShape())*(pVertArray[i].pJoints[j]->getSkinningMatrix())*pVertArray[i].vWeights[j]);
-			tempNormal+=((Normal*pVertArray[i].pJoints[j]->getBindShape())*(pVertArray[i].pJoints[j]->getSkinningMatrix())*pVertArray[i].vWeights[j]);
+			tempVertex+=((Vertex*skinningInformation.mBindShape)*(pVertArray[i].pJoints[j]->getSkinningMatrix())*pVertArray[i].vWeights[j]);
+			tempNormal+=((Normal*skinningInformation.mBindShape)*(pVertArray[i].pJoints[j]->getSkinningMatrix())*pVertArray[i].vWeights[j]);
 			TotalJointsWeight +=pVertArray[i].vWeights[j];
 		}
 		if (TotalJointsWeight != 1.0f)

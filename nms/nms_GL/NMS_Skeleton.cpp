@@ -55,11 +55,6 @@ string JointNode::getSID()
 	return sID;
 }
 
-Matrix JointNode::getBindShape()
-{
-	return transform;
-}
-
 Matrix JointNode::getWorldMatrix()
 {
 	return mWorldMatrix;
