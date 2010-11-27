@@ -85,9 +85,6 @@ void JointNode::Animate(float time,Matrix *m)
 	float fOldTime=fCurrentTime;
     fCurrentTime = time;
 
-	//For now, just save the world matrix as the joint matrix
-	mWorldMatrix=transform;
-
 	//If we have animation data for this joint, then calculate the proper matrix for the skeleton
 	if(iNKeyFrames>0)
 	{
@@ -99,11 +96,8 @@ void JointNode::Animate(float time,Matrix *m)
 			if( iCurrentFrame >= iNKeyFrames )
 				iCurrentFrame = 0;
 		//}
-		mWorldMatrix=*pAnimationFrames[iCurrentFrame].getTransform();
+		transform=~*pAnimationFrames[iCurrentFrame].getTransform();
 	}
-	mWorldMatrix=(*m)*mWorldMatrix;
-	//Save the world matrix for the current node and precalculate the skinning matrix used in the skinning
-	mSkinningMatrix=~(mWorldMatrix*mInverseBind);
 }
 
 
@@ -111,9 +105,11 @@ void JointNode::before(SceneGraphVisitor *v, Matrix *m)
 {
 	SkeletonRenderer* renderer=(SkeletonRenderer*)v;
 	Animate(renderer->getAnimationTime(),m);
-	//TransformationNode::before(v, m);
+	TransformationNode::before(v, m);
+	mWorldMatrix=(*m);
+	//Save the world matrix for the current node and precalculate the skinning matrix used in the skinning
+	mSkinningMatrix=~(mWorldMatrix*mInverseBind);
 	v->sg_before(mWorldMatrix, this);
-	*m=mWorldMatrix;
 }
 
 void JointNode::after(SceneGraphVisitor *v, Matrix *m) 
