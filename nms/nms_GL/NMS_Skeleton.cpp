@@ -130,7 +130,7 @@ void KeyFrame::setTime(float time)
 
 void KeyFrame::setTransform(Matrix *m)
 {
-	mTransform=m;
+	mTransform=*m;
 }
 
 float KeyFrame::getTime()
@@ -140,5 +140,22 @@ float KeyFrame::getTime()
 
 Matrix* KeyFrame::getTransform()
 {
-	return mTransform;
+	return &mTransform;
+}
+
+
+void JointNode::initializeKeyframes(unsigned size)
+{
+	pAnimationFrames= new KeyFrame[size];
+	iNKeyFrames=size;
+}
+	
+void JointNode::setKeyFrame(KeyFrame k,unsigned position)
+{
+	pAnimationFrames[position]=k;
+}
+
+unsigned JointNode::getNKeyFrames()
+{
+	return iNKeyFrames;
 }

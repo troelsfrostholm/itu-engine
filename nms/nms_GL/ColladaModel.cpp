@@ -451,6 +451,7 @@ for(m=0;m<dataRead.size();m++)
 	LoadWeights();
 	DrawSkeleton();
     SetupBindPose();
+	LoadAnimationData();
 	bModelLoadedCorrectly=true;
 }
 
@@ -478,6 +479,53 @@ void ColladaModel::FindRoot(Node* nodeList)
 	{
 		pSkeletonNode=nodeList;
 		return;
+	}
+}
+
+
+
+//CHECK THE ORDER OF LOADING THE MATRIX, IT COULD LEAD TO PROBLEMS!
+//Load animation data for the current Joint
+void ColladaModel::LoadAnimationData()
+{
+	//Iterate through all the animations to get the one we are interested into
+	for (int i=0; i<vAnimation.size(); i++) 
+	{
+			//Read the ID of the animation and remove the "-transform" subfix to get the target joint we should apply the animation to
+			string sTargetJoint=(vAnimation[i].sID.subString(0,vAnimation[i].sID.size()-10)).c_str();
+
+			//Retrieve the targeted node from the skeleton
+			JointNode *target=ColladaSkeleton.getJoint(sTargetJoint);
+			//Create enough space to save the keyframes for the current joint
+			target->initializeKeyframes(vAnimation[i].vSources[0].count);
+			//Reconstruct the animation matrixes for each channels
+			for(int j=0;j<target->getNKeyFrames();j++)
+			{
+				KeyFrame currentFrame=KeyFrame();
+				//Set the time for the current frame. Each frame source follows the same
+				//time structure by assumption so we can just take the time from the first source
+				currentFrame.setTime(vAnimation[i].vSources[0].pfArray[j]);
+
+				//Load the matrix for the current frame now
+				Matrix frameMatrix=Matrix();
+				for(int s=0;s<16;s++)
+				{
+					unsigned row = (int) (s % 4)+1;
+					unsigned col = (int) (s / 4)+1;
+					//We have less values, that means the values are constants through the period of time, just take the first one
+					if(frameMatrix(row,col)=vAnimation[i].vSources[s*3+1].count<(target->getNKeyFrames()))
+						frameMatrix(row,col)=vAnimation[i].vSources[s*3+1].pfArray[0];
+					else
+						frameMatrix(row,col)=vAnimation[i].vSources[s*3+1].pfArray[j];
+					//Fix a bug, the last element of the matrix should be 1, just be sure it is!
+					if(s==15)
+					{
+						frameMatrix(row,col)=1;
+					}
+				}
+				currentFrame.setTransform(&frameMatrix);
+				target->setKeyFrame(currentFrame,j);
+			}
 	}
 }
 
@@ -1274,6 +1322,7 @@ void ColladaModel::readLibraryAnimations(IrrXMLReader* xml)
 void ColladaModel::readAnimation(IrrXMLReader* xml)
 {
 	Animation toBeReturned=Animation();
+	toBeReturned.sID=xml->getAttributeValue("id");
 	while(xml->read())
 	{
 		switch(xml->getNodeType())

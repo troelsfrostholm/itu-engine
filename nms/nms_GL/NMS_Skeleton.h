@@ -23,6 +23,20 @@ DLL EXPORTING SAFE
 using namespace std;
 
 
+class KeyFrame
+{
+public:
+	 KeyFrame(){};
+	 ~KeyFrame(){};
+	 void setTime(float time);
+	 void setTransform(Matrix *m);
+	 float getTime();
+	 Matrix* getTransform();
+private:
+     float          fTime;                // Time of this key frame
+     Matrix         mTransform;          // Transformation of this Key frame
+};
+
 class SKELETON_D JointNode : public TransformationNode
 {
 protected:
@@ -36,8 +50,8 @@ protected:
     Matrix     mInverseBind;			   // The Inverse Bind Pose Matrix
     Matrix     mWorldMatrix;			   // The World Matrix
     Matrix     mSkinningMatrix;			   // The Matrix Used for calculations
-	unsigned int  iNKeyFrames;			   // Number of Keyframes used by this joint
-    KeyFrame   **pAnimationFrames;         // All Key frames for this Bone’s animation
+	unsigned   iNKeyFrames;			   // Number of Keyframes used by this joint
+    KeyFrame   *pAnimationFrames;         // All Key frames for this Bone’s animation
 	
 public:
 	JointNode();
@@ -50,6 +64,9 @@ public:
 	string getSSID();
 	string getSID();
 	void setInverseBind(Matrix m);
+	void initializeKeyframes(unsigned size);
+	void setKeyFrame(KeyFrame k,unsigned position);
+	unsigned getNKeyFrames();
 };
 
 class SKELETON_D Skeleton
@@ -81,22 +98,5 @@ public:
 	void renderJoint(Matrix transform, SceneGraphNode * node);
 	
 };
-
-
-
-class KeyFrame
-{
-public:
-	 KeyFrame();
-     ~KeyFrame();
-	 void setTime(float time);
-	 void setTransform(Matrix *m);
-	 float getTime();
-	 Matrix* getTransform();
-private:
-     float          fTime;                // Time of this key frame
-     Matrix         *mTransform;          // Transformation of this Key frame
-};
-
 
 #endif

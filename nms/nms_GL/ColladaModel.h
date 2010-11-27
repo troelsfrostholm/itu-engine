@@ -356,6 +356,7 @@ private:
 	void    LoadWeights();
 
 	//RENDERING THE MODEL
+	void    LoadAnimationData();
 	void    LoadData();
 	void    FindRoot(Node* nodeList);
 	void    DrawSkeleton();
