@@ -135,43 +135,32 @@ void ColladaModel::RenderFrame()
 	glEnable(GL_TEXTURE_2D);
 	glEnable( GL_CULL_FACE );
 	glCullFace( GL_BACK );
-	glEnableClientState( GL_VERTEX_ARRAY ); // Enable Vertex Arrays
-	glEnableClientState( GL_TEXTURE_COORD_ARRAY ); // Enable Texture Coord Arrays
-	glEnableClientState	(GL_NORMAL_ARRAY);
+	
+	
+	
 	for(unsigned i=0;i<vRenderData.size();i++)
 	{
-		float* vTextures= new float[vRenderData[i].iTriangleCount*3*vRenderData[i].textureStride];
-		float* vNormals= new float[vRenderData[i].iTriangleCount*3*vRenderData[i].normalStride];
-		float* vVertices= new float[vRenderData[i].iTriangleCount*3*vRenderData[i].vertexStride];
-
-		//Now convert the pointers to the modified data to something that we can pass to 
-		//OpenGL for bulk rendering
-		for(unsigned k=0;k<vRenderData[i].iTriangleCount*3;k++)
+		for(unsigned k=0;k<vRenderData[i].iTriangleCount;k++)
 		{
-			vTextures[k*vRenderData[i].textureStride]=*vRenderData[i].vTextures[k*vRenderData[i].textureStride];
-			vTextures[k*vRenderData[i].textureStride+1]=*vRenderData[i].vTextures[k*vRenderData[i].textureStride+1];
-			if(vRenderData[i].textureStride>2)
-				vTextures[k*vRenderData[i].textureStride+2]=*vRenderData[i].vTextures[k*vRenderData[i].textureStride+2];
+			glBegin(GL_TRIANGLES);
+				//glTexCoord2f(textArray[vRenderData[i].vTextures[k]],textArray[vRenderData[i].vTextures[k]+1]);
+				glTexCoord3fv(&textArray[vRenderData[i].vTextures[k*vRenderData[i].textureStride]*vRenderData[i].textureStride]);
+				glVertex3fv(&vertArray[vRenderData[i].vVertices[k*vRenderData[i].vertexStride]*vRenderData[i].vertexStride]);
 
-			vNormals[k*vRenderData[i].normalStride]=*vRenderData[i].vNormals[k*vRenderData[i].normalStride];
-			vNormals[k*vRenderData[i].normalStride+1]=*vRenderData[i].vNormals[k*vRenderData[i].normalStride+1];
-			vNormals[k*vRenderData[i].normalStride+2]=*vRenderData[i].vNormals[k*vRenderData[i].normalStride+2];
-
-			vVertices[k*vRenderData[i].vertexStride]=*vRenderData[i].vVertices[k*vRenderData[i].vertexStride];
-			vVertices[k*vRenderData[i].vertexStride+1]=*vRenderData[i].vVertices[k*vRenderData[i].vertexStride+1];
-			vVertices[k*vRenderData[i].vertexStride+2]=*vRenderData[i].vVertices[k*vRenderData[i].vertexStride+2];
+				//glTexCoord3f(textArray[vRenderData[i].vTextures[k+1]],textArray[vRenderData[i].vTextures[k+1]+1],textArray[vRenderData[i].vTextures[k+1]+2]);
+				//glTexCoord2f(textArray[vRenderData[i].vTextures[k+1]],textArray[vRenderData[i].vTextures[k+1]+1]);
+				//glVertex3f(vertArray[vRenderData[i].vVertices[k*3+1]],vertArray[vRenderData[i].vVertices[k*3+1]+1],vertArray[vRenderData[i].vVertices[k*3+1]+2]);
+				glTexCoord3fv(&textArray[vRenderData[i].vTextures[1+k*vRenderData[i].textureStride]*vRenderData[i].textureStride]);
+				glVertex3fv(&vertArray[vRenderData[i].vVertices[1+k*vRenderData[i].vertexStride]*vRenderData[i].vertexStride]);
+				//glTexCoord3f(textArray[vRenderData[i].vTextures[k+2]],textArray[vRenderData[i].vTextures[k+2]+1],textArray[vRenderData[i].vTextures[k+2]+2]);
+				//glTexCoord2f(textArray[vRenderData[i].vTextures[k+2]],textArray[vRenderData[i].vTextures[k+2]+1]);
+				//glVertex3f(vertArray[vRenderData[i].vVertices[k*3+2]],vertArray[vRenderData[i].vVertices[k*3+2]+1],vertArray[vRenderData[i].vVertices[k*3+2]+2]);
+				glTexCoord3fv(&textArray[vRenderData[i].vTextures[2+k*vRenderData[i].textureStride]*vRenderData[i].textureStride]);
+				glVertex3fv(&vertArray[vRenderData[i].vVertices[2+k*vRenderData[i].vertexStride]*vRenderData[i].vertexStride]);
+			glEnd();
 		}
-		glTexCoordPointer( vRenderData[i].textureStride, GL_FLOAT, 0, vTextures ); // Set The Vertex Pointer To TexCoord Data
-		glNormalPointer(GL_FLOAT,0, vNormals);
-		glVertexPointer(  3, GL_FLOAT, 0, vVertices); // Set The Vertex Pointer To Vertex Data
-		glDrawArrays( GL_TRIANGLES, 0, vRenderData[i].iTriangleCount*3); //Draw the vertices
-		//delete(vTextures);
-		//delete(vNormals);
-		//delete(vVertices);
 	}
-	glDisableClientState(GL_VERTEX_ARRAY); // Enable Vertex Arrays
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY); // Enable Texture Coord Arrays
-	glDisableClientState(GL_NORMAL_ARRAY);
+	
 	glDisable(GL_TEXTURE_2D);
 	glDisable( GL_CULL_FACE );
 }
@@ -185,6 +174,7 @@ unsigned m=0; //Mesh count
 iMeshCount=dataRead.size();
 int maxVertices=dataRead.back().sources[dataRead.back().sVertPosition].iFArraySize/3;
 pVertArray = new Vertex[maxVertices];
+
 for(m=0;m<maxVertices;m++)
 {
 	pVertArray[m].vNormals=NULL;
@@ -228,14 +218,15 @@ for(m=0;m<dataRead.size();m++)
 							toBeRendered.normalStride=normalStride;
 
 							int* dataPointer=dataRead[m].triangles[t].pTriangleData;
-							float* vertArray=positionSource->pfArray;
+							toBeRendered.dataPointer=dataPointer;
+							vertArray=positionSource->pfArray;
 							copiedPositions=new float[positionSource->count*3];
 							for(int l=0;l<positionSource->count*3;l++)
 							{
 								copiedPositions[l]=vertArray[l];
 							}
-							float* textArray=textureSource->pfArray;
-							float* normArray=normalSource->pfArray;
+							textArray=textureSource->pfArray;
+							normArray=normalSource->pfArray;
 
 							bool textEnabled=dataRead[m].triangles[t].bTextures;
 							unsigned iTextureID=0;
@@ -277,9 +268,9 @@ for(m=0;m<dataRead.size();m++)
 								}
 							}
 
-							toBeRendered.vTextures=new(LEVEL_ALLOC, MEM_LEVEL) float*[numberOfTriangles*3*textureStride];
-							toBeRendered.vNormals=new(LEVEL_ALLOC, MEM_LEVEL) float*[numberOfTriangles*3*normalStride];
-							toBeRendered.vVertices=new(LEVEL_ALLOC, MEM_LEVEL) float*[numberOfTriangles*3*vertexStride];
+							toBeRendered.vTextures=new(LEVEL_ALLOC, MEM_LEVEL) unsigned[numberOfTriangles*3];
+							toBeRendered.vNormals=new(LEVEL_ALLOC, MEM_LEVEL)  unsigned[numberOfTriangles*3*normalStride];
+							toBeRendered.vVertices=new(LEVEL_ALLOC, MEM_LEVEL) unsigned[numberOfTriangles*vertexStride];
 							int firstVertex;
 							int secondVertex;
 							int thirdVertex;
@@ -294,160 +285,62 @@ for(m=0;m<dataRead.size();m++)
 							for(i=0;i<numberOfTriangles;i++)
 							{
 								
-								//Vertices loading
-								firstOffset=dataPointer[i*numberOfArrays*3+vertexOffset];
-								firstVertex=firstOffset;
-								firstOffset=firstOffset*vertexStride;
-								if(pVertArray[firstVertex].vPosition==NULL)
-								{
-									pVertArray[firstVertex].vPosition=new float*[vertexStride];
-									pVertArray[firstVertex].vPosition[0]=&vertArray[firstOffset];
-									pVertArray[firstVertex].vPosition[1]=&vertArray[firstOffset+1];
-									pVertArray[firstVertex].vPosition[2]=&vertArray[firstOffset+2];
-								}
-								toBeRendered.vVertices[0+i*9]=pVertArray[firstVertex].vPosition[0];
-								toBeRendered.vVertices[1+i*9]=pVertArray[firstVertex].vPosition[1];
-								toBeRendered.vVertices[2+i*9]=pVertArray[firstVertex].vPosition[2];
-			
-
-								secondOffset=dataPointer[i*numberOfArrays*3+vertexOffset+numberOfArrays];
-								secondVertex=secondOffset;
-								secondOffset=secondOffset*vertexStride;
-								if(pVertArray[secondVertex].vPosition==NULL)
-								{
-									pVertArray[secondVertex].vPosition=new float*[vertexStride];
-									pVertArray[secondVertex].vPosition[0]=&vertArray[secondOffset];
-									pVertArray[secondVertex].vPosition[1]=&vertArray[secondOffset+1];
-									pVertArray[secondVertex].vPosition[2]=&vertArray[secondOffset+2];
-								}
-								toBeRendered.vVertices[3+i*9]=pVertArray[secondVertex].vPosition[0];
-								toBeRendered.vVertices[4+i*9]=pVertArray[secondVertex].vPosition[1];
-								toBeRendered.vVertices[5+i*9]=pVertArray[secondVertex].vPosition[2];
+								//Load the index of the vertices to be rendered
+								firstVertex=dataPointer[i*numberOfArrays*3+vertexOffset];
+								toBeRendered.vVertices[0+i*vertexStride]=firstVertex;
 								
-
-
-								thirdOffset=dataPointer[i*numberOfArrays*3+vertexOffset+numberOfArrays*2];
-								thirdVertex=thirdOffset;
-								thirdOffset=thirdOffset*vertexStride;
-								if(pVertArray[thirdVertex].vPosition==NULL)
-								{
-									pVertArray[thirdVertex].vPosition=new float*[vertexStride];
-									pVertArray[thirdVertex].vPosition[0]=&vertArray[thirdOffset];
-									pVertArray[thirdVertex].vPosition[1]=&vertArray[thirdOffset+1];
-									pVertArray[thirdVertex].vPosition[2]=&vertArray[thirdOffset+2];
-								}
-								toBeRendered.vVertices[6+i*9]=pVertArray[thirdVertex].vPosition[0];
-								toBeRendered.vVertices[7+i*9]=pVertArray[thirdVertex].vPosition[1];
-								toBeRendered.vVertices[8+i*9]=pVertArray[thirdVertex].vPosition[2];
+								secondVertex=dataPointer[i*numberOfArrays*3+vertexOffset+numberOfArrays];
+								toBeRendered.vVertices[1+i*vertexStride]=secondVertex;
+								
+								thirdVertex=dataPointer[i*numberOfArrays*3+vertexOffset+numberOfArrays*2];
+								toBeRendered.vVertices[2+i*vertexStride]=thirdVertex;
 								
 
 								//If we have a texture, load the data for it
 								if(textEnabled)
 								{
 									firstOffset=dataPointer[i*numberOfArrays*3+textureOffset];
-									firstOffset=firstOffset*textureStride;
-									if(pVertArray[firstVertex].vTextures==NULL)
-									{
-										pVertArray[firstVertex].vTextures=new float*[textureStride];
-										pVertArray[firstVertex].vTextures[0]=&textArray[firstOffset];
-										pVertArray[firstVertex].vTextures[1]=&textArray[firstOffset+1];
-										if(textureStride>2)
-										{
-											pVertArray[firstVertex].vTextures[2]=&textArray[firstOffset+2];
-										}
-									}
-									toBeRendered.vTextures[0+i*3*textureStride]=&textArray[firstOffset];
-									toBeRendered.vTextures[1+i*3*textureStride]=&textArray[firstOffset+1];
-									if(textureStride>2)
-										{
-											toBeRendered.vTextures[2+i*3*textureStride]=&textArray[firstOffset+2];
-										}
+						
+									toBeRendered.vTextures[0+i*3]=firstOffset;
+									//toBeRendered.vTextures[firstVertex*textureStride+2]=textArray[firstOffset*textureStride+2];
+									
 
 
 									secondOffset=dataPointer[i*numberOfArrays*3+textureOffset+numberOfArrays];
-									secondOffset=secondOffset*textureStride;
-									if(pVertArray[secondVertex].vTextures==NULL)
-									{
-										pVertArray[secondVertex].vTextures=new float*[textureStride];
-										pVertArray[secondVertex].vTextures[0]=&textArray[secondOffset];
-										pVertArray[secondVertex].vTextures[1]=&textArray[secondOffset+1];
-										if(textureStride>2)
-										{
-											pVertArray[secondVertex].vTextures[2]=&textArray[secondOffset+2];
-										}
-									}
-									toBeRendered.vTextures[1*textureStride+i*3*textureStride]=&textArray[secondOffset];
-									toBeRendered.vTextures[1*textureStride+1+i*3*textureStride]=&textArray[secondOffset+1];
-									if(textureStride>2)
-										{
-											toBeRendered.vTextures[1*textureStride+2+i*3*textureStride]=&textArray[secondOffset+2];
-										}
-
-
+									toBeRendered.vTextures[1+i*3]=secondOffset;
+									//toBeRendered.vTextures[secondVertex*textureStride+2]=textArray[secondOffset*textureStride+2];
+								
 									thirdOffset=dataPointer[i*numberOfArrays*3+textureOffset+numberOfArrays*2];
-									thirdOffset=thirdOffset*textureStride;
-									if(pVertArray[thirdVertex].vTextures==NULL)
-									{
-										pVertArray[thirdVertex].vTextures=new float*[textureStride];
-										pVertArray[thirdVertex].vTextures[0]=&textArray[thirdOffset];
-										pVertArray[thirdVertex].vTextures[1]=&textArray[thirdOffset+1];
-										if(textureStride>2)
-										{
-											pVertArray[thirdVertex].vTextures[2]=&textArray[thirdOffset+2];
-										}
-									}
-									toBeRendered.vTextures[2*textureStride+i*3*textureStride]=&textArray[thirdOffset];
-									toBeRendered.vTextures[2*textureStride+1+i*3*textureStride]=&textArray[thirdOffset+1];
-									if(textureStride>2)
-										{
-											toBeRendered.vTextures[2*textureStride+2+i*3*textureStride]=&textArray[thirdOffset+2];
-										}
+									toBeRendered.vTextures[2+i*3]=thirdOffset;
+									//toBeRendered.vTextures[thirdVertex*textureStride+2]=textArray[thirdOffset*textureStride+2];
 								}
 
 							//Normals loading
 							firstOffset=dataPointer[i*numberOfArrays*3+normalOffset];
 							firstOffset=firstOffset*normalStride;
-							if(pVertArray[firstVertex].vNormals==NULL)
-							{
-								pVertArray[firstVertex].vNormals=new float*[normalStride];
-								pVertArray[firstVertex].vNormals[0]=&normArray[firstOffset];
-								pVertArray[firstVertex].vNormals[1]=&normArray[firstOffset+1];
-								pVertArray[firstVertex].vNormals[2]=&normArray[firstOffset+2];
-							}
-							toBeRendered.vNormals[0+i*9]=pVertArray[firstVertex].vNormals[0];
-							toBeRendered.vNormals[1+i*9]=pVertArray[firstVertex].vNormals[1];
-							toBeRendered.vNormals[2+i*9]=pVertArray[firstVertex].vNormals[2];
+							
+							toBeRendered.vNormals[0+i*9]=firstOffset;
+							toBeRendered.vNormals[1+i*9]=firstOffset+1;
+							toBeRendered.vNormals[2+i*9]=firstOffset+2;
 							
 
 
 							secondOffset=dataPointer[i*numberOfArrays*3+normalOffset+numberOfArrays];
 							secondOffset=secondOffset*normalStride;
-							if(pVertArray[secondVertex].vNormals==NULL)
-							{
-								pVertArray[secondVertex].vNormals=new float*[normalStride];
-								pVertArray[secondVertex].vNormals[0]=&normArray[secondOffset];
-								pVertArray[secondVertex].vNormals[1]=&normArray[secondOffset+1];
-								pVertArray[secondVertex].vNormals[2]=&normArray[secondOffset+2];
-							}
-							toBeRendered.vNormals[3+i*9]=pVertArray[secondVertex].vNormals[0];
-							toBeRendered.vNormals[4+i*9]=pVertArray[secondVertex].vNormals[1];
-							toBeRendered.vNormals[5+i*9]=pVertArray[secondVertex].vNormals[2];
+							
+							toBeRendered.vNormals[3+i*9]=secondOffset;
+							toBeRendered.vNormals[4+i*9]=secondOffset+1;
+							toBeRendered.vNormals[5+i*9]=secondOffset+2;
 							
 
 
 
 							thirdOffset=dataPointer[i*numberOfArrays*3+normalOffset+numberOfArrays*2];
 							thirdOffset=thirdOffset*normalStride;
-							if(pVertArray[thirdVertex].vNormals==NULL)
-							{
-								pVertArray[thirdVertex].vNormals=new float*[normalStride];
-								pVertArray[thirdVertex].vNormals[0]=&normArray[thirdOffset];
-								pVertArray[thirdVertex].vNormals[1]=&normArray[thirdOffset+1];
-								pVertArray[thirdVertex].vNormals[2]=&normArray[thirdOffset+2];
-							}
-							toBeRendered.vNormals[6+i*9]=pVertArray[thirdVertex].vNormals[0];
-							toBeRendered.vNormals[7+i*9]=pVertArray[thirdVertex].vNormals[1];
-							toBeRendered.vNormals[8+i*9]=pVertArray[thirdVertex].vNormals[2];
+							
+							toBeRendered.vNormals[6+i*9]=thirdOffset;
+							toBeRendered.vNormals[7+i*9]=thirdOffset+1;
+							toBeRendered.vNormals[8+i*9]=thirdOffset+2;
 							
 						}
 						toBeRendered.iTextID=iTextureID;
@@ -457,7 +350,7 @@ for(m=0;m<dataRead.size();m++)
 	LoadSkeleton();
 	LoadWeights();
 	DrawSkeleton(0.0f);
-    SetupBindPose();
+    //SetupBindPose();
 	LoadAnimationData();
 	bModelLoadedCorrectly=true;
 }
@@ -614,14 +507,13 @@ void ColladaModel::SetupBindPose()
 	for(unsigned i=0;i<skinningInformation.iWeightCount;i++)
 	{
 		//Restore the original values
-		(*pVertArray[i].vPosition)[0]=copiedPositions[i*3];
-		(*pVertArray[i].vPosition)[1]=copiedPositions[i*3+1];
-		(*pVertArray[i].vPosition)[2]=copiedPositions[i*3+2];
+		vertArray[i*3]=copiedPositions[i*3];
+		vertArray[i*3+1]=copiedPositions[i*3+1];
+		vertArray[i*3+2]=copiedPositions[i*3+2];
 		//Vertex and normals are loaded correctly
-		Vector Vertex = Vector((*pVertArray[i].vPosition)[0],(*pVertArray[i].vPosition)[1],(*pVertArray[i].vPosition)[2],1);
-		Vector Normal = Vector((*pVertArray[i].vNormals)[0],(*pVertArray[i].vNormals)[1],(*pVertArray[i].vNormals)[2],1);
-		Vector tempVertex = Vector(0,0,0,1);
-		//Vector calculated=Vector();
+		Vector Vertex = Vector(vertArray[i*3],vertArray[i*3+1],vertArray[i*3+2],1);
+		//Vector Normal = Vector((*pVertArray[i].vNormals)[0],(*pVertArray[i].vNormals)[1],(*pVertArray[i].vNormals)[2],1);
+		Vector tempVertex = Vector();
 		Vector tempNormal = Vector();
 		float TotalJointsWeight = 0;
 		float NormalizedWeight = 0;
@@ -629,7 +521,7 @@ void ColladaModel::SetupBindPose()
 		for(unsigned j=0;j<pVertArray[i].iNJointsAffecting;j++)
 		{
 			tempVertex+=((Vertex*skinningInformation.mBindShape)*(pVertArray[i].pJoints[j]->getSkinningMatrix())*pVertArray[i].vWeights[j]);
-			tempNormal+=((Normal*skinningInformation.mBindShape)*(pVertArray[i].pJoints[j]->getSkinningMatrix())*pVertArray[i].vWeights[j]);
+			//tempNormal+=((Normal*skinningInformation.mBindShape)*(pVertArray[i].pJoints[j]->getSkinningMatrix())*pVertArray[i].vWeights[j]);
 			TotalJointsWeight +=pVertArray[i].vWeights[j];
 		}
 		if (TotalJointsWeight != 1.0f)
@@ -638,12 +530,9 @@ void ColladaModel::SetupBindPose()
               tempVertex *= NormalizedWeight;
               tempNormal *= NormalizedWeight;
          }
-		(*pVertArray[i].vPosition)[0]=tempVertex[NMS_X];
-		(*pVertArray[i].vPosition)[1]=tempVertex[NMS_Y];
-		(*pVertArray[i].vPosition)[2]=tempVertex[NMS_Z];
-		(*pVertArray[i].vNormals)[0]=tempNormal[NMS_X];
-		(*pVertArray[i].vNormals)[1]=tempNormal[NMS_Y];
-		(*pVertArray[i].vNormals)[2]=tempNormal[NMS_Z];
+		vertArray[i*3]=tempVertex[NMS_X];
+		vertArray[i*3+1]=tempVertex[NMS_Y];
+		vertArray[i*3+2]=tempVertex[NMS_Z];
 	}
 }
 

@@ -235,13 +235,15 @@ class RenderData
 	 //Triangles count
 	 unsigned iTriangleCount;
 	 //The list of vertexes for a single mesh triangle as specified in the collada xml, under mesh
-	 float** vVertices;
-	 float** vTextures;
-	 float** vNormals;
+	 unsigned* vVertices;
+	 unsigned* vTextures;
+	 unsigned* vNormals;
 
 	 unsigned vertexStride;
 	 unsigned textureStride;
 	 unsigned normalStride;
+
+	 int* dataPointer;
 };
 
 
@@ -302,6 +304,10 @@ private:
 	std::map<core::stringc ,Node>   mNodes;
 
 	float* copiedPositions;
+
+	float* textArray;
+	float* vertArray;
+	float* normArray;
 
 	unsigned iCurrentFrame;
 	float    fAnimationTime;
