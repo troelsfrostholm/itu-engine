@@ -57,6 +57,7 @@ class PHYSICS_D nms_physics
 		~nms_physics();
 		void initPhysics();
 		void exitPhysics();
+		void setGravity(int num);
 		void simulatePhysics();
 		void addRBody(btRigidBody* body);
 		void setDebugMode(bool state);
