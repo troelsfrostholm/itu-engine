@@ -356,11 +356,11 @@ for(m=0;m<dataRead.size();m++)
 											pVertArray[firstVertex].vTextures[2]=&textArray[firstOffset+2];
 										}
 									}
-									toBeRendered.vTextures[0+i*3*textureStride]=pVertArray[firstVertex].vTextures[0];
-									toBeRendered.vTextures[1+i*3*textureStride]=pVertArray[firstVertex].vTextures[1];
+									toBeRendered.vTextures[0+i*3*textureStride]=&textArray[firstOffset];
+									toBeRendered.vTextures[1+i*3*textureStride]=&textArray[firstOffset+1];
 									if(textureStride>2)
 										{
-											toBeRendered.vTextures[2+i*3*textureStride]=pVertArray[firstVertex].vTextures[2];
+											toBeRendered.vTextures[2+i*3*textureStride]=&textArray[firstOffset+2];
 										}
 
 
@@ -376,11 +376,11 @@ for(m=0;m<dataRead.size();m++)
 											pVertArray[secondVertex].vTextures[2]=&textArray[secondOffset+2];
 										}
 									}
-									toBeRendered.vTextures[1*textureStride+i*3*textureStride]=pVertArray[secondVertex].vTextures[0];
-									toBeRendered.vTextures[1*textureStride+1+i*3*textureStride]=pVertArray[secondVertex].vTextures[1];
+									toBeRendered.vTextures[1*textureStride+i*3*textureStride]=&textArray[secondOffset];
+									toBeRendered.vTextures[1*textureStride+1+i*3*textureStride]=&textArray[secondOffset+1];
 									if(textureStride>2)
 										{
-											toBeRendered.vTextures[1*textureStride+2+i*3*textureStride]=pVertArray[secondVertex].vTextures[2];
+											toBeRendered.vTextures[1*textureStride+2+i*3*textureStride]=&textArray[secondOffset+2];
 										}
 
 
@@ -396,11 +396,11 @@ for(m=0;m<dataRead.size();m++)
 											pVertArray[thirdVertex].vTextures[2]=&textArray[thirdOffset+2];
 										}
 									}
-									toBeRendered.vTextures[2*textureStride+i*3*textureStride]=pVertArray[thirdVertex].vTextures[0];
-									toBeRendered.vTextures[2*textureStride+1+i*3*textureStride]=pVertArray[thirdVertex].vTextures[1];
+									toBeRendered.vTextures[2*textureStride+i*3*textureStride]=&textArray[thirdOffset];
+									toBeRendered.vTextures[2*textureStride+1+i*3*textureStride]=&textArray[thirdOffset+1];
 									if(textureStride>2)
 										{
-											toBeRendered.vTextures[2*textureStride+2+i*3*textureStride]=pVertArray[thirdVertex].vTextures[2];
+											toBeRendered.vTextures[2*textureStride+2+i*3*textureStride]=&textArray[thirdOffset+2];
 										}
 								}
 
