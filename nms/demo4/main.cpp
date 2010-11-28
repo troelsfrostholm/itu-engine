@@ -14,7 +14,7 @@
 #define HEIGHT 400
 
 NMSCameraFPS fpsCam;
-CameraNode cam;
+NMSCameraFPS cam;
 NMS_SceneRenderer* renderer;
 
 void mouseMoved(int MouseX, int MouseY)
@@ -64,16 +64,16 @@ void keyPressed(SDLKey key)
 			break;
 
 		 case SDLK_a:
-			 fpsCam.setSlideSpeed(+0.01f);
+			 fpsCam.setSlideSpeed(+0.5f);
 				   break;
 		 case SDLK_d:
-			 fpsCam.setSlideSpeed(-0.01f);
+			 fpsCam.setSlideSpeed(-0.5f);
 				   break;
 		 case SDLK_w:
-			 fpsCam.setSpeed(+0.01f);
+			 fpsCam.setSpeed(+0.5f);
 				   break;
 		 case SDLK_s:
-			 fpsCam.setSpeed(-0.01f);
+			 fpsCam.setSpeed(-0.5f);
 				   break;
 		 case SDLK_1:
 			 renderer->setCurrentCamera(&cam);
@@ -148,7 +148,7 @@ int main(int argc, char* argv[])
 	transl.translate(Vector(0.f, -20.f, -50.f));
 	TransformationNode planeTNode = TransformationNode(transl);
 	
-	cam = CameraNode();
+	cam = NMSCameraFPS();
 	transl.translate(Vector(0.f, -10.f, 0.f));
 	Matrix rot = Matrix();
 	rot.rotY(120.f);
@@ -174,6 +174,7 @@ int main(int argc, char* argv[])
 	renderer = engine.getRenderer();
 	renderer->setCurrentCamera(&fpsCam);
 	renderer->setWireframeMode(true);
+	renderer->setShaders("shaders\\fixedfunction.vertex", "shaders\\fixedfunction.fragment");
 
 
 	NMS_EVENT_MANAGER.onKeyPressed(&keyPressed);

@@ -9,19 +9,18 @@
 
 #define NOMINMAX
 
-#include "SDL.h"
-#include "SDL_opengl.h" 
+#include "NMS_SceneRenderer.h"
 #include "Matrix.h"
 #include "Trig.h"
 #include "NMS_AssetManager.h"
 #include "NMS_EventManager.h"
 #include "NMS_Camera.h"
-#include "NMS_SceneRenderer.h"
 #include "NMS_LightSystem.h"
 #include "SDL_MemberThread.h"
 #include "NMS_Mutex.h"
 #include "nms_physics.h"
 #include "NMS_StaticAllocator.h"
+#include "NMS_LogFunctions.h"
 
 class FRAMEWORK_D NMS_Framework
 {
@@ -37,7 +36,6 @@ public:
 	bool running;
 	bool rendering;
 	NMSCameraFPS camera;
-	NMS_LightSystem light;
 	NMS_Framework();
 	bool NMSInit(int width,int height,int bpp,char* windowTitle,bool fullscreen);
 	void NMSQuit(int i);
@@ -52,6 +50,7 @@ public:
 	void cleanup();
 	SceneGraphNode* getScene();
 	NMS_SceneRenderer* getRenderer();
+	static void logMemoryUsage();
 };
 #endif;
 

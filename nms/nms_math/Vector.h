@@ -7,7 +7,6 @@
 #include <fstream>
 #include <cmath>
 #include "Point.h"
-//#include "Matrix.h"
 
 using namespace std;
 
@@ -19,8 +18,6 @@ class  VECTOR_D Vector : public Point{
 	    Vector();
 	    Vector(float x,float y,float z);
 	    Vector(float x,float y,float z,float w);
-
-
 
 	  //OPERATORS
 	    Vector&  Vector::operator+=(Vector const &v);
@@ -45,5 +42,6 @@ class  VECTOR_D Vector : public Point{
 	    Vector  Vector::normal();
 	    float   Vector::magnitude();
 	    float   Vector::sqmagnitude();
+		void Vector::floatArray(float * dest);
 };
 #endif

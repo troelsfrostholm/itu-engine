@@ -1,6 +1,7 @@
 #include "NMS_StackBasedAllocator.h"
 #include "NMS_StaticAllocator.h"
 #include "NMS_LevelAllocator.h"
+#include "NMS_StubAllocator.h"
 #include <boost/test/unit_test.hpp>
 #include <iostream>
 
@@ -183,6 +184,23 @@ BOOST_AUTO_TEST_CASE( load_it )
 	BOOST_CHECK_EQUAL(*l, 1);
 
 	delete LEVEL_ALLOC;
+}
+
+BOOST_AUTO_TEST_SUITE_END();
+
+BOOST_AUTO_TEST_SUITE( stub_allocator );
+
+BOOST_AUTO_TEST_CASE( allocate_and_free_memory )
+{
+	int * i = new(STUB_ALLOC, 0) int(1);
+	BOOST_CHECK_EQUAL(*i, 1);
+	int * j = new(STUB_ALLOC, 0) int(2);
+	BOOST_CHECK_EQUAL(*i, 1);
+	BOOST_CHECK_EQUAL(*j, 2);
+	STUB_ALLOC->freeMem(i);
+	STUB_ALLOC->freeMem(j);
+	
+	delete STUB_ALLOC;
 }
 
 BOOST_AUTO_TEST_SUITE_END();

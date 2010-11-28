@@ -13,6 +13,7 @@
 #include "NMS_Mesh.h"
 #include "Matrix.h"
 #include "NMS_LevelAllocator.h"
+#include "NMS_StubAllocator.h"
 
 #include "SDL_opengl.h"
 #include <irrXML.h>
