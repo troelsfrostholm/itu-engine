@@ -29,7 +29,7 @@ void NMS_Mesh::setMaterialGL()
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, &material.shininess);
 
-		if(material.texture != "") {
+	if(material.texture != "") {
 		if(material.texId == 0) {
 			char * tmp2 = new(LEVEL_ALLOC, MEM_LEVEL) char[material.texture.length()+1];
 			strcpy(tmp2, material.texture.c_str());

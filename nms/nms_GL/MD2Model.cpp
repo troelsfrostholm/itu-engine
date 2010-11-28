@@ -381,6 +381,8 @@ void MD2Model::Interpolate( vec3_t *vertlist,vec3_t* lightList)
 int MD2Model::LoadSkin(const char *filename)
 {
 	textureID=NMS_ASSETMANAGER.LoadTexture((char*)filename,(char*)filename);
+	material.texture = string(filename);
+	material.texId = textureID;
 	return textureID;
 }
 
