@@ -209,3 +209,11 @@ float SkeletonRenderer::getAnimationTime()
 {
 	return fAnimationTime;
 }
+
+void Skeleton::render(float time)
+{
+	SkeletonRenderer skelRend = SkeletonRenderer();
+	skelRend.setAnimationTime(time);
+	JointNode toBeTraversed =*this->getJoint(rootNode.c_str());
+	toBeTraversed.traverse_df(&skelRend);
+}

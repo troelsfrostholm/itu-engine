@@ -9,7 +9,6 @@ ColladaModel::ColladaModel()
 	bModelLoadedCorrectly   =false;
 	bXMLLoaded				=false;
 	iTriangleCount          =0;
-	iMeshCount				=0;
 	transformation          =Matrix();
 	sSkeletonID				=NULL;
 	skinningInformation     =Skin();
@@ -132,6 +131,7 @@ void ColladaModel::RenderFrame()
 	glCullFace( GL_BACK );
 	for(unsigned i=0;i<vRenderData.size();i++)
 	{
+		glBindTexture(GL_TEXTURE_2D,vRenderData[i].iTextID);
 		for(unsigned k=0;k<vRenderData[i].iTriangleCount;k++)
 		{
 			glBegin(GL_TRIANGLES);
@@ -173,10 +173,8 @@ unsigned d=0; //Misc count
 unsigned i=0; //Image count
 unsigned t=0; //Triangles count
 unsigned m=0; //Mesh count
-iMeshCount=dataRead.size();
 int maxVertices=dataRead.back().sources[dataRead.back().sVertPosition].iFArraySize/3;
 pVertArray = new Vertex[maxVertices];
-
 //FOR EACH MESH
 for(m=0;m<dataRead.size();m++)
 {
@@ -334,6 +332,8 @@ for(m=0;m<dataRead.size();m++)
 	bModelLoadedCorrectly=true;
 }
 
+
+//Find the root node among the list of nodes
 void ColladaModel::FindRoot(Node* nodeList)
 {
 	if((nodeList!=NULL)&&strcmp(nodeList->sID.c_str(),sSkeletonID.c_str()))
@@ -410,17 +410,21 @@ void ColladaModel::LoadAnimationData()
 	}
 }
 
+
+//Load the skeleton Scenegraph
 void ColladaModel::LoadSkeleton()
 {
 	if(pSkeletonNode!=NULL&&strcmp(sSkeletonID.c_str(),""))
 	{
 		JointNode root = JointNode(pSkeletonNode->sID.c_str(),pSkeletonNode->sName.c_str(),pSkeletonNode->sSID.c_str(),pSkeletonNode->sType.c_str(),pSkeletonNode->transformation);
-		ColladaSkeleton=Skeleton(root);
+		ColladaSkeleton=Skeleton(root,sSkeletonID.c_str());
 		ColladaSkeleton.addJoint(root.getSID(),root);
 		LoadJointRec(ColladaSkeleton.getJoint(root.getSID()),pSkeletonNode);
 	}
 }
 
+
+//Load the joint to create the skeleton
 void ColladaModel::LoadJointRec(JointNode* jParent,Node* nParent)
 {
 	std::map<core::stringc ,Node>::iterator it;
@@ -433,6 +437,8 @@ void ColladaModel::LoadJointRec(JointNode* jParent,Node* nParent)
 		}
 }
 
+
+//Load the weights associated to the joints
 void ColladaModel::LoadWeights()
 {
 	Source JointSource=skinningInformation.mSources[skinningInformation.jointSource];
@@ -463,15 +469,10 @@ void ColladaModel::LoadWeights()
 	
 }
 
+//Traverse the skeleton to be rendered
 void ColladaModel::DrawSkeleton(float time)
 {
-	if(strcmp(sSkeletonID.c_str(),""))
-	{
-		SkeletonRenderer skelRend = SkeletonRenderer();
-		skelRend.setAnimationTime(time);
-		JointNode toBeTraversed =*ColladaSkeleton.getJoint(sSkeletonID.c_str());
-		toBeTraversed.traverse_df(&skelRend);
-	}
+	ColladaSkeleton.render(time);
 }
 
 void ColladaModel::SetupPose()

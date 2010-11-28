@@ -103,6 +103,7 @@ int main(int argc, char* argv[])
 	//model3.LoadModel("models/Goblin/Goblin.DAE");
 	model3.LoadModel("models/Astroboy/Astroboy.DAE");
 	//model3.LoadModel("models/Duck/Duck.dae");
+	//model3.LoadModel("models/pumpkin/pumpkin.dae");
 	float mass;
 	btVector3 fallInertia;
 

@@ -275,7 +275,6 @@ private:
 	bool                bModelLoadedCorrectly;
 	bool				bXMLLoaded;
 	unsigned			iTriangleCount;
-	unsigned			iMeshCount;
 
 	Skeleton			ColladaSkeleton;
 	Skin				skinningInformation;
