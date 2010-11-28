@@ -241,10 +241,13 @@ void NMS_SceneRenderer::renderSkyBox()
 	glMultMatrixf(transform.getElements());
 	if(skyboxTexture == 0)
 		skyboxTexture = NMS_ASSETMANAGER.LoadTexture("textures/wikimap.tga", "map");
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, skyboxTexture);
+	NMS_SHADER_MANAGER->setShaderAttribute("colorMap", 0);
 	NMS_SHADER_MANAGER->setShaderAttribute("environmentmap", 0);
 	NMS_SHADER_MANAGER->setShaderAttribute("lightingEnabled", 0);
 	NMS_SHADER_MANAGER->enableTextures();
+	
 
 	float size = 100;
 	float c = 0.00f; //correction inset for tex coords, so we are sure we are inside the tile

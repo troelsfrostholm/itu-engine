@@ -116,14 +116,16 @@ int main(int argc, char* argv[])
 
 	NMS_Sphere sphere = NMS_Sphere();
 
-	MD2Model model = MD2Model();
+	ColladaModel model = ColladaModel();
 	//""
-	model.LoadModel("models/drfreak/drfreak.md2","models/drfreak/drfreak.tga");
+	//model.LoadModel("models/drfreak/drfreak.md2","models/drfreak/drfreak.tga");
+	model.LoadModel("models/Duck/Duck.dae");
 	model.material.ambient = Vector(0.2, 0.2, 0.2, 0.2);
 	model.material.diffuse = Vector(0.5, 0.5, 0.5, 0.5);
 	model.material.specular = Vector(1, 1, 1, 1);
 	model.material.shininess = 10;
 	model.material.sphereMap = "textures/wikimapsphere.tga";
+	model.material.texture = "models/Duck/duckCM.tga";
 
 	sphere.material.ambient = Vector(0.5, 0.2, 0.2);
 	sphere.material.diffuse = Vector(0.5, 0.5, 0.5);

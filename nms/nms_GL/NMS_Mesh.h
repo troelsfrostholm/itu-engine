@@ -19,6 +19,8 @@ struct NMS_Material
 	Vector diffuse;
 	Vector specular;
 	float shininess;
+	string texture;
+	int texId;
 	string sphereMap;
 	int smapTexId;
 };
