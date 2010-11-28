@@ -143,19 +143,24 @@ void ColladaModel::RenderFrame()
 		for(unsigned k=0;k<vRenderData[i].iTriangleCount;k++)
 		{
 			glBegin(GL_TRIANGLES);
-				//glTexCoord2f(textArray[vRenderData[i].vTextures[k]],textArray[vRenderData[i].vTextures[k]+1]);
-				glTexCoord3fv(&textArray[vRenderData[i].vTextures[k*vRenderData[i].textureStride]*vRenderData[i].textureStride]);
+				if(vRenderData[i].textureStride>2)
+					glTexCoord3fv(&textArray[vRenderData[i].vTextures[k*vRenderData[i].textureStride]*vRenderData[i].textureStride]);
+				else
+					glTexCoord2fv(&textArray[vRenderData[i].vTextures[k*vRenderData[i].textureStride]*vRenderData[i].textureStride]);
+
 				glVertex3fv(&vertArray[vRenderData[i].vVertices[k*vRenderData[i].vertexStride]*vRenderData[i].vertexStride]);
 
-				//glTexCoord3f(textArray[vRenderData[i].vTextures[k+1]],textArray[vRenderData[i].vTextures[k+1]+1],textArray[vRenderData[i].vTextures[k+1]+2]);
-				//glTexCoord2f(textArray[vRenderData[i].vTextures[k+1]],textArray[vRenderData[i].vTextures[k+1]+1]);
-				//glVertex3f(vertArray[vRenderData[i].vVertices[k*3+1]],vertArray[vRenderData[i].vVertices[k*3+1]+1],vertArray[vRenderData[i].vVertices[k*3+1]+2]);
-				glTexCoord3fv(&textArray[vRenderData[i].vTextures[1+k*vRenderData[i].textureStride]*vRenderData[i].textureStride]);
+				
+				if(vRenderData[i].textureStride>2)
+					glTexCoord3fv(&textArray[vRenderData[i].vTextures[1+k*vRenderData[i].textureStride]*vRenderData[i].textureStride]);
+				else
+					glTexCoord2fv(&textArray[vRenderData[i].vTextures[1+k*vRenderData[i].textureStride]*vRenderData[i].textureStride]);
 				glVertex3fv(&vertArray[vRenderData[i].vVertices[1+k*vRenderData[i].vertexStride]*vRenderData[i].vertexStride]);
-				//glTexCoord3f(textArray[vRenderData[i].vTextures[k+2]],textArray[vRenderData[i].vTextures[k+2]+1],textArray[vRenderData[i].vTextures[k+2]+2]);
-				//glTexCoord2f(textArray[vRenderData[i].vTextures[k+2]],textArray[vRenderData[i].vTextures[k+2]+1]);
-				//glVertex3f(vertArray[vRenderData[i].vVertices[k*3+2]],vertArray[vRenderData[i].vVertices[k*3+2]+1],vertArray[vRenderData[i].vVertices[k*3+2]+2]);
-				glTexCoord3fv(&textArray[vRenderData[i].vTextures[2+k*vRenderData[i].textureStride]*vRenderData[i].textureStride]);
+				
+				if(vRenderData[i].textureStride>2)
+					glTexCoord3fv(&textArray[vRenderData[i].vTextures[2+k*vRenderData[i].textureStride]*vRenderData[i].textureStride]);
+				else
+					glTexCoord2fv(&textArray[vRenderData[i].vTextures[2+k*vRenderData[i].textureStride]*vRenderData[i].textureStride]);
 				glVertex3fv(&vertArray[vRenderData[i].vVertices[2+k*vRenderData[i].vertexStride]*vRenderData[i].vertexStride]);
 			glEnd();
 		}
@@ -268,51 +273,41 @@ for(m=0;m<dataRead.size();m++)
 								}
 							}
 
-							toBeRendered.vTextures=new(LEVEL_ALLOC, MEM_LEVEL) unsigned[numberOfTriangles*3];
+							toBeRendered.vTextures=new(LEVEL_ALLOC, MEM_LEVEL) unsigned[numberOfTriangles*textureStride];
 							toBeRendered.vNormals=new(LEVEL_ALLOC, MEM_LEVEL)  unsigned[numberOfTriangles*3*normalStride];
 							toBeRendered.vVertices=new(LEVEL_ALLOC, MEM_LEVEL) unsigned[numberOfTriangles*vertexStride];
-							int firstVertex;
-							int secondVertex;
-							int thirdVertex;
 
 
 
-							//PVert array is a structure that contain data for each vertex.
-							//It contains the position, the normals and the texture coordinate for each vertex.
-							//toBeRendered contains references like the offset in the collada file in a way that we can
-							//modify just PVert array in the skinning part and being able to get the modification even when rendering
-							//in a bulk way.
+							
 							for(i=0;i<numberOfTriangles;i++)
 							{
 								
 								//Load the index of the vertices to be rendered
-								firstVertex=dataPointer[i*numberOfArrays*3+vertexOffset];
-								toBeRendered.vVertices[0+i*vertexStride]=firstVertex;
+								firstOffset=dataPointer[i*numberOfArrays*3+vertexOffset];
+								toBeRendered.vVertices[0+i*vertexStride]=firstOffset;
 								
-								secondVertex=dataPointer[i*numberOfArrays*3+vertexOffset+numberOfArrays];
-								toBeRendered.vVertices[1+i*vertexStride]=secondVertex;
+								secondOffset=dataPointer[i*numberOfArrays*3+vertexOffset+numberOfArrays];
+								toBeRendered.vVertices[1+i*vertexStride]=secondOffset;
 								
-								thirdVertex=dataPointer[i*numberOfArrays*3+vertexOffset+numberOfArrays*2];
-								toBeRendered.vVertices[2+i*vertexStride]=thirdVertex;
+								thirdOffset=dataPointer[i*numberOfArrays*3+vertexOffset+numberOfArrays*2];
+								toBeRendered.vVertices[2+i*vertexStride]=thirdOffset;
 								
 
 								//If we have a texture, load the data for it
 								if(textEnabled)
 								{
 									firstOffset=dataPointer[i*numberOfArrays*3+textureOffset];
-						
-									toBeRendered.vTextures[0+i*3]=firstOffset;
-									//toBeRendered.vTextures[firstVertex*textureStride+2]=textArray[firstOffset*textureStride+2];
+									toBeRendered.vTextures[0+i*textureStride]=firstOffset;
 									
-
-
 									secondOffset=dataPointer[i*numberOfArrays*3+textureOffset+numberOfArrays];
-									toBeRendered.vTextures[1+i*3]=secondOffset;
-									//toBeRendered.vTextures[secondVertex*textureStride+2]=textArray[secondOffset*textureStride+2];
-								
-									thirdOffset=dataPointer[i*numberOfArrays*3+textureOffset+numberOfArrays*2];
-									toBeRendered.vTextures[2+i*3]=thirdOffset;
-									//toBeRendered.vTextures[thirdVertex*textureStride+2]=textArray[thirdOffset*textureStride+2];
+									toBeRendered.vTextures[1+i*textureStride]=secondOffset;
+									
+									if(textureStride>2)
+									{
+										thirdOffset=dataPointer[i*numberOfArrays*3+textureOffset+numberOfArrays*2];
+										toBeRendered.vTextures[2+i*textureStride]=thirdOffset;
+									}
 								}
 
 							//Normals loading
@@ -349,8 +344,6 @@ for(m=0;m<dataRead.size();m++)
 	}
 	LoadSkeleton();
 	LoadWeights();
-	DrawSkeleton(0.0f);
-    //SetupBindPose();
 	LoadAnimationData();
 	bModelLoadedCorrectly=true;
 }
