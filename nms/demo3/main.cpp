@@ -137,8 +137,10 @@ int main(int argc, char* argv[])
 	light0.setSpecular(1, 1, 1, 1);
 	
 	//Create scene graph
-	NMS_VerticalPlane plane = NMS_VerticalPlane();
+	NMS_Sphere plane = NMS_Sphere();
 	plane.material.ambient = Vector(0, 0, 1, 1);
+	plane.material.diffuse = Vector(0, 0, 1, 1);
+	plane.material.specular = Vector(0, 0, 1, 1);
 
 	SceneGraphNode* root = engine.getScene();
 	GeometryNode freakNode = GeometryNode(&freakModel, fallRigidBody);
