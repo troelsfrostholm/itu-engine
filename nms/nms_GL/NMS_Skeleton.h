@@ -58,6 +58,7 @@ protected:
 	unsigned   iFps;
 	
 	void Animate(float time,Matrix *m);
+	Matrix LERP(Matrix *current,Matrix *next,float beta);
 
 public:
 	JointNode();
@@ -75,20 +76,21 @@ public:
 	unsigned getNKeyFrames();
 };
 
-class SKELETON_D Skeleton
+class SKELETON_D Skeleton : public NMS_Mesh
 {
 protected:
 	JointNode root;
-
+	string rootNode;
 	std::map<string,JointNode> joints;
 
 public:
 	Skeleton(){};
-	Skeleton(JointNode root)
+	Skeleton(JointNode root,string rootNode)
 	{
 		this->root=root;
+		this->rootNode=rootNode;
 	};
-
+	void	render(float time);
 	void addJoint(string sID,JointNode node);
 	JointNode* getJoint(string sID);
 	JointNode* getJointsSID(string sSID);
