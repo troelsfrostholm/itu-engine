@@ -5,8 +5,6 @@
 #endif
 
 
-
-
 #ifndef __COLLADAMODEL_H__
 #define __COLLADAMODEL_H__
 
@@ -15,6 +13,7 @@
 #include "NMS_Mesh.h"
 #include "Matrix.h"
 #include "NMS_LevelAllocator.h"
+#include "NMS_StubAllocator.h"
 
 #include "SDL_opengl.h"
 #include <irrXML.h>
@@ -28,8 +27,6 @@
 #include "NMS_DebugDraw.h"
 #include "NMS_Skeleton.h"
 #include <assert.h>
-#define NOMINMAX
-
 
 #pragma warning( disable: 4251 )  //Used to disable this useless warning: http://www.unknownroad.com/rtfm/VisualStudio/warningC4251.html
 

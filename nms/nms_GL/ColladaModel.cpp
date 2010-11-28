@@ -120,7 +120,9 @@ void ColladaModel::render(float time)
 
 int ColladaModel::LoadSkin(char *filename)
 {
-	return NMS_ASSETMANAGER.LoadTexture(filename,filename);
+	material.texId = NMS_ASSETMANAGER.LoadTexture(filename,filename);
+	material.texture = string(filename);
+	return material.texId;
 }
 
 

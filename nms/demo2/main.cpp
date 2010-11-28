@@ -66,16 +66,16 @@ void keyPressed(SDLKey key)
 	btVector3 vec;
 	switch( key ) {
 		 case SDLK_a:
-			 cam.setSlideSpeed(+0.01f);
+			 cam.setSlideSpeed(+0.5f);
 				   break;
 		 case SDLK_d:
-			 cam.setSlideSpeed(-0.01f);
+			 cam.setSlideSpeed(-0.5f);
 				   break;
 		 case SDLK_w:
-			 cam.setSpeed(+0.01f);
+			 cam.setSpeed(+0.5f);
 				   break;
 		 case SDLK_s:
-			 cam.setSpeed(-0.01f);
+			 cam.setSpeed(-0.5f);
 				   break;
 		 case SDLK_UP:
 			 fallRigidBody2->activate();
@@ -156,7 +156,7 @@ int main(int argc, char* argv[])
 	GeometryNode geom3 = GeometryNode(&model2, fallRigidBody4);
 
 	geom = GeometryNode(&model, fallRigidBody2);
-	GeometryNode light = GeometryNode(&light1,fallRigidBody);
+	GeometryNode light = GeometryNode(&light1,fallRigidBody2);
 	SceneGraphNode* root = engine.getScene();
 
 	Matrix tra = Matrix();
@@ -194,6 +194,7 @@ int main(int argc, char* argv[])
 
 	NMS_SceneRenderer* renderer = engine.getRenderer();
 	renderer->setCurrentCamera(&cam);
+	renderer->setShaders("shaders\\fixedfunction.vertex", "shaders\\fixedfunction.fragment");
 
 	engine.run();
 	return 0;

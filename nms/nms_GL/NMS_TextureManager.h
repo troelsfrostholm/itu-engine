@@ -48,11 +48,12 @@ private :
 	NMS_TextureManager (void);
 	~NMS_TextureManager (void);
 	static void Initialize (void);
-	textStruct checkForHash(shaMap hash,char* textureName);
+	textStruct checkForHash(shaMap hash,string textureName);
 
 public :
 	//Load a texture. We are using devil so we can load any file format that Devil is able to load as a texture
 	int LoadTexture (const char *szFilename,char* textureName);
+	int LoadTextureNoBind (const char *szFilename,char* textureName);
 	//Release the memory space occupied by a specific texture
 	void FreeTexture (char* textureName);
 	//Release the memory occupied by all the textures
@@ -63,6 +64,11 @@ private :
 	static NMS_TextureManager* m_Singleton;
 	char m_sMessage[300];
 	static const size_t m_iMessageSize=300*sizeof(char);
-	std::map<char* ,textStruct> textureMap;
+
+	struct stringLess : binary_function <string, string, bool> {
+		bool operator() (const string& x, const string& y) const
+			{ return x.compare(y)<0; }
+	};
+	std::map<string, textStruct, stringLess> textureMap;
 };
 #endif

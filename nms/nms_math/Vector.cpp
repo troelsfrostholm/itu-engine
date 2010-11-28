@@ -63,12 +63,6 @@ Vector operator*(float f, Vector const &v)
 
 Vector& Vector::operator *= (const Matrix &m)
 {
-	if (4!=m.getRowL())
-	{
-		cerr<<"The dimension of the row of the matrix do not match for the * operator, it should be 4!\n";
-	   //TO BE FIXED
-      throw 0;
-	}
 
 	Vector temp=Vector();
 	for (unsigned i=1; i <= 4; i++)
@@ -139,4 +133,12 @@ Vector  Vector::normal()
 
 			// 1/|v|*v
 			return (*this)*(1/m);
+}
+
+void Vector::floatArray(float * dest)
+{
+	dest[0]=x;
+	dest[1]=y;
+	dest[2]=z;
+	dest[3]=w;
 }

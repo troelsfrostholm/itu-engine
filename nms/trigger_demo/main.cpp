@@ -66,16 +66,16 @@ void keyPressed(SDLKey key)
 			break;
 
 		 case SDLK_a:
-			 cam.setSlideSpeed(+0.01f);
+			 cam.setSlideSpeed(+0.5f);
 				   break;
 		 case SDLK_d:
-			 cam.setSlideSpeed(-0.01f);
+			 cam.setSlideSpeed(-0.5f);
 				   break;
 		 case SDLK_w:
-			 cam.setSpeed(+0.01f);
+			 cam.setSpeed(+0.5f);
 				   break;
 		 case SDLK_s:
-			 cam.setSpeed(-0.01f);
+			 cam.setSpeed(-0.5f);
 				   break;
 	}
 }

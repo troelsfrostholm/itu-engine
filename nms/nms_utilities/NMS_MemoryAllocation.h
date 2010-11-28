@@ -15,8 +15,11 @@
 typedef enum {
 	MEM_PERSISTENT,
 	MEM_LEVEL,
-	MEM_VERTEX,
-	MEM_TEMPORARY } memCategories;
+	MEM_TEMP,
+	MEM_MATRIX,
+	MEM_NUM_CATEGORIES } memCategories;
+
+extern MEMORY_ALLOCATION_D int CurrentMemoryUsage[MEM_NUM_CATEGORIES];
 
 class MEMORY_ALLOCATION_D MemoryAllocator
 {

@@ -54,7 +54,7 @@ MD2Model::~MD2Model()
 	nmsFileManagement::Free((void**)&p_modelVertices);
 	nmsFileManagement::Free((void**)&p_nextFrameVertices);
 	for (int index=0;index<md2Header.numFrames;index++)
-		nmsFileManagement::Free((void**)&p_frameData[index].pvertices);
+//		nmsFileManagement::Free((void**)&p_frameData[index].pvertices);
 	nmsFileManagement::Free((void**)&p_frameData);
 	nmsFileManagement::Free((void**)&p_lightnormals);
 	nmsFileManagement::Free((void**)&p_nextLightNormals);
@@ -309,8 +309,10 @@ void MD2Model::RenderFrame( void )
     //Interpolate the vertixes and the light normals for our animations
 	Interpolate( p_modelVertices,p_lightnormals );
     // Bind the model texture to our model
-	glEnable(GL_TEXTURE_2D);
-    glBindTexture( GL_TEXTURE_2D, textureID );
+	//glEnable(GL_TEXTURE_2D);
+	NMS_SHADER_MANAGER->enableTextures();
+	//glActiveTexture(GL_TEXTURE0);
+    //glBindTexture( GL_TEXTURE_2D, textureID );
 	
 
     //Find if we are using fans or strips
@@ -379,6 +381,8 @@ void MD2Model::Interpolate( vec3_t *vertlist,vec3_t* lightList)
 int MD2Model::LoadSkin(const char *filename)
 {
 	textureID=NMS_ASSETMANAGER.LoadTexture((char*)filename,(char*)filename);
+	material.texture = string(filename);
+	material.texId = textureID;
 	return textureID;
 }
 

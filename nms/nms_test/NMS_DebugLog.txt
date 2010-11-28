@@ -1,2 +1,0 @@
-NMS_TextureManager::Texture Manager Initialized!
-NMS_TextureManager::Trying to load [models/drfreak/drfreak.tga]

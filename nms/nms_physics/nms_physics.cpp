@@ -24,6 +24,10 @@ void nms_physics::initPhysics()
 
 }
 
+void nms_physics::setGravity(int num)
+{
+	dynamicsWorld->setGravity(btVector3(0,num,0));
+}
 
 void nms_physics::setDebugMode(bool state)
 {

@@ -4,6 +4,11 @@ NMS_Framework::NMS_Framework(){};
 
 bool NMS_Framework::NMSInit(int width,int height,int bpp,char* windowTitle,bool fullscreen)
 {
+	//Clear memory usage array
+	//Static array in nms_utilities/NMS_MemoryAllocation.h
+	//Requires a refactoring!!
+	memset(&CurrentMemoryUsage, 0, sizeof(int)*MEM_NUM_CATEGORIES);
+
 	//Initialize mutexes
 	initMutexes();
 
@@ -15,7 +20,7 @@ bool NMS_Framework::NMSInit(int width,int height,int bpp,char* windowTitle,bool 
 	//Create scene-graph
 	sceneGraphRoot = new(STATIC_ALLOC, MEM_PERSISTENT) CameraNode();
 	sceneRenderer.setScene(sceneGraphRoot);
-	sceneRenderer.setCurrentCamera((CameraNode*)sceneGraphRoot);
+	sceneRenderer.setCurrentCamera((NMSCameraController*)sceneGraphRoot);
 
 	//set callback for quitting
 	NMS_EVENT_MANAGER.onQuit(this, &NMS_Framework::NMSQuit);
@@ -24,7 +29,7 @@ bool NMS_Framework::NMSInit(int width,int height,int bpp,char* windowTitle,bool 
 	camera.setPos(Vector(0,0,-5.0f));
 	camera.setSpeed(0);
 	camera.setSlideSpeed(0);
-	light=NMS_LightSystem::NMS_LightSystem();
+
 	running=true;
 	return true;
 }
@@ -46,9 +51,11 @@ void NMS_Framework::run()
 	{
 		SDL_LockMutex(sceneGraphGuard);
 		NMS_EVENT_MANAGER.processEvents();
-		SDL_UnlockMutex(sceneGraphGuard);	
+		SDL_UnlockMutex(sceneGraphGuard);
+		SDL_Delay(10);
 	}
 	sceneRenderer.down();
+	NMS_Framework::logMemoryUsage();
 	NMS_Framework::cleanup();
 }
 
@@ -58,6 +65,7 @@ void NMS_Framework::cleanup()
 	NMS_ASSETMANAGER.FreeAll();
 	SDL_DestroyMutex(sceneGraphGuard);
 	sceneGraphRoot = NULL;
+	delete LEVEL_ALLOC;
 	delete STATIC_ALLOC;
 	SDL_Quit();
 }
@@ -80,4 +88,18 @@ NMS_SceneRenderer* NMS_Framework::getRenderer()
 void NMS_Framework::setDebugMode(bool mode)
 {
 	bDebugEnable=mode;
+}
+
+void NMS_Framework::logMemoryUsage()
+{
+	LOG.write("Memory usage at end of program : ", LOG_RUN);
+	char output[50];
+	sprintf(output, "\r\n    Persistent       : %d", CurrentMemoryUsage[MEM_PERSISTENT]);
+	LOG.write(output, LOG_RUN);
+	sprintf(output, "\r\n    Level            : %d", CurrentMemoryUsage[MEM_LEVEL]);
+	LOG.write(output, LOG_RUN);
+	sprintf(output, "\r\n    Matrix           : %d", CurrentMemoryUsage[MEM_MATRIX]);
+	LOG.write(output, LOG_RUN);
+	sprintf(output, "\r\n    Temporary vars   : %d", CurrentMemoryUsage[MEM_TEMP]);
+	LOG.write(output, LOG_RUN);
 }

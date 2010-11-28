@@ -15,7 +15,23 @@ DLL EXPORTING SAFE
 #include "NMS_3DObject.h"
 #include "Vector.h"
 #include "Matrix.h"
+#include "NMS_StubAllocator.h"
 
+class LIGHTSYSTEM_D NMS_PointLight : public NMS_3DObject
+{
+private:
+	Vector ambient;
+	Vector diffuse;
+	Vector specular;
+	int lightNumber;
+
+public:
+	NMS_PointLight(int openGlLightNumber);
+	void setAmbient(float r, float g, float b, float a);
+	void setDiffuse(float r, float g, float b, float a);
+	void setSpecular(float r, float g, float b, float a);
+	void render(float time);
+};
 
 
 class LIGHTSYSTEM_D AmbientLight: public NMS_3DObject

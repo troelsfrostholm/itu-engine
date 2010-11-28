@@ -57,6 +57,7 @@ class PHYSICS_D nms_physics
 		~nms_physics();
 		void initPhysics();
 		void exitPhysics();
+		void setGravity(int num);
 		void simulatePhysics();
 		void addRBody(btRigidBody* body);
 		void setDebugMode(bool state);
@@ -106,6 +107,48 @@ class PHYSICS_D NMS_KinematicMotionState : public btMotionState
 		btTransform position;
 		btTransform userPosition;
 		bool userSetPosition;
+};
+
+class PHYSICS_D NMS_DefaultMotionState : public btMotionState 
+{
+	public:
+		NMS_DefaultMotionState(const btTransform &initialpos)
+		{
+			position = initialpos;
+			userSetPosition = false;
+		}
+
+		virtual ~NMS_DefaultMotionState() {
+		}
+
+		virtual void getWorldTransform(btTransform &worldTrans) const
+		{
+			worldTrans = position;
+		}
+
+		void setPos(btTransform &currentPos)
+		{
+			userPosition = currentPos;
+			userSetPosition = true;
+		}
+
+		virtual void setWorldTransform(const btTransform &worldTrans){
+			position = worldTrans;
+			if(userSetPosition) {
+				position = userPosition;
+				userSetPosition = false;
+			}
+		}
+
+	protected:
+		btTransform position;
+		btTransform userPosition;
+		bool userSetPosition;
+};
+
+class PHYSICS_D NMS_CollisionShape
+{
+
 };
 
 class PHYSICS_D NMS_RigidBody
