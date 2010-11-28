@@ -53,6 +53,7 @@ protected:
 	unsigned   iNKeyFrames;			   // Number of Keyframes used by this joint
     KeyFrame   *pAnimationFrames;         // All Key frames for this Bone’s animation
 	float      fCurrentTime;
+	float	   fOldTime;
 	unsigned   iCurrentFrame;
 	unsigned   iFps;
 	

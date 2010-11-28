@@ -7,9 +7,11 @@ JointNode::JointNode() : TransformationNode()
 	mWorldMatrix = Matrix();
 	mSkinningMatrix = Matrix();
 	fCurrentTime=0.0f;
-	iFps=60;
+	fOldTime=0.0f;
+	iFps=3000;
 	iNKeyFrames=0;
     pAnimationFrames=NULL;
+	iCurrentFrame=0;
 }
 
 JointNode::JointNode(string sID, string sName, string sSID, string sType,Matrix t) : TransformationNode(t) 
@@ -23,9 +25,11 @@ JointNode::JointNode(string sID, string sName, string sSID, string sType,Matrix 
 	mWorldMatrix = Matrix();
 	mSkinningMatrix = Matrix();
 	fCurrentTime=0.0f;
-	iFps=60;
+	fOldTime=0.0f;
+	iFps=3000;
 	iNKeyFrames=0;
     pAnimationFrames=NULL;
+	iCurrentFrame=0;
 }
 
 void JointNode::setInverseBind(Matrix m)
@@ -82,20 +86,20 @@ JointNode* JointNode::getParent()
 //Calculates the current frame for the animation and sets the matrixes used for the skinning
 void JointNode::Animate(float time,Matrix *m)
 {
-	float fOldTime=fCurrentTime;
     fCurrentTime = time;
 
 	//If we have animation data for this joint, then calculate the proper matrix for the skeleton
 	if(iNKeyFrames>0)
 	{
 		// calculate current and next frames
-		/*if( fCurrentTime - fOldTime > (1.0 /iFps) )
-		{*/
+		if( fCurrentTime - fOldTime > (1.0 /iFps) )
+		{
+			fOldTime=fCurrentTime;
 			iCurrentFrame++;
 
 			if( iCurrentFrame >= iNKeyFrames )
 				iCurrentFrame = 0;
-		//}
+		}
 		transform=*pAnimationFrames[iCurrentFrame].getTransform();
 	}
 }
@@ -104,23 +108,19 @@ void JointNode::Animate(float time,Matrix *m)
 void JointNode::before(SceneGraphVisitor *v, Matrix *m)
 {
 	SkeletonRenderer* renderer=(SkeletonRenderer*)v;
-	////Animate(renderer->getAnimationTime(),m);
-	//TransformationNode::before(v, m);
-	//mWorldMatrix=(*m);
-	////Save the world matrix for the current node and precalculate the skinning matrix used in the skinning
-	//mSkinningMatrix=~(mWorldMatrix*mInverseBind);
-	//v->sg_before(*m, this);
 	Animate(renderer->getAnimationTime(),m);
 	TransformationNode::before(v, m);
 	mWorldMatrix=*m;
 	//Save the world matrix for the current node and precalculate the skinning matrix used in the skinning
 	mSkinningMatrix=~(mWorldMatrix*mInverseBind);
-	//v->sg_before(*m, this);
+	//Update the skeleton drawing
+	v->sg_before(*m, this);
 }
 
 void JointNode::after(SceneGraphVisitor *v, Matrix *m) 
 {
-	//v->sg_after(*m, this);
+	//Update the skeleton drawing for the last vertex
+	v->sg_after(*m, this);
 	TransformationNode::after(v, m);
 }
 
