@@ -13,7 +13,7 @@
 #define HEIGHT 400
 
 NMSCameraFPS fpsCam;
-CameraNode cam;
+NMSCameraController * cam;
 NMS_SceneRenderer* renderer;
 
 void mouseMoved(int MouseX, int MouseY)
@@ -60,19 +60,19 @@ void keyPressed(SDLKey key)
 			break;
 
 		 case SDLK_a:
-			 fpsCam.setSlideSpeed(+0.01f);
+			 fpsCam.setSlideSpeed(+0.5f);
 				   break;
 		 case SDLK_d:
-			 fpsCam.setSlideSpeed(-0.01f);
+			 fpsCam.setSlideSpeed(-0.5f);
 				   break;
 		 case SDLK_w:
-			 fpsCam.setSpeed(+0.01f);
+			 fpsCam.setSpeed(+0.5f);
 				   break;
 		 case SDLK_s:
-			 fpsCam.setSpeed(-0.01f);
+			 fpsCam.setSpeed(-0.5f);
 				   break;
 		 case SDLK_1:
-			 renderer->setCurrentCamera(&cam);
+			 renderer->setCurrentCamera(cam);
 			 break;
 		 case SDLK_2:
 			 renderer->setCurrentCamera(&fpsCam);
@@ -125,14 +125,22 @@ int main(int argc, char* argv[])
     engine.physics->addRBody(fallRigidBody);
 
 	//LIGHT DEFINITION
-	LightSource light0 = LightSource();
+	/*LightSource light0 = LightSource();
 	light0.setLightNumber(GL_LIGHT0);
 	light0.setLightValue(&Vector(1,1,1,0));
 	light0.setPosVector(&Vector(0,0,0,1));
-	light0.defineLight(light0);
+	light0.defineLight(light0);*/
+
+	NMS_PointLight light0 = NMS_PointLight(GL_LIGHT0);
+	light0.setAmbient(1,1,1,0.2);
+	light0.setDiffuse(1,1,1,1);
+	light0.setSpecular(1, 1, 1, 1);
 	
 	//Create scene graph
-	NMS_VerticalPlane plane = NMS_VerticalPlane();
+	NMS_Sphere plane = NMS_Sphere();
+	plane.material.ambient = Vector(0, 0, 1, 1);
+	plane.material.diffuse = Vector(0, 0, 1, 1);
+	plane.material.specular = Vector(0, 0, 1, 1);
 
 	SceneGraphNode* root = engine.getScene();
 	GeometryNode freakNode = GeometryNode(&freakModel, fallRigidBody);
@@ -144,12 +152,12 @@ int main(int argc, char* argv[])
 	TransformationNode tNode = TransformationNode(transl);
 	transl.translate(Vector(0.f, -20.f, -50.f));
 	TransformationNode planeTNode = TransformationNode(transl);
-	cam = CameraNode();
+	cam = new NMSCameraFPS();
 	transl.translate(Vector(0.f, -10.f, 0.f));
 	Matrix rot = Matrix();
 	rot.rotY(120.f);
 	//cam.multiply(rot);
-	cam.multiply(transl);
+	cam->multiply(transl);
 	
 
 	root->addChild(&light);
@@ -157,7 +165,7 @@ int main(int argc, char* argv[])
 	root->addChild(&planeTNode);
 	tNode.addChild(&freakNode);
 	planeTNode.addChild(&planeNode);
-	root->addChild(&cam);
+	root->addChild(cam);
 
 	//Setup camera
 	fpsCam = NMSCameraFPS();
@@ -165,6 +173,7 @@ int main(int argc, char* argv[])
 	renderer = engine.getRenderer();
 	renderer->setCurrentCamera(&fpsCam);
 	renderer->setWireframeMode(false);
+	renderer->setShaders("shaders\\fixedfunction.vertex", "shaders\\fixedfunction.fragment");
 
 	NMS_EVENT_MANAGER.onKeyPressed(&keyPressed);
 	NMS_EVENT_MANAGER.onKeyReleased(&keyReleased);

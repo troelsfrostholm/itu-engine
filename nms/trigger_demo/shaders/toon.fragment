@@ -1,0 +1,21 @@
+varying vec3 normal;
+
+void main()
+{
+
+	vec4 color;	
+	vec3 lightDir = normalize(vec3(gl_LightSource[0].position));
+	float intensity = dot(lightDir, normalize(normal));
+	color = gl_FrontMaterial.diffuse;
+
+	if (intensity > 0.95)
+		color = 0.95*color;
+	else if (intensity > 0.5)
+		color = 0.5*color;
+	else if (intensity > 0.25)
+		color = 0.25*color;
+	else
+		color = 0.1*color;
+
+	gl_FragColor = color;
+}

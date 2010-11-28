@@ -109,7 +109,9 @@ void ColladaModel::render(float time)
 
 int ColladaModel::LoadSkin(char *filename)
 {
-	return NMS_ASSETMANAGER.LoadTexture(filename,filename);
+	material.texId = NMS_ASSETMANAGER.LoadTexture(filename,filename);
+	material.texture = string(filename);
+	return material.texId;
 }
 
 void ColladaModel::RenderFrame()
@@ -690,7 +692,7 @@ void ColladaModel::readLibraryGeometries(IrrXMLReader* xml)
 				{
 					char* charArray=(char*)xml->getNodeData();
 					int maxVertices=dataRead.back().sources.back().nElements;
-					dataRead.back().sources.back().pfArray=new float[maxVertices];
+					dataRead.back().sources.back().pfArray=new(LEVEL_ALLOC, MEM_LEVEL) float[maxVertices];
 					GLfloat* tempArray=dataRead.back().sources.back().pfArray;
 					for (int i=0; i<maxVertices; i++)
 						tempArray[i]=(GLfloat)strtod(charArray,&charArray);
@@ -1063,7 +1065,7 @@ void ColladaModel::readFloatArray(IrrXMLReader* xml,float* arrayPointer)
 	int count=xml->getAttributeValueAsInt("count");
 	xml->read();
 	char* charArray=(char*)xml->getNodeData();
-	arrayPointer=new float[count];
+	arrayPointer=new(LEVEL_ALLOC, MEM_LEVEL) float[count];
 	for (int i=0; i<count; i++)
 	{
 		arrayPointer[i]=strtod(charArray,&charArray);
@@ -1101,7 +1103,7 @@ void ColladaModel::readIDREFArray(IrrXMLReader* xml,core::stringc* arrayPointer)
 	int count=xml->getAttributeValueAsInt("count");
 	xml->read();
 	char* charArray=(char*)xml->getNodeData();
-	arrayPointer=new core::stringc[count+1];
+	arrayPointer=new(LEVEL_ALLOC, MEM_LEVEL) core::stringc[count+1];
 	unsigned i=0;
 	unsigned h=0;
 	while(i<count)

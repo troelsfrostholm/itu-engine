@@ -18,6 +18,7 @@
 #include "NMS_CustomTypes.h"
 #include "NMS_LevelAllocator.h"
 
+
 #define MAGIC_NO	844121161  //It means IDP2
 
 #define MAX_VERTICES 2048
