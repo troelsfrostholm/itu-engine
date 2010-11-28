@@ -109,8 +109,8 @@ void ColladaModel::render(float time)
 		{
 			glPushMatrix();
 				DrawSkeleton(time);
-				//SetupBindPose();
-				//RenderFrame();
+				SetupBindPose();
+				RenderFrame();
 			glPopMatrix();
 		}
 		else
@@ -161,7 +161,6 @@ void ColladaModel::RenderFrame()
 			vVertices[k*vRenderData[i].vertexStride+1]=*vRenderData[i].vVertices[k*vRenderData[i].vertexStride+1];
 			vVertices[k*vRenderData[i].vertexStride+2]=*vRenderData[i].vVertices[k*vRenderData[i].vertexStride+2];
 		}
-
 		glTexCoordPointer( vRenderData[i].textureStride, GL_FLOAT, 0, vTextures ); // Set The Vertex Pointer To TexCoord Data
 		glNormalPointer(GL_FLOAT,0, vNormals);
 		glVertexPointer(  3, GL_FLOAT, 0, vVertices); // Set The Vertex Pointer To Vertex Data
@@ -230,6 +229,11 @@ for(m=0;m<dataRead.size();m++)
 
 							int* dataPointer=dataRead[m].triangles[t].pTriangleData;
 							float* vertArray=positionSource->pfArray;
+							copiedPositions=new float[positionSource->count*3];
+							for(int l=0;l<positionSource->count*3;l++)
+							{
+								copiedPositions[l]=vertArray[l];
+							}
 							float* textArray=textureSource->pfArray;
 							float* normArray=normalSource->pfArray;
 
@@ -452,7 +456,8 @@ for(m=0;m<dataRead.size();m++)
 	}
 	LoadSkeleton();
 	LoadWeights();
-    //SetupBindPose();
+	DrawSkeleton(0.0f);
+    SetupBindPose();
 	LoadAnimationData();
 	bModelLoadedCorrectly=true;
 }
@@ -512,8 +517,8 @@ void ColladaModel::LoadAnimationData()
 				Matrix frameMatrix=Matrix();
 				for(int s=0;s<16;s++)
 				{
-					unsigned row = (int) (s % 4)+1;
-					unsigned col = (int) (s / 4)+1;
+					unsigned row = (int) (s / 4)+1;
+					unsigned col = (int) (s % 4)+1;
 					//Skip bugged animation
 					if(!(vAnimation[i].vSources.size()<16*3))
 					{
@@ -604,10 +609,14 @@ void ColladaModel::SetupBindPose()
 	//The skinning calculation for each vertex v in a bind shape is
      //for i to n
           //v += {[(v * BSM) * IBMi * JMi] * JW}
-
+	int i=0;
 	//For each vertex
 	for(unsigned i=0;i<skinningInformation.iWeightCount;i++)
 	{
+		//Restore the original values
+		(*pVertArray[i].vPosition)[0]=copiedPositions[i*3];
+		(*pVertArray[i].vPosition)[1]=copiedPositions[i*3+1];
+		(*pVertArray[i].vPosition)[2]=copiedPositions[i*3+2];
 		//Vertex and normals are loaded correctly
 		Vector Vertex = Vector((*pVertArray[i].vPosition)[0],(*pVertArray[i].vPosition)[1],(*pVertArray[i].vPosition)[2],1);
 		Vector Normal = Vector((*pVertArray[i].vNormals)[0],(*pVertArray[i].vNormals)[1],(*pVertArray[i].vNormals)[2],1);

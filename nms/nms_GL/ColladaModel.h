@@ -301,6 +301,8 @@ private:
 	vector<Animation>   vAnimation;
 	std::map<core::stringc ,Node>   mNodes;
 
+	float* copiedPositions;
+
 	unsigned iCurrentFrame;
 	float    fAnimationTime;
 
@@ -312,8 +314,6 @@ private:
 
 	core::stringc sSkeletonID;
 	Node* pSkeletonNode;
-
-
 	
 	//XML DATA ACQUISITION
 	void readLibraryAnimations(IrrXMLReader* xml);
