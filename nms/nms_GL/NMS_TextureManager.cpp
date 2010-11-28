@@ -103,37 +103,37 @@ int NMS_TextureManager::LoadTexture (const char* sFilename,char* textureName) {
 			  {
 				  //It's a new image, load it
 				  ILboolean success;
-				  ilInit(); /* Initialization of DevIL */
-				  ilGenImages(1, &texid); /* Generation of one image name */
-				  ilBindImage(texid); /* Binding of image name */
-				  success = ilLoadL(IL_TYPE_UNKNOWN,Lump,fileSize); /* Loading of image "image.jpg" */  //USA iLoadImageF
+				  ilInit(); // Initialization of DevIL 
+				  ilGenImages(1, &texid); // Generation of one image name 
+				  ilBindImage(texid); // Binding of image name
+				  success = ilLoadL(IL_TYPE_UNKNOWN,Lump,fileSize); // Loading of image "image.jpg"   //USA iLoadImageF
 				  //free(Lump);
 				  
 
-				  if (success) /* If no error occured: */
+				  if (success) // If no error occured: 
 				  {
-					success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE); /* Convert every colour component into
-					  unsigned byte. If your image contains alpha channel you can replace IL_RGB with IL_RGBA */
+					success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE); // Convert every colour component into
+					  // unsigned byte. If your image contains alpha channel you can replace IL_RGB with IL_RGBA 
 					if (!success)
 					{
 						LOG.write("NMS_TextureManager::Error in converting the texture in the proper format!\n",LOG_ERROR);
 						ilDeleteImages(1, &texid);					 
-						/* Error occured */
+						// Error occured 
 						return -1;
 					}
 
 
 					//Create the new image
-					glGenTextures(1, &image); /* Texture name generation */
+					glGenTextures(1, &image); // Texture name generation 
 					
 					 glBindTexture(GL_TEXTURE_2D, image);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
-			/* We will use linear interpolation for magnification filter */
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
-			/* We will use linear interpolation for minifying filter */
-			glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_BPP), ilGetInteger(IL_IMAGE_WIDTH),
+					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
+					// We will use linear interpolation for magnification filter 
+					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
+					// We will use linear interpolation for minifying filter 
+					glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_BPP), ilGetInteger(IL_IMAGE_WIDTH),
 					ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE,
-					ilGetData()); /* Texture specification */
+					ilGetData()); // Texture specification 
 
 
 					if(_DEBUG)
@@ -141,7 +141,7 @@ int NMS_TextureManager::LoadTexture (const char* sFilename,char* textureName) {
 				  }
 				  else
 				  {
-					/* Error occured */
+					// Error occured 
 					LOG.write("NMS_TextureManager::Error in loading the texture from the Lump!\n",LOG_ERROR);
 					ilDeleteImages(1, &texid);
 					return -1;
@@ -159,16 +159,18 @@ int NMS_TextureManager::LoadTexture (const char* sFilename,char* textureName) {
 	  }
 	 
 
-	  //glBindTexture(GL_TEXTURE_2D, image); /* Binding of texture name */
+	  //glBindTexture(GL_TEXTURE_2D, image); // Binding of texture name 
       ilDeleteImages(1, &texid);
 	  //Close the file we are done with it
 	  fclose(fp);
 	  cerr << "Texture id" << textureMap[textureName].textID;
 	  return textureMap[textureName].textID;
+	  
+	  return textureMap[textureName].textID;
 }
 
 void NMS_TextureManager::FreeTexture (char* textureName) {
-	    std::map<char* ,textStruct>::iterator iter = textureMap.find(textureName);
+	    std::map<string ,textStruct, stringLess>::iterator iter = textureMap.find(textureName);
 		if( iter != textureMap.end() ) {
 			//Delete the requested texture
 			glDeleteTextures (1, &textureMap[textureName].textID);
@@ -181,7 +183,7 @@ void NMS_TextureManager::FreeTexture (char* textureName) {
 }
 
 void NMS_TextureManager::FreeAll (void) {
-	 std::map<char* ,textStruct>::iterator iter;
+	 std::map<string ,textStruct, stringLess>::iterator iter;
      for( iter = textureMap.begin(); iter != textureMap.end(); ++iter ) 
 	 {
       glDeleteTextures (1, &textureMap[iter->first].textID);
@@ -193,18 +195,18 @@ void NMS_TextureManager::FreeAll (void) {
 }
 
 
-textStruct NMS_TextureManager::checkForHash(shaMap hash,char* textureName)
+textStruct NMS_TextureManager::checkForHash(shaMap hash,string textureName)
 {
 	shaMap current=NULL;
 	textStruct toBeReturned;
 	toBeReturned.hash=NULL;
 	toBeReturned.textID=NULL;
-	std::map<char*, textStruct>::const_iterator itr;
+	std::map<string, textStruct, stringLess>::const_iterator itr;
 	for(itr = textureMap.begin(); itr != textureMap.end(); ++itr)
 	{
 		if(0==strcmp(hash,itr->second.hash))
 		{
-			if(0==strcmp(itr->first,textureName))
+			if(itr->first.compare(textureName)==0)
 				toBeReturned.textID=NULL;
 			else
 				toBeReturned.textID=itr->second.textID;
@@ -215,7 +217,7 @@ textStruct NMS_TextureManager::checkForHash(shaMap hash,char* textureName)
 		else 
 			//It's an error the user cannot use the same name for two different files!
 			//Warn the user
-			if(0==strcmp(itr->first,textureName))
+			if(itr->first.compare(textureName)==0)
 			{
 				LOG.write("NMS_TextureManager::Impossible to assign the same name to two different textures!\n",LOG_RUN);
 				toBeReturned.textID=-1;

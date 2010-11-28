@@ -2,8 +2,6 @@
 #include "NMS_StaticAllocator.h"
 #include "NMS_LogFunctions.h"
 
-using namespace std;
-
 NMS_ShaderManager * NMS_ShaderManager::singleton;
 
 NMS_ShaderManager * NMS_ShaderManager::getInstance()
@@ -27,27 +25,32 @@ void NMS_ShaderManager::up()
 	}
 }
 
-void NMS_ShaderManager::loadShaders(char * vertexShaderFilename, char * fragmentShaderFilename)
+void NMS_ShaderManager::loadShaders(string vertexShaderFilename, string fragmentShaderFilename)
 {
-	vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	string key = vertexShaderFilename+fragmentShaderFilename;
+	if(programs.count(key) == 0) {
+		GLint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+		GLint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
-	const char * vsc = readFile(vertexShaderFilename);
-	const char * fsc = readFile(fragmentShaderFilename);
+		const char * vsc = readFile(vertexShaderFilename);
+		const char * fsc = readFile(fragmentShaderFilename);
 
-	glShaderSource(vertexShader, 1, &vsc, NULL);
-	glShaderSource(fragmentShader, 1, &fsc, NULL);
+		glShaderSource(vertexShader, 1, &vsc, NULL);
+		glShaderSource(fragmentShader, 1, &fsc, NULL);
 	
-	compileShader(vertexShader, vertexShaderFilename);
-	compileShader(fragmentShader, fragmentShaderFilename);
+		compileShader(vertexShader, vertexShaderFilename);
+		compileShader(fragmentShader, fragmentShaderFilename);
 	
-	program = glCreateProgram();
+		program = glCreateProgram();
 		
-	glAttachShader(program,vertexShader);
-	glAttachShader(program,fragmentShader);
+		glAttachShader(program,vertexShader);
+		glAttachShader(program,fragmentShader);
 	
-	linkProgram(program);
-	glUseProgram(program);
+		linkProgram(program);
+		programs[key] = program;
+	}
+	
+	glUseProgram(programs[key]);
 }
 
 void NMS_ShaderManager::enableTextures()
@@ -67,7 +70,7 @@ void NMS_ShaderManager::setShaderAttribute(char * attribute, int value)
 	glUniform1i(loc,value);
 }
 
-void NMS_ShaderManager::compileShader(GLuint shader, char * file)
+void NMS_ShaderManager::compileShader(GLuint shader, string file)
 {
 	int success;
 	glCompileShader(shader);
@@ -122,15 +125,15 @@ void NMS_ShaderManager::printProgramInfoLog(GLuint obj)
 	}
 }
 
-char * NMS_ShaderManager::readFile(char * filename)
+char * NMS_ShaderManager::readFile(string filename)
 {
 	FILE *fp;
 	char *content = NULL;
 
 	int count=0;
 
-	if (filename != NULL) {
-		fp = fopen(filename,"rt");
+	if (filename != "") {
+		fp = fopen(filename.c_str(),"rt");
 
 		if (fp != NULL) {
       

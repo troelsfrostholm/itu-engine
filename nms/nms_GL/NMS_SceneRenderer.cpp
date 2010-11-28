@@ -166,6 +166,8 @@ void NMS_SceneRenderer::setShaders(char * _vertexShaderFile, char * _fragmentSha
 {
 	vertexShaderFile = _vertexShaderFile;
 	fragmentShaderFile = _fragmentShaderFile;
+	if(rendering)
+		NMS_SHADER_MANAGER->loadShaders(vertexShaderFile, fragmentShaderFile);
 }
 
 //Render meshes as they are traversed in the scene graph

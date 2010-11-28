@@ -78,6 +78,10 @@ void keyPressed(SDLKey key)
 			 cam.setSpeed(-2.f);
 				   break;
 
+		 case SDLK_1:
+			 engine.getRenderer()->setShaders("shaders\\fixedfunction.vertex", "shaders\\fixedfunction.fragment");
+			       break;
+
 		 case SDLK_q:
 			 if(engine.physics->debugDrawer.getDebugMode() == 0)
 			 {
@@ -113,17 +117,19 @@ int main(int argc, char* argv[])
 	NMS_Sphere sphere = NMS_Sphere();
 
 	MD2Model model = MD2Model();
-	//"models/drfreak/drfreak.tga"
-	model.LoadModel("models/drfreak/drfreak.md2","textures/wikimap_sphere.tga");
+	//""
+	model.LoadModel("models/drfreak/drfreak.md2","models/drfreak/drfreak.tga");
 	model.material.ambient = Vector(0.2, 0.2, 0.2, 0.2);
 	model.material.diffuse = Vector(0.5, 0.5, 0.5, 0.5);
 	model.material.specular = Vector(1, 1, 1, 1);
 	model.material.shininess = 10;
+	model.material.sphereMap = "textures/wikimapsphere.tga";
 
 	sphere.material.ambient = Vector(0.5, 0.2, 0.2);
 	sphere.material.diffuse = Vector(0.5, 0.5, 0.5);
 	sphere.material.specular = Vector(1,1, 1, 1);
 	sphere.material.shininess = 20;
+	sphere.material.sphereMap = "textures/wikimapsphere.tga";
 
 	GeometryNode GeoCube = GeometryNode(&sphere, fallRigidBody);
 	GeometryNode freak = GeometryNode(&model, fallRigidBody);

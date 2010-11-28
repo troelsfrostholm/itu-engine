@@ -13,7 +13,7 @@
 #define HEIGHT 400
 
 NMSCameraFPS fpsCam;
-CameraNode cam;
+NMSCameraController * cam;
 NMS_SceneRenderer* renderer;
 
 void mouseMoved(int MouseX, int MouseY)
@@ -60,19 +60,19 @@ void keyPressed(SDLKey key)
 			break;
 
 		 case SDLK_a:
-			 fpsCam.setSlideSpeed(+0.01f);
+			 fpsCam.setSlideSpeed(+0.5f);
 				   break;
 		 case SDLK_d:
-			 fpsCam.setSlideSpeed(-0.01f);
+			 fpsCam.setSlideSpeed(-0.5f);
 				   break;
 		 case SDLK_w:
-			 fpsCam.setSpeed(+0.01f);
+			 fpsCam.setSpeed(+0.5f);
 				   break;
 		 case SDLK_s:
-			 fpsCam.setSpeed(-0.01f);
+			 fpsCam.setSpeed(-0.5f);
 				   break;
 		 case SDLK_1:
-			 renderer->setCurrentCamera(&cam);
+			 renderer->setCurrentCamera(cam);
 			 break;
 		 case SDLK_2:
 			 renderer->setCurrentCamera(&fpsCam);
@@ -144,12 +144,12 @@ int main(int argc, char* argv[])
 	TransformationNode tNode = TransformationNode(transl);
 	transl.translate(Vector(0.f, -20.f, -50.f));
 	TransformationNode planeTNode = TransformationNode(transl);
-	cam = CameraNode();
+	cam = new NMSCameraFPS();
 	transl.translate(Vector(0.f, -10.f, 0.f));
 	Matrix rot = Matrix();
 	rot.rotY(120.f);
 	//cam.multiply(rot);
-	cam.multiply(transl);
+	cam->multiply(transl);
 	
 
 	root->addChild(&light);
@@ -157,7 +157,7 @@ int main(int argc, char* argv[])
 	root->addChild(&planeTNode);
 	tNode.addChild(&freakNode);
 	planeTNode.addChild(&planeNode);
-	root->addChild(&cam);
+	root->addChild(cam);
 
 	//Setup camera
 	fpsCam = NMSCameraFPS();
