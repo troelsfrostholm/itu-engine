@@ -1,12 +1,8 @@
-varying vec3 normal;
-varying vec3 lightDir;
-varying vec3 halfvec;
+varying vec3 normal, lightDir, halfvec;
+varying vec4 ambient, ambientGlobal;
 varying float lightDist;
-varying vec4 ambient;
-varying vec4 ambientGlobal;
-uniform sampler2D tex;
-uniform int textureEnabled; 
-uniform int lightingEnabled;
+uniform sampler2D tex, envMap;
+uniform int textureEnabled, lightingEnabled, environmentmap;
 
 void main()
 {
@@ -32,8 +28,6 @@ void main()
 			gl_LightSource[0].quadraticAttenuation * lightDist * lightDist);
 
 	litColor = attinuation*(intensity*diffuse+ambient+specular) + ambientGlobal;
-	//litColor = (intensity*diffuse+ambient+ambientGlobal + specular);
-	//litColor = ambient;
 
 	if(lightingEnabled == 0) {
 		litColor = vec4(1, 1, 1, 1);
@@ -46,10 +40,18 @@ void main()
 	texRgb = texel.rgb;
 	texAlpha = texel.a;
 	
+	vec4 surfaceColor;
 	if(textureEnabled == 0) {
-		gl_FragColor = litColor;
+		surfaceColor = litColor;
 	}
 	else {
-		gl_FragColor = vec4(litRgb * texRgb, litAlpha*texAlpha);
+		surfaceColor = vec4(litRgb * texRgb, litAlpha*texAlpha);
+	}
+	if(environmentmap != 0) {
+		vec4 env = texture2D( envMap, gl_TexCoord[1].st);
+		gl_FragColor = surfaceColor*0.6 + env*0.4;
+	}
+	else {
+		gl_FragColor = surfaceColor;
 	}
 }
