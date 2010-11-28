@@ -175,12 +175,9 @@ int main(int argc, char* argv[])
 	root->addChild(&fpsCam);
 	renderer = engine.getRenderer();
 	renderer->setCurrentCamera(&fpsCam);
-<<<<<<< HEAD
 	renderer->setWireframeMode(false);
-=======
-	renderer->setWireframeMode(true);
 	renderer->setShaders("shaders\\fixedfunction.vertex", "shaders\\fixedfunction.fragment");
->>>>>>> 420fa93b961308a70ae29ae9c5cbfd44807746bb
+
 
 
 	NMS_EVENT_MANAGER.onKeyPressed(&keyPressed);
