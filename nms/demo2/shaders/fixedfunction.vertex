@@ -1,8 +1,39 @@
-varying float intensity;
-varying vec3 normal;
+//Vertex shader
+//Replicates the OpenGL fixed function pipeline functionality
+//And adds the ability to make spherical environment maps
+
+varying float intensity, lightDist;
+varying vec3 normal, lightDir, halfvec;
+varying vec4 ambient, ambientGlobal;
+uniform int environmentmap;
+
+void calcSphereMapCoords()
+{
+		vec3 u = normalize( vec3(gl_ModelViewMatrix * gl_Vertex) ); //View unit vector
+		vec3 n = normalize( gl_NormalMatrix * gl_Normal );          //vertex unit normal vector in view space
+		vec3 r = reflect( u, n );                                   //reflection of view vec around normal
+		float m = 2.0 * sqrt( r.x*r.x + r.y*r.y + (r.z+1.0)*(r.z+1.0) );
+		gl_TexCoord[1].s = r.x/m + 0.5;
+		gl_TexCoord[1].t = r.y/m + 0.5;
+}
 
 void main()
 {
-	normal = gl_Normal;
+	normal = normalize(gl_NormalMatrix * gl_Normal);
 	gl_Position = ftransform();
+	gl_TexCoord[0] = gl_MultiTexCoord0;
+
+	//if sphere environment mapping is enabled, calculate sphere map coordinates
+	if(environmentmap != 0) {
+		calcSphereMapCoords();
+	}
+
+	ambient = gl_FrontMaterial.ambient * gl_LightSource[0].ambient;
+	ambientGlobal = gl_LightModel.ambient * gl_FrontMaterial.ambient;
+
+	vec3 lightVec;
+	lightVec = vec3(gl_LightSource[0].position - gl_ModelViewMatrix * gl_Vertex);
+	lightDir = normalize(lightVec);
+	lightDist = length(lightVec);
+	halfvec =  normalize(gl_LightSource[0].halfVector.xyz);
 }

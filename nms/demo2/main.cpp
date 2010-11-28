@@ -194,6 +194,7 @@ int main(int argc, char* argv[])
 
 	NMS_SceneRenderer* renderer = engine.getRenderer();
 	renderer->setCurrentCamera(&cam);
+	renderer->setShaders("shaders\\fixedfunction.vertex", "shaders\\fixedfunction.fragment");
 
 	engine.run();
 	return 0;

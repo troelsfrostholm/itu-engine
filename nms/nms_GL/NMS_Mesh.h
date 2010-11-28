@@ -42,9 +42,11 @@ public:
 	~NMS_VerticalPlane(){};
 	void render(float time)
 	{
+		NMS_SHADER_MANAGER->disableTextures();
 		//glColor3f(0.f, 0.f, 1.f);
 		float size = 20;
 		glBegin(GL_QUADS);
+			glNormal3f(0, 1, 0);
 			glVertex3f(size, 0, size);
 			glVertex3f(-size, 0, size);
 			glVertex3f(-size, 0, -size);
@@ -59,6 +61,7 @@ class NMSMESH_D NMS_Plane : public NMS_Mesh
 public:
 	void render(float time)
 	{
+		NMS_SHADER_MANAGER->disableTextures();
 		glColor3f(0.f, 1.f, 0.f);
 		glBegin(GL_QUADS);
 			glVertex3f(-1000,0,1000);
@@ -131,24 +134,5 @@ public:
 	}
 };
 
-class NMSMESH_D NMS_EnvionmentMappedSphere : public NMS_Mesh
-{
-private:
-	int textureID;
-
-public:
-	NMS_EnvionmentMappedSphere(char * filename)
-	{
-		textureID = NMS_ASSETMANAGER.LoadTexture(filename, filename);
-	}
-
-	void render(float time)
-	{
-		NMS_SHADER_MANAGER->enableTextures();
-		//glBindTexture( GL_TEXTURE_2D, textureID );
-		//glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
-		glutSolidSphere(100, 10, 10);
-	}
-};
 #endif
 

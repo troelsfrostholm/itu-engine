@@ -174,6 +174,7 @@ int main(int argc, char* argv[])
 	renderer = engine.getRenderer();
 	renderer->setCurrentCamera(&fpsCam);
 	renderer->setWireframeMode(true);
+	renderer->setShaders("shaders\\fixedfunction.vertex", "shaders\\fixedfunction.fragment");
 
 
 	NMS_EVENT_MANAGER.onKeyPressed(&keyPressed);

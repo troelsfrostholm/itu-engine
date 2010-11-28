@@ -168,7 +168,7 @@ int main(int argc, char* argv[])
 	NMS_SceneRenderer* renderer = engine.getRenderer();
 	renderer->setCurrentCamera(&cam);
 	renderer->enableSkyBox("textures/world.tga");
-	renderer->setShaders("shaders\\fixedfunction.vertex", "shaders\\fixedfunction.fragment");
+	//renderer->setShaders("shaders\\fixedfunction.vertex", "shaders\\fixedfunction.fragment");
 	//renderer->setShaders("shaders\\spheremap.vert", "shaders\\spheremap.frag");
 
 	engine.run();

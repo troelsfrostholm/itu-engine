@@ -125,14 +125,20 @@ int main(int argc, char* argv[])
     engine.physics->addRBody(fallRigidBody);
 
 	//LIGHT DEFINITION
-	LightSource light0 = LightSource();
+	/*LightSource light0 = LightSource();
 	light0.setLightNumber(GL_LIGHT0);
 	light0.setLightValue(&Vector(1,1,1,0));
 	light0.setPosVector(&Vector(0,0,0,1));
-	light0.defineLight(light0);
+	light0.defineLight(light0);*/
+
+	NMS_PointLight light0 = NMS_PointLight(GL_LIGHT0);
+	light0.setAmbient(1,1,1,0.2);
+	light0.setDiffuse(1,1,1,1);
+	light0.setSpecular(1, 1, 1, 1);
 	
 	//Create scene graph
 	NMS_VerticalPlane plane = NMS_VerticalPlane();
+	plane.material.ambient = Vector(0, 0, 1, 1);
 
 	SceneGraphNode* root = engine.getScene();
 	GeometryNode freakNode = GeometryNode(&freakModel, fallRigidBody);
@@ -165,6 +171,7 @@ int main(int argc, char* argv[])
 	renderer = engine.getRenderer();
 	renderer->setCurrentCamera(&fpsCam);
 	renderer->setWireframeMode(false);
+	renderer->setShaders("shaders\\fixedfunction.vertex", "shaders\\fixedfunction.fragment");
 
 	NMS_EVENT_MANAGER.onKeyPressed(&keyPressed);
 	NMS_EVENT_MANAGER.onKeyReleased(&keyReleased);
