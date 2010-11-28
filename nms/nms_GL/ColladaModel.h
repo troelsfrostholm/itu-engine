@@ -38,12 +38,6 @@ using namespace irr;
 using namespace io;
 using namespace std;
 
-typedef float vec9_t[9];
-typedef float vec6_t[6];
-typedef float vec4_t[4];
-typedef float vec3_t[3];
-typedef float vec2_t[3];
-
 
 class Source
 {	
@@ -69,9 +63,8 @@ class Source
 	  core::stringc* pNameArray;
 	  unsigned iNameArray;
 
-	  unsigned nElements;
 
-	//Accessor variables
+		//Accessor variables
 	  unsigned count;
 	  unsigned offset;
 	  unsigned stride;
@@ -96,8 +89,6 @@ class Triangle
 	  //Triangles count
 	  unsigned iTriangleCount;
 	  int*	   pTriangleData;
-
-	  unsigned iTriangleOffset;
 
 	  //Data to be loaded
 		bool bVertices;
@@ -250,13 +241,7 @@ class RenderData
 class Vertex
 {
    public:
-    Vertex();
-
-	//Position of the vertex
-	float** vPosition;
-	float** vNormals;
-	//vec3_t vUV;
-	float** vTextures;
+	   Vertex(){};
 
 
 	//Number of the joints affecting this vertex
@@ -267,7 +252,7 @@ class Vertex
 	//Pointer to an array of joints affecting this vertex
 	JointNode** pJoints;
 	//As per specification, each vertex can be influenced by a max number of 4 joints and so we need just 4 weights
-	vec4_t vWeights;
+	float vWeights[4];
 };
 
 
@@ -304,6 +289,7 @@ private:
 	std::map<core::stringc ,Node>   mNodes;
 
 	float* copiedPositions;
+	float* copiedNormals;
 
 	float* textArray;
 	float* vertArray;
@@ -369,7 +355,7 @@ private:
 	void    LoadData();
 	void    FindRoot(Node* nodeList);
 	void    DrawSkeleton(float time);
-	void    SetupBindPose();
+	void    SetupPose();
 	
 };
 #endif

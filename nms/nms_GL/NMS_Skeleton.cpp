@@ -88,39 +88,42 @@ void JointNode::Animate(float time,Matrix *m)
 	//If we have animation data for this joint, then calculate the proper matrix for the skeleton
 	if(iNKeyFrames>0)
 	{
-		// calculate current and next frames
-		/*if( fCurrentTime - fOldTime > (1.0 /iFps) )
-		{*/
 			iCurrentFrame++;
-
 			if( iCurrentFrame >= iNKeyFrames )
 				iCurrentFrame = 0;
-		//}
-		transform=*pAnimationFrames[iCurrentFrame].getTransform();
+
+			float InBetween = fCurrentTime-fOldTime;
+
+              if (iCurrentFrame <  (int)iNKeyFrames - 1)
+				  transform = LERP(pAnimationFrames[iCurrentFrame].getTransform(),pAnimationFrames[iCurrentFrame+1].getTransform(),InBetween);
+              else
+				transform=*pAnimationFrames[iCurrentFrame].getTransform();
 	}
 }
 
+Matrix JointNode::LERP(Matrix *current,Matrix *next,float beta)
+{
+	Matrix lerp=Matrix();
+	for(unsigned i=1;i<=4;i++)
+		for(unsigned j=1;j<=4;j++)
+			lerp(i,j)=(*current)(i,j)+beta*((*next)(i,j)-(*current)(i,j));
+	return lerp;
+}
 
 void JointNode::before(SceneGraphVisitor *v, Matrix *m)
 {
 	SkeletonRenderer* renderer=(SkeletonRenderer*)v;
-	////Animate(renderer->getAnimationTime(),m);
-	//TransformationNode::before(v, m);
-	//mWorldMatrix=(*m);
-	////Save the world matrix for the current node and precalculate the skinning matrix used in the skinning
-	//mSkinningMatrix=~(mWorldMatrix*mInverseBind);
-	//v->sg_before(*m, this);
 	Animate(renderer->getAnimationTime(),m);
 	TransformationNode::before(v, m);
 	mWorldMatrix=*m;
 	//Save the world matrix for the current node and precalculate the skinning matrix used in the skinning
 	mSkinningMatrix=~(mWorldMatrix*mInverseBind);
-	//v->sg_before(*m, this);
+	v->sg_before(*m, this);
 }
 
 void JointNode::after(SceneGraphVisitor *v, Matrix *m) 
 {
-	//v->sg_after(*m, this);
+	v->sg_after(*m, this);
 	TransformationNode::after(v, m);
 }
 
@@ -145,13 +148,13 @@ void SkeletonRenderer::renderJoint(Matrix transform, SceneGraphNode * node)
 	JointNode* converted =(JointNode*)node;
 	Matrix t_transposed = ~transform;
 	Vector endPoint=Vector(0,0,0,1) * t_transposed;
-
+	glPushAttrib(GL_CURRENT_BIT);
 	if(!converted->isRoot() && !converted->isLeaf())
 	{
 		NMS_DebugDraw().drawLine(startingPoint,endPoint,Vector(0,255,0,0));
 	}
 	NMS_DebugDraw().drawSphere(endPoint,0.05f,Vector(255,0,0),5,5);
-	//NMS_DebugDraw().draw3dText(endPoint,converted->getSID().c_str());
+	glPopAttrib();
 	startingPoint = endPoint;
 }
 

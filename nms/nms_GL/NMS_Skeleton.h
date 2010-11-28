@@ -57,6 +57,7 @@ protected:
 	unsigned   iFps;
 	
 	void Animate(float time,Matrix *m);
+	Matrix LERP(Matrix *current,Matrix *next,float beta);
 
 public:
 	JointNode();
