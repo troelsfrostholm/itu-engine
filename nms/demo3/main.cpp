@@ -81,6 +81,8 @@ void keyPressed(SDLKey key)
 	}
 }
 
+
+
 void idle( int i )
 {
 	fpsCam.UpdateCamera(1);

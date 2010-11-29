@@ -12,8 +12,6 @@ NMS_EventManager::NMS_EventManager()
 	singleton = NULL;
 	eventQueueGuard = SDL_CreateMutex();
 	mouseMovedCallback = &NoMouseEvent;
-	keyPressedCallback = &NoKeyEvent;
-	keyReleasedCallback = &NoKeyEvent;
 	idleCallback = &NoIdleEvent;
 }
 
@@ -30,6 +28,21 @@ void NMS_EventManager::destroy (void) {
 		delete singleton;
 		singleton = 0;
 	}
+}
+
+void NMS_EventManager::bindKeyPress(SDLKey key, string action)
+{
+	pressKeyMap[key] = action;
+}
+
+void NMS_EventManager::bindKeyHold(SDLKey key, string action)
+{
+	holdKeyMap[key] = action;
+}
+	
+void NMS_EventManager::bindAction(string action, boost::function1<void, int> callback)
+{
+	actionMap[action] = callback;
 }
 
 void NMS_EventManager::pollEvents()
@@ -50,12 +63,28 @@ void NMS_EventManager::processEvents()
 		eventQueue.pop_front();
 	}
 	SDL_UnlockMutex(eventQueueGuard);
+	runHeldDownActions();
 	idleCallback( 0 );
 }
 
 void NMS_EventManager::handleEvent(SDL_Event event)
 {
 	switch( event.type ) {
+
+		// A key has been released
+	case SDL_KEYUP:
+		switch( event.key.keysym.sym ) 
+		{ 
+		  case SDLK_ESCAPE:
+			  quitCallback(0);
+			   break;
+		  default:
+			  if(holdKeyMap.count(event.key.keysym.sym) == 1)
+				  keyHeldDown[event.key.keysym.sym] = false;
+			  break;
+		} 
+		break;
+
 	// A key has been pressed
 	case SDL_KEYDOWN:
 		switch( event.key.keysym.sym ) 
@@ -64,21 +93,12 @@ void NMS_EventManager::handleEvent(SDL_Event event)
 			  quitCallback(0);
 			   break;
 		  default:
-			  keyPressedCallback( event.key.keysym.sym );
+			  if(pressKeyMap.count(event.key.keysym.sym) == 1)
+				  runAction(pressKeyMap[event.key.keysym.sym]);
+			  if(holdKeyMap.count(event.key.keysym.sym) == 1)
+				  keyHeldDown[event.key.keysym.sym] = true;
 			  break;
 		}
-		break;
-	// A key has been released
-	case SDL_KEYUP:
-		switch( event.key.keysym.sym ) 
-		{ 
-		  case SDLK_ESCAPE:
-			  quitCallback(0);
-			   break;
-		  default:
-			  keyReleasedCallback( event.key.keysym.sym );
-			  break;
-		} 
 		break;
 
 	case SDL_MOUSEMOTION:
@@ -90,5 +110,28 @@ void NMS_EventManager::handleEvent(SDL_Event event)
 	case SDL_QUIT:
 		quitCallback(0);
 		break;
+
+	default:
+		break;
+	}
+}
+
+void NMS_EventManager::runAction(string action)
+{
+	if(actionMap.count(action) == 1)
+	{
+		actionMap[action](0);
+	}
+}
+
+void NMS_EventManager::runHeldDownActions()
+{
+	//iterate through keyHeldDown and run actions
+	std::map<SDLKey, bool>::const_iterator itr;
+	for(itr = keyHeldDown.begin(); itr != keyHeldDown.end(); ++itr)
+	{
+		if(itr->second) {
+			runAction(holdKeyMap[itr->first]);
+		}
 	}
 }

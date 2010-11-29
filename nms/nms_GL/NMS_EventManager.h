@@ -14,6 +14,7 @@
 #include "SDL.h"
 #include <boost/function.hpp>
 #include <list>
+#include <map>
 
 using namespace std;
 
@@ -30,14 +31,24 @@ private:
 
 	boost::function1<void, int> quitCallback;
 	boost::function1<void, int> idleCallback;
-	boost::function1<void, SDLKey> keyPressedCallback;
-	boost::function1<void, SDLKey> keyReleasedCallback;
 	boost::function2<void, int, int> mouseMovedCallback;
+
+	map<SDLKey, string> pressKeyMap; //Maps key down events to actions
+	map<SDLKey, string> holdKeyMap;  //Maps key held down events to actions
+	map<string, boost::function1<void, int>> actionMap;  //Maps actions to callback 
+
+	map<SDLKey, bool> keyHeldDown;
 	NMS_EventManager::NMS_EventManager();
 
 public:
 	static NMS_EventManager& NMS_EventManager::getInstance();
 	static void destroy (void);
+	void bindKeyPress(SDLKey key, string action);
+	void bindKeyHold(SDLKey key, string action);
+	void bindAction(string action, boost::function1<void, int> callback);
+	void runAction(string action);
+	void runHeldDownActions();
+
 	void NMS_EventManager::pollEvents();
 	void NMS_EventManager::processEvents();
 	void NMS_EventManager::handleEvent(SDL_Event event);
@@ -51,16 +62,6 @@ public:
 	void onIdle(void (_callback)(int i))
 	{
 		idleCallback = _callback;
-	}
-
-	void onKeyPressed(void (_callback)(SDLKey keysym))
-	{
-		keyPressedCallback = _callback;
-	}
-
-	void onKeyReleased(void (_callback)(SDLKey keysym))
-	{
-		keyReleasedCallback = _callback;
 	}
 
 	void onMouseMoved(void (_callback)(int x, int y))

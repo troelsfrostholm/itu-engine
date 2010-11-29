@@ -42,63 +42,41 @@ void mouseMoved(int MouseX, int MouseY)
 	cam.setRotation(rot[NMS_X],rot[NMS_Y],rot[NMS_Z]);
 }
 
-void keyReleased(SDLKey key)
-{
-	switch( key ) {
-		case SDLK_a:
-			 cam.setSlideSpeed(0);
-			 break;
-		case SDLK_d:
-			 cam.setSlideSpeed(0);
-			 break;
-		case SDLK_w:
-			 cam.setSpeed(0);
-			 break;
-		case SDLK_s:
-			 cam.setSpeed(0);
-			 break;
-	}
-}
-
-
-void keyPressed(SDLKey key)
-{
-	btVector3 vec;
-	switch( key ) {
-		 case SDLK_a:
-			 cam.setSlideSpeed(+1.f);
-				   break;
-		 case SDLK_d:
-			 cam.setSlideSpeed(-1.f);
-				   break;
-		 case SDLK_w:
-			 cam.setSpeed(+2.f);
-				   break;
-		 case SDLK_s:
-			 cam.setSpeed(-2.f);
-				   break;
-
-		 case SDLK_1:
-			 engine.getRenderer()->setShaders("shaders\\fixedfunction.vertex", "shaders\\fixedfunction.fragment");
-			       break;
-
-		 case SDLK_q:
-			 if(engine.physics->debugDrawer.getDebugMode() == 0)
-			 {
-				 engine.physics->debugDrawer.setDebugMode(btIDebugDraw::DBG_DrawWireframe);
-			 }
-			 else
-			 {
-				 engine.physics->debugDrawer.setDebugMode(btIDebugDraw::DBG_NoDebug);
-			 }
-			 break;
-	}
-}
-
 void idle( int i )
 {
 	cam.UpdateCamera(1);
+}
 
+void moveLeft( int i )
+{
+	cam.setPos(cam.getPos() + cam.getRight()*0.5);
+}
+
+void moveRight( int i )
+{
+	cam.setPos(cam.getPos() - cam.getRight()*0.5);
+}
+
+void moveForward( int i )
+{
+	cam.setPos(cam.getPos() + cam.getDir()*0.5);
+}
+
+void moveBack( int i )
+{
+	cam.setPos(cam.getPos() - cam.getDir()*0.5);
+}
+
+void toggleDebugDraw( int i )
+{
+	if(engine.physics->debugDrawer.getDebugMode() == 0)
+	{
+		engine.physics->debugDrawer.setDebugMode(btIDebugDraw::DBG_DrawWireframe);
+	}
+	else
+	{
+		engine.physics->debugDrawer.setDebugMode(btIDebugDraw::DBG_NoDebug);
+	}
 }
 
 int main(int argc, char* argv[])
@@ -160,10 +138,25 @@ int main(int argc, char* argv[])
 	traNode2.addChild(&freak);
 	traNode.addChild(&light);
 
-	NMS_EVENT_MANAGER.onKeyPressed(&keyPressed);
-	NMS_EVENT_MANAGER.onKeyReleased(&keyReleased);
 	NMS_EVENT_MANAGER.onMouseMoved(&mouseMoved);
 	NMS_EVENT_MANAGER.onIdle(&idle);
+	NMS_EVENT_MANAGER.bindKeyHold(SDLK_a, "left");
+	NMS_EVENT_MANAGER.bindKeyHold(SDLK_d, "right");
+	NMS_EVENT_MANAGER.bindKeyHold(SDLK_w, "up");
+	NMS_EVENT_MANAGER.bindKeyHold(SDLK_s, "down");
+
+	NMS_EVENT_MANAGER.bindKeyHold(SDLK_LEFT, "left");
+	NMS_EVENT_MANAGER.bindKeyHold(SDLK_RIGHT, "right");
+	NMS_EVENT_MANAGER.bindKeyHold(SDLK_UP, "up");
+	NMS_EVENT_MANAGER.bindKeyHold(SDLK_DOWN, "down");
+
+	NMS_EVENT_MANAGER.bindKeyPress(SDLK_SPACE, "jump");
+
+	NMS_EVENT_MANAGER.bindAction("left", &moveLeft);
+	NMS_EVENT_MANAGER.bindAction("right", &moveRight);
+	NMS_EVENT_MANAGER.bindAction("up", &moveForward);
+	NMS_EVENT_MANAGER.bindAction("down", &moveBack);
+	NMS_EVENT_MANAGER.bindAction("jump", &toggleDebugDraw);
 
 	NMS_SceneRenderer* renderer = engine.getRenderer();
 	renderer->setCurrentCamera(&cam);
