@@ -64,10 +64,8 @@ int NMS_TextureManager::LoadTexture (const char* sFilename,char* textureName) {
 		  return -1;
 	  }
 
-	 
-
 	  //Convert the file read to a Lump file to be used by DevIL
-	  Lump = (ILubyte*)LEVEL_ALLOC->allocMem(fileSize);
+	  Lump = (ILubyte*)LEVEL_ALLOC->allocMem(fileSize, MEM_TEXTURE);
 	  fseek(fp, 0, SEEK_SET);
 	  fread(Lump, 1, fileSize, fp);
 	  fclose(fp);

@@ -61,7 +61,7 @@ ALuint NMS_SoundManager::LoadWav (const char* sFileName,char* sSoundName)
 	  }
 
 	   //Convert the file read to a Lump file to be used by DevIL
-	  soundMemory = (ALbyte*)LEVEL_ALLOC->allocMem(fileSize);
+	  soundMemory = (ALbyte*)LEVEL_ALLOC->allocMem(fileSize, MEM_LEVEL);
 	  fseek(fp, 0, SEEK_SET);
 	  fread(soundMemory, 1, fileSize, fp);
 	  fclose(fp);

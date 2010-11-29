@@ -24,12 +24,12 @@ SingleframeAllocator * SingleframeAllocator::getInstance()
 	return instance;
 }
 
-void * SingleframeAllocator::allocMem(size_t size)
+void * SingleframeAllocator::allocMem(size_t size, int categoryFlag)
 {
 	if(!allocator) {
 		allocator = new StackBasedAllocator(stack_alloc_size);
 	}
-	return allocator->allocMem(size);
+	return allocator->allocMem(size, categoryFlag);
 }
 
 void SingleframeAllocator::freeMem(void * pointer)

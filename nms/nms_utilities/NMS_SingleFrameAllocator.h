@@ -25,7 +25,7 @@ class SINGLEFRAME_ALLOCATOR_D SingleframeAllocator : public MemoryAllocator
 {
 public:
 	static SingleframeAllocator * getInstance();
-	void * allocMem(size_t size);
+	void * allocMem(size_t size, int categoryFlag);
 	void freeMem(void * pointer);
 	void clear();
 

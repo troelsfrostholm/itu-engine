@@ -24,12 +24,12 @@ LevelAllocator * LevelAllocator::getInstance()
 	return instance;
 }
 
-void * LevelAllocator::allocMem(size_t size)
+void * LevelAllocator::allocMem(size_t size, int categoryFlag)
 {
 	if(!allocator) {
 		allocator = new StackBasedAllocator(stack_alloc_size);
 	}
-	return allocator->allocMem(size);
+	return allocator->allocMem(size, categoryFlag);
 }
 
 void LevelAllocator::freeMem(void * pointer)

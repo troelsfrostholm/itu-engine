@@ -94,11 +94,11 @@ void NMS_Framework::logMemoryUsage()
 {
 	LOG.write("Memory usage at end of program : ", LOG_RUN);
 	char output[50];
-	sprintf(output, "\r\n    Persistent       : %d", CurrentMemoryUsage[MEM_PERSISTENT]);
+	sprintf(output, "\r\n    Core engine       : %d", CurrentMemoryUsage[MEM_PERSISTENT]);
 	LOG.write(output, LOG_RUN);
 	sprintf(output, "\r\n    Level            : %d", CurrentMemoryUsage[MEM_LEVEL]);
 	LOG.write(output, LOG_RUN);
-	sprintf(output, "\r\n    Matrix           : %d", CurrentMemoryUsage[MEM_MATRIX]);
+	sprintf(output, "\r\n    Texture           : %d", CurrentMemoryUsage[MEM_TEXTURE]);
 	LOG.write(output, LOG_RUN);
 	sprintf(output, "\r\n    Temporary vars   : %d", CurrentMemoryUsage[MEM_TEMP]);
 	LOG.write(output, LOG_RUN);

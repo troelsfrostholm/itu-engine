@@ -27,8 +27,9 @@ U32 StackBasedAllocator::calculateAllignedAddress(U32 raw_address, U32 alignment
 	return alignedAddress;
 }
 
-void * StackBasedAllocator::allocMem(size_t size)
+void * StackBasedAllocator::allocMem(size_t size, int categoryFlag)
 {
+	CurrentMemoryUsage[categoryFlag]+=(int) size;
 	return allocUnaligned(size);
 }
 

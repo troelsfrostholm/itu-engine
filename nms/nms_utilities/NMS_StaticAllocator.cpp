@@ -25,22 +25,22 @@ StaticAllocator * StaticAllocator::getInstance()
 	return instance;
 }
 
-void * StaticAllocator::allocMem(size_t size)
+void * StaticAllocator::allocMem(size_t size, int categoryFlag)
 {
 	if(allocators.size()<=0) {
 		allocators.push_back(new StackBasedAllocator(stack_alloc_size));
 	}
 	if(size > stack_alloc_size) {
 		allocators.push_back(new StackBasedAllocator(size));
-		return allocators.back()->allocMem(size);
+		return allocators.back()->allocMem(size, categoryFlag);
 	}
 
 	try {
-		return allocators.back()->allocMem(size);
+		return allocators.back()->allocMem(size, categoryFlag);
 	}
 	catch(char* msg) {
 		allocators.push_back(new StackBasedAllocator(stack_alloc_size));
-		return allocators.back()->allocMem(size);
+		return allocators.back()->allocMem(size, categoryFlag);
 	}
 }
 

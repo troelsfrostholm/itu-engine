@@ -10,8 +10,7 @@ MEMORY_ALLOCATION_D int CurrentMemoryUsage[MEM_NUM_CATEGORIES];
 void* operator new (size_t size, MemoryAllocator * allocator, int categoryFlag)
 {
 	CurrentMemoryUsage[categoryFlag]+=(int) size;
-	LOG.write("In custom new", LOG_DEBUG);
-	return allocator->allocMem(size);
+	return allocator->allocMem(size, categoryFlag);
 }
 
 void operator delete(void* pMem,  MemoryAllocator * allocator, int categoryFlag)
