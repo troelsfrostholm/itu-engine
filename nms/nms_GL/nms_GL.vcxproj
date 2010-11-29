@@ -121,6 +121,7 @@
     <ClInclude Include="NMS_Framework.h" />
     <ClInclude Include="NMS_LightSystem.h" />
     <ClInclude Include="NMS_Mesh.h" />
+    <ClInclude Include="NMS_MeshManager.h" />
     <ClInclude Include="NMS_Mutex.h" />
     <ClInclude Include="NMS_SceneGraph.h" />
     <ClInclude Include="NMS_SceneRenderer.h" />
