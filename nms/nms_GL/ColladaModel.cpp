@@ -16,6 +16,7 @@ ColladaModel::ColladaModel()
 	pSkeletonNode           =NULL;
 	iCurrentFrame			=0;
 	fAnimationTime			=0.05f;
+	ColladaSkeleton			=NULL;
 };
 
 ColladaModel::~ColladaModel(){};
@@ -473,6 +474,8 @@ void ColladaModel::LoadWeights()
 //Traverse the skeleton to be rendered
 void ColladaModel::DrawSkeleton(float time)
 {
+  //If we have a skeleton, render it
+  if(ColladaSkeleton!=NULL)
 	(*ColladaSkeleton).render(time);
 }
 

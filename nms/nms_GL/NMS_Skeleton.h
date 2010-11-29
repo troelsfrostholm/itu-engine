@@ -56,7 +56,7 @@ protected:
 	float	   fOldTime;
 	unsigned   iCurrentFrame;
 	unsigned   iFps;
-	
+	bool    bAnimate;
 	void Animate(float time,Matrix *m);
 	Matrix LERP(Matrix *current,Matrix *next,float beta);
 
@@ -74,6 +74,7 @@ public:
 	void initializeKeyframes(unsigned size);
 	void setKeyFrame(KeyFrame k,unsigned position);
 	unsigned getNKeyFrames();
+	void setAnimationEnabled(bool state);
 };
 
 class SKELETON_D Skeleton : public NMS_Mesh
