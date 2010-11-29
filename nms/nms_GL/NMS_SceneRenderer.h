@@ -20,6 +20,7 @@ DLL EXPORTING SAFE
 #include "NMS_Mesh.h"
 #include "nms_physics.h"
 #include "NMS_Camera.h"
+#include "NMS_SingleFrameAllocator.h"
 
 class SCENE_RENDERER_D NMS_SceneRenderer : public SceneGraphVisitor, public Thread
 {

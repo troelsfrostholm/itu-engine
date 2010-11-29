@@ -42,6 +42,9 @@
     <ClCompile Include="NMS_StubAllocator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="NMS_SingleFrameAllocator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NMS_CustomTypes.h">
@@ -72,6 +75,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NMS_StubAllocator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NMS_SingleFrameAllocator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
