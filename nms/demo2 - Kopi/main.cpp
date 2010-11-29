@@ -17,6 +17,7 @@
 TransformationNode traNode;
 TransformationNode traNode2;
 TransformationNode traNode3;
+TransformationNode traNode4;
 TransformationNode rotNode;
 TransformationNode rotyNode;
 TransformationNode sateliteRNode;
@@ -95,15 +96,19 @@ int main(int argc, char* argv[])
 
 	NMS_Sphere sphere = NMS_Sphere();
 
-	MD2Model model = MD2Model();
+	ColladaModel model = ColladaModel();
+	ColladaModel model2 = ColladaModel();
+	Skeleton skeleton = Skeleton();
 	
-	model.LoadModel("models/drfreak/drfreak.md2","models/drfreak/drfreak.tga");
-	//model.LoadModel("models/Duck/Duck.dae");
+	//model.LoadModel("models/drfreak/drfreak.md2","models/drfreak/drfreak.tga");
+	model.LoadModel("models/Astroboy/Astroboy.dae");
+	model2.LoadModel("models/Astroboy/Astroboy.dae");
+	skeleton=model.getSkeleton();
 	model.material.ambient = Vector(0.2, 0.2, 0.2, 0.2);
 	model.material.diffuse = Vector(0.5, 0.5, 0.5, 0.5);
 	model.material.specular = Vector(1, 1, 1, 1);
 	model.material.shininess = 10;
-	//model.material.sphereMap = "textures/wikimapsphere.tga";
+	model.material.sphereMap = "textures/wikimapsphere.tga";
 	//model.material.texture = "models/Duck/duckCM.tga";
 
 	sphere.material.ambient = Vector(0.2, 0.2, 0.5);
@@ -114,6 +119,7 @@ int main(int argc, char* argv[])
 
 	GeometryNode GeoCube = GeometryNode(&sphere, fallRigidBody);
 	GeometryNode freak = GeometryNode(&model, fallRigidBody);
+	GeometryNode boy2 = GeometryNode(&model2, fallRigidBody);
 
 	GeometryNode light = GeometryNode(&light1,fallRigidBody);
 	SceneGraphNode* root = engine.getScene();
@@ -123,19 +129,35 @@ int main(int argc, char* argv[])
 	tra.translate(v);
 
 	Matrix tra2 = Matrix();
-	v = Vector(0.f, 120.f, 0.f);
+	v = Vector(0.f, 100.f, 20.f);
 	tra2.translate(v);
+	
+	Matrix rotation = Matrix();
+	rotation.rotV(-90.0f,Vector(1,0,0));
+
+	Matrix scale = Matrix();
+	scale.uScale(30.0f);
+
+	tra2=tra2*rotation;
+	tra2=tra2*scale;
+
+	Matrix tra4=Matrix();
+	tra4.translate(Vector(5.0f,0,0));
+	tra4=tra2*tra4;
 
 	traNode = TransformationNode(tra);
 	traNode2 = TransformationNode(tra2);
+	traNode4 = TransformationNode(tra4);
 
 	cam = NMSCameraFPS();
 
 	root->addChild(&traNode);
 	root->addChild(&traNode2);
+	root->addChild(&traNode4);
 	root->addChild(&GeoCube);
 	traNode.addChild(&cam);
 	traNode2.addChild(&freak);
+	traNode4.addChild(&boy2);
 	traNode.addChild(&light);
 
 	NMS_EVENT_MANAGER.onMouseMoved(&mouseMoved);
@@ -161,8 +183,8 @@ int main(int argc, char* argv[])
 	NMS_SceneRenderer* renderer = engine.getRenderer();
 	renderer->setCurrentCamera(&cam);
 	renderer->enableSkyBox("textures/world.tga");
-	renderer->setShaders("shaders\\fixedfunction.vertex", "shaders\\fixedfunction.fragment");
-	//renderer->setShaders("shaders\\spheremap.vert", "shaders\\spheremap.frag");
+	//renderer->setShaders("shaders\\fixedfunction.vertex", "shaders\\fixedfunction.fragment");
+	renderer->setShaders("shaders\\spheremap.vert", "shaders\\spheremap.frag");
 
 	engine.run();
 	return 0;

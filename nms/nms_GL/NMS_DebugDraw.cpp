@@ -4,10 +4,12 @@
 void NMS_DebugDraw::drawLine(const Vector& from,const Vector& to,const Vector& fromColor, const Vector& toColor)
 {
  	glBegin(GL_LINES);
+	glPushAttrib(GL_CURRENT_BIT);
 	glColor3f(fromColor[NMS_X], fromColor[NMS_Y], fromColor[NMS_Z]);
-		glVertex3d(from[NMS_X], from[NMS_Y], from[NMS_Z]);
-		glColor3f(toColor[NMS_X], toColor[NMS_Y], toColor[NMS_Z]);
-		glVertex3d(to[NMS_X], to[NMS_Y], to[NMS_Z]);
+	glVertex3d(from[NMS_X], from[NMS_Y], from[NMS_Z]);
+	glColor3f(toColor[NMS_X], toColor[NMS_Y], toColor[NMS_Z]);
+	glVertex3d(to[NMS_X], to[NMS_Y], to[NMS_Z]);
+	glPopAttrib();
 	glEnd();
 }
 
@@ -19,9 +21,11 @@ void NMS_DebugDraw::drawLine(const Vector& from,const Vector& to,const Vector& c
 void NMS_DebugDraw::drawSphere(const Vector& p, float radius, const Vector& color,int lats,int longs)
 {
 	glPushMatrix ();
+	glPushAttrib(GL_CURRENT_BIT);
 	glColor4f (color[NMS_X], color[NMS_Y], color[NMS_Z], 1.0f);
 	glTranslatef (p[NMS_X], p[NMS_Y], p[NMS_Z]);
     glutSolidSphere(radius,lats,longs);
+	glPopAttrib();
 	glPopMatrix();
 }
 

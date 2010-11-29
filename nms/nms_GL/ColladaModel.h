@@ -26,6 +26,7 @@
 #include <fast_atof.h>
 #include "NMS_DebugDraw.h"
 #include "NMS_Skeleton.h"
+#include <assert.h>
 
 #pragma warning( disable: 4251 )  //Used to disable this useless warning: http://www.unknownroad.com/rtfm/VisualStudio/warningC4251.html
 
@@ -34,48 +35,36 @@ using namespace irr;
 using namespace io;
 using namespace std;
 
-typedef float vec9_t[9];
-typedef float vec6_t[6];
-
-//class Accessor
-//{	
-//  public:
-//	Accessor(){iCount=0;iOffset=0;iStride=0;sSource="";};
-//	unsigned iCount;
-//	unsigned iOffset;
-//	unsigned iStride;
-//	core::stringc sSource;
-//};
 
 class Source
 {	
     public:
 	  Source(){sName=NULL;
 			   sID=NULL;
-			   accessorReference=NULL;
 			   pIdRefArray=NULL;
 			   iFArraySize=0;
 			   iFArraySize=0;
 			   sParameterType="";};
 	  core::stringc sName;
 	  core::stringc sID;
+	  core::stringc sType;
 
 	  core::stringc sParameterType;
 
 	  float* pfArray;
 	  unsigned iFArraySize;
+
 	  core::stringc* pIdRefArray;
 	  unsigned iIdRefArraySize;
-	  unsigned nElements;
 
-	//Accessor variables
+	  core::stringc* pNameArray;
+	  unsigned iNameArray;
+
+
+		//Accessor variables
 	  unsigned count;
 	  unsigned offset;
 	  unsigned stride;
-
-
-	  /*vector<Accessor> vAccessor;*/
-	  core::stringc accessorReference;
 };
 
 
@@ -96,9 +85,7 @@ class Triangle
 
 	  //Triangles count
 	  unsigned iTriangleCount;
-	  int* pTriangleData;
-
-	  unsigned iTriangleOffset;
+	  int*	   pTriangleData;
 
 	  //Data to be loaded
 		bool bVertices;
@@ -108,13 +95,16 @@ class Triangle
 	
 };
 
-class ColMesh
+class Mesh
 {	
   public:
-	ColMesh();
-	vector<Source> sources;
-	vector<Triangle> triangles;
+	Mesh();
+	core::stringc sID;
+	std::map<core::stringc ,Source>     sources;
+	std::vector<Triangle>   triangles;
 	core::stringc sVertPosition;
+	core::stringc sTexturePosition;
+	core::stringc sNormalPosition;
 };
 
 class Material
@@ -165,10 +155,11 @@ class Skin
 public: 
 	Skin(){iWeightCount=0;};
 	Matrix mBindShape;
-	vector<Source> vSources;
+	std::map<core::stringc ,Source> mSources;
 
 	core::stringc jointSource;
 	core::stringc bindSource;
+	core::stringc weightSource;
 
 	unsigned iWeightCount;
 	unsigned iVCount;
@@ -178,6 +169,51 @@ public:
 	unsigned* pV;
 };
 
+class Input
+{
+public:
+	Input(){sSemantic=NULL;
+			sSource=NULL;};
+	core::stringc sSemantic;
+	core::stringc sSource;
+};
+
+class Channel
+{
+public:
+	Channel(){sSource=NULL;
+			  sTarget=NULL;};
+	core::stringc       sSource;
+	core::stringc       sTarget;
+};
+
+class Sample
+{
+public:
+	Sample(){sID=NULL;};
+	core::stringc       sID;
+	std::map<core::stringc ,Input>   mInput;
+};
+
+
+
+
+class Animation
+{
+public:
+    core::stringc       sID;
+    vector<Source>      vSources;
+    vector<Sample>      vSamples;
+    vector<Channel>     vChannels;
+	Animation(){sID=NULL;};
+};
+
+
+
+
+//In the render data we are using just pointers so we can easily modify the abstract data structures while keeping
+//our old style of fast drawing the vertices
+
 class RenderData
 {
    public:
@@ -186,10 +222,37 @@ class RenderData
 
 	 //Triangles count
 	 unsigned iTriangleCount;
-	 float* vVertices;
-	 float* vTextures;
-	 float* vNormals;
+	 //The list of vertexes for a single mesh triangle as specified in the collada xml, under mesh
+	 unsigned* vVertices;
+	 unsigned* vTextures;
+	 unsigned* vNormals;
+
+	 unsigned vertexStride;
+	 unsigned textureStride;
+	 unsigned normalStride;
+
+	 int* dataPointer;
 };
+
+
+class Vertex
+{
+   public:
+	   Vertex(){};
+
+
+	//Number of the joints affecting this vertex
+	unsigned iNJointsAffecting;
+	//Number of weights affecting this vertex
+	unsigned iNWeightsAffecting;
+	
+	//Pointer to an array of joints affecting this vertex
+	JointNode** pJoints;
+	//As per specification, each vertex can be influenced by a max number of 4 joints and so we need just 4 weights
+	float vWeights[4];
+};
+
+
 
 
 class COLLADAMODEL_D ColladaModel : public NMS_Mesh
@@ -198,38 +261,50 @@ public:
 	ColladaModel();
 	~ColladaModel();
 	int		LoadModel(const char* fileName);
-	
 	int     LoadSkin(char* fileName);
 	int     LoadSkin();
 	void	render(float time);
 	void	DrawFrame(int frame,int nFrame); // base zero
+	Skeleton getSkeleton();
 private:
 
 	//Check to avoid crashes: the model has loaded in the right way
 	bool                bModelLoadedCorrectly;
 	bool				bXMLLoaded;
 	unsigned			iTriangleCount;
-	unsigned			iMeshCount;
 
 	Skeleton			ColladaSkeleton;
 	Skin				skinningInformation;
 	
-	vector<ColMesh>     dataRead;
+	vector<Mesh>        dataRead;
 	vector<Material>    vMaterials;
 	vector<Effect>	    vEffects;
 	vector<Image>       vImages;
 	vector<RenderData>  vRenderData;
+	vector<Animation>   vAnimation;
 	std::map<core::stringc ,Node>   mNodes;
 
+	float* copiedPositions;
+	float* copiedNormals;
+
+	float* textArray;
+	float* vertArray;
+	float* normArray;
+
+	unsigned iCurrentFrame;
+	float    fAnimationTime;
+
+
+	//Data to be kept
+	Vertex* pVertArray;
 	//Transformation for the scene
 	Matrix transformation;
 
 	core::stringc sSkeletonID;
 	Node* pSkeletonNode;
-
-
 	
 	//XML DATA ACQUISITION
+	void readLibraryAnimations(IrrXMLReader* xml);
 	void readLibraryImages(IrrXMLReader* xml);
 	void readLibraryGeometries(IrrXMLReader* xml);
 	void readLibraryMaterials(IrrXMLReader* xml);
@@ -241,6 +316,11 @@ private:
 	void readSkin(IrrXMLReader* xml);
 	void readJoint(IrrXMLReader* xml);
 	void readVertexWeight(IrrXMLReader* xml);
+	Sample  readSample(IrrXMLReader* xml);
+	Channel readChannel(IrrXMLReader* xml);
+	Input readInput(IrrXMLReader* xml);
+	void readAnimation(IrrXMLReader* xml);
+	
 	
 	Source readSource(IrrXMLReader* xml);
 	void RenderFrame();
@@ -253,21 +333,25 @@ private:
 
 	//DATA READING
 	void readFloatArray(IrrXMLReader* xml,float* arrayPointer);
-	void readIDREFArray(IrrXMLReader* xml,core::stringc* arrayPointer);
+	void readStringArray(IrrXMLReader* xml,core::stringc* arrayPointer);
 	void readVCountArray(IrrXMLReader* xml,unsigned* arrayPointer);
 	void readVArray(IrrXMLReader* xml,unsigned* arrayPointer);
+	Matrix readInvMatrix(float** pFArray,unsigned boneIndex);
 
 	void   readNode(IrrXMLReader* xml,Node* parent);
 	void   readInstanceController(IrrXMLReader* xml);
 
 	void    LoadJointRec(JointNode* jParent,Node* nParent);
 
+	void    LoadSkeleton();
+	void    LoadWeights();
 
 	//RENDERING THE MODEL
+	void    LoadAnimationData();
 	void    LoadData();
 	void    FindRoot(Node* nodeList);
-	void    LoadSkeleton();
-	void    DrawSkeleton();
+	void    DrawSkeleton(float time);
+	void    SetupPose();
 	
 };
 #endif

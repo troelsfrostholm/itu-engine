@@ -61,8 +61,10 @@ int main(int argc, char* argv[])
 	ColladaModel model3 = ColladaModel();
 	//model3.LoadModel("models/Gundam/Gundam.dae");
 	//model3.LoadModel("models/FireSpocket/models/FireSpocket.dae");
-	model3.LoadModel("models/Astroboy/astroBoy_walk_Max.DAE");
+	//model3.LoadModel("models/Goblin/Goblin.DAE");
+	model3.LoadModel("models/Astroboy/Astroboy.DAE");
 	//model3.LoadModel("models/Duck/Duck.dae");
+	//model3.LoadModel("models/pumpkin/pumpkin.dae");
 	float mass;
 	btVector3 fallInertia;
 
@@ -134,7 +136,7 @@ int main(int argc, char* argv[])
 	root->addChild(&fpsCam);
 	renderer = engine.getRenderer();
 	renderer->setCurrentCamera(&fpsCam);
-	renderer->setWireframeMode(true);
+	renderer->setWireframeMode(false);
 	renderer->setShaders("shaders\\fixedfunction.vertex", "shaders\\fixedfunction.fragment");
 
 	NMS_EVENT_MANAGER.onMouseMoved(&mouseMoved);
