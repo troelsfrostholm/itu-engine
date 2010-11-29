@@ -129,6 +129,7 @@ void NMS_SceneRenderer::togglePause()
 int NMS_SceneRenderer::renderingLoop()
 {
 	while(rendering) {
+		SINGLEFRAME_ALLOC->clear();
 		NMS_EVENT_MANAGER.pollEvents();
 		if(!stopped)
 		{

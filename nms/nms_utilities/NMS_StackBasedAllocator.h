@@ -25,7 +25,7 @@ public:
 	StackBasedAllocator();
 	StackBasedAllocator(unsigned int size_in_bytes);
 	~StackBasedAllocator();
-	void * allocMem(size_t size);
+	void * allocMem(size_t size, int categoryFlag);
 	void freeMem(void * ptr);
 	void * allocUnaligned(size_t size_in_bytes);
 	void * allocAligned(size_t size_in_bytes, U32 alignment);

@@ -25,7 +25,7 @@ class LEVEL_ALLOCATOR_D LevelAllocator : public MemoryAllocator
 {
 public:
 	static LevelAllocator * getInstance();
-	void * allocMem(size_t size);
+	void * allocMem(size_t size, int categoryFlag);
 	void freeMem(void * pointer);
 	void clearLevel();
 

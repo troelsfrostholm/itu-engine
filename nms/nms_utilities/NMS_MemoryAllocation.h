@@ -15,8 +15,8 @@
 typedef enum {
 	MEM_PERSISTENT,
 	MEM_LEVEL,
+	MEM_TEXTURE,
 	MEM_TEMP,
-	MEM_MATRIX,
 	MEM_NUM_CATEGORIES } memCategories;
 
 extern MEMORY_ALLOCATION_D int CurrentMemoryUsage[MEM_NUM_CATEGORIES];
@@ -24,7 +24,7 @@ extern MEMORY_ALLOCATION_D int CurrentMemoryUsage[MEM_NUM_CATEGORIES];
 class MEMORY_ALLOCATION_D MemoryAllocator
 {
 public:
-	virtual void * allocMem(size_t size) = 0;
+	virtual void * allocMem(size_t size, int categoryFlag) = 0;
 	virtual void freeMem(void * pointer) = 0;
 
 	virtual U32 currentMemoryUsage(int category) = 0;

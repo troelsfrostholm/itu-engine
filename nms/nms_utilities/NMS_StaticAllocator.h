@@ -25,7 +25,7 @@ class STATIC_ALLOCATOR_D StaticAllocator : public MemoryAllocator
 {
 public:
 	static StaticAllocator * getInstance();
-	void * allocMem(size_t size);
+	void * allocMem(size_t size, int categoryFlag);
 	void freeMem(void * pointer);
 
 	U32 currentMemoryUsage(int category);
