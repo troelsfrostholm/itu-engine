@@ -62,8 +62,8 @@ public :
 
 private :
 	static NMS_TextureManager* m_Singleton;
-	char m_sMessage[80];
-	static const size_t m_iMessageSize=80*sizeof(char);
+	char m_sMessage[300];
+	static const size_t m_iMessageSize=300*sizeof(char);
 
 	struct stringLess : binary_function <string, string, bool> {
 		bool operator() (const string& x, const string& y) const

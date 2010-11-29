@@ -155,7 +155,7 @@ void NMS_SceneRenderer::render()
 	sceneGraphRoot->traverse_df(this, &m);
 
 	//debug drawing
-	//physics->getDynamicsWorld()->debugDrawWorld();
+	physics->getDynamicsWorld()->debugDrawWorld();
 
 	SDL_UnlockMutex(sceneGraphGuard);
 	SDL_GL_SwapBuffers();

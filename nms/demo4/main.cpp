@@ -27,69 +27,30 @@ void mouseMoved(int MouseX, int MouseY)
 	fpsCam.setRotation(rot[NMS_X],rot[NMS_Y],rot[NMS_Z]);
 }
 
-void keyReleased(SDLKey key)
-{
-	SDL_LockMutex(inputGuard);
-	switch( key ) {
-		case SDLK_a:
-			 fpsCam.setSlideSpeed(0);
-			 break;
-		case SDLK_d:
-			 fpsCam.setSlideSpeed(0);
-			 break;
-		case SDLK_w:
-			 fpsCam.setSpeed(0);
-			 break;
-		case SDLK_s:
-			 fpsCam.setSpeed(0);
-			 break;
-		case SDLK_UP:
-			//((NMS_KinematicMotionState*) fallRigidBody->getMotionState())->setKinematicPos( btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0)) );
-			break;
-	}
-	SDL_UnlockMutex(inputGuard);
-}
-
-
-void keyPressed(SDLKey key)
-{
-	SDL_LockMutex(inputGuard);
-	switch( key ) {
-		case SDLK_UP:
-			//Matrix m = Matrix();
-			//m.rotY(0.1f);
-			//SDL_LockMutex(sceneGraphGuard);
-			//rotNode.multiply(m);
-			//SDL_UnlockMutex(sceneGraphGuard);
-			break;
-
-		 case SDLK_a:
-			 fpsCam.setSlideSpeed(+0.5f);
-				   break;
-		 case SDLK_d:
-			 fpsCam.setSlideSpeed(-0.5f);
-				   break;
-		 case SDLK_w:
-			 fpsCam.setSpeed(+0.5f);
-				   break;
-		 case SDLK_s:
-			 fpsCam.setSpeed(-0.5f);
-				   break;
-		 case SDLK_1:
-			 renderer->setCurrentCamera(&cam);
-			 break;
-		 case SDLK_2:
-			 renderer->setCurrentCamera(&fpsCam);
-			 break;
-
-	}
-	SDL_UnlockMutex(inputGuard);
-}
-
 void idle( int i )
 {
 	fpsCam.UpdateCamera(1);
 	//((NMS_KinematicMotionState*) fallRigidBody->getMotionState())->setKinematicPos( btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0)) );
+}
+
+void moveLeft( int i )
+{
+	fpsCam.setPos(fpsCam.getPos() + fpsCam.getRight()*0.5);
+}
+
+void moveRight( int i )
+{
+	fpsCam.setPos(fpsCam.getPos() - fpsCam.getRight()*0.5);
+}
+
+void moveForward( int i )
+{
+	fpsCam.setPos(fpsCam.getPos() + fpsCam.getDir()*0.5);
+}
+
+void moveBack( int i )
+{
+	fpsCam.setPos(fpsCam.getPos() - fpsCam.getDir()*0.5);
 }
 
 int main(int argc, char* argv[])
@@ -100,8 +61,10 @@ int main(int argc, char* argv[])
 	ColladaModel model3 = ColladaModel();
 	//model3.LoadModel("models/Gundam/Gundam.dae");
 	//model3.LoadModel("models/FireSpocket/models/FireSpocket.dae");
-	model3.LoadModel("models/Astroboy/astroBoy_walk_Max.DAE");
+	//model3.LoadModel("models/Goblin/Goblin.DAE");
+	model3.LoadModel("models/Astroboy/Astroboy.DAE");
 	//model3.LoadModel("models/Duck/Duck.dae");
+	//model3.LoadModel("models/pumpkin/pumpkin.dae");
 	float mass;
 	btVector3 fallInertia;
 
@@ -173,14 +136,29 @@ int main(int argc, char* argv[])
 	root->addChild(&fpsCam);
 	renderer = engine.getRenderer();
 	renderer->setCurrentCamera(&fpsCam);
-	renderer->setWireframeMode(true);
+	renderer->setWireframeMode(false);
 	renderer->setShaders("shaders\\fixedfunction.vertex", "shaders\\fixedfunction.fragment");
 
-
-	NMS_EVENT_MANAGER.onKeyPressed(&keyPressed);
-	NMS_EVENT_MANAGER.onKeyReleased(&keyReleased);
 	NMS_EVENT_MANAGER.onMouseMoved(&mouseMoved);
 	NMS_EVENT_MANAGER.onIdle(&idle);
+	NMS_EVENT_MANAGER.bindKeyHold(SDLK_a, "left");
+	NMS_EVENT_MANAGER.bindKeyHold(SDLK_d, "right");
+	NMS_EVENT_MANAGER.bindKeyHold(SDLK_w, "up");
+	NMS_EVENT_MANAGER.bindKeyHold(SDLK_s, "down");
+
+	NMS_EVENT_MANAGER.bindKeyHold(SDLK_LEFT, "left");
+	NMS_EVENT_MANAGER.bindKeyHold(SDLK_RIGHT, "right");
+	NMS_EVENT_MANAGER.bindKeyHold(SDLK_UP, "up");
+	NMS_EVENT_MANAGER.bindKeyHold(SDLK_DOWN, "down");
+
+	NMS_EVENT_MANAGER.bindKeyPress(SDLK_SPACE, "jump");
+
+	NMS_EVENT_MANAGER.bindAction("left", &moveLeft);
+	NMS_EVENT_MANAGER.bindAction("right", &moveRight);
+	NMS_EVENT_MANAGER.bindAction("up", &moveForward);
+	NMS_EVENT_MANAGER.bindAction("down", &moveBack);
+	//NMS_EVENT_MANAGER.bindAction("jump", &toggleDebugDraw);
+
 	engine.run();
 	return 0;
 }
