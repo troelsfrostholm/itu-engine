@@ -96,17 +96,17 @@ void JointNode::Animate(float time,Matrix *m)
 		{
 			float InBetween = (fCurrentTime-fOldTime)*100;
 			fOldTime=fCurrentTime;
+			float diffTime=0;
 			if (iCurrentFrame <  (int)iNKeyFrames - 1)
 			{
 				float diffTime=(pAnimationFrames[iCurrentFrame+1]).getTime()-(pAnimationFrames[iCurrentFrame]).getTime();
-				if(InBetween>(diffTime))
-					iCurrentFrame++;
-				if (iCurrentFrame <  (int)iNKeyFrames - 1)
-				  transform = LERP(pAnimationFrames[iCurrentFrame].getTransform(),pAnimationFrames[iCurrentFrame+1].getTransform(),InBetween);
+				if(InBetween<diffTime)
+					transform = LERP(pAnimationFrames[iCurrentFrame].getTransform(),pAnimationFrames[iCurrentFrame+1].getTransform(),InBetween);
 			}
-			else{ iCurrentFrame++;
-				  //transform=*pAnimationFrames[iCurrentFrame].getTransform();
-				}
+			else
+			  transform=*pAnimationFrames[iCurrentFrame].getTransform();
+			if(InBetween>diffTime)
+				iCurrentFrame++;
 			if( iCurrentFrame >= iNKeyFrames )
 				iCurrentFrame = 0;
 		}

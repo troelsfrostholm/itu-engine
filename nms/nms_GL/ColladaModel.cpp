@@ -1488,5 +1488,8 @@ void ColladaModel::readVertexWeight(IrrXMLReader* xml)
 
 Skeleton ColladaModel::getSkeleton()
 {
-	return *ColladaSkeleton;
+	if(ColladaSkeleton!=NULL)
+		return *ColladaSkeleton;
+	else
+		return Skeleton();
 }
