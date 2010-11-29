@@ -373,7 +373,7 @@ void ColladaModel::LoadAnimationData()
 			string sTargetJoint=(vAnimation[i].sID.subString(0,vAnimation[i].sID.size()-10)).c_str();
 
 			//Retrieve the targeted node from the skeleton
-			JointNode *target=ColladaSkeleton.getJoint(sTargetJoint);
+			JointNode *target=(*ColladaSkeleton).getJoint(sTargetJoint);
 			//Create enough space to save the keyframes for the current joint
 			target->initializeKeyframes(vAnimation[i].vSources[0].count);
 			//Reconstruct the animation matrixes for each channels
@@ -418,9 +418,9 @@ void ColladaModel::LoadSkeleton()
 	if(pSkeletonNode!=NULL&&strcmp(sSkeletonID.c_str(),""))
 	{
 		JointNode root = JointNode(pSkeletonNode->sID.c_str(),pSkeletonNode->sName.c_str(),pSkeletonNode->sSID.c_str(),pSkeletonNode->sType.c_str(),pSkeletonNode->transformation);
-		ColladaSkeleton=Skeleton(root,sSkeletonID.c_str());
-		ColladaSkeleton.addJoint(root.getSID(),root);
-		LoadJointRec(ColladaSkeleton.getJoint(root.getSID()),pSkeletonNode);
+		ColladaSkeleton=new Skeleton(root,sSkeletonID.c_str());
+		(*ColladaSkeleton).addJoint(root.getSID(),root);
+		LoadJointRec((*ColladaSkeleton).getJoint(root.getSID()),pSkeletonNode);
 	}
 }
 
@@ -432,9 +432,9 @@ void ColladaModel::LoadJointRec(JointNode* jParent,Node* nParent)
 		for ( it=nParent->nodes.begin() ; it != nParent->nodes.end(); it++ )
 		{
 			JointNode current = JointNode((*it).second.sID.c_str(),(*it).second.sName.c_str(),(*it).second.sSID.c_str(),(*it).second.sType.c_str(),(*it).second.transformation);
-			ColladaSkeleton.addJoint(current.getSID(),current);
-			LoadJointRec(ColladaSkeleton.getJoint(current.getSID()),&it->second);
-			jParent->addChild(ColladaSkeleton.getJoint(current.getSID()));
+			(*ColladaSkeleton).addJoint(current.getSID(),current);
+			LoadJointRec((*ColladaSkeleton).getJoint(current.getSID()),&it->second);
+			jParent->addChild((*ColladaSkeleton).getJoint(current.getSID()));
 		}
 }
 
@@ -458,7 +458,7 @@ void ColladaModel::LoadWeights()
 		{
 			unsigned uJointIndex=skinningInformation.pV[k*2+readOffset+skinningInformation.iJointOffset];
 			//Setting the joint that influence the vertex
-			pVertArray[i].pJoints[k]=ColladaSkeleton.getJointsSID(JointSource.pNameArray[uJointIndex].c_str());
+			pVertArray[i].pJoints[k]=(*ColladaSkeleton).getJointsSID(JointSource.pNameArray[uJointIndex].c_str());
 			//Setting the inverse bind pose matrix for the joint
 			Matrix inverse=readInvMatrix(&BindSource.pfArray,uJointIndex);
 			pVertArray[i].pJoints[k]->setInverseBind(inverse);
@@ -473,7 +473,7 @@ void ColladaModel::LoadWeights()
 //Traverse the skeleton to be rendered
 void ColladaModel::DrawSkeleton(float time)
 {
-	ColladaSkeleton.render(time);
+	(*ColladaSkeleton).render(time);
 }
 
 void ColladaModel::SetupPose()
@@ -503,8 +503,8 @@ void ColladaModel::SetupPose()
 		//For each joint affecting the vertex
 		for(unsigned j=0;j<pVertArray[i].iNJointsAffecting;j++)
 		{
-			tempVertex+=((Vertex*skinningInformation.mBindShape)*(pVertArray[i].pJoints[j]->getSkinningMatrix())*pVertArray[i].vWeights[j]);
-			tempNormal+=((Normal*skinningInformation.mBindShape)*(pVertArray[i].pJoints[j]->getSkinningMatrix())*pVertArray[i].vWeights[j]);
+			tempVertex+=((Vertex*skinningInformation.mBindShape)*((*pVertArray[i].pJoints[j]).getSkinningMatrix())*pVertArray[i].vWeights[j]);
+			tempNormal+=((Normal*skinningInformation.mBindShape)*((*pVertArray[i].pJoints[j]).getSkinningMatrix())*pVertArray[i].vWeights[j]);
 			TotalJointsWeight +=pVertArray[i].vWeights[j];
 		}
 		if (TotalJointsWeight != 1.0f)
@@ -516,9 +516,6 @@ void ColladaModel::SetupPose()
 		vertArray[i*3]  =tempVertex[NMS_X];
 		vertArray[i*3+1]=tempVertex[NMS_Y];
 		vertArray[i*3+2]=tempVertex[NMS_Z];
-		//normArray[i*3]  =tempNormal[NMS_X];
-		//normArray[i*3+1]=tempNormal[NMS_Y];
-		//normArray[i*3+2]=tempNormal[NMS_Z];
 	}
 }
 
@@ -1488,5 +1485,5 @@ void ColladaModel::readVertexWeight(IrrXMLReader* xml)
 
 Skeleton ColladaModel::getSkeleton()
 {
-	return ColladaSkeleton;
+	return *ColladaSkeleton;
 }

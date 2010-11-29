@@ -97,12 +97,12 @@ int main(int argc, char* argv[])
 	NMS_Sphere sphere = NMS_Sphere();
 
 	ColladaModel model = ColladaModel();
-	ColladaModel model2 = ColladaModel();
+	ColladaModel model2;
 	Skeleton skeleton = Skeleton();
 	
 	//model.LoadModel("models/drfreak/drfreak.md2","models/drfreak/drfreak.tga");
 	model.LoadModel("models/Astroboy/Astroboy.dae");
-	model2.LoadModel("models/Astroboy/Astroboy.dae");
+	model2=model;
 	skeleton=model.getSkeleton();
 	model.material.ambient = Vector(0.2, 0.2, 0.2, 0.2);
 	model.material.diffuse = Vector(0.5, 0.5, 0.5, 0.5);
