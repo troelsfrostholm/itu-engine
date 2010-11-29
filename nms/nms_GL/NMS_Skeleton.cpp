@@ -8,7 +8,7 @@ JointNode::JointNode() : TransformationNode()
 	mSkinningMatrix = Matrix();
 	fCurrentTime=0.0f;
 	fOldTime=0.0f;
-	iFps=3000;
+	iFps=30;
 	iNKeyFrames=0;
     pAnimationFrames=NULL;
 	iCurrentFrame=0;
@@ -26,7 +26,7 @@ JointNode::JointNode(string sID, string sName, string sSID, string sType,Matrix 
 	mSkinningMatrix = Matrix();
 	fCurrentTime=0.0f;
 	fOldTime=0.0f;
-	iFps=3000;
+	iFps=30;
 	iNKeyFrames=0;
     pAnimationFrames=NULL;
 	iCurrentFrame=0;
@@ -91,7 +91,8 @@ void JointNode::Animate(float time,Matrix *m)
 	//If we have animation data for this joint, then calculate the proper matrix for the skeleton
 	if(iNKeyFrames>0)
 	{
-
+		if( fCurrentTime - fOldTime > (1.0 /(iFps*100) ))
+		{
 			fOldTime=fCurrentTime;
 			iCurrentFrame++;
 			if( iCurrentFrame >= iNKeyFrames )
@@ -103,6 +104,7 @@ void JointNode::Animate(float time,Matrix *m)
 				  transform = LERP(pAnimationFrames[iCurrentFrame].getTransform(),pAnimationFrames[iCurrentFrame+1].getTransform(),InBetween);
               else
 				transform=*pAnimationFrames[iCurrentFrame].getTransform();
+		}
 	}
 }
 

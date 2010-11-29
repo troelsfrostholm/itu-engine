@@ -140,5 +140,8 @@
     <ClInclude Include="NMS_Watcher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="NMS_MeshManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
