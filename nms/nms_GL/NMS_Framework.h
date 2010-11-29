@@ -7,8 +7,6 @@
 #ifndef NMS_Framework_H__
 #define NMS_Framework_H__
 
-#define NOMINMAX
-
 #include "NMS_SceneRenderer.h"
 #include "Matrix.h"
 #include "Trig.h"

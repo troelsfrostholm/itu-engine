@@ -4,6 +4,9 @@
 #    define ENGINE_D __declspec(dllimport)
 #endif
 
+#ifndef NMS_ENGINE_H__
+#define NMS_ENGINE_H__
+
 #include "NMS_Framework.h"
 
 extern ENGINE_D NMS_Framework engine;
@@ -13,3 +16,5 @@ bool ENGINE_D InitEngine(int width,int height,int bpp,char* windowTitle,bool ful
 void ENGINE_D StartEngine();
 
 void ENGINE_D QuitEngine();
+
+#endif;

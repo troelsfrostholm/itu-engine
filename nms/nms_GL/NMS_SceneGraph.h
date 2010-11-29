@@ -94,6 +94,7 @@ public:
 	void GeometryNode::after(SceneGraphVisitor *v, Matrix *m);
 	NMS_Mesh * getModel();
 	btRigidBody * getCollisionBody();
+	void setCollisionBody(btRigidBody *b);
 };
 
 class SCENEGRAPH_D CameraNode : public TransformationNode

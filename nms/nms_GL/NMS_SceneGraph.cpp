@@ -150,3 +150,8 @@ btRigidBody * GeometryNode::getCollisionBody()
 {
 	return collisionBody;
 }
+
+void GeometryNode::setCollisionBody(btRigidBody *b)
+{
+	collisionBody = b;
+}

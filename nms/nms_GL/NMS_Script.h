@@ -26,7 +26,6 @@ class SCRIPT_D nms_script
 	private:
 		std::vector<std::string> scripts;
 		nms_watcher watcher;
-		static SceneGraphNode* root;
 
 	public:
 		static Persistent<Context> g_context;

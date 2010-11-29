@@ -1,7 +1,7 @@
 Log("this is the initial log file..");
-/*
+
 setGravity(10);
-*/
+
 var md2 = new MD2();
 
 md2.LoadModel("models/drfreak/drfreak.md2","models/drfreak/drfreak.tga");

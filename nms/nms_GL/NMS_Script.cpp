@@ -1,4 +1,5 @@
 #include "nms_script.h"
+#include "NMS_Engine.h"
 
 Persistent<Context> nms_script::g_context;
 Handle<ObjectTemplate> nms_script::lightTemplate;
@@ -6,12 +7,10 @@ Handle<ObjectTemplate> nms_script::colladaTemplate;
 Handle<ObjectTemplate> nms_script::md2Template;
 Handle<ObjectTemplate> nms_script::rootTemplate;
 Handle<ObjectTemplate> nms_script::geometryNodeTemplate;
-SceneGraphNode* nms_script::root;
 
 nms_script::nms_script(SceneGraphNode* node)
 {
 	g_context = Context::New();
-	root = node;
 }
 
 nms_script::~nms_script()
@@ -163,7 +162,7 @@ Handle<Value> nms_script::setGravity(const Arguments& args)
 { 
     int gravity = args[0]->Int32Value();
 	//Change the gravity
-	//engine.physics->setGravity(gravity);
+	engine.physics->setGravity(gravity);
     return args[0];
 }
 
@@ -236,7 +235,7 @@ Handle<Value> nms_script::constructGeometryNode(const Arguments &args)
 	//start a handle scope
 	HandleScope handleScope;
  
-	Local<External> MeshWrap = Local<External>::Cast(args[0]);
+	Local<External> MeshWrap = Local<External>::Cast(args[0]->ToObject()->GetInternalField(0));
     void* Mesh = MeshWrap->Value();
 
 	//generate a new point
@@ -306,7 +305,7 @@ Handle<Value> nms_script::getRoot(const Arguments &args)
 
 	Local<Object> instance = rootTemplate->NewInstance();
 
-	instance->SetInternalField(0, External::New(root));
+	instance->SetInternalField(0, External::New(engine.getScene()));
 	
 	return handleScope.Close(instance);
 }
@@ -357,11 +356,17 @@ Handle<Value> nms_script::LoadModelCollada(const Arguments& args)
 
 Handle<Value> nms_script::addChild(const Arguments& args)
 {
-	Local<Object> self = args.Holder();
-	Local<External> wrap2 = Local<External>::Cast(args[0]);
-    Local<External> wrap = Local<External>::Cast(self->GetInternalField(0));
-    void* ptr = wrap->Value();
-	void* ptr2 = wrap2->Value();
-    static_cast<SceneGraphNode*>(ptr)->addChild(static_cast<SceneGraphNode*>(ptr2));
+	Local<External> parent = Local<External>::Cast(args.Holder()->GetInternalField(0));
+	Handle<External> object = Handle<External>::Cast(args[0]->ToObject()->GetInternalField(0));
+
+	MD2Model *m = new MD2Model();
+	m->LoadModel("models/drfreak/drfreak.md2","models/drfreak/drfreak.tga");
+
+	btRigidBody* fallRigidBody = engine.physics->createBox(1,1,1,0,0,0,1);
+
+	GeometryNode *node = new GeometryNode(m, fallRigidBody);
+	//engine.getScene()->addChild(node);
+	static_cast<SceneGraphNode*>(parent->Value())->addChild(node);
+	//static_cast<SceneGraphNode*>(object->Value())
 	return Integer::New(1);
 }

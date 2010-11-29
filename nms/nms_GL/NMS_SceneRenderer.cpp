@@ -23,6 +23,7 @@ NMS_SceneRenderer::NMS_SceneRenderer(nms_physics *physics)
 	current_camera = NULL;
 	vertexShaderFile = NULL;
 	fragmentShaderFile = NULL;
+	stopped = false;
 }
 
 
@@ -190,7 +191,8 @@ void NMS_SceneRenderer::sg_before(Matrix transform, SceneGraphNode * node)
 	glLoadIdentity();
 	Matrix t_transposed = ~transform;
 	glMultMatrixf(t_transposed.getElements());
-	applyPhysics(b);
+	if(b != NULL)
+		applyPhysics(b);
 	setWireframeModeGL(wireframe);
 	(*model).setMaterialGL();
 	(*model).render(currentTime);
