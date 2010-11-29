@@ -30,6 +30,7 @@ JointNode::JointNode(string sID, string sName, string sSID, string sType,Matrix 
 	iNKeyFrames=0;
     pAnimationFrames=NULL;
 	iCurrentFrame=0;
+	bAnimate=true;
 }
 
 void JointNode::setInverseBind(Matrix m)
@@ -93,18 +94,24 @@ void JointNode::Animate(float time,Matrix *m)
 	{
 		if( fCurrentTime - fOldTime > (1.0 /(iFps*100) ))
 		{
+			float InBetween = (fCurrentTime-fOldTime)*100;
 			fOldTime=fCurrentTime;
-			iCurrentFrame++;
+			float diffTime=0;
+			if (iCurrentFrame <  (int)iNKeyFrames - 1)
+			{
+				float diffTime=(pAnimationFrames[iCurrentFrame+1]).getTime()-(pAnimationFrames[iCurrentFrame]).getTime();
+				if(InBetween<diffTime)
+					transform = LERP(pAnimationFrames[iCurrentFrame].getTransform(),pAnimationFrames[iCurrentFrame+1].getTransform(),InBetween);
+			}
+			else
+			  transform=*pAnimationFrames[iCurrentFrame].getTransform();
+			if(InBetween>diffTime)
+				iCurrentFrame++;
 			if( iCurrentFrame >= iNKeyFrames )
 				iCurrentFrame = 0;
-
-			float InBetween = fCurrentTime-fOldTime;
-
-              if (iCurrentFrame <  (int)iNKeyFrames - 1)
-				  transform = LERP(pAnimationFrames[iCurrentFrame].getTransform(),pAnimationFrames[iCurrentFrame+1].getTransform(),InBetween);
-              else
-				transform=*pAnimationFrames[iCurrentFrame].getTransform();
 		}
+		else
+			  transform=*pAnimationFrames[iCurrentFrame].getTransform();
 	}
 }
 
@@ -120,7 +127,8 @@ Matrix JointNode::LERP(Matrix *current,Matrix *next,float beta)
 void JointNode::before(SceneGraphVisitor *v, Matrix *m)
 {
 	SkeletonRenderer* renderer=(SkeletonRenderer*)v;
-	Animate(renderer->getAnimationTime(),m);
+	if(bAnimate)
+		Animate(renderer->getAnimationTime(),m);
 	TransformationNode::before(v, m);
 	mWorldMatrix=*m;
 	//Save the world matrix for the current node and precalculate the skinning matrix used in the skinning
@@ -133,6 +141,11 @@ void JointNode::after(SceneGraphVisitor *v, Matrix *m)
 {
 	v->sg_after(*m, this);
 	TransformationNode::after(v, m);
+}
+
+void JointNode::setAnimationEnabled(bool state)
+{
+	bAnimate=state;
 }
 
 
