@@ -261,11 +261,11 @@ public:
 	ColladaModel();
 	~ColladaModel();
 	int		LoadModel(const char* fileName);
-	
 	int     LoadSkin(char* fileName);
 	int     LoadSkin();
 	void	render(float time);
 	void	DrawFrame(int frame,int nFrame); // base zero
+	Skeleton getSkeleton();
 private:
 
 	//Check to avoid crashes: the model has loaded in the right way

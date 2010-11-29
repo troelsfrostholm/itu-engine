@@ -328,7 +328,6 @@ for(m=0;m<dataRead.size();m++)
 						vRenderData.push_back(toBeRendered);
 				}		
 	}
-	LoadSkeleton();
 	LoadWeights();
 	LoadAnimationData();
 	bModelLoadedCorrectly=true;
@@ -562,6 +561,7 @@ int	ColladaModel::LoadModel(const char* fileName)
 				break;
 		}
 		bXMLLoaded=true;
+		LoadSkeleton();
 		return true;
 	}
 	else
@@ -1484,4 +1484,9 @@ void ColladaModel::readVertexWeight(IrrXMLReader* xml)
 			}break;
 		}
 	}
+}
+
+Skeleton ColladaModel::getSkeleton()
+{
+	return ColladaSkeleton;
 }
