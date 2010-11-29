@@ -7,7 +7,6 @@
 #ifndef NMS_SCRIPT_H__
 #define NMS_SCRIPT_H__
 
-#pragma unmanaged
 #include <vector>
 #include <cmath>
 #include "string.h"
@@ -18,7 +17,6 @@
 #include "NMS_LightSystem.h"
 #include "nms_watcher.h"
 #include "NMS_SceneGraph.h"
-#pragma managed
 #include <v8.h>
 
 using namespace v8;

@@ -10,6 +10,7 @@ NMS_SceneRenderer::NMS_SceneRenderer()
 	fragmentShaderFile = NULL;
 	skybox = false;
 	skyboxTexture = 0;
+	stopped = false;
 }
 
 NMS_SceneRenderer::NMS_SceneRenderer(nms_physics *physics)
@@ -120,12 +121,20 @@ int NMS_SceneRenderer::run()
 	return 0;
 }
 
+void NMS_SceneRenderer::togglePause()
+{
+	stopped = !stopped;
+}
+
 int NMS_SceneRenderer::renderingLoop()
 {
 	while(rendering) {
-		currentTime+=0.0008f;
 		NMS_EVENT_MANAGER.pollEvents();
-		physics->simulatePhysics();
+		if(!stopped)
+		{
+			currentTime+=0.0008f;
+			physics->simulatePhysics();
+		}
 		render();
 		CalculateFrameRate();
 	}

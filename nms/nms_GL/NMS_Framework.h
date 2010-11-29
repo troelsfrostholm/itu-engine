@@ -19,6 +19,7 @@
 #include "SDL_MemberThread.h"
 #include "NMS_Mutex.h"
 #include "nms_physics.h"
+#include "nms_script.h"
 #include "NMS_StaticAllocator.h"
 #include "NMS_LogFunctions.h"
 
@@ -28,13 +29,14 @@ protected:
 	int flags;
 	NMS_SceneRenderer sceneRenderer;
 	SceneGraphNode* sceneGraphRoot;
+	nms_script scriptManager;
 	bool bDebugEnable;
-	
 	
 public:
 	nms_physics* physics;
 	bool running;
 	bool rendering;
+	bool stopped;
 	NMSCameraFPS camera;
 	NMS_Framework();
 	bool NMSInit(int width,int height,int bpp,char* windowTitle,bool fullscreen);
@@ -51,6 +53,7 @@ public:
 	SceneGraphNode* getScene();
 	NMS_SceneRenderer* getRenderer();
 	static void logMemoryUsage();
+	void togglePause();
 };
 #endif;
 

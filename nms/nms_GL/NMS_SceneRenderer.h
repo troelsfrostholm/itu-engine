@@ -35,6 +35,7 @@ protected:
 	char * fragmentShaderFile;
 	bool skybox;
 	int skyboxTexture;
+	bool stopped;
 
 public:
 	NMS_SceneRenderer();
@@ -57,6 +58,7 @@ public:
 	void renderSkyBox();
 	void enableSkyBox(char * texture);
 	void disableSkyBox();
+	void togglePause();
 
 protected:
 	void setWireframeModeGL(bool mode);

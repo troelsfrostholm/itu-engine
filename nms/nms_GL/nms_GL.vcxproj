@@ -44,7 +44,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include\glew-1.5.7;$(SolutionDir)\include;$(SolutionDir)\nms_math;$(SolutionDir)\nms_utilities;$(SolutionDir)\include\Boost 1.4.4;$(SolutionDir)\include\Devil 1.7.8;$(SolutionDir)\include\SDL 1.2.14;$(SolutionDir)\include\glut 3.7.6;$(SolutionDir)\include\irrXML 1.2;$(SolutionDir)\Bullet\src;$(SolutionDir)\nms_physics;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\glew-1.5.7;$(SolutionDir)\include;$(SolutionDir)\nms_math;$(SolutionDir)\nms_utilities;$(SolutionDir)\include\Boost 1.4.4;$(SolutionDir)\include\Devil 1.7.8;$(SolutionDir)\include\SDL 1.2.14;$(SolutionDir)\include\glut 3.7.6;$(SolutionDir)\include\irrXML 1.2;$(SolutionDir)\Bullet\src;$(SolutionDir)\nms_physics;$(SolutionDir)\include\v8 2.5.4;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>__EXP_NMS_GL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -54,8 +54,8 @@
       <CallingConvention>Cdecl</CallingConvention>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>sdl.lib;sdlmain.lib;opengl32.lib;glu32.lib;odbc32.lib;odbccp32.lib;kernel32.lib;user32.lib;gdi32.lib;advapi32.lib;Devil.lib;nms_math.lib;nms_utilities.lib;irrXML.lib;nms_physics.lib;BulletDynamics.lib;BulletCollision.lib;LinearMath.lib;glut32.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)\lib\glew-1.5.7;$(SolutionDir)\Debug;$(SolutionDir)\lib;$(SolutionDir)\lib\SDL 1.2.14;$(SolutionDir)\lib\irrXML 1.2;$(SolutionDir)\lib\Devil 1.7.8;$(SolutionDir)\release;$(SolutionDir)\Bullet\lib;$(SolutionDir)\lib\glut 3.7.6;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sdl.lib;sdlmain.lib;opengl32.lib;glu32.lib;odbc32.lib;odbccp32.lib;kernel32.lib;user32.lib;gdi32.lib;advapi32.lib;Devil.lib;nms_math.lib;nms_utilities.lib;irrXML.lib;nms_physics.lib;BulletDynamics.lib;BulletCollision.lib;LinearMath.lib;glut32.lib;glew32.lib;v8.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\lib\glew-1.5.7;$(SolutionDir)\Debug;$(SolutionDir)\lib;$(SolutionDir)\lib\SDL 1.2.14;$(SolutionDir)\lib\irrXML 1.2;$(SolutionDir)\lib\Devil 1.7.8;$(SolutionDir)\release;$(SolutionDir)\Bullet\lib;$(SolutionDir)\lib\glut 3.7.6;$(SolutionDir)\lib\v8 2.5.4;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AssemblyDebug>true</AssemblyDebug>
       <GenerateMapFile>false</GenerateMapFile>
@@ -103,10 +103,12 @@
     <ClCompile Include="NMS_Mutex.cpp" />
     <ClCompile Include="NMS_SceneGraph.cpp" />
     <ClCompile Include="NMS_SceneRenderer.cpp" />
+    <ClCompile Include="NMS_Script.cpp" />
     <ClCompile Include="NMS_ShaderManager.cpp" />
     <ClCompile Include="NMS_Skeleton.cpp" />
     <ClCompile Include="NMS_TextureManager.cpp" />
     <ClCompile Include="NMS_Thread.cpp" />
+    <ClCompile Include="NMS_Watcher.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\nms_utilities\NMS_DebugDraw.h" />
@@ -124,10 +126,12 @@
     <ClInclude Include="NMS_Mutex.h" />
     <ClInclude Include="NMS_SceneGraph.h" />
     <ClInclude Include="NMS_SceneRenderer.h" />
+    <ClInclude Include="NMS_Script.h" />
     <ClInclude Include="NMS_ShaderManager.h" />
     <ClInclude Include="NMS_Skeleton.h" />
     <ClInclude Include="NMS_TextureManager.h" />
     <ClInclude Include="NMS_Thread.h" />
+    <ClInclude Include="NMS_Watcher.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\nms_math\nms_math.vcxproj">

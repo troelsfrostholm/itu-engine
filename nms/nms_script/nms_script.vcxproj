@@ -16,7 +16,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
     <CLRSupport>false</CLRSupport>
@@ -45,6 +45,7 @@
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(SolutionDir)\include\Boost 1.4.4;$(SolutionDir)\nms_utilities;$(SolutionDir)\include\Devil 1.7.8;$(SolutionDir)\nms_GL;$(SolutionDir)\include\SDL 1.2.14;$(SolutionDir)\nms_math;$(SolutionDir)\include\irrXML 1.2;$(SolutionDir)\include\OpenAL 1.1;$(SolutionDir)\NMS_Sound;$(SolutionDir)\include\glut 3.7.6;$(SolutionDir)\include\v8 2.5.4;$(SolutionDir)\nms_physics;$(SolutionDir)\Bullet\src;$(SolutionDir)\include\glew-1.5.7;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PreprocessorDefinitions>__EXP_NMS_SCRIPT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -67,15 +68,6 @@
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="nms_script.cpp" />
-    <ClCompile Include="nms_watcher.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="nms_script.h" />
-    <ClInclude Include="nms_watcher.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -30,6 +30,8 @@ bool NMS_Framework::NMSInit(int width,int height,int bpp,char* windowTitle,bool 
 	camera.setSpeed(0);
 	camera.setSlideSpeed(0);
 
+	stopped = false;
+	
 	running=true;
 	return true;
 }
@@ -68,6 +70,16 @@ void NMS_Framework::cleanup()
 	delete LEVEL_ALLOC;
 	delete STATIC_ALLOC;
 	SDL_Quit();
+}
+
+void NMS_Framework::togglePause()
+{
+	stopped = !stopped;
+	sceneRenderer.togglePause();
+	if(stopped)
+	{
+		scriptManager.RunScripts();
+	}
 }
 
 void NMS_Framework::render()
