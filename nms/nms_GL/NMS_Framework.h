@@ -29,7 +29,7 @@ protected:
 	int flags;
 	NMS_SceneRenderer sceneRenderer;
 	SceneGraphNode* sceneGraphRoot;
-	nms_script scriptManager;
+	nms_script* scriptManager;
 	bool bDebugEnable;
 	
 public:
@@ -53,7 +53,7 @@ public:
 	SceneGraphNode* getScene();
 	NMS_SceneRenderer* getRenderer();
 	static void logMemoryUsage();
-	void togglePause();
+	void togglePause(int none);
 };
 #endif;
 

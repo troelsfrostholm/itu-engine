@@ -6,10 +6,12 @@ Handle<ObjectTemplate> nms_script::colladaTemplate;
 Handle<ObjectTemplate> nms_script::md2Template;
 Handle<ObjectTemplate> nms_script::rootTemplate;
 Handle<ObjectTemplate> nms_script::geometryNodeTemplate;
+SceneGraphNode* nms_script::root;
 
-nms_script::nms_script()
+nms_script::nms_script(SceneGraphNode* node)
 {
 	g_context = Context::New();
+	root = node;
 }
 
 nms_script::~nms_script()
@@ -301,8 +303,6 @@ Handle<Object> nms_script::wrapGeometryNode(GeometryNode *NodeToWrap)
 Handle<Value> nms_script::getRoot(const Arguments &args)
 {
 	HandleScope handleScope;
-
-	SceneGraphNode* root = root;//engine.getScene();
 
 	Local<Object> instance = rootTemplate->NewInstance();
 

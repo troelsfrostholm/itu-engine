@@ -24,12 +24,14 @@ bool NMS_Framework::NMSInit(int width,int height,int bpp,char* windowTitle,bool 
 
 	//set callback for quitting
 	NMS_EVENT_MANAGER.onQuit(this, &NMS_Framework::NMSQuit);
+	NMS_EVENT_MANAGER.onPause(this, &NMS_Framework::togglePause);
 
 	camera=NMSCameraFPS::NMSCameraFPS();
 	camera.setPos(Vector(0,0,-5.0f));
 	camera.setSpeed(0);
 	camera.setSlideSpeed(0);
 
+	scriptManager = new nms_script(sceneGraphRoot);
 	stopped = false;
 	
 	running=true;
@@ -72,14 +74,15 @@ void NMS_Framework::cleanup()
 	SDL_Quit();
 }
 
-void NMS_Framework::togglePause()
+void NMS_Framework::togglePause(int none)
 {
 	stopped = !stopped;
-	sceneRenderer.togglePause();
-	if(stopped)
+	if(!stopped)
 	{
-		scriptManager.RunScripts();
+		scriptManager->RunScripts();
 	}
+	sceneRenderer.togglePause();
+
 }
 
 void NMS_Framework::render()

@@ -26,7 +26,7 @@ class SCRIPT_D nms_script
 	private:
 		std::vector<std::string> scripts;
 		nms_watcher watcher;
-		SceneGraphNode* root;
+		static SceneGraphNode* root;
 
 	public:
 		static Persistent<Context> g_context;
@@ -38,7 +38,7 @@ class SCRIPT_D nms_script
 		static Handle<ObjectTemplate> rootTemplate;
 		static Handle<ObjectTemplate> geometryNodeTemplate;
 
-		nms_script();
+		nms_script(SceneGraphNode* root);
 		~nms_script();
 		int RunScripts();
 		int Run(const char *filename);

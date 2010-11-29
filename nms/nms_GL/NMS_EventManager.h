@@ -30,6 +30,7 @@ private:
 	SDL_mutex* eventQueueGuard;
 
 	boost::function1<void, int> quitCallback;
+	boost::function1<void, int> pauseCallback;
 	boost::function1<void, int> idleCallback;
 	boost::function2<void, int, int> mouseMovedCallback;
 
@@ -57,6 +58,12 @@ public:
 	void onQuit(T* instance, void (T::*_callback)(int i))
 	{
 		quitCallback = std::bind1st(std::mem_fun(_callback), instance);
+	}
+
+	template <class T>
+	void onPause(T* instance, void (T::*_callback)(int i))
+	{
+		pauseCallback = std::bind1st(std::mem_fun(_callback), instance);
 	}
 
 	void onIdle(void (_callback)(int i))

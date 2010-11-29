@@ -92,6 +92,8 @@ void NMS_EventManager::handleEvent(SDL_Event event)
 		  case SDLK_ESCAPE:
 			  quitCallback(0);
 			   break;
+		  case SDLK_p:
+			  pauseCallback(0);
 		  default:
 			  if(pressKeyMap.count(event.key.keysym.sym) == 1)
 				  runAction(pressKeyMap[event.key.keysym.sym]);
