@@ -1,0 +1,1 @@
+Engine crash when creating an Md2model without loading a model.

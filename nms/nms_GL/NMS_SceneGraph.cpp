@@ -58,8 +58,6 @@ void SceneGraphNode::setParent(SceneGraphNode* _parent)
 	parent = _parent;
 }
 
-
-
 void SceneGraphNode::traverse_df(SceneGraphVisitor *v)
 {
 	Matrix m = Matrix();
@@ -86,6 +84,7 @@ void SceneGraphNode::backtrack_to_root(SceneGraphVisitor *v, Matrix *m)
 
 TransformationNode::TransformationNode() : SceneGraphNode()
 {
+
 }
 
 TransformationNode::TransformationNode(Matrix t)
